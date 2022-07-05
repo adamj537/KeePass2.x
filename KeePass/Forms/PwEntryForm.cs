@@ -22,7 +22,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -39,7 +38,6 @@ using KeePass.Util.Spr;
 
 using KeePassLib;
 using KeePassLib.Collections;
-using KeePassLib.Cryptography;
 using KeePassLib.Delegates;
 using KeePassLib.Security;
 using KeePassLib.Utility;

@@ -17,17 +17,6 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
-
-using KeePass.Resources;
-
-using KeePassLib;
-using KeePassLib.Interfaces;
-
 namespace KeePass.DataExchange.Formats
 {
 	// Sticky Password is basically the same password manager as

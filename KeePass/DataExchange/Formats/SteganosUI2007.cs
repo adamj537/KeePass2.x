@@ -18,17 +18,13 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
 using KeePass.App;
-using KeePass.Native;
 using KeePass.Resources;
-using KeePass.Util;
 
 using KeePassLib;
 using KeePassLib.Interfaces;

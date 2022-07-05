@@ -18,12 +18,9 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
 
 using KeePassLib;
-using KeePassLib.Interfaces;
 
 namespace KeePass.Util.Spr
 {

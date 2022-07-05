@@ -19,10 +19,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -34,10 +32,7 @@ using KeePass.UI;
 using KeePassLib;
 using KeePassLib.Cryptography.Cipher;
 using KeePassLib.Cryptography.KeyDerivation;
-using KeePassLib.Delegates;
-using KeePassLib.Keys;
 using KeePassLib.Resources;
-using KeePassLib.Security;
 using KeePassLib.Serialization;
 using KeePassLib.Utility;
 

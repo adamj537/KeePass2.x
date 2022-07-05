@@ -18,9 +18,7 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 
 #if KeePassUAP
 using Org.BouncyCastle.Crypto;
@@ -30,7 +28,6 @@ using Org.BouncyCastle.Crypto.Parameters;
 using System.Security.Cryptography;
 #endif
 
-using KeePassLib.Cryptography;
 using KeePassLib.Native;
 using KeePassLib.Utility;
 

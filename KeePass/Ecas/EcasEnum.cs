@@ -18,12 +18,6 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-using KeePass.Resources;
-
-using KeePassLib.Utility;
 
 namespace KeePass.Ecas
 {

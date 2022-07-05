@@ -23,7 +23,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Security;
-using System.Text;
 using System.Xml;
 
 #if !KeePassUAP

@@ -20,13 +20,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Threading;
 
 using KeePassLib.Cryptography;
 using KeePassLib.Cryptography.KeyDerivation;
 using KeePassLib.Interfaces;
-using KeePassLib.Native;
 using KeePassLib.Resources;
 using KeePassLib.Security;
 using KeePassLib.Utility;

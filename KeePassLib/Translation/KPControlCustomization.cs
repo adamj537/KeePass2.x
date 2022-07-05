@@ -18,7 +18,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -26,7 +25,6 @@ using System.Text;
 using System.Xml.Serialization;
 
 #if !KeePassUAP
-using System.Drawing;
 using System.Windows.Forms;
 #endif
 

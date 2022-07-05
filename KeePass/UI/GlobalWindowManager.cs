@@ -21,10 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-
-using KeePass.App;
 using KeePass.Forms;
 using KeePass.Native;
 using KeePass.Util;

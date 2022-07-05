@@ -17,8 +17,6 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Resources;
 
@@ -33,7 +31,6 @@ using KeePassLib;
 using KeePassLib.Cryptography.Cipher;
 using KeePassLib.Cryptography.PasswordGenerator;
 using KeePassLib.Keys;
-using KeePassLib.Security;
 
 namespace KeePass.Plugins
 {

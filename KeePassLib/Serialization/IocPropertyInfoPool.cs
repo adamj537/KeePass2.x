@@ -17,10 +17,8 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 
 using KeePassLib.Resources;
 using KeePassLib.Utility;

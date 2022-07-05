@@ -20,12 +20,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 using System.Xml.Serialization;
 
 using KeePass.Util;
-
-using KeePassLib;
 using KeePassLib.Keys;
 using KeePassLib.Serialization;
 using KeePassLib.Utility;

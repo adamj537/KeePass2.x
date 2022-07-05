@@ -18,19 +18,14 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Text;
-using System.IO;
 using System.Net.NetworkInformation;
-using System.Windows.Forms;
 using System.Diagnostics;
 
 using KeePass.Resources;
-using KeePass.UI;
 
 using KeePassLib;
 using KeePassLib.Serialization;
-using KeePassLib.Utility;
 
 namespace KeePass.Ecas
 {

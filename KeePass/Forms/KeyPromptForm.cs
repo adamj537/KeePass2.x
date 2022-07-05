@@ -21,9 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -32,8 +30,6 @@ using KeePass.App.Configuration;
 using KeePass.Resources;
 using KeePass.UI;
 using KeePass.Util;
-
-using KeePassLib;
 using KeePassLib.Delegates;
 using KeePassLib.Keys;
 using KeePassLib.Native;

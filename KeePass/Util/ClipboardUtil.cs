@@ -18,10 +18,7 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Text;
 using System.Windows.Forms;
 
 using KeePass.App;
@@ -29,7 +26,6 @@ using KeePass.Ecas;
 using KeePass.Forms;
 using KeePass.Native;
 using KeePass.UI;
-using KeePass.Util;
 using KeePass.Util.Spr;
 
 using KeePassLib;

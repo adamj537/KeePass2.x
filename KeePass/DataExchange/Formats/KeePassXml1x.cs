@@ -18,21 +18,14 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Xml;
-using System.Xml.Serialization;
-
-using KeePass.Resources;
 using KeePass.Util;
 
 using KeePassLib;
-using KeePassLib.Collections;
 using KeePassLib.Interfaces;
 using KeePassLib.Security;
-using KeePassLib.Serialization;
 using KeePassLib.Utility;
 
 namespace KeePass.DataExchange.Formats

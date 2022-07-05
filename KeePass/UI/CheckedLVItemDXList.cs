@@ -19,17 +19,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Reflection;
 using System.Diagnostics;
-
-using KeePass.App;
 using KeePass.App.Configuration;
-using KeePass.Util;
-
-using KeePassLib.Utility;
 
 namespace KeePass.UI
 {

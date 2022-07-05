@@ -21,13 +21,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
 using KeePass.Native;
-
-using KeePassLib.Utility;
 
 namespace KeePass.Util.SendInputExt
 {

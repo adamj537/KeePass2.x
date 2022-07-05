@@ -21,7 +21,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Security;
-using System.Text;
 
 using KeePassLib.Cryptography;
 using KeePassLib.Resources;

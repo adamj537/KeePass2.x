@@ -18,9 +18,7 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 
 #if !KeePassUAP
 using System.Security.Cryptography;

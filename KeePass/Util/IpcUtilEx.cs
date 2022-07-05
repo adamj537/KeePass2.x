@@ -22,7 +22,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
-using System.Text;
 using System.Threading;
 
 using KeePass.Forms;
@@ -30,7 +29,6 @@ using KeePass.UI;
 
 using KeePassLib;
 using KeePassLib.Cryptography;
-using KeePassLib.Serialization;
 using KeePassLib.Utility;
 
 namespace KeePass.Util

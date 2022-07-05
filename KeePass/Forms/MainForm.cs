@@ -18,12 +18,10 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -32,7 +30,6 @@ using KeePass.App.Configuration;
 using KeePass.DataExchange;
 using KeePass.Ecas;
 using KeePass.Native;
-using KeePass.Plugins;
 using KeePass.Resources;
 using KeePass.UI;
 using KeePass.Util;
@@ -42,7 +39,6 @@ using KeePassLib;
 using KeePassLib.Collections;
 using KeePassLib.Cryptography.PasswordGenerator;
 using KeePassLib.Interfaces;
-using KeePassLib.Keys;
 using KeePassLib.Security;
 using KeePassLib.Serialization;
 using KeePassLib.Utility;

@@ -20,12 +20,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Windows.Forms;
 
 using KeePass.Forms;
-
-using KeePassLib;
 using KeePassLib.Interfaces;
 
 namespace KeePass.UI

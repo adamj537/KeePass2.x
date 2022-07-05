@@ -18,7 +18,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -26,8 +25,6 @@ using System.Xml;
 using System.Xml.XPath;
 
 using KeePass.Resources;
-using KeePass.UI;
-using KeePass.Util;
 
 using KeePassLib;
 using KeePassLib.Interfaces;

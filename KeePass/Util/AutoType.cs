@@ -38,7 +38,6 @@ using KeePassLib;
 using KeePassLib.Collections;
 using KeePassLib.Delegates;
 using KeePassLib.Resources;
-using KeePassLib.Security;
 using KeePassLib.Utility;
 
 using NativeLib = KeePassLib.Native.NativeLib;

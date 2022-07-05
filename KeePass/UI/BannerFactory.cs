@@ -26,9 +26,6 @@ using System.Drawing.Imaging;
 using System.Globalization;
 using System.Windows.Forms;
 
-using KeePass.App;
-using KeePass.Util;
-
 using KeePassLib.Utility;
 
 namespace KeePass.UI

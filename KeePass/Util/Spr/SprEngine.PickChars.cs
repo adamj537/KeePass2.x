@@ -20,11 +20,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Windows.Forms;
 using System.Diagnostics;
 
 using KeePass.Forms;
-using KeePass.UI;
 
 using KeePassLib;
 using KeePassLib.Security;

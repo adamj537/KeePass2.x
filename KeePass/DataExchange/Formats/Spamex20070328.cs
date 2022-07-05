@@ -34,7 +34,6 @@ using KeePass.Util;
 
 using KeePassLib;
 using KeePassLib.Interfaces;
-using KeePassLib.Resources;
 using KeePassLib.Security;
 using KeePassLib.Utility;
 

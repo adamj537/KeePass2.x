@@ -18,18 +18,15 @@
 */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 
 using Microsoft.Win32;
 
 using KeePass.Util.Spr;
 
 using KeePassLib.Native;
-using KeePassLib.Security;
 using KeePassLib.Utility;
 
 namespace KeePass.Util

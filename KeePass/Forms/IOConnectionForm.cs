@@ -19,7 +19,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -27,16 +26,10 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using System.Xml;
 
 using KeePass.App;
 using KeePass.Resources;
 using KeePass.UI;
-using KeePass.Util;
-
-using KeePassLib;
-using KeePassLib.Delegates;
-using KeePassLib.Native;
 using KeePassLib.Serialization;
 using KeePassLib.Utility;
 

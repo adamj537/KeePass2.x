@@ -18,11 +18,7 @@
 */
 
 using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Security;
-using System.Text;
-using System.Windows.Forms;
 
 namespace KeePass.Native
 {

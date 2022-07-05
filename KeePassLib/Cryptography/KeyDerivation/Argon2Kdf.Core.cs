@@ -29,10 +29,8 @@
 #define ARGON2_G_INLINED
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 
 using KeePassLib.Cryptography.Hash;

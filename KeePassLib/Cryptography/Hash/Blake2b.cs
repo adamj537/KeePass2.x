@@ -21,9 +21,7 @@
 // implementation by Samuel Neves (CC0 1.0 Universal).
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 
 #if !KeePassUAP
 using System.Security.Cryptography;

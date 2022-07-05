@@ -19,10 +19,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 using KeePass.App;
@@ -34,7 +32,6 @@ using KeePass.Util;
 
 using KeePassLib;
 using KeePassLib.Delegates;
-using KeePassLib.Serialization;
 using KeePassLib.Utility;
 
 using NativeLib = KeePassLib.Native.NativeLib;

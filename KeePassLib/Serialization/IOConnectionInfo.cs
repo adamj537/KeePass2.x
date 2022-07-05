@@ -18,11 +18,8 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
-using System.Text;
 using System.Xml.Serialization;
 
 using KeePassLib.Interfaces;

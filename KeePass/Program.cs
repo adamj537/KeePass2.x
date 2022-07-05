@@ -23,12 +23,10 @@
 #endif
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
@@ -53,12 +51,10 @@ using KeePass.Util.XmlSerialization;
 
 using KeePassLib;
 using KeePassLib.Cryptography;
-using KeePassLib.Cryptography.Cipher;
 using KeePassLib.Cryptography.PasswordGenerator;
 using KeePassLib.Delegates;
 using KeePassLib.Keys;
 using KeePassLib.Resources;
-using KeePassLib.Security;
 using KeePassLib.Serialization;
 using KeePassLib.Translation;
 using KeePassLib.Utility;

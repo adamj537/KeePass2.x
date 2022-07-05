@@ -25,7 +25,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Security;
 using System.Text;
-using System.Xml;
 
 #if !KeePassUAP
 using System.Security.Cryptography;

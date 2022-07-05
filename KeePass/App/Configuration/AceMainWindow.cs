@@ -21,16 +21,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
-using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
 using KeePass.Resources;
 using KeePass.UI;
-
-using KeePassLib;
 using KeePassLib.Security;
 
 namespace KeePass.App.Configuration

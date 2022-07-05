@@ -37,9 +37,7 @@ using System.Security.Cryptography;
 using KeePassLib.Cryptography.Cipher;
 using KeePassLib.Cryptography.Hash;
 using KeePassLib.Cryptography.KeyDerivation;
-using KeePassLib.Keys;
 using KeePassLib.Native;
-using KeePassLib.Resources;
 using KeePassLib.Security;
 using KeePassLib.Utility;
 

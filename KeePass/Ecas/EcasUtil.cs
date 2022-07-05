@@ -24,8 +24,6 @@ using System.Drawing;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-
-using KeePass.Ecas;
 using KeePass.Resources;
 using KeePass.UI;
 using KeePass.Util.Spr;

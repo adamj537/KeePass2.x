@@ -24,12 +24,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Remoting;
-using System.Text;
 using System.Windows.Forms;
 
 using KeePass.App;
 using KeePass.App.Configuration;
-using KeePass.Plugins;
 using KeePass.Resources;
 using KeePass.UI;
 using KeePass.Util;

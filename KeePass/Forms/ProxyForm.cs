@@ -19,9 +19,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 using KeePass.App;
@@ -29,8 +26,6 @@ using KeePass.App.Configuration;
 using KeePass.UI;
 
 using KeePassLib;
-using KeePassLib.Serialization;
-using KeePassLib.Utility;
 
 namespace KeePass.Forms
 {

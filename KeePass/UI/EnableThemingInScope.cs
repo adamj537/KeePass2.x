@@ -18,17 +18,14 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
-using System.Text;
 using System.Windows.Forms;
 
 using KeePass.Native;
-using KeePass.Util;
 
 namespace KeePass.UI
 {

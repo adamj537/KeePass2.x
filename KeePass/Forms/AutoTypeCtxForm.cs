@@ -19,10 +19,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 using KeePass.App;
@@ -30,8 +28,6 @@ using KeePass.App.Configuration;
 using KeePass.Resources;
 using KeePass.UI;
 using KeePass.Util;
-
-using KeePassLib;
 
 namespace KeePass.Forms
 {

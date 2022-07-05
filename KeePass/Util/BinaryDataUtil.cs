@@ -18,7 +18,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Windows.Forms;
@@ -26,12 +25,10 @@ using System.Threading;
 using System.Diagnostics;
 
 using KeePass.Forms;
-using KeePass.Native;
 using KeePass.Resources;
 using KeePass.UI;
 
 using KeePassLib;
-using KeePassLib.Collections;
 using KeePassLib.Cryptography;
 using KeePassLib.Interfaces;
 using KeePassLib.Security;

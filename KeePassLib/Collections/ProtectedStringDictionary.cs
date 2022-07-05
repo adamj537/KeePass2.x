@@ -21,11 +21,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 
 using KeePassLib.Interfaces;
 using KeePassLib.Security;
-using KeePassLib.Utility;
 
 #if KeePassLibSD
 using KeePassLibSD;

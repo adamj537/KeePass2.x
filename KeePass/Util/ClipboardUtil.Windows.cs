@@ -18,7 +18,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -30,7 +29,6 @@ using KeePass.UI;
 
 using KeePassLib;
 using KeePassLib.Delegates;
-using KeePassLib.Utility;
 
 namespace KeePass.Util
 {

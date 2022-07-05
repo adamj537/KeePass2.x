@@ -19,10 +19,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
-
-using KeePass.Util.Spr;
 
 using KeePassLib;
 

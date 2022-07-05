@@ -27,13 +27,11 @@ using System.Drawing;
 #endif
 
 using KeePassLib.Collections;
-using KeePassLib.Cryptography;
 using KeePassLib.Cryptography.Cipher;
 using KeePassLib.Cryptography.KeyDerivation;
 using KeePassLib.Delegates;
 using KeePassLib.Interfaces;
 using KeePassLib.Keys;
-using KeePassLib.Resources;
 using KeePassLib.Security;
 using KeePassLib.Serialization;
 using KeePassLib.Utility;

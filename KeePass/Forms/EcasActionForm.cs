@@ -18,20 +18,13 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 using KeePass.App;
 using KeePass.Ecas;
 using KeePass.Resources;
 using KeePass.UI;
-
-using KeePassLib;
-using KeePassLib.Utility;
 
 namespace KeePass.Forms
 {

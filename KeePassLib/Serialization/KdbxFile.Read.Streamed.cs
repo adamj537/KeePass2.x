@@ -21,14 +21,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Xml;
 
 #if !KeePassUAP
 using System.Drawing;
 #endif
 
-using KeePassLib;
 using KeePassLib.Collections;
 using KeePassLib.Interfaces;
 using KeePassLib.Resources;

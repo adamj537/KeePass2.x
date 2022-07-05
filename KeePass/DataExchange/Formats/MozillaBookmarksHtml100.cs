@@ -28,7 +28,6 @@ using System.Text;
 using System.Xml;
 
 using KeePass.Resources;
-using KeePass.UI;
 using KeePass.Util;
 
 using KeePassLib;

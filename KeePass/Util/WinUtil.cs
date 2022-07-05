@@ -18,21 +18,15 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 
 using Microsoft.Win32;
-
-using KeePass.App;
 using KeePass.Forms;
 using KeePass.Native;
 using KeePass.Resources;

@@ -18,13 +18,10 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-
-using KeePass.App;
 using KeePass.Resources;
 using KeePass.UI;
 using KeePass.Util.Archive;

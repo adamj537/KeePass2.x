@@ -17,20 +17,6 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
-
-using KeePass.App;
-using KeePass.Forms;
-
-using KeePassLib.Cryptography;
-using KeePassLib.Utility;
-
 namespace KeePass.Util
 {
 	public static partial class IpcBroadcast

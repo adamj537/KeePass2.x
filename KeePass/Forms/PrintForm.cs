@@ -19,7 +19,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -39,7 +38,6 @@ using KeePassLib.Interfaces;
 using KeePassLib.Native;
 using KeePassLib.Resources;
 using KeePassLib.Security;
-using KeePassLib.Translation;
 using KeePassLib.Utility;
 
 namespace KeePass.Forms

@@ -18,11 +18,9 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 
 #if !KeePassUAP
 using System.Windows.Forms;

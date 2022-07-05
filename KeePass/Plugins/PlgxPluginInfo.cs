@@ -19,13 +19,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
-using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.IO;
-
-using KeePass.Resources;
 
 using KeePassLib;
 using KeePassLib.Utility;

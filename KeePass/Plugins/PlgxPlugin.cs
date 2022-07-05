@@ -18,14 +18,12 @@
 */
 
 using System;
-using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.IO.Compression;
 using System.Resources;
 using System.Security.Cryptography;
 using System.Text;
@@ -35,7 +33,6 @@ using Microsoft.CSharp;
 // using Microsoft.VisualBasic;
 
 using KeePass.App;
-using KeePass.Forms;
 using KeePass.Resources;
 using KeePass.UI;
 using KeePass.Util;

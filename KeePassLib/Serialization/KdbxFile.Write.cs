@@ -24,11 +24,8 @@ using System.Globalization;
 using System.IO;
 using System.Security;
 using System.Text;
-using System.Xml;
 
 #if !KeePassUAP
-using System.Drawing;
-using System.Security.Cryptography;
 #endif
 
 #if KeePassLibSD

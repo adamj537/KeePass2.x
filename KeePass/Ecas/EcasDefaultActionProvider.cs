@@ -21,12 +21,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-
-using KeePass.App;
 using KeePass.DataExchange;
 using KeePass.Forms;
 using KeePass.Native;

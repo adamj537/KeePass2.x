@@ -21,8 +21,6 @@
 // submission by D. J. Bernstein.
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 
 using KeePassLib.Utility;
 

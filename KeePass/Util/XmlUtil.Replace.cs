@@ -21,7 +21,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
@@ -29,10 +28,8 @@ using System.Xml.XPath;
 
 using KeePass.Forms;
 using KeePass.Resources;
-using KeePass.UI;
 
 using KeePassLib;
-using KeePassLib.Collections;
 using KeePassLib.Delegates;
 using KeePassLib.Interfaces;
 using KeePassLib.Security;
