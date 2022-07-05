@@ -107,7 +107,7 @@ namespace KeePassLib.Security
 				{
 					// BlockSize * 3 in order to test encryption for multiple
 					// blocks, but not introduce a power of 2 as factor
-					byte[] pb = new byte[ProtectedBinary.BlockSize * 3];
+					byte[] pb = new byte[BlockSize * 3];
 					for (int i = 0; i < pb.Length; ++i) pb[i] = (byte)i;
 
 					ProtectedMemory.Protect(pb, MemoryProtectionScope.SameProcess);
@@ -237,7 +237,7 @@ namespace KeePassLib.Security
 			m_bProtected = bEnableProtection;
 			m_uDataLen = (uint)cbSize;
 
-			const int bs = ProtectedBinary.BlockSize;
+			const int bs = BlockSize;
 			int nBlocks = cbSize / bs;
 			if ((nBlocks * bs) < cbSize) ++nBlocks;
 			Debug.Assert((nBlocks * bs) >= cbSize);
@@ -268,7 +268,7 @@ namespace KeePassLib.Security
 				return;
 			}
 
-			if (ProtectedBinary.ProtectedMemorySupported)
+			if (ProtectedMemorySupported)
 			{
 				ProtectedMemory.Protect(m_pbData, MemoryProtectionScope.SameProcess);
 
@@ -391,7 +391,7 @@ namespace KeePassLib.Security
 		public bool Equals(ProtectedBinary other, bool bCheckProtEqual)
 		{
 			if (other == null) return false; // No assert
-			if (object.ReferenceEquals(this, other)) return true; // Perf. opt.
+			if (ReferenceEquals(this, other)) return true; // Perf. opt.
 
 			if (bCheckProtEqual && (m_bProtected != other.m_bProtected))
 				return false;

@@ -149,8 +149,8 @@ namespace KeePass.UI
 			Debug.Assert(!(form is MainForm)); // MainForm calls the following itself
 			CustomizeFormHandleCreated(form, true, true);
 
-			if (GlobalWindowManager.WindowAdded != null)
-				GlobalWindowManager.WindowAdded(null, new GwmWindowEventArgs(
+			if (WindowAdded != null)
+				WindowAdded(null, new GwmWindowEventArgs(
 					form, wnd));
 		}
 
@@ -172,8 +172,8 @@ namespace KeePass.UI
 				{
 					if (g_vWindows[i].Key == form)
 					{
-						if (GlobalWindowManager.WindowRemoved != null)
-							GlobalWindowManager.WindowRemoved(null, new GwmWindowEventArgs(
+						if (WindowRemoved != null)
+							WindowRemoved(null, new GwmWindowEventArgs(
 								form, g_vWindows[i].Value));
 
 						MonoWorkarounds.Release(form);
@@ -208,7 +208,7 @@ namespace KeePass.UI
 
 		public static void CloseAllWindows()
 		{
-			Debug.Assert(GlobalWindowManager.CanCloseAllWindows);
+			Debug.Assert(CanCloseAllWindows);
 
 			KeyValuePair<Form, IGwmWindow>[] vWindows;
 			lock (g_oSyncRoot) { vWindows = g_vWindows.ToArray(); }
@@ -221,7 +221,7 @@ namespace KeePass.UI
 				{
 					if (kvp.Key.InvokeRequired)
 						kvp.Key.Invoke(new CloseFormDelegate(
-							GlobalWindowManager.CloseForm), kvp.Key);
+							CloseForm), kvp.Key);
 					else CloseForm(kvp.Key);
 
 					Application.DoEvents();
@@ -268,7 +268,7 @@ namespace KeePass.UI
 		{
 			try
 			{
-				Form f = GlobalWindowManager.TopWindow;
+				Form f = TopWindow;
 				if (f == null) return false;
 
 				f.Activate();
@@ -329,8 +329,8 @@ namespace KeePass.UI
 			if (obSubscribe.HasValue)
 			{
 				if (obSubscribe.Value)
-					f.HandleCreated += GlobalWindowManager.OnFormHandleCreated;
-				else f.HandleCreated -= GlobalWindowManager.OnFormHandleCreated;
+					f.HandleCreated += OnFormHandleCreated;
+				else f.HandleCreated -= OnFormHandleCreated;
 			}
 
 			if (bNow) OnFormHandleCreated(f, EventArgs.Empty);

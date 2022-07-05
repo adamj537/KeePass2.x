@@ -28,7 +28,7 @@ namespace KeePass.DataExchange
 		private readonly PwDatabase m_pd;
 
 		public CsvTableEntryReader(PwDatabase pdContext) :
-			base(CsvTableEntryReader.EntryNew, CsvTableEntryReader.EntryCommit(pdContext))
+			base(EntryNew, EntryCommit(pdContext))
 		{
 			m_pd = pdContext;
 		}

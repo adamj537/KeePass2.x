@@ -47,7 +47,7 @@ namespace KeePassLib.Cryptography.Cipher
 
 		public PwUuid CipherUuid
 		{
-			get { return ChaCha20Engine.ChaCha20Uuid; }
+			get { return ChaCha20Uuid; }
 		}
 
 		public string DisplayName

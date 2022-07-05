@@ -73,7 +73,7 @@ namespace KeePass.Util
 		{
 			PwProfile p = new PwProfile();
 
-			p.Name = strName + PwGeneratorUtil.BuiltInSuffix;
+			p.Name = strName + BuiltInSuffix;
 			p.CollectUserEntropy = false;
 			p.GeneratorType = PasswordGeneratorType.Pattern;
 			p.Pattern = strPattern;
@@ -90,7 +90,7 @@ namespace KeePass.Util
 			List<PwProfile> lUser = Program.Config.PasswordGenerator.UserProfiles;
 
 			// Sort it in the configuration file
-			if (bSort) lUser.Sort(PwGeneratorUtil.CompareProfilesByName);
+			if (bSort) lUser.Sort(CompareProfilesByName);
 
 			// Remove old built-in profiles by KeePass <= 2.17
 			for (int i = lUser.Count - 1; i >= 0; --i)
@@ -99,9 +99,9 @@ namespace KeePass.Util
 			}
 
 			List<PwProfile> l = new List<PwProfile>();
-			l.AddRange(PwGeneratorUtil.BuiltInProfiles);
+			l.AddRange(BuiltInProfiles);
 			l.AddRange(lUser);
-			if (bSort) l.Sort(PwGeneratorUtil.CompareProfilesByName);
+			if (bSort) l.Sort(CompareProfilesByName);
 			return l;
 		}
 
@@ -109,8 +109,8 @@ namespace KeePass.Util
 		{
 			if (strName == null) { Debug.Assert(false); return false; }
 
-			string strWithSuffix = strName + PwGeneratorUtil.BuiltInSuffix;
-			foreach (PwProfile p in PwGeneratorUtil.BuiltInProfiles)
+			string strWithSuffix = strName + BuiltInSuffix;
+			foreach (PwProfile p in BuiltInProfiles)
 			{
 				if (p.Name.Equals(strName, StrUtil.CaseIgnoreCmp) ||
 					p.Name.Equals(strWithSuffix, StrUtil.CaseIgnoreCmp))

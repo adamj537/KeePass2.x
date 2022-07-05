@@ -208,8 +208,8 @@ namespace KeePass.Util
 
 				tsmi.DropDownOpening += delegate (object sender, EventArgs e)
 				{
-					Debug.Assert(object.ReferenceEquals(sender, tsmi));
-					Debug.Assert(object.ReferenceEquals(tsmi.Tag, pgSubCur));
+					Debug.Assert(ReferenceEquals(sender, tsmi));
+					Debug.Assert(ReferenceEquals(tsmi.Tag, pgSubCur));
 
 					ToolStripItemCollection tsic = tsmi.DropDownItems;
 					if ((tsic.Count == 1) && (tsic[0] == tsmiDynPlh))
@@ -269,15 +269,15 @@ namespace KeePass.Util
 
 			Action<PwEntry> fAddPre = delegate (PwEntry pe)
 			{
-				if (EntryTemplates.EntryCreating != null)
-					EntryTemplates.EntryCreating(null, new TemplateEntryEventArgs(
+				if (EntryCreating != null)
+					EntryCreating(null, new TemplateEntryEventArgs(
 						peTemplate.CloneDeep(), pe));
 			};
 
 			Action<PwEntry> fAddPost = delegate (PwEntry pe)
 			{
-				if (EntryTemplates.EntryCreated != null)
-					EntryTemplates.EntryCreated(null, new TemplateEntryEventArgs(
+				if (EntryCreated != null)
+					EntryCreated(null, new TemplateEntryEventArgs(
 						peTemplate.CloneDeep(), pe));
 			};
 

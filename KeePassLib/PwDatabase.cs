@@ -825,7 +825,7 @@ namespace KeePassLib
 			{
 				// PwEntry peLocal = m_pgRootGroup.FindEntry(pe.Uuid, true);
 				PwEntry peLocal = (ppOrg.GetItemByUuid(pe.Uuid) as PwEntry);
-				Debug.Assert(object.ReferenceEquals(peLocal,
+				Debug.Assert(ReferenceEquals(peLocal,
 					m_pgRootGroup.FindEntry(pe.Uuid, true)));
 
 				if (peLocal == null)
@@ -1107,8 +1107,8 @@ namespace KeePassLib
 				ApplyDeletions(pg, dOrgDel);
 			}
 
-			ApplyDeletions<PwGroup>(pgContainer.Groups, PwDatabase.SafeCanDeleteGroup, dOrgDel);
-			ApplyDeletions<PwEntry>(pgContainer.Entries, PwDatabase.SafeCanDeleteEntry, dOrgDel);
+			ApplyDeletions<PwGroup>(pgContainer.Groups, SafeCanDeleteGroup, dOrgDel);
+			ApplyDeletions<PwEntry>(pgContainer.Entries, SafeCanDeleteEntry, dOrgDel);
 		}
 
 		private void RelocateGroups(PwObjectPoolEx ppOrg, PwObjectPoolEx ppSrc)

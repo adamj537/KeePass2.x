@@ -549,7 +549,7 @@ namespace KeePass.Ecas
 				}
 				else if (uSel == 1) // Triggering only
 				{
-					if (!object.ReferenceEquals(doc.Database, pdSel)) continue;
+					if (!ReferenceEquals(doc.Database, pdSel)) continue;
 				}
 				else { Debug.Assert(false); continue; }
 

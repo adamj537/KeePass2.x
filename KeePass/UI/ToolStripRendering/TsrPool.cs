@@ -93,7 +93,7 @@ namespace KeePass.UI.ToolStripRendering
 		{
 			if (u == null) { Debug.Assert(false); return null; }
 
-			foreach (TsrFactory f in TsrPool.Factories)
+			foreach (TsrFactory f in Factories)
 			{
 				if (u.Equals(f.Uuid)) return f;
 			}
@@ -108,7 +108,7 @@ namespace KeePass.UI.ToolStripRendering
 			TsrFactory fEx = GetFactory(f.Uuid);
 			if (fEx != null) return false; // Exists already
 
-			TsrPool.Factories.Add(f);
+			Factories.Add(f);
 			return true;
 		}
 
@@ -116,7 +116,7 @@ namespace KeePass.UI.ToolStripRendering
 		{
 			if (u == null) { Debug.Assert(false); return false; }
 
-			List<TsrFactory> l = TsrPool.Factories;
+			List<TsrFactory> l = Factories;
 			int cInitial = l.Count;
 
 			for (int i = l.Count - 1; i >= g_nStdFac; --i)
@@ -148,7 +148,7 @@ namespace KeePass.UI.ToolStripRendering
 
 			List<TsrFactory> lPref = new List<TsrFactory>();
 			if (fPref != null) lPref.Add(fPref);
-			lPref.AddRange(TsrPool.Factories);
+			lPref.AddRange(Factories);
 
 			foreach (TsrFactory fCand in lPref)
 			{

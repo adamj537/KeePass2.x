@@ -221,7 +221,7 @@ namespace KeePass
 
 		public static ResourceManager Resources
 		{
-			get { return KeePass.Properties.Resources.ResourceManager; }
+			get { return Properties.Resources.ResourceManager; }
 		}
 
 		public static bool DesignMode
@@ -292,7 +292,7 @@ namespace KeePass
 
 			KdbxFile.ConfirmOpenUnknownVersion = delegate ()
 			{
-				if (!Program.Config.UI.ShowDbOpenUnkVerDialog) return true;
+				if (!Config.UI.ShowDbOpenUnkVerDialog) return true;
 
 				string strMsg = KPRes.DatabaseOpenUnknownVersionInfo +
 					MessageService.NewParagraph + KPRes.DatabaseOpenUnknownVersionRec +
@@ -307,7 +307,7 @@ namespace KeePass
 			{
 				PlgxCache.Clear();
 				m_appConfig.Application.Start.PluginCacheClearOnce = false;
-				AppConfigSerializer.Save(Program.Config);
+				AppConfigSerializer.Save(Config);
 			}
 
 			if (m_cmdLineArgs[AppDefs.CommandLineOptions.FileExtRegister] != null)
@@ -359,16 +359,16 @@ namespace KeePass
 			}
 			if (m_cmdLineArgs[AppDefs.CommandLineOptions.ConfigSetUrlOverride] != null)
 			{
-				Program.Config.Integration.UrlOverride = m_cmdLineArgs[
+				Config.Integration.UrlOverride = m_cmdLineArgs[
 					AppDefs.CommandLineOptions.ConfigSetUrlOverride];
-				AppConfigSerializer.Save(Program.Config);
+				AppConfigSerializer.Save(Config);
 				MainCleanUp();
 				return;
 			}
 			if (m_cmdLineArgs[AppDefs.CommandLineOptions.ConfigClearUrlOverride] != null)
 			{
-				Program.Config.Integration.UrlOverride = string.Empty;
-				AppConfigSerializer.Save(Program.Config);
+				Config.Integration.UrlOverride = string.Empty;
+				AppConfigSerializer.Save(Config);
 				MainCleanUp();
 				return;
 			}
@@ -379,7 +379,7 @@ namespace KeePass
 					string strFileOut = UrlUtil.EnsureTerminatingSeparator(
 						UrlUtil.GetTempPath(), false) + "KeePass_UrlOverride.tmp";
 					string strContent = ("[KeePass]\r\nKeeURLOverride=" +
-						Program.Config.Integration.UrlOverride + "\r\n");
+						Config.Integration.UrlOverride + "\r\n");
 					File.WriteAllText(strFileOut, strContent);
 				}
 				catch (Exception) { Debug.Assert(false); }
@@ -389,27 +389,27 @@ namespace KeePass
 			if (m_cmdLineArgs[AppDefs.CommandLineOptions.ConfigAddUrlOverride] != null)
 			{
 				bool bAct = (m_cmdLineArgs[AppDefs.CommandLineOptions.Activate] != null);
-				Program.Config.Integration.UrlSchemeOverrides.AddCustomOverride(
+				Config.Integration.UrlSchemeOverrides.AddCustomOverride(
 					m_cmdLineArgs[AppDefs.CommandLineOptions.Scheme],
 					m_cmdLineArgs[AppDefs.CommandLineOptions.Value], bAct, bAct);
-				AppConfigSerializer.Save(Program.Config);
+				AppConfigSerializer.Save(Config);
 				MainCleanUp();
 				return;
 			}
 			if (m_cmdLineArgs[AppDefs.CommandLineOptions.ConfigRemoveUrlOverride] != null)
 			{
-				Program.Config.Integration.UrlSchemeOverrides.RemoveCustomOverride(
+				Config.Integration.UrlSchemeOverrides.RemoveCustomOverride(
 					m_cmdLineArgs[AppDefs.CommandLineOptions.Scheme],
 					m_cmdLineArgs[AppDefs.CommandLineOptions.Value]);
-				AppConfigSerializer.Save(Program.Config);
+				AppConfigSerializer.Save(Config);
 				MainCleanUp();
 				return;
 			}
 			if (m_cmdLineArgs[AppDefs.CommandLineOptions.ConfigSetLanguageFile] != null)
 			{
-				Program.Config.Application.LanguageFile = m_cmdLineArgs[
+				Config.Application.LanguageFile = m_cmdLineArgs[
 					AppDefs.CommandLineOptions.ConfigSetLanguageFile];
-				AppConfigSerializer.Save(Program.Config);
+				AppConfigSerializer.Save(Config);
 				MainCleanUp();
 				return;
 			}

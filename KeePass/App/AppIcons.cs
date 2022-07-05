@@ -141,7 +141,7 @@ namespace KeePass.App
 			if ((clr.R == clr.B) && (clr.G == clr.B))
 				return g_clrMain; // Gray => default
 
-			Color[] v = AppIcons.Colors;
+			Color[] v = Colors;
 
 			int c = clr.ToArgb();
 			for (int i = 0; i < v.Length; ++i)

@@ -230,7 +230,7 @@ namespace KeePassLib.Utility
 				l.Add(new StrEncodingInfo(StrEncodingType.Utf7,
 					"Unicode (UTF-7)", Encoding.UTF7, 1, null));
 				l.Add(new StrEncodingInfo(StrEncodingType.Utf8,
-					"Unicode (UTF-8)", StrUtil.Utf8, 1, new byte[] { 0xEF, 0xBB, 0xBF }));
+					"Unicode (UTF-8)", Utf8, 1, new byte[] { 0xEF, 0xBB, 0xBF }));
 				l.Add(new StrEncodingInfo(StrEncodingType.Utf16LE,
 					"Unicode (UTF-16 LE)", new UnicodeEncoding(false, false),
 					2, new byte[] { 0xFF, 0xFE }));
@@ -1299,24 +1299,24 @@ namespace KeePassLib.Utility
 			if ((vVer == null) || (vVer.Length == 0)) { Debug.Assert(false); return 0; }
 
 			ushort uPart;
-			StrUtil.TryParseUShort(vVer[0].Trim(), out uPart);
+			TryParseUShort(vVer[0].Trim(), out uPart);
 			ulong uVer = ((ulong)uPart << 48);
 
 			if (vVer.Length >= 2)
 			{
-				StrUtil.TryParseUShort(vVer[1].Trim(), out uPart);
+				TryParseUShort(vVer[1].Trim(), out uPart);
 				uVer |= ((ulong)uPart << 32);
 			}
 
 			if (vVer.Length >= 3)
 			{
-				StrUtil.TryParseUShort(vVer[2].Trim(), out uPart);
+				TryParseUShort(vVer[2].Trim(), out uPart);
 				uVer |= ((ulong)uPart << 16);
 			}
 
 			if (vVer.Length >= 4)
 			{
-				StrUtil.TryParseUShort(vVer[3].Trim(), out uPart);
+				TryParseUShort(vVer[3].Trim(), out uPart);
 				uVer |= (ulong)uPart;
 			}
 
@@ -1373,7 +1373,7 @@ namespace KeePassLib.Utility
 
 			try
 			{
-				byte[] pbPlain = StrUtil.Utf8.GetBytes(strPlainText);
+				byte[] pbPlain = Utf8.GetBytes(strPlainText);
 				byte[] pbEnc = CryptoUtil.ProtectData(pbPlain, m_pbOptEnt,
 					DataProtectionScope.CurrentUser);
 
@@ -1398,7 +1398,7 @@ namespace KeePassLib.Utility
 				byte[] pbPlain = CryptoUtil.UnprotectData(pbEnc, m_pbOptEnt,
 					DataProtectionScope.CurrentUser);
 
-				return StrUtil.Utf8.GetString(pbPlain, 0, pbPlain.Length);
+				return Utf8.GetString(pbPlain, 0, pbPlain.Length);
 			}
 			catch (Exception) { Debug.Assert(false); }
 
@@ -1485,7 +1485,7 @@ namespace KeePassLib.Utility
 					lTags.AddRange(d.Keys);
 				}
 
-				lTags.Sort(StrUtil.CompareNaturally);
+				lTags.Sort(CompareNaturally);
 			}
 		}
 
@@ -1552,7 +1552,7 @@ namespace KeePassLib.Utility
 			if (strPlain == null) { Debug.Assert(false); return string.Empty; }
 			if (strPlain.Length == 0) return string.Empty;
 
-			byte[] pb = StrUtil.Utf8.GetBytes(strPlain);
+			byte[] pb = Utf8.GetBytes(strPlain);
 
 			Array.Reverse(pb);
 			for (int i = 0; i < pb.Length; ++i) pb[i] = (byte)(pb[i] ^ 0x65);
@@ -1576,7 +1576,7 @@ namespace KeePassLib.Utility
 				for (int i = 0; i < pb.Length; ++i) pb[i] = (byte)(pb[i] ^ 0x65);
 				Array.Reverse(pb);
 
-				return StrUtil.Utf8.GetString(pb, 0, pb.Length);
+				return Utf8.GetString(pb, 0, pb.Length);
 			}
 			catch (Exception) { Debug.Assert(false); }
 
@@ -1607,7 +1607,7 @@ namespace KeePassLib.Utility
 					if (string.IsNullOrEmpty(strSep)) { Debug.Assert(false); continue; }
 
 					int iIndex = (bCaseSensitive ? str.IndexOf(strSep) :
-						str.IndexOf(strSep, StrUtil.CaseIgnoreCmp));
+						str.IndexOf(strSep, CaseIgnoreCmp));
 					if ((iIndex >= 0) && (iIndex < minIndex))
 					{
 						minIndex = iIndex;
@@ -1686,7 +1686,7 @@ namespace KeePassLib.Utility
 			// strReqMediaType may be null
 
 			const string strPrefix = "data:";
-			if (!strUri.StartsWith(strPrefix, StrUtil.CaseIgnoreCmp))
+			if (!strUri.StartsWith(strPrefix, CaseIgnoreCmp))
 				return false;
 
 			int iC = strUri.IndexOf(',');
@@ -1699,7 +1699,7 @@ namespace KeePassLib.Utility
 
 				string strMedia = strUri.Substring(strPrefix.Length,
 					iTerm - strPrefix.Length);
-				if (!strMedia.Equals(strReqMediaType, StrUtil.CaseIgnoreCmp))
+				if (!strMedia.Equals(strReqMediaType, CaseIgnoreCmp))
 					return false;
 			}
 
@@ -1736,13 +1736,13 @@ namespace KeePassLib.Utility
 		public static byte[] DataUriToData(string strDataUri)
 		{
 			if (strDataUri == null) throw new ArgumentNullException("strDataUri");
-			if (!strDataUri.StartsWith("data:", StrUtil.CaseIgnoreCmp)) return null;
+			if (!strDataUri.StartsWith("data:", CaseIgnoreCmp)) return null;
 
 			int iSep = strDataUri.IndexOf(',');
 			if (iSep < 0) return null;
 
 			string strDesc = strDataUri.Substring(5, iSep - 5);
-			bool bBase64 = strDesc.EndsWith(";base64", StrUtil.CaseIgnoreCmp);
+			bool bBase64 = strDesc.EndsWith(";base64", CaseIgnoreCmp);
 
 			string strData = strDataUri.Substring(iSep + 1);
 
@@ -1778,7 +1778,7 @@ namespace KeePassLib.Utility
 
 			foreach (string strPfx in g_vMediaTypePfx)
 			{
-				if (str.StartsWith(strPfx, StrUtil.CaseIgnoreCmp))
+				if (str.StartsWith(strPfx, CaseIgnoreCmp))
 					return true;
 			}
 
@@ -1838,7 +1838,7 @@ namespace KeePassLib.Utility
 
 		public static StrEncodingInfo GetEncoding(StrEncodingType t)
 		{
-			foreach (StrEncodingInfo sei in StrUtil.Encodings)
+			foreach (StrEncodingInfo sei in Encodings)
 			{
 				if (sei.Type == t) return sei;
 			}
@@ -1848,7 +1848,7 @@ namespace KeePassLib.Utility
 
 		public static StrEncodingInfo GetEncoding(string strName)
 		{
-			foreach (StrEncodingInfo sei in StrUtil.Encodings)
+			foreach (StrEncodingInfo sei in Encodings)
 			{
 				if (sei.Name == strName) return sei;
 			}

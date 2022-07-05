@@ -653,7 +653,7 @@ namespace KeePassLib.Utility
 			byte[] pb;
 			using (MemoryStream ms = new MemoryStream())
 			{
-				MemUtil.CopyStream(s, ms);
+				CopyStream(s, ms);
 				pb = ms.ToArray();
 			}
 
@@ -708,7 +708,7 @@ namespace KeePassLib.Utility
 					using (GZipStream gz = new GZipStream(msCompressed,
 						CompressionMode.Compress))
 					{
-						MemUtil.CopyStream(msSource, gz);
+						CopyStream(msSource, gz);
 					}
 
 					pbCompressed = msCompressed.ToArray();
@@ -731,7 +731,7 @@ namespace KeePassLib.Utility
 					using (GZipStream gz = new GZipStream(msCompressed,
 						CompressionMode.Decompress))
 					{
-						MemUtil.CopyStream(gz, msData);
+						CopyStream(gz, msData);
 					}
 				}
 
@@ -850,7 +850,7 @@ namespace KeePassLib.Utility
 		internal static bool ListsEqual<T>(List<T> a, List<T> b)
 			where T : class, IEquatable<T>
 		{
-			if (object.ReferenceEquals(a, b)) return true;
+			if (ReferenceEquals(a, b)) return true;
 			if ((a == null) || (b == null)) return false;
 
 			int n = a.Count;
@@ -909,7 +909,7 @@ namespace KeePassLib.Utility
 			where T : struct
 		{
 			int cb = Marshal.SizeOf(typeof(T));
-			if (cb <= 0) { Debug.Assert(false); return MemUtil.EmptyByteArray; }
+			if (cb <= 0) { Debug.Assert(false); return EmptyByteArray; }
 
 			byte[] pb = new byte[cb];
 
@@ -948,7 +948,7 @@ namespace KeePassLib.Utility
 
 		public bool Equals(T[] x, T[] y)
 		{
-			if (object.ReferenceEquals(x, y)) return true;
+			if (ReferenceEquals(x, y)) return true;
 			if ((x == null) || (y == null)) return false;
 
 			int n = x.Length;
@@ -964,7 +964,7 @@ namespace KeePassLib.Utility
 
 		public int Compare(T[] x, T[] y)
 		{
-			if (object.ReferenceEquals(x, y)) return 0;
+			if (ReferenceEquals(x, y)) return 0;
 			if (x == null) return -1;
 			if (y == null) return 1;
 

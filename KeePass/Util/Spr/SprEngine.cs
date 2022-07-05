@@ -88,7 +88,7 @@ namespace KeePass.Util.Spr
 			if (ctx == null) ctx = new SprContext();
 			ctx.RefCache.Clear();
 
-			string str = SprEngine.CompileInternal(strText, ctx, 0);
+			string str = CompileInternal(strText, ctx, 0);
 
 			// if(bEscapeForAutoType && !bIsAutoTypeSequence)
 			//	str = SprEncoding.MakeAutoTypeSequence(str);
@@ -102,7 +102,7 @@ namespace KeePass.Util.Spr
 			if (strText == null) { Debug.Assert(false); return string.Empty; }
 			if (ctx == null) { Debug.Assert(false); ctx = new SprContext(); }
 
-			if (uRecursionLevel >= SprEngine.MaxRecursionDepth)
+			if (uRecursionLevel >= MaxRecursionDepth)
 			{
 				Debug.Assert(false); // Most likely a recursive reference
 				return string.Empty; // Do not return strText (endless loop)
@@ -113,10 +113,10 @@ namespace KeePass.Util.Spr
 
 			bool bExt = ((ctx.Flags & (SprCompileFlags.ExtActive |
 				SprCompileFlags.ExtNonActive)) != SprCompileFlags.None);
-			if (bExt && (SprEngine.FilterCompilePre != null))
+			if (bExt && (FilterCompilePre != null))
 			{
 				SprEventArgs args = new SprEventArgs(str, ctx.Clone());
-				SprEngine.FilterCompilePre(null, args);
+				FilterCompilePre(null, args);
 				str = args.Text;
 			}
 
@@ -135,7 +135,7 @@ namespace KeePass.Util.Spr
 				str = PerformClipboardCopy(str, ctx, uRecursionLevel);
 
 			if (((ctx.Flags & SprCompileFlags.DataNonActive) != SprCompileFlags.None) &&
-				(str.IndexOf(@"{CLIPBOARD}", SprEngine.ScMethod) >= 0))
+				(str.IndexOf(@"{CLIPBOARD}", ScMethod) >= 0))
 			{
 				string strCb = null;
 				try { strCb = ClipboardUtil.GetText(); }
@@ -158,13 +158,13 @@ namespace KeePass.Util.Spr
 					str = FillEntryStringsSpecial(str, ctx, uRecursionLevel);
 
 				if (((ctx.Flags & SprCompileFlags.EntryProperties) != SprCompileFlags.None) &&
-					(str.IndexOf(@"{UUID}", SprEngine.ScMethod) >= 0))
+					(str.IndexOf(@"{UUID}", ScMethod) >= 0))
 					str = Fill(str, @"{UUID}", ctx.Entry.Uuid.ToHexString(), ctx, null);
 
 				if (((ctx.Flags & SprCompileFlags.PasswordEnc) != SprCompileFlags.None) &&
-					(str.IndexOf(@"{PASSWORD_ENC}", SprEngine.ScMethod) >= 0))
+					(str.IndexOf(@"{PASSWORD_ENC}", ScMethod) >= 0))
 				{
-					string strPwCmp = SprEngine.CompileInternal(@"{PASSWORD}",
+					string strPwCmp = CompileInternal(@"{PASSWORD}",
 						ctx.WithoutContentTransformations(), uRecursionLevel + 1);
 					str = Fill(str, @"{PASSWORD_ENC}", StrUtil.EncryptString(
 						strPwCmp), ctx, null);
@@ -226,7 +226,7 @@ namespace KeePass.Util.Spr
 			}
 
 			if (((ctx.Flags & SprCompileFlags.DateTime) != SprCompileFlags.None) &&
-				(str.IndexOf(@"{DT_", SprEngine.ScMethod) >= 0))
+				(str.IndexOf(@"{DT_", ScMethod) >= 0))
 			{
 				DateTime dtNow = DateTime.UtcNow;
 				str = Fill(str, @"{DT_UTC_YEAR}", dtNow.Year.ToString("D4"),
@@ -262,7 +262,7 @@ namespace KeePass.Util.Spr
 			}
 
 			if ((ctx.Flags & SprCompileFlags.References) != SprCompileFlags.None)
-				str = SprEngine.FillRefPlaceholders(str, ctx, uRecursionLevel);
+				str = FillRefPlaceholders(str, ctx, uRecursionLevel);
 
 			if (((ctx.Flags & SprCompileFlags.EnvVars) != SprCompileFlags.None) &&
 				(str.IndexOf('%') >= 0))
@@ -288,10 +288,10 @@ namespace KeePass.Util.Spr
 			if ((ctx.Flags & SprCompileFlags.PickChars) != SprCompileFlags.None)
 				str = ReplacePickChars(str, ctx, uRecursionLevel);
 
-			if (bExt && (SprEngine.FilterCompile != null))
+			if (bExt && (FilterCompile != null))
 			{
 				SprEventArgs args = new SprEventArgs(str, ctx.Clone());
-				SprEngine.FilterCompile(null, args);
+				FilterCompile(null, args);
 				str = args.Text;
 			}
 
@@ -311,16 +311,16 @@ namespace KeePass.Util.Spr
 			if (string.IsNullOrEmpty(strPlaceholder)) { Debug.Assert(false); return strData; }
 			if (strReplacement == null) { Debug.Assert(false); strReplacement = string.Empty; }
 
-			if (strData.IndexOf(strPlaceholder, SprEngine.ScMethod) < 0) return strData;
+			if (strData.IndexOf(strPlaceholder, ScMethod) < 0) return strData;
 
 			string strValue = strReplacement;
 			if (ouRecursionLevel.HasValue)
-				strValue = SprEngine.CompileInternal(strValue, ((ctx != null) ?
+				strValue = CompileInternal(strValue, ((ctx != null) ?
 					ctx.WithoutContentTransformations() : null),
 					ouRecursionLevel.Value + 1);
 
 			return StrUtil.ReplaceCaseInsensitive(strData, strPlaceholder,
-				SprEngine.TransformContent(strValue, ctx));
+				TransformContent(strValue, ctx));
 		}
 
 		private static string Fill(string strData, string strPlaceholder,
@@ -330,7 +330,7 @@ namespace KeePass.Util.Spr
 			if (string.IsNullOrEmpty(strPlaceholder)) { Debug.Assert(false); return strData; }
 			if (psReplacement == null) { Debug.Assert(false); psReplacement = ProtectedString.Empty; }
 
-			if (strData.IndexOf(strPlaceholder, SprEngine.ScMethod) < 0) return strData;
+			if (strData.IndexOf(strPlaceholder, ScMethod) < 0) return strData;
 
 			return Fill(strData, strPlaceholder, psReplacement.ReadString(),
 				ctx, ouRecursionLevel);
@@ -444,13 +444,13 @@ namespace KeePass.Util.Spr
 			for (int i = 0; i < vPlhs.Length; ++i)
 			{
 				string strPlh = vPlhs[i];
-				if (str.IndexOf(strPlh, SprEngine.ScMethod) < 0) continue;
+				if (str.IndexOf(strPlh, ScMethod) < 0) continue;
 
 				if (strDataCmp == null)
 				{
 					SprContext ctxData = (bDataIsEncoded ?
 						ctx.WithoutContentTransformations() : ctx);
-					strDataCmp = SprEngine.CompileInternal(strData, ctxData,
+					strDataCmp = CompileInternal(strData, ctxData,
 						uRecursionLevel + 1);
 				}
 
@@ -509,9 +509,9 @@ namespace KeePass.Util.Spr
 
 			while (true)
 			{
-				int iStart = str.IndexOf(StrRemStart, SprEngine.ScMethod);
+				int iStart = str.IndexOf(StrRemStart, ScMethod);
 				if (iStart < 0) break;
-				int iEnd = str.IndexOf(StrRemEnd, iStart + 1, SprEngine.ScMethod);
+				int iEnd = str.IndexOf(StrRemEnd, iStart + 1, ScMethod);
 				if (iEnd <= iStart) break;
 
 				str = (str.Substring(0, iStart) + str.Substring(iEnd + StrRemEnd.Length));
@@ -534,9 +534,9 @@ namespace KeePass.Util.Spr
 			{
 				str = ctx.RefCache.Fill(str, ctx);
 
-				int nStart = str.IndexOf(StrRefStart, nOffset, SprEngine.ScMethod);
+				int nStart = str.IndexOf(StrRefStart, nOffset, ScMethod);
 				if (nStart < 0) break;
-				int nEnd = str.IndexOf(StrRefEnd, nStart + 1, SprEngine.ScMethod);
+				int nEnd = str.IndexOf(StrRefEnd, nStart + 1, ScMethod);
 				if (nEnd <= nStart) break;
 
 				string strFullRef = str.Substring(nStart, nEnd - nStart + 1);
@@ -567,9 +567,9 @@ namespace KeePass.Util.Spr
 					SprContext sprSub = ctx.WithoutContentTransformations();
 					sprSub.Entry = peFound;
 
-					string strInnerContent = SprEngine.CompileInternal(strInsData,
+					string strInnerContent = CompileInternal(strInsData,
 						sprSub, uRecursionLevel + 1);
-					strInnerContent = SprEngine.TransformContent(strInnerContent, ctx);
+					strInnerContent = TransformContent(strInnerContent, ctx);
 
 					// str = str.Substring(0, nStart) + strInnerContent + str.Substring(nEnd + 1);
 					ctx.RefCache.Add(strFullRef, strInnerContent, ctx);
@@ -588,8 +588,8 @@ namespace KeePass.Util.Spr
 			chWanted = char.MinValue;
 
 			if (strFullRef == null) { Debug.Assert(false); return null; }
-			if (!strFullRef.StartsWith(StrRefStart, SprEngine.ScMethod) ||
-				!strFullRef.EndsWith(StrRefEnd, SprEngine.ScMethod))
+			if (!strFullRef.StartsWith(StrRefStart, ScMethod) ||
+				!strFullRef.EndsWith(StrRefEnd, ScMethod))
 				return null;
 			if ((ctx == null) || (ctx.Database == null)) { Debug.Assert(false); return null; }
 
@@ -701,7 +701,7 @@ namespace KeePass.Util.Spr
 		{
 			Debug.Assert(strPlhStart.StartsWith(@"{") && !strPlhStart.EndsWith(@"}"));
 
-			iStart = str.IndexOf(strPlhStart, SprEngine.ScMethod);
+			iStart = str.IndexOf(strPlhStart, ScMethod);
 			if (iStart < 0) { lParams = null; return false; }
 
 			lParams = new List<string>();

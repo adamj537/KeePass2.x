@@ -230,7 +230,7 @@ namespace KeePass.Plugins
 
 		public static void DeleteOldFilesAsync()
 		{
-			ThreadPool.QueueUserWorkItem(new WaitCallback(PlgxCache.DeleteOldFilesSafe));
+			ThreadPool.QueueUserWorkItem(new WaitCallback(DeleteOldFilesSafe));
 		}
 
 		private static void DeleteOldFilesSafe(object stateInfo)

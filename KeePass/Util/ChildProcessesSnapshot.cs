@@ -134,7 +134,7 @@ namespace KeePass.Util
 						nDelayMs);
 
 					ParameterizedThreadStart pts = new ParameterizedThreadStart(
-						ChildProcessesSnapshot.DelayedTerminatePid);
+						DelayedTerminatePid);
 					Thread th = new Thread(pts);
 					th.Start(ti);
 				}

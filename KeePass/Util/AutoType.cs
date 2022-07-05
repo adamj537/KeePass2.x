@@ -176,7 +176,7 @@ namespace KeePass.Util
 			AutoTypeEventArgs args = new AutoTypeEventArgs(strSeq, bObfuscate,
 				pweData, pwDatabase);
 
-			if (AutoType.FilterCompilePre != null) AutoType.FilterCompilePre(null, args);
+			if (FilterCompilePre != null) FilterCompilePre(null, args);
 
 			args.Sequence = SprEngine.Compile(args.Sequence, new SprContext(
 				pweData, pwDatabase, SprCompileFlags.All, true, false));
@@ -191,8 +191,8 @@ namespace KeePass.Util
 
 			Application.DoEvents();
 
-			if (AutoType.FilterSendPre != null) AutoType.FilterSendPre(null, args);
-			if (AutoType.FilterSend != null) AutoType.FilterSend(null, args);
+			if (FilterSendPre != null) FilterSendPre(null, args);
+			if (FilterSend != null) FilterSend(null, args);
 
 			if (args.Sequence.Length > 0)
 			{
@@ -205,7 +205,7 @@ namespace KeePass.Util
 						ex.Message;
 				}
 
-				if (AutoType.SendPost != null) AutoType.SendPost(null, args);
+				if (SendPost != null) SendPost(null, args);
 
 				if (!string.IsNullOrEmpty(strError))
 				{
@@ -256,7 +256,7 @@ namespace KeePass.Util
 					ctxNew.Sequence;
 			}
 
-			return AutoType.Execute(ctxNew);
+			return Execute(ctxNew);
 		}
 
 		private static SequenceQueriesEventArgs GetSequencesForWindowBegin(
@@ -265,16 +265,16 @@ namespace KeePass.Util
 			SequenceQueriesEventArgs e = new SequenceQueriesEventArgs(
 				GetNextEventID(), hWnd, strWindow);
 
-			if (AutoType.SequenceQueriesBegin != null)
-				AutoType.SequenceQueriesBegin(null, e);
+			if (SequenceQueriesBegin != null)
+				SequenceQueriesBegin(null, e);
 
 			return e;
 		}
 
 		private static void GetSequencesForWindowEnd(SequenceQueriesEventArgs e)
 		{
-			if (AutoType.SequenceQueriesEnd != null)
-				AutoType.SequenceQueriesEnd(null, e);
+			if (SequenceQueriesEnd != null)
+				SequenceQueriesEnd(null, e);
 		}
 
 		// Multiple calls of this method are wrapped in
@@ -292,7 +292,7 @@ namespace KeePass.Util
 			SprContext sprCtx = new SprContext(pwe, pdContext,
 				SprCompileFlags.NonActive);
 
-			RaiseSequenceQueryEvent(AutoType.SequenceQueryPre, iEventID,
+			RaiseSequenceQueryEvent(SequenceQueryPre, iEventID,
 				hWnd, strWindow, pwe, pdContext, l);
 
 			// Specifically defined sequences must match before the title,
@@ -309,7 +309,7 @@ namespace KeePass.Util
 				}
 			}
 
-			RaiseSequenceQueryEvent(AutoType.SequenceQuery, iEventID,
+			RaiseSequenceQueryEvent(SequenceQuery, iEventID,
 				hWnd, strWindow, pwe, pdContext, l);
 
 			if (Program.Config.Integration.AutoTypeMatchByTitle)
@@ -359,7 +359,7 @@ namespace KeePass.Util
 				}
 			}
 
-			RaiseSequenceQueryEvent(AutoType.SequenceQueryPost, iEventID,
+			RaiseSequenceQueryEvent(SequenceQueryPost, iEventID,
 				hWnd, strWindow, pwe, pdContext, l);
 
 			return l;
@@ -537,11 +537,11 @@ namespace KeePass.Util
 					Thread.Sleep(nActDelayMS);
 					Application.DoEvents();
 
-					AutoType.PerformInternal(ctx, strWindow);
+					PerformInternal(ctx, strWindow);
 				}
 			}
 			else if (lCtxs.Count == 1)
-				AutoType.PerformInternal(lCtxs[0], strWindow);
+				PerformInternal(lCtxs[0], strWindow);
 
 			return true;
 		}
@@ -627,7 +627,7 @@ namespace KeePass.Util
 			}
 
 			AutoTypeCtx ctx = new AutoTypeCtx(strSeq, pe, pdContext);
-			return AutoType.PerformInternal(ctx, strWindow);
+			return PerformInternal(ctx, strWindow);
 		}
 
 		// ValidateAutoTypeSequence is not required anymore, because

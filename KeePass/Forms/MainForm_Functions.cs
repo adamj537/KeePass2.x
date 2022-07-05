@@ -1903,7 +1903,7 @@ namespace KeePass.Forms
 				if (args.Cancel) return;
 			}
 
-			bool bShift = ((Control.ModifierKeys & Keys.Shift) != Keys.None);
+			bool bShift = ((ModifierKeys & Keys.Shift) != Keys.None);
 			bool bCnt = false;
 
 			AceColumn col = GetAceColumn(colID);
@@ -2035,7 +2035,7 @@ namespace KeePass.Forms
 
 			bool bCopy = Program.Config.MainWindow.CopyUrlsInsteadOfOpening;
 			if (obForceOpen.HasValue) bCopy = !obForceOpen.Value;
-			else if ((Control.ModifierKeys & Keys.Shift) != Keys.None)
+			else if ((ModifierKeys & Keys.Shift) != Keys.None)
 				bCopy = !bCopy;
 
 			if (bCopy)
@@ -3807,7 +3807,7 @@ namespace KeePass.Forms
 
 			PwEntry pe = ctx.Entry;
 			if (pe == null) { Debug.Assert(false); return; }
-			Debug.Assert(object.ReferenceEquals(pe, GetSelectedEntry(false)));
+			Debug.Assert(ReferenceEquals(pe, GetSelectedEntry(false)));
 
 			if (string.IsNullOrEmpty(ctx.Name)) { Debug.Assert(false); return; }
 			ProtectedBinary pb = pe.Binaries.Get(ctx.Name);
@@ -3817,7 +3817,7 @@ namespace KeePass.Forms
 			if (pbMod != null)
 			{
 				PwDatabase pd = m_docMgr.FindContainerOf(pe);
-				Debug.Assert(object.ReferenceEquals(pd, this.ActiveDatabase));
+				Debug.Assert(ReferenceEquals(pd, this.ActiveDatabase));
 				pe.CreateBackup(pd);
 
 				pe.Binaries.Set(ctx.Name, pbMod);
@@ -4777,7 +4777,7 @@ namespace KeePass.Forms
 
 			PwDatabase pd = m_docMgr.ActiveDatabase;
 			PwGroup pgRecycleBin = pd.RootGroup.FindGroup(pd.RecycleBinUuid, true);
-			bool bShiftPressed = ((Control.ModifierKeys & Keys.Shift) != Keys.None);
+			bool bShiftPressed = ((ModifierKeys & Keys.Shift) != Keys.None);
 
 			bool bAtLeastOnePermanent = false;
 			if (!pd.RecycleBinEnabled) bAtLeastOnePermanent = true;
@@ -4905,7 +4905,7 @@ namespace KeePass.Forms
 
 			PwDatabase pd = m_docMgr.ActiveDatabase;
 			PwGroup pgRecycleBin = pd.RootGroup.FindGroup(pd.RecycleBinUuid, true);
-			bool bShiftPressed = ((Control.ModifierKeys & Keys.Shift) != Keys.None);
+			bool bShiftPressed = ((ModifierKeys & Keys.Shift) != Keys.None);
 
 			bool bPermanent = false;
 			if (!pd.RecycleBinEnabled) bPermanent = true;

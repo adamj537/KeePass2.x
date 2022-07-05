@@ -134,7 +134,7 @@ namespace KeePassLib
 
 					foreach (PwEntry pe in l)
 					{
-						if ((iNeg < lOut.Count) && object.ReferenceEquals(lOut[iNeg], pe))
+						if ((iNeg < lOut.Count) && ReferenceEquals(lOut[iNeg], pe))
 							++iNeg;
 						else
 						{

@@ -178,7 +178,7 @@ namespace KeePass.UI
 		internal static void Configure(ToolStrip ts)
 		{
 			if (ts == null) { Debug.Assert(false); return; }
-			if (!DpiUtil.ScalingRequired) return;
+			if (!ScalingRequired) return;
 
 			Size sz = ts.ImageScalingSize;
 			if ((sz.Width == 16) && (sz.Height == 16))

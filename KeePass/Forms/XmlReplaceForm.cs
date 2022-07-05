@@ -56,7 +56,7 @@ namespace KeePass.Forms
 			GlobalWindowManager.AddWindow(this);
 
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
-				KeePass.Properties.Resources.B48x48_Binary, KPRes.XmlReplace,
+				Properties.Resources.B48x48_Binary, KPRes.XmlReplace,
 				KPRes.XmlReplaceDesc);
 
 			this.Icon = AppIcons.Default;

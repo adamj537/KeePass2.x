@@ -611,7 +611,7 @@ namespace KeePass.Forms
 		private void OnPicBoxMouseWheel(object sender, MouseEventArgs e)
 		{
 			if (e == null) { Debug.Assert(false); return; }
-			if ((Control.ModifierKeys & Keys.Control) == Keys.None) return;
+			if ((ModifierKeys & Keys.Control) == Keys.None) return;
 
 			int d = e.Delta / 120; // See Control.MouseWheel event
 			PerformZoom(d);

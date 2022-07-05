@@ -57,7 +57,7 @@ namespace KeePassLib.Cryptography.Cipher
 
 		public PwUuid CipherUuid
 		{
-			get { return StandardAesEngine.AesUuid; }
+			get { return AesUuid; }
 		}
 
 		public string DisplayName
@@ -93,7 +93,7 @@ namespace KeePassLib.Cryptography.Cipher
 
 		private static Stream CreateStream(Stream s, bool bEncrypt, byte[] pbKey, byte[] pbIV)
 		{
-			StandardAesEngine.ValidateArguments(s, bEncrypt, pbKey, pbIV);
+			ValidateArguments(s, bEncrypt, pbKey, pbIV);
 
 #if KeePassUAP
 			return StandardAesEngineExt.CreateStream(s, bEncrypt, pbKey, pbIV);
@@ -120,12 +120,12 @@ namespace KeePassLib.Cryptography.Cipher
 
 		public Stream EncryptStream(Stream s, byte[] pbKey, byte[] pbIV)
 		{
-			return StandardAesEngine.CreateStream(s, true, pbKey, pbIV);
+			return CreateStream(s, true, pbKey, pbIV);
 		}
 
 		public Stream DecryptStream(Stream s, byte[] pbKey, byte[] pbIV)
 		{
-			return StandardAesEngine.CreateStream(s, false, pbKey, pbIV);
+			return CreateStream(s, false, pbKey, pbIV);
 		}
 	}
 }

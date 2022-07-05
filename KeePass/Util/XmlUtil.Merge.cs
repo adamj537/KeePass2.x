@@ -402,7 +402,7 @@ namespace KeePass.Util
 			Debug.Assert((xeBase == null) || (xeBase.Name == strName));
 			Debug.Assert((strXPath == strName) || strXPath.EndsWith("/" + strName));
 			Debug.Assert((xeBase == null) || (xeBaseParent == null) ||
-				object.ReferenceEquals(xeBase.ParentNode, xeBaseParent));
+				ReferenceEquals(xeBase.ParentNode, xeBaseParent));
 
 			XmNodeOptions o = GetNodeOptions(xeOverride, strXPath, ctx);
 
@@ -499,7 +499,7 @@ namespace KeePass.Util
 						XmlElement xeBaseCNew = MergeElements(xeBaseC,
 							xeOverrideC, strXPathC, xeBase, ctx);
 
-						if (!object.ReferenceEquals(xeBaseCNew, xeBaseC))
+						if (!ReferenceEquals(xeBaseCNew, xeBaseC))
 						{
 							Debug.Assert((xeBaseCNew == null) || (xeBaseC == null));
 							if (xeBaseCNew == null) xcBase.Remove(strKeyC);
@@ -574,7 +574,7 @@ namespace KeePass.Util
 
 			XmlNode xnP = xe.ParentNode;
 			if (xnP == null) { Debug.Assert(false); return false; }
-			if (object.ReferenceEquals(xnP, xn)) { Debug.Assert(false); return false; }
+			if (ReferenceEquals(xnP, xn)) { Debug.Assert(false); return false; }
 
 			int iSep = strXPath.LastIndexOf('/');
 			if (iSep < 0) { Debug.Assert(false); return false; }

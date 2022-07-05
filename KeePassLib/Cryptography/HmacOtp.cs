@@ -136,7 +136,7 @@ namespace KeePassLib.Cryptography
 		{
 			DateTime dt = (odt.HasValue ? TimeUtil.ToUtc(odt.Value, true) :
 				DateTime.UtcNow);
-			ulong uStep = ((uTimeStep != 0) ? uTimeStep : HmacOtp.TotpTimeStepDefault);
+			ulong uStep = ((uTimeStep != 0) ? uTimeStep : TotpTimeStepDefault);
 			ulong uTime = (ulong)TimeUtil.SerializeUnix(dt) / uStep;
 
 			return Generate(pbSecret, uTime, uCodeDigits, false, -1, strAlg);

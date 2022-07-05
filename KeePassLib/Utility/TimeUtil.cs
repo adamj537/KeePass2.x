@@ -326,12 +326,12 @@ namespace KeePassLib.Utility
 
 		public static double SerializeUnix(DateTime dt)
 		{
-			return (ToUtc(dt, false) - TimeUtil.UnixRoot).TotalSeconds;
+			return (ToUtc(dt, false) - UnixRoot).TotalSeconds;
 		}
 
 		public static DateTime ConvertUnixTime(double dtUnix)
 		{
-			try { return TimeUtil.UnixRoot.AddSeconds(dtUnix); }
+			try { return UnixRoot.AddSeconds(dtUnix); }
 			catch (Exception) { Debug.Assert(false); }
 
 			return DateTime.UtcNow;

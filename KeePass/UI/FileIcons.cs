@@ -209,7 +209,7 @@ namespace KeePass.UI
 				int iImage = -1;
 				for (int i = 0; i < lImages.Count; ++i)
 				{
-					if (object.ReferenceEquals(lImages[i], img))
+					if (ReferenceEquals(lImages[i], img))
 					{
 						iImage = i;
 						break;

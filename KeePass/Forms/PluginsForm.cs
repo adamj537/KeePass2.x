@@ -132,7 +132,7 @@ namespace KeePass.Forms
 			m_ilIcons.Images.Add(Properties.Resources.B16x16_BlockDevice);
 
 			List<PluginInfo> lInfos = new List<PluginInfo>(m_mgr);
-			lInfos.Sort(PluginsForm.ComparePluginInfos);
+			lInfos.Sort(ComparePluginInfos);
 
 			foreach (PluginInfo pi in lInfos)
 			{

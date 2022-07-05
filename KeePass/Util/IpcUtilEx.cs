@@ -264,7 +264,7 @@ namespace KeePass.Util
 			{
 				try
 				{
-					if (IpcUtilEx.IpcEvent == null) return;
+					if (IpcEvent == null) return;
 
 					string strName = ipcMsg.Param0;
 					if (string.IsNullOrEmpty(strName)) { Debug.Assert(false); return; }
@@ -275,7 +275,7 @@ namespace KeePass.Util
 					CommandLineArgs clArgs = new CommandLineArgs(vArgs);
 
 					IpcEventArgs e = new IpcEventArgs(strName, clArgs);
-					IpcUtilEx.IpcEvent(null, e);
+					IpcEvent(null, e);
 				}
 				catch (Exception) { Debug.Assert(false); }
 			}

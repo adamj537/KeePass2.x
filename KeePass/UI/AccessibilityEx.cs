@@ -74,7 +74,7 @@ namespace KeePass.UI
 		internal static void InitializeForm(Form f)
 		{
 			if (f == null) { Debug.Assert(false); return; }
-			if (!AccessibilityEx.Enabled) return;
+			if (!Enabled) return;
 
 			ReorderChildControlsByLocation(f);
 		}
@@ -142,7 +142,7 @@ namespace KeePass.UI
 				if ((l.Count >= 2) && !bDockMovePossible && !bIgnoreType &&
 					!cc.IsReadOnly)
 				{
-					l.Sort(AccessibilityEx.CompareByLocation);
+					l.Sort(CompareByLocation);
 
 					for (int i = 0; i < l.Count; ++i)
 						cc.SetChildIndex(l[i].Value, i);
@@ -245,7 +245,7 @@ namespace KeePass.UI
 
 			try
 			{
-				if (!AccessibilityEx.Enabled) return;
+				if (!Enabled) return;
 
 				if (!string.IsNullOrEmpty(strName))
 					strName = strName.TrimEnd(':');
@@ -277,7 +277,7 @@ namespace KeePass.UI
 
 			try
 			{
-				if (!AccessibilityEx.Enabled) return;
+				if (!Enabled) return;
 
 				string str1 = (IsTextEditable(cContext) ? string.Empty :
 					StrUtil.RemoveAccelerator(cContext.Text ?? string.Empty));

@@ -615,8 +615,8 @@ namespace KeePassLib
 			if (this.Touched != null)
 				this.Touched(this, new ObjectTouchedEventArgs(this,
 					bModified, bTouchParents));
-			if (PwGroup.GroupTouched != null)
-				PwGroup.GroupTouched(this, new ObjectTouchedEventArgs(this,
+			if (GroupTouched != null)
+				GroupTouched(this, new ObjectTouchedEventArgs(this,
 					bModified, bTouchParents));
 
 			if (bTouchParents && (m_pParentGroup != null))

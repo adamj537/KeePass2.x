@@ -584,7 +584,7 @@ namespace KeePass.Forms
 
 			foreach (KeyValuePair<IntPtr, bool> kvp in dWnds)
 				ThreadPool.QueueUserWorkItem(new WaitCallback(
-					EditAutoTypeItemForm.EvalWindowProc),
+					EvalWindowProc),
 					new PwlwInfo(this, kvp.Key));
 
 			m_cmbWindow.OrderedImageList = m_vWndImages;
@@ -627,7 +627,7 @@ namespace KeePass.Forms
 
 				if (pInfo.Form.InvokeRequired)
 					pInfo.Form.Invoke(new AddWindowProcDelegate(
-						EditAutoTypeItemForm.AddWindowProc), new object[] {
+						AddWindowProc), new object[] {
 						pInfo.Form, hWnd, strName, img });
 				else AddWindowProc(pInfo.Form, hWnd, strName, img);
 			}

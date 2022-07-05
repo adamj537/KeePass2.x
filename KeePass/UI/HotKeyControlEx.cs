@@ -88,7 +88,7 @@ namespace KeePass.UI
 			// base.OnKeyUp(e);
 			UIUtil.SetHandled(e, true);
 
-			if (Control.ModifierKeys == Keys.None)
+			if (ModifierKeys == Keys.None)
 				UpdateUI(m_k, m_k); // Clear 'Invalid' when releasing all modifiers
 		}
 

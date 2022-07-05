@@ -642,7 +642,7 @@ namespace KeePass.DataExchange
 		{
 			IntPtr ptrCur = NativeMethods.GetForegroundWindowHandle();
 
-			ImportUtil.GuiSendKeysPrc(strSend);
+			GuiSendKeysPrc(strSend);
 
 			int nRound = 0;
 			while (true)

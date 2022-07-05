@@ -63,12 +63,12 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 			"\u00F0\u00F1\u00F2\u00F3\u00F4\u00F5\u00F6\u00F7" +
 			"\u00F8\u00F9\u00FA\u00FB\u00FC\u00FD\u00FE\u00FF";
 
-		internal static readonly string MenuAccels = PwCharSet.LowerCase + PwCharSet.Digits;
+		internal static readonly string MenuAccels = LowerCase + Digits;
 
 		[Obsolete]
-		public static string SpecialChars { get { return PwCharSet.Special; } }
+		public static string SpecialChars { get { return Special; } }
 		[Obsolete]
-		public static string HighAnsiChars { get { return PwCharSet.Latin1S; } }
+		public static string HighAnsiChars { get { return Latin1S; } }
 
 		private const int CharTabSize = 0x10000 / 8;
 
@@ -80,7 +80,7 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 		/// </summary>
 		public PwCharSet()
 		{
-			Debug.Assert(PwCharSet.Latin1S.Length == (16 * 6 - 2));
+			Debug.Assert(Latin1S.Length == (16 * 6 - 2));
 		}
 
 		public PwCharSet(string strCharSet)
@@ -195,32 +195,32 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 
 			switch (chCharSetIdentifier)
 			{
-				case 'a': Add(PwCharSet.LowerCase, PwCharSet.Digits); break;
+				case 'a': Add(LowerCase, Digits); break;
 				case 'A':
-					Add(PwCharSet.LowerCase, PwCharSet.UpperCase,
-					PwCharSet.Digits); break;
-				case 'U': Add(PwCharSet.UpperCase, PwCharSet.Digits); break;
-				case 'c': Add(PwCharSet.LowerConsonants); break;
+					Add(LowerCase, UpperCase,
+					Digits); break;
+				case 'U': Add(UpperCase, Digits); break;
+				case 'c': Add(LowerConsonants); break;
 				case 'C':
-					Add(PwCharSet.LowerConsonants,
-					PwCharSet.UpperConsonants); break;
-				case 'z': Add(PwCharSet.UpperConsonants); break;
-				case 'd': Add(PwCharSet.Digits); break; // Digit
-				case 'h': Add(PwCharSet.LowerHex); break;
-				case 'H': Add(PwCharSet.UpperHex); break;
-				case 'l': Add(PwCharSet.LowerCase); break;
-				case 'L': Add(PwCharSet.LowerCase, PwCharSet.UpperCase); break;
-				case 'u': Add(PwCharSet.UpperCase); break;
-				case 'p': Add(PwCharSet.Punctuation); break;
-				case 'b': Add(PwCharSet.Brackets); break;
-				case 's': Add(PwCharSet.PrintableAsciiSpecial); break;
+					Add(LowerConsonants,
+					UpperConsonants); break;
+				case 'z': Add(UpperConsonants); break;
+				case 'd': Add(Digits); break; // Digit
+				case 'h': Add(LowerHex); break;
+				case 'H': Add(UpperHex); break;
+				case 'l': Add(LowerCase); break;
+				case 'L': Add(LowerCase, UpperCase); break;
+				case 'u': Add(UpperCase); break;
+				case 'p': Add(Punctuation); break;
+				case 'b': Add(Brackets); break;
+				case 's': Add(PrintableAsciiSpecial); break;
 				case 'S':
-					Add(PwCharSet.UpperCase, PwCharSet.LowerCase);
-					Add(PwCharSet.Digits, PwCharSet.PrintableAsciiSpecial); break;
-				case 'v': Add(PwCharSet.LowerVowels); break;
-				case 'V': Add(PwCharSet.LowerVowels, PwCharSet.UpperVowels); break;
-				case 'Z': Add(PwCharSet.UpperVowels); break;
-				case 'x': Add(PwCharSet.Latin1S); break;
+					Add(UpperCase, LowerCase);
+					Add(Digits, PrintableAsciiSpecial); break;
+				case 'v': Add(LowerVowels); break;
+				case 'V': Add(LowerVowels, UpperVowels); break;
+				case 'Z': Add(UpperVowels); break;
+				case 'x': Add(Latin1S); break;
 				default: bResult = false; break;
 			}
 
@@ -275,16 +275,16 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 		{
 			StringBuilder sb = new StringBuilder();
 
-			sb.Append(RemoveIfAllExist(PwCharSet.UpperCase) ? 'U' : '_');
-			sb.Append(RemoveIfAllExist(PwCharSet.LowerCase) ? 'L' : '_');
-			sb.Append(RemoveIfAllExist(PwCharSet.Digits) ? 'D' : '_');
-			sb.Append(RemoveIfAllExist(PwCharSet.Special) ? 'S' : '_');
-			sb.Append(RemoveIfAllExist(PwCharSet.Punctuation) ? 'P' : '_');
+			sb.Append(RemoveIfAllExist(UpperCase) ? 'U' : '_');
+			sb.Append(RemoveIfAllExist(LowerCase) ? 'L' : '_');
+			sb.Append(RemoveIfAllExist(Digits) ? 'D' : '_');
+			sb.Append(RemoveIfAllExist(Special) ? 'S' : '_');
+			sb.Append(RemoveIfAllExist(Punctuation) ? 'P' : '_');
 			sb.Append(RemoveIfAllExist("-") ? 'm' : '_');
 			sb.Append(RemoveIfAllExist("_") ? 'u' : '_');
 			sb.Append(RemoveIfAllExist(" ") ? 's' : '_');
-			sb.Append(RemoveIfAllExist(PwCharSet.Brackets) ? 'B' : '_');
-			sb.Append(RemoveIfAllExist(PwCharSet.Latin1S) ? 'H' : '_');
+			sb.Append(RemoveIfAllExist(Brackets) ? 'B' : '_');
+			sb.Append(RemoveIfAllExist(Latin1S) ? 'H' : '_');
 
 			return sb.ToString();
 		}
@@ -294,16 +294,16 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 			if (strRanges == null) { Debug.Assert(false); return; }
 			if (strRanges.Length < 10) { Debug.Assert(false); return; }
 
-			if (strRanges[0] != '_') Add(PwCharSet.UpperCase);
-			if (strRanges[1] != '_') Add(PwCharSet.LowerCase);
-			if (strRanges[2] != '_') Add(PwCharSet.Digits);
-			if (strRanges[3] != '_') Add(PwCharSet.Special);
-			if (strRanges[4] != '_') Add(PwCharSet.Punctuation);
+			if (strRanges[0] != '_') Add(UpperCase);
+			if (strRanges[1] != '_') Add(LowerCase);
+			if (strRanges[2] != '_') Add(Digits);
+			if (strRanges[3] != '_') Add(Special);
+			if (strRanges[4] != '_') Add(Punctuation);
 			if (strRanges[5] != '_') Add('-');
 			if (strRanges[6] != '_') Add('_');
 			if (strRanges[7] != '_') Add(' ');
-			if (strRanges[8] != '_') Add(PwCharSet.Brackets);
-			if (strRanges[9] != '_') Add(PwCharSet.Latin1S);
+			if (strRanges[8] != '_') Add(Brackets);
+			if (strRanges[9] != '_') Add(Latin1S);
 		}
 	}
 }

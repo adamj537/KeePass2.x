@@ -134,7 +134,7 @@ namespace KeePass.UI
 			if (!this.UseSystemPasswordChar)
 				this.Text = m_psText.ReadString();
 			else
-				this.Text = new string(SecureTextBoxEx.PasswordCharEx, m_psText.Length);
+				this.Text = new string(PasswordCharEx, m_psText.Length);
 			--m_uBlockTextChanged;
 
 			int nNewTextLen = this.TextLength;
@@ -168,7 +168,7 @@ namespace KeePass.UI
 			int inxLeft = -1, inxRight = 0;
 			StringBuilder sbNewPart = new StringBuilder();
 
-			char chPasswordChar = SecureTextBoxEx.PasswordCharEx;
+			char chPasswordChar = PasswordCharEx;
 			for (int i = 0; i < strText.Length; ++i)
 			{
 				if (strText[i] != chPasswordChar)

@@ -377,19 +377,19 @@ namespace KeePass.Util
 		{
 			try
 			{
-				string str = pe.Strings.ReadSafe(strPrefix + EntryUtil.OtpSecret);
+				string str = pe.Strings.ReadSafe(strPrefix + OtpSecret);
 				if (!string.IsNullOrEmpty(str))
 					return StrUtil.Utf8.GetBytes(str);
 
-				str = pe.Strings.ReadSafe(strPrefix + EntryUtil.OtpSecretHex);
+				str = pe.Strings.ReadSafe(strPrefix + OtpSecretHex);
 				if (!string.IsNullOrEmpty(str))
 					return MemUtil.HexStringToByteArray(str);
 
-				str = pe.Strings.ReadSafe(strPrefix + EntryUtil.OtpSecretBase32);
+				str = pe.Strings.ReadSafe(strPrefix + OtpSecretBase32);
 				if (!string.IsNullOrEmpty(str))
 					return MemUtil.ParseBase32(str, true);
 
-				str = pe.Strings.ReadSafe(strPrefix + EntryUtil.OtpSecretBase64);
+				str = pe.Strings.ReadSafe(strPrefix + OtpSecretBase64);
 				if (!string.IsNullOrEmpty(str))
 					return Convert.FromBase64String(str);
 			}
@@ -401,23 +401,23 @@ namespace KeePass.Util
 		internal static void RemoveOtpSecrets(ProtectedStringDictionary d,
 			string strPrefix)
 		{
-			d.Remove(strPrefix + EntryUtil.OtpSecret);
-			d.Remove(strPrefix + EntryUtil.OtpSecretHex);
-			d.Remove(strPrefix + EntryUtil.OtpSecretBase32);
-			d.Remove(strPrefix + EntryUtil.OtpSecretBase64);
+			d.Remove(strPrefix + OtpSecret);
+			d.Remove(strPrefix + OtpSecretHex);
+			d.Remove(strPrefix + OtpSecretBase32);
+			d.Remove(strPrefix + OtpSecretBase64);
 		}
 
 		private static string ReplaceHmacOtpPlaceholder(string strText, SprContext ctx)
 		{
-			if (strText.IndexOf(EntryUtil.HotpPlh, StrUtil.CaseIgnoreCmp) < 0) return strText;
+			if (strText.IndexOf(HotpPlh, StrUtil.CaseIgnoreCmp) < 0) return strText;
 
 			PwEntry pe = ctx.Entry;
 			PwDatabase pd = ctx.Database;
 			if ((pe == null) || (pd == null)) return strText;
 
-			byte[] pbSecret = GetOtpSecret(pe, EntryUtil.HotpPrefix);
+			byte[] pbSecret = GetOtpSecret(pe, HotpPrefix);
 
-			string strCounter = pe.Strings.ReadSafe(EntryUtil.HotpCounter);
+			string strCounter = pe.Strings.ReadSafe(HotpCounter);
 			ulong uCounter;
 			ulong.TryParse(strCounter, out uCounter);
 
@@ -426,41 +426,41 @@ namespace KeePass.Util
 			{
 				strValue = HmacOtp.Generate(pbSecret, uCounter, 6, false, -1);
 
-				pe.Strings.Set(EntryUtil.HotpCounter, new ProtectedString(false,
+				pe.Strings.Set(HotpCounter, new ProtectedString(false,
 					(uCounter + 1).ToString()));
 				pe.Touch(true, false);
 				pd.Modified = true;
 			}
 
-			return StrUtil.ReplaceCaseInsensitive(strText, EntryUtil.HotpPlh, strValue);
+			return StrUtil.ReplaceCaseInsensitive(strText, HotpPlh, strValue);
 		}
 
 		private static string ReplaceTimeOtpPlaceholder(string strText, SprContext ctx)
 		{
-			if (strText.IndexOf(EntryUtil.TotpPlh, StrUtil.CaseIgnoreCmp) < 0) return strText;
+			if (strText.IndexOf(TotpPlh, StrUtil.CaseIgnoreCmp) < 0) return strText;
 
 			PwEntry pe = ctx.Entry;
 			if (pe == null) return strText;
 
-			byte[] pbSecret = GetOtpSecret(pe, EntryUtil.TotpPrefix);
+			byte[] pbSecret = GetOtpSecret(pe, TotpPrefix);
 
-			string strLength = pe.Strings.ReadSafe(EntryUtil.TotpLength);
+			string strLength = pe.Strings.ReadSafe(TotpLength);
 			uint uLength;
 			uint.TryParse(strLength, out uLength);
-			if (uLength == 0) uLength = EntryUtil.TotpLengthDefault;
+			if (uLength == 0) uLength = TotpLengthDefault;
 
-			string strPeriod = pe.Strings.ReadSafe(EntryUtil.TotpPeriod);
+			string strPeriod = pe.Strings.ReadSafe(TotpPeriod);
 			uint uPeriod;
 			uint.TryParse(strPeriod, out uPeriod);
 
-			string strAlg = pe.Strings.ReadSafe(EntryUtil.TotpAlg);
+			string strAlg = pe.Strings.ReadSafe(TotpAlg);
 
 			string strValue = string.Empty;
 			if ((pbSecret != null) && (pbSecret.Length != 0))
 				strValue = HmacOtp.GenerateTimeOtp(pbSecret, null, uPeriod,
 					uLength, strAlg);
 
-			return StrUtil.ReplaceCaseInsensitive(strText, EntryUtil.TotpPlh, strValue);
+			return StrUtil.ReplaceCaseInsensitive(strText, TotpPlh, strValue);
 		}
 
 		// https://github.com/google/google-authenticator/wiki/Key-Uri-Format
@@ -542,19 +542,19 @@ namespace KeePass.Util
 			string strType = (uri.Host ?? string.Empty);
 			if (strType.Equals("hotp", StrUtil.CaseIgnoreCmp))
 			{
-				RemoveOtpSecrets(pe.Strings, EntryUtil.HotpPrefix);
+				RemoveOtpSecrets(pe.Strings, HotpPrefix);
 
-				f("secret", EntryUtil.HotpPrefix + EntryUtil.OtpSecretBase32, null, true);
-				f("counter", EntryUtil.HotpCounter, null, false);
+				f("secret", HotpPrefix + OtpSecretBase32, null, true);
+				f("counter", HotpCounter, null, false);
 			}
 			else if (strType.Equals("totp", StrUtil.CaseIgnoreCmp))
 			{
-				RemoveOtpSecrets(pe.Strings, EntryUtil.TotpPrefix);
+				RemoveOtpSecrets(pe.Strings, TotpPrefix);
 
-				f("secret", EntryUtil.TotpPrefix + EntryUtil.OtpSecretBase32, null, true);
-				f("digits", EntryUtil.TotpLength, null, false);
-				f("period", EntryUtil.TotpPeriod, null, false);
-				f("algorithm", EntryUtil.TotpAlg, dAlgMap, false);
+				f("secret", TotpPrefix + OtpSecretBase32, null, true);
+				f("digits", TotpLength, null, false);
+				f("period", TotpPeriod, null, false);
+				f("algorithm", TotpAlg, dAlgMap, false);
 			}
 			else throw new FormatException();
 		}
@@ -790,7 +790,7 @@ namespace KeePass.Util
 			if (pe == null) { Debug.Assert(false); return TimeUtil.ToUtc(DateTime.Today, false); }
 
 			List<PwEntry> l = new List<PwEntry>(pe.History);
-			l.Sort(EntryUtil.CompareLastMod);
+			l.Sort(CompareLastMod);
 
 			// Decrypt the current password only once
 			byte[] pbC = pe.Strings.GetSafe(PwDefs.PasswordField).ReadUtf8();
@@ -934,7 +934,7 @@ namespace KeePass.Util
 				if (l.Count <= 1) continue;
 				lRes.Add(l);
 			}
-			lRes.Sort(EntryUtil.CompareListSizeDesc);
+			lRes.Sort(CompareListSizeDesc);
 
 			return lRes;
 		}
@@ -1489,7 +1489,7 @@ namespace KeePass.Util
 			{
 				l.Add(new KeyValuePair<ulong, PwEntry>(pe.GetSize(), pe));
 			}
-			l.Sort(EntryUtil.CompareKvpBySize);
+			l.Sort(CompareKvpBySize);
 
 			List<object> lResults = new List<object>();
 			DateTime dtNow = DateTime.UtcNow;
@@ -1541,7 +1541,7 @@ namespace KeePass.Util
 			};
 
 			PwObjectList<PwEntry> lEntries = pd.RootGroup.GetEntries(true);
-			lEntries.Sort(EntryUtil.CompareLastModReverse);
+			lEntries.Sort(CompareLastModReverse);
 
 			List<object> lResults = new List<object>();
 			DateTime dtNow = DateTime.UtcNow;

@@ -135,7 +135,7 @@ namespace KeePass.DataExchange
 			{
 				KdbErrorCode e;
 
-				e = KdbFile.SetDatabaseKey(mgr, m_pwDatabase.MasterKey);
+				e = SetDatabaseKey(mgr, m_pwDatabase.MasterKey);
 				if (e != KdbErrorCode.Success)
 					throw new Exception(KLRes.InvalidCompositeKey);
 
@@ -271,7 +271,7 @@ namespace KeePass.DataExchange
 
 			using (KdbManager mgr = new KdbManager())
 			{
-				KdbErrorCode e = KdbFile.SetDatabaseKey(mgr, m_pwDatabase.MasterKey);
+				KdbErrorCode e = SetDatabaseKey(mgr, m_pwDatabase.MasterKey);
 				if (e != KdbErrorCode.Success)
 				{
 					Debug.Assert(false);

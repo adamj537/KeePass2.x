@@ -39,7 +39,7 @@ using KeePassLib.Utility;
 
 namespace KeePass.App.Configuration
 {
-	[XmlType(AppConfigEx.StrXmlTypeName)]
+	[XmlType(StrXmlTypeName)]
 	public sealed class AppConfigEx
 	{
 		internal const string StrXmlTypeName = "Configuration";
@@ -573,8 +573,8 @@ namespace KeePass.App.Configuration
 			XmlNode xn = xdEnforced.SelectSingleNode(strXPath);
 			if (xn == null) return false;
 
-			XmContext ctx = new XmContext(null, AppConfigEx.GetNodeOptions,
-				AppConfigEx.GetNodeKey);
+			XmContext ctx = new XmContext(null, GetNodeOptions,
+				GetNodeKey);
 			return XmlUtil.IsAlwaysEnforced(xn, strXPath, ctx);
 		}
 

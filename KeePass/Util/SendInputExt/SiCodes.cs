@@ -160,11 +160,11 @@ namespace KeePass.Util.SendInputExt
 			if (m_dictS == null)
 			{
 				Dictionary<string, SiCode> d = new Dictionary<string, SiCode>();
-				foreach (SiCode siCp in SiCodes.KeyCodes)
+				foreach (SiCode siCp in KeyCodes)
 				{
 					d[siCp.Code] = siCp;
 				}
-				Debug.Assert(d.Count == SiCodes.KeyCodes.Count);
+				Debug.Assert(d.Count == KeyCodes.Count);
 
 				m_dictS = d;
 			}
@@ -177,7 +177,7 @@ namespace KeePass.Util.SendInputExt
 
 		public static SiCode Get(int iVKey, bool? obExtKey)
 		{
-			foreach (SiCode si in SiCodes.KeyCodes)
+			foreach (SiCode si in KeyCodes)
 			{
 				if (si.VKey == iVKey)
 				{

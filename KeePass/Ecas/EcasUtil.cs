@@ -235,7 +235,7 @@ namespace KeePass.Ecas
 				cc[0].Value = ep.Name;
 				cc[0].ReadOnly = true;
 
-				string strParam = (bUseDefaults ? EcasUtil.GetParamString(
+				string strParam = (bUseDefaults ? GetParamString(
 					objDefaults.Parameters, i) : string.Empty);
 
 				DataGridViewCell c = null;
@@ -377,7 +377,7 @@ namespace KeePass.Ecas
 						else { Debug.Assert(false); }
 					}
 
-					EcasUtil.DataGridViewToParameters(dgvParams, o, eTypeInfo);
+					DataGridViewToParameters(dgvParams, o, eTypeInfo);
 				}
 				else // Internal to GUI
 				{
@@ -411,7 +411,7 @@ namespace KeePass.Ecas
 						t = Program.EcasPool.FindAction(cmbTypes.SelectedItem as string);
 					else { Debug.Assert(false); }
 
-					if (t != null) EcasUtil.ParametersToDataGridView(dgvParams, t, o);
+					if (t != null) ParametersToDataGridView(dgvParams, t, o);
 				}
 			}
 			catch (Exception e) { MessageService.ShowWarning(e); bResult = false; }
@@ -483,15 +483,15 @@ namespace KeePass.Ecas
 			if (x == null) { Debug.Assert(false); return false; }
 			if (y == null) { Debug.Assert(false); return false; }
 
-			if (uCompareType == EcasUtil.StdStringCompareEquals)
+			if (uCompareType == StdStringCompareEquals)
 				return x.Equals(y, StrUtil.CaseIgnoreCmp);
-			if (uCompareType == EcasUtil.StdStringCompareContains)
+			if (uCompareType == StdStringCompareContains)
 				return (x.IndexOf(y, StrUtil.CaseIgnoreCmp) >= 0);
-			if (uCompareType == EcasUtil.StdStringCompareStartsWith)
+			if (uCompareType == StdStringCompareStartsWith)
 				return x.StartsWith(y, StrUtil.CaseIgnoreCmp);
-			if (uCompareType == EcasUtil.StdStringCompareEndsWith)
+			if (uCompareType == StdStringCompareEndsWith)
 				return x.EndsWith(y, StrUtil.CaseIgnoreCmp);
-			if (uCompareType == EcasUtil.StdStringCompareRegEx)
+			if (uCompareType == StdStringCompareRegEx)
 			{
 				try { return Regex.IsMatch(x, y, RegexOptions.IgnoreCase); }
 				catch (Exception) { Debug.Assert(false); }

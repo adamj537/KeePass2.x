@@ -236,7 +236,7 @@ namespace KeePassLib.Cryptography
 			if ((pbOptEntropy != null) && (pbOptEntropy.Length == 0))
 				pbOptEntropy = null;
 
-			if (CryptoUtil.IsProtectedDataSupported)
+			if (IsProtectedDataSupported)
 			{
 				if (bProtect)
 					return ProtectedData.Protect(pb, pbOptEntropy, s);

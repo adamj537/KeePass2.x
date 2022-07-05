@@ -146,7 +146,7 @@ namespace KeePass.Util.MultipleValues
 				if (cEv == null) { Debug.Assert(false); return; }
 				Debug.Assert(cEv == c);
 
-				bool bCue = (cEv.Text == MultipleValuesEx.CueString);
+				bool bCue = (cEv.Text == CueString);
 				cEv.ForeColor = (bCue ? clrMulti : clrNormal);
 			};
 
@@ -161,7 +161,7 @@ namespace KeePass.Util.MultipleValues
 			if ((iSubItem < 0) || (iSubItem >= lvi.SubItems.Count)) { Debug.Assert(false); return; }
 
 			ListViewItem.ListViewSubItem lvsi = lvi.SubItems[iSubItem];
-			if (lvsi.Text == MultipleValuesEx.CueString)
+			if (lvsi.Text == CueString)
 			{
 				Color clrNormal = lvi.ForeColor;
 				Color clrMulti = UIUtil.ColorTowards(clrNormal, (UIUtil.IsDarkColor(

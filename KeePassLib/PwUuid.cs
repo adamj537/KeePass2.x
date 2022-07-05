@@ -92,7 +92,7 @@ namespace KeePassLib
 				}
 
 				// Zero is a reserved value -- do not generate Zero
-				if (!Equals(PwUuid.Zero)) break;
+				if (!Equals(Zero)) break;
 				Debug.Assert(false);
 			}
 		}

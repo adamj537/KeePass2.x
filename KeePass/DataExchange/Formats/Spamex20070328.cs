@@ -53,7 +53,7 @@ namespace KeePass.DataExchange.Formats
 
 		public override Image SmallIcon
 		{
-			get { return KeePass.Properties.Resources.B16x16_WWW; }
+			get { return Properties.Resources.B16x16_WWW; }
 		}
 
 		private const string UrlDomain = "www.spamex.com";
@@ -77,7 +77,7 @@ namespace KeePass.DataExchange.Formats
 
 			SingleLineEditForm dlgUser = new SingleLineEditForm();
 			dlgUser.InitEx("Spamex.com", KPRes.WebSiteLogin + " - " + KPRes.UserName,
-				KPRes.UserNamePrompt, KeePass.Properties.Resources.B48x48_WWW,
+				KPRes.UserNamePrompt, Properties.Resources.B48x48_WWW,
 				string.Empty, null);
 			if (UIUtil.ShowDialogNotValue(dlgUser, DialogResult.OK)) return;
 			string strUser = dlgUser.ResultString;
@@ -85,7 +85,7 @@ namespace KeePass.DataExchange.Formats
 
 			SingleLineEditForm dlgPassword = new SingleLineEditForm();
 			dlgPassword.InitEx("Spamex.com", KPRes.WebSiteLogin + " - " + KPRes.Password,
-				KPRes.PasswordPrompt, KeePass.Properties.Resources.B48x48_WWW,
+				KPRes.PasswordPrompt, Properties.Resources.B48x48_WWW,
 				string.Empty, null);
 			if (UIUtil.ShowDialogNotValue(dlgPassword, DialogResult.OK)) return;
 			string strPassword = dlgPassword.ResultString;

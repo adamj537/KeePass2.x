@@ -29,7 +29,7 @@ namespace KeePass.Util.Spr
 		{
 			if (str == null) { Debug.Assert(false); return string.Empty; }
 
-			str = SprEncoding.EscapeAutoTypeBrackets(str);
+			str = EscapeAutoTypeBrackets(str);
 
 			str = str.Replace(@"[", @"{[}");
 			str = str.Replace(@"]", @"{]}");

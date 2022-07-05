@@ -603,8 +603,8 @@ namespace KeePassLib
 			if (this.Touched != null)
 				this.Touched(this, new ObjectTouchedEventArgs(this,
 					bModified, bTouchParents));
-			if (PwEntry.EntryTouched != null)
-				PwEntry.EntryTouched(this, new ObjectTouchedEventArgs(this,
+			if (EntryTouched != null)
+				EntryTouched(this, new ObjectTouchedEventArgs(this,
 					bModified, bTouchParents));
 
 			if (bTouchParents && (m_pParentGroup != null))

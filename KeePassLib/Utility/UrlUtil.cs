@@ -56,10 +56,10 @@ namespace KeePassLib.Utility
 					// On Unix-like systems, '\\' is not a separator
 					if (!NativeLib.IsUnix()) l.Add('\\');
 
-					if (!l.Contains(UrlUtil.LocalDirSepChar))
+					if (!l.Contains(LocalDirSepChar))
 					{
 						Debug.Assert(false);
-						l.Add(UrlUtil.LocalDirSepChar);
+						l.Add(LocalDirSepChar);
 					}
 
 					g_vDirSepChars = l.ToArray();
@@ -91,7 +91,7 @@ namespace KeePassLib.Utility
 			Debug.Assert(strFile != null);
 			if (strFile == null) throw new ArgumentNullException("strFile");
 
-			int nLastSep = strFile.LastIndexOfAny(UrlUtil.DirSepChars);
+			int nLastSep = strFile.LastIndexOfAny(DirSepChars);
 			if (nLastSep < 0) return string.Empty; // No directory
 
 			if (bEnsureValidDirSpec && (nLastSep == 2) && (strFile[1] == ':') &&
@@ -114,7 +114,7 @@ namespace KeePassLib.Utility
 		{
 			Debug.Assert(strPath != null); if (strPath == null) throw new ArgumentNullException("strPath");
 
-			int nLastSep = strPath.LastIndexOfAny(UrlUtil.DirSepChars);
+			int nLastSep = strPath.LastIndexOfAny(DirSepChars);
 
 			if (nLastSep < 0) return strPath;
 			if (nLastSep >= (strPath.Length - 1)) return string.Empty;
@@ -131,7 +131,7 @@ namespace KeePassLib.Utility
 		{
 			Debug.Assert(strPath != null); if (strPath == null) throw new ArgumentNullException("strPath");
 
-			int nLastDirSep = strPath.LastIndexOfAny(UrlUtil.DirSepChars);
+			int nLastDirSep = strPath.LastIndexOfAny(DirSepChars);
 			int nLastExtDot = strPath.LastIndexOf('.');
 
 			if (nLastExtDot <= nLastDirSep) return strPath;
@@ -148,7 +148,7 @@ namespace KeePassLib.Utility
 		{
 			Debug.Assert(strPath != null); if (strPath == null) throw new ArgumentNullException("strPath");
 
-			int nLastDirSep = strPath.LastIndexOfAny(UrlUtil.DirSepChars);
+			int nLastDirSep = strPath.LastIndexOfAny(DirSepChars);
 			int nLastExtDot = strPath.LastIndexOf('.');
 
 			if (nLastExtDot <= nLastDirSep) return string.Empty;
@@ -173,11 +173,11 @@ namespace KeePassLib.Utility
 			if (nLength <= 0) return string.Empty;
 
 			char chLast = strPath[nLength - 1];
-			if (Array.IndexOf<char>(UrlUtil.DirSepChars, chLast) >= 0)
+			if (Array.IndexOf<char>(DirSepChars, chLast) >= 0)
 				return strPath;
 
 			if (bUrl) return (strPath + '/');
-			return (strPath + UrlUtil.LocalDirSepChar);
+			return (strPath + LocalDirSepChar);
 		}
 
 		/* /// <summary>
@@ -369,8 +369,8 @@ namespace KeePassLib.Utility
 
 				string strBase = GetShortestAbsolutePath(strBaseFile);
 				string strTarget = GetShortestAbsolutePath(strTargetFile);
-				string[] vBase = strBase.Split(UrlUtil.DirSepChars);
-				string[] vTarget = strTarget.Split(UrlUtil.DirSepChars);
+				string[] vBase = strBase.Split(DirSepChars);
+				string[] vTarget = strTarget.Split(DirSepChars);
 
 				int i = 0;
 				while ((i < (vBase.Length - 1)) && (i < (vTarget.Length - 1)) &&
@@ -379,12 +379,12 @@ namespace KeePassLib.Utility
 				StringBuilder sbRel = new StringBuilder();
 				for (int j = i; j < (vBase.Length - 1); ++j)
 				{
-					if (sbRel.Length > 0) sbRel.Append(UrlUtil.LocalDirSepChar);
+					if (sbRel.Length > 0) sbRel.Append(LocalDirSepChar);
 					sbRel.Append("..");
 				}
 				for (int k = i; k < vTarget.Length; ++k)
 				{
-					if (sbRel.Length > 0) sbRel.Append(UrlUtil.LocalDirSepChar);
+					if (sbRel.Length > 0) sbRel.Append(LocalDirSepChar);
 					sbRel.Append(vTarget[k]);
 				}
 
@@ -487,7 +487,7 @@ namespace KeePassLib.Utility
 			catch (Exception) { Debug.Assert(false); return strPath; }
 
 			Debug.Assert((str.IndexOf("\\..\\") < 0) || NativeLib.IsUnix());
-			foreach (char ch in UrlUtil.DirSepChars)
+			foreach (char ch in DirSepChars)
 			{
 				string strSep = new string(ch, 1);
 				str = str.Replace(strSep + "." + strSep, strSep);
@@ -627,7 +627,7 @@ namespace KeePassLib.Utility
 
 		public static string ConvertSeparators(string strPath)
 		{
-			return ConvertSeparators(strPath, UrlUtil.LocalDirSepChar);
+			return ConvertSeparators(strPath, LocalDirSepChar);
 		}
 
 		public static string ConvertSeparators(string strPath, char chSeparator)

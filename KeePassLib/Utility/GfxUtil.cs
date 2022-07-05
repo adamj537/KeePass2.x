@@ -179,11 +179,11 @@ namespace KeePassLib.Utility
 					if ((pbImg.Length > pbHdrPng.Length) &&
 						MemUtil.ArraysEqual(pbHdrPng,
 						MemUtil.Mid<byte>(pbImg, 0, pbHdrPng.Length)))
-						img = GfxUtil.LoadImage(pbImg);
+						img = LoadImage(pbImg);
 					else if ((pbImg.Length > pbHdrJpeg.Length) &&
 						MemUtil.ArraysEqual(pbHdrJpeg,
 						MemUtil.Mid<byte>(pbImg, 0, pbHdrJpeg.Length)))
-						img = GfxUtil.LoadImage(pbImg);
+						img = LoadImage(pbImg);
 					else
 					{
 						using (MemoryStream ms = new MemoryStream(pb, false))

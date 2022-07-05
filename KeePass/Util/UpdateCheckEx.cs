@@ -143,7 +143,7 @@ namespace KeePass.Util
 				try
 				{
 					ThreadPool.QueueUserWorkItem(new WaitCallback(
-						UpdateCheckEx.RunPriv), p);
+						RunPriv), p);
 				}
 				catch (Exception) { Debug.Assert(false); }
 			}
@@ -264,7 +264,7 @@ namespace KeePass.Util
 				lDl.Add(dl);
 
 				ThreadPool.QueueUserWorkItem(new WaitCallback(
-					UpdateCheckEx.DownloadInfoFile), dl);
+					DownloadInfoFile), dl);
 			}
 
 			while (true)
@@ -464,7 +464,7 @@ namespace KeePass.Util
 			AddComponent(l, new UpdateComponentInfo(CompMain, PwDefs.FileVersion64,
 				PwDefs.VersionUrl, PwDefs.ShortProductName));
 
-			l.Sort(UpdateCheckEx.CompareComponents);
+			l.Sort(CompareComponents);
 			return l;
 		}
 

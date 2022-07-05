@@ -583,7 +583,7 @@ namespace KeePass.Forms
 
 				foreach (AutoTypeAssociation aSel in lSel)
 				{
-					if (object.ReferenceEquals(a, aSel)) lvi.Selected = true;
+					if (ReferenceEquals(a, aSel)) lvi.Selected = true;
 				}
 			}
 
@@ -754,7 +754,7 @@ namespace KeePass.Forms
 			}
 
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
-				KeePass.Properties.Resources.B48x48_KGPG_Sign, strTitle, strDesc);
+				Properties.Resources.B48x48_KGPG_Sign, strTitle, strDesc);
 			this.Icon = AppIcons.Default;
 			this.Text = strTitle;
 
@@ -765,7 +765,7 @@ namespace KeePass.Forms
 
 			Image imgOrg = Properties.Resources.B16x16_Package_Settings;
 			Image imgSc = UIUtil.SetButtonImage(m_btnTools, imgOrg, true);
-			if (!object.ReferenceEquals(imgOrg, imgSc))
+			if (!ReferenceEquals(imgOrg, imgSc))
 				m_imgTools = imgSc; // Only dispose scaled image
 
 			imgSc = UIUtil.SetButtonImage(m_btnStandardExpires, m_imgStdExpire, true);
@@ -969,7 +969,7 @@ namespace KeePass.Forms
 
 			if (bValidate && !m_icgPassword.ValidateData(true)) return false;
 
-			bool bPri = object.ReferenceEquals(peTarget, m_pwEntry);
+			bool bPri = ReferenceEquals(peTarget, m_pwEntry);
 
 			if ((this.EntrySaving != null) && bPri)
 			{

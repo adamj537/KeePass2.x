@@ -85,7 +85,7 @@ namespace KeePass.Forms
 			string strDesc = (m_bSave ? KPRes.UrlSaveDesc : KPRes.UrlOpenDesc);
 
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
-				KeePass.Properties.Resources.B48x48_WWW, strTitle, strDesc);
+				Properties.Resources.B48x48_WWW, strTitle, strDesc);
 			this.Icon = AppIcons.Default;
 			this.Text = strTitle;
 

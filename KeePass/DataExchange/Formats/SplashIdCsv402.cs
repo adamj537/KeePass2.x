@@ -186,7 +186,7 @@ namespace KeePass.DataExchange.Formats
 			if (strGroupName.Length == 0) strGroupName = strType;
 
 			SplashIdMapping mp = null;
-			foreach (SplashIdMapping mpFind in SplashIdCsv402.SplashIdMappings)
+			foreach (SplashIdMapping mpFind in SplashIdMappings)
 			{
 				if (mpFind.TypeName == strType)
 				{

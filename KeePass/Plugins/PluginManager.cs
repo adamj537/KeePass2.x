@@ -551,7 +551,7 @@ namespace KeePass.Plugins
 			if (iPrev < 0) { Debug.Assert(false); iPrev = c.Count - 1; }
 			int iIns = iPrev + 1;
 
-			l.Sort(PluginManager.CompareToolStripItems);
+			l.Sort(CompareToolStripItems);
 			if ((iPrev >= 0) && (iPrev < c.Count) && !(c[iPrev] is ToolStripSeparator))
 				l.Insert(0, new ToolStripSeparator());
 			if ((iIns < c.Count) && !(c[iIns] is ToolStripSeparator))

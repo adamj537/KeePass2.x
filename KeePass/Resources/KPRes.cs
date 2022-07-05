@@ -39,17 +39,17 @@ namespace KeePass.Resources
 		[Obsolete]
 		public static string CreateNewDatabase
 		{
-			get { return KPRes.CreateNewDatabase2; }
+			get { return CreateNewDatabase2; }
 		}
 
 		public static string DeleteEntriesTitle
 		{
-			get { return StrUtil.CommandToText(KPRes.DeleteEntriesCmd); }
+			get { return StrUtil.CommandToText(DeleteEntriesCmd); }
 		}
 
 		public static string DeleteEntriesTitleSingle
 		{
-			get { return StrUtil.CommandToText(KPRes.DeleteEntryCmd); }
+			get { return StrUtil.CommandToText(DeleteEntryCmd); }
 		}
 
 		[Obsolete]
@@ -60,42 +60,42 @@ namespace KeePass.Resources
 
 		public static string EditEntries
 		{
-			get { return StrUtil.CommandToText(KPRes.EditEntriesCmd); }
+			get { return StrUtil.CommandToText(EditEntriesCmd); }
 		}
 
 		public static string EditEntry
 		{
-			get { return StrUtil.CommandToText(KPRes.EditEntryCmd); }
+			get { return StrUtil.CommandToText(EditEntryCmd); }
 		}
 
 		[Obsolete]
 		public static string GeneratedPasswordSamples
 		{
-			get { return KPRes.GeneratedPasswords; }
+			get { return GeneratedPasswords; }
 		}
 
 		[Obsolete]
 		public static string NewDatabaseFileName
 		{
-			get { return (KPRes.Database + "." + AppDefs.FileExtension.FileExt); }
+			get { return (Database + "." + AppDefs.FileExtension.FileExt); }
 		}
 
 		[Obsolete]
 		public static string ToolBarNew
 		{
-			get { return KPRes.NewDatabase; }
+			get { return NewDatabase; }
 		}
 
 		[Obsolete]
 		public static string ToolBarOpen
 		{
-			get { return KPRes.OpenDatabase; }
+			get { return OpenDatabase; }
 		}
 
 		[Obsolete]
 		public static string ToolBarSaveAll
 		{
-			get { return KPRes.SaveAllDatabases; }
+			get { return SaveAllDatabases; }
 		}
 
 		[Obsolete]

@@ -231,7 +231,7 @@ namespace KeePassLib
 		{
 			if (pe == null) { Debug.Assert(false); return false; }
 
-			return (pe.Strings.ReadSafe(PwDefs.TitleField) == TanTitle);
+			return (pe.Strings.ReadSafe(TitleField) == TanTitle);
 		}
 
 		internal static string GetTranslationDisplayVersion(string strFileVersion)

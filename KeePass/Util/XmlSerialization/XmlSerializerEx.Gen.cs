@@ -1459,8 +1459,8 @@ namespace KeePass.Util.XmlSerialization
 			if (m_dictAceMainWindowLayout == null)
 			{
 				m_dictAceMainWindowLayout = new Dictionary<string, KeePass.App.Configuration.AceMainWindowLayout>();
-				m_dictAceMainWindowLayout["Default"] = KeePass.App.Configuration.AceMainWindowLayout.Default;
-				m_dictAceMainWindowLayout["SideBySide"] = KeePass.App.Configuration.AceMainWindowLayout.SideBySide;
+				m_dictAceMainWindowLayout["Default"] = App.Configuration.AceMainWindowLayout.Default;
+				m_dictAceMainWindowLayout["SideBySide"] = App.Configuration.AceMainWindowLayout.SideBySide;
 			}
 
 			string strValue = xr.ReadElementString();
@@ -1476,11 +1476,11 @@ namespace KeePass.Util.XmlSerialization
 			if (m_dictAceEscAction == null)
 			{
 				m_dictAceEscAction = new Dictionary<string, KeePass.App.Configuration.AceEscAction>();
-				m_dictAceEscAction["None"] = KeePass.App.Configuration.AceEscAction.None;
-				m_dictAceEscAction["Lock"] = KeePass.App.Configuration.AceEscAction.Lock;
-				m_dictAceEscAction["Minimize"] = KeePass.App.Configuration.AceEscAction.Minimize;
-				m_dictAceEscAction["MinimizeToTray"] = KeePass.App.Configuration.AceEscAction.MinimizeToTray;
-				m_dictAceEscAction["Exit"] = KeePass.App.Configuration.AceEscAction.Exit;
+				m_dictAceEscAction["None"] = App.Configuration.AceEscAction.None;
+				m_dictAceEscAction["Lock"] = App.Configuration.AceEscAction.Lock;
+				m_dictAceEscAction["Minimize"] = App.Configuration.AceEscAction.Minimize;
+				m_dictAceEscAction["MinimizeToTray"] = App.Configuration.AceEscAction.MinimizeToTray;
+				m_dictAceEscAction["Exit"] = App.Configuration.AceEscAction.Exit;
 			}
 
 			string strValue = xr.ReadElementString();
@@ -1807,11 +1807,11 @@ namespace KeePass.Util.XmlSerialization
 			if (m_dictBannerStyle == null)
 			{
 				m_dictBannerStyle = new Dictionary<string, KeePass.UI.BannerStyle>();
-				m_dictBannerStyle["Default"] = KeePass.UI.BannerStyle.Default;
-				m_dictBannerStyle["WinXPLogin"] = KeePass.UI.BannerStyle.WinXPLogin;
-				m_dictBannerStyle["WinVistaBlack"] = KeePass.UI.BannerStyle.WinVistaBlack;
-				m_dictBannerStyle["KeePassWin32"] = KeePass.UI.BannerStyle.KeePassWin32;
-				m_dictBannerStyle["BlueCarbon"] = KeePass.UI.BannerStyle.BlueCarbon;
+				m_dictBannerStyle["Default"] = UI.BannerStyle.Default;
+				m_dictBannerStyle["WinXPLogin"] = UI.BannerStyle.WinXPLogin;
+				m_dictBannerStyle["WinVistaBlack"] = UI.BannerStyle.WinVistaBlack;
+				m_dictBannerStyle["KeePassWin32"] = UI.BannerStyle.KeePassWin32;
+				m_dictBannerStyle["BlueCarbon"] = UI.BannerStyle.BlueCarbon;
 			}
 
 			string strValue = xr.ReadElementString();
@@ -2723,12 +2723,12 @@ namespace KeePass.Util.XmlSerialization
 			if (m_dictStringComparison == null)
 			{
 				m_dictStringComparison = new Dictionary<string, System.StringComparison>();
-				m_dictStringComparison["CurrentCulture"] = System.StringComparison.CurrentCulture;
-				m_dictStringComparison["CurrentCultureIgnoreCase"] = System.StringComparison.CurrentCultureIgnoreCase;
-				m_dictStringComparison["InvariantCulture"] = System.StringComparison.InvariantCulture;
-				m_dictStringComparison["InvariantCultureIgnoreCase"] = System.StringComparison.InvariantCultureIgnoreCase;
-				m_dictStringComparison["Ordinal"] = System.StringComparison.Ordinal;
-				m_dictStringComparison["OrdinalIgnoreCase"] = System.StringComparison.OrdinalIgnoreCase;
+				m_dictStringComparison["CurrentCulture"] = StringComparison.CurrentCulture;
+				m_dictStringComparison["CurrentCultureIgnoreCase"] = StringComparison.CurrentCultureIgnoreCase;
+				m_dictStringComparison["InvariantCulture"] = StringComparison.InvariantCulture;
+				m_dictStringComparison["InvariantCultureIgnoreCase"] = StringComparison.InvariantCultureIgnoreCase;
+				m_dictStringComparison["Ordinal"] = StringComparison.Ordinal;
+				m_dictStringComparison["OrdinalIgnoreCase"] = StringComparison.OrdinalIgnoreCase;
 			}
 
 			string strValue = xr.ReadElementString();
@@ -2985,29 +2985,29 @@ namespace KeePass.Util.XmlSerialization
 			if (m_dictAceColumnType == null)
 			{
 				m_dictAceColumnType = new Dictionary<string, KeePass.App.Configuration.AceColumnType>();
-				m_dictAceColumnType["Title"] = KeePass.App.Configuration.AceColumnType.Title;
-				m_dictAceColumnType["UserName"] = KeePass.App.Configuration.AceColumnType.UserName;
-				m_dictAceColumnType["Password"] = KeePass.App.Configuration.AceColumnType.Password;
-				m_dictAceColumnType["Url"] = KeePass.App.Configuration.AceColumnType.Url;
-				m_dictAceColumnType["Notes"] = KeePass.App.Configuration.AceColumnType.Notes;
-				m_dictAceColumnType["CreationTime"] = KeePass.App.Configuration.AceColumnType.CreationTime;
-				m_dictAceColumnType["LastModificationTime"] = KeePass.App.Configuration.AceColumnType.LastModificationTime;
-				m_dictAceColumnType["LastAccessTime"] = KeePass.App.Configuration.AceColumnType.LastAccessTime;
-				m_dictAceColumnType["ExpiryTime"] = KeePass.App.Configuration.AceColumnType.ExpiryTime;
-				m_dictAceColumnType["Uuid"] = KeePass.App.Configuration.AceColumnType.Uuid;
-				m_dictAceColumnType["Attachment"] = KeePass.App.Configuration.AceColumnType.Attachment;
-				m_dictAceColumnType["CustomString"] = KeePass.App.Configuration.AceColumnType.CustomString;
-				m_dictAceColumnType["PluginExt"] = KeePass.App.Configuration.AceColumnType.PluginExt;
-				m_dictAceColumnType["OverrideUrl"] = KeePass.App.Configuration.AceColumnType.OverrideUrl;
-				m_dictAceColumnType["Tags"] = KeePass.App.Configuration.AceColumnType.Tags;
-				m_dictAceColumnType["ExpiryTimeDateOnly"] = KeePass.App.Configuration.AceColumnType.ExpiryTimeDateOnly;
-				m_dictAceColumnType["Size"] = KeePass.App.Configuration.AceColumnType.Size;
-				m_dictAceColumnType["HistoryCount"] = KeePass.App.Configuration.AceColumnType.HistoryCount;
-				m_dictAceColumnType["AttachmentCount"] = KeePass.App.Configuration.AceColumnType.AttachmentCount;
-				m_dictAceColumnType["LastPasswordModTime"] = KeePass.App.Configuration.AceColumnType.LastPasswordModTime;
-				m_dictAceColumnType["AutoTypeEnabled"] = KeePass.App.Configuration.AceColumnType.AutoTypeEnabled;
-				m_dictAceColumnType["AutoTypeSequences"] = KeePass.App.Configuration.AceColumnType.AutoTypeSequences;
-				m_dictAceColumnType["Count"] = KeePass.App.Configuration.AceColumnType.Count;
+				m_dictAceColumnType["Title"] = App.Configuration.AceColumnType.Title;
+				m_dictAceColumnType["UserName"] = App.Configuration.AceColumnType.UserName;
+				m_dictAceColumnType["Password"] = App.Configuration.AceColumnType.Password;
+				m_dictAceColumnType["Url"] = App.Configuration.AceColumnType.Url;
+				m_dictAceColumnType["Notes"] = App.Configuration.AceColumnType.Notes;
+				m_dictAceColumnType["CreationTime"] = App.Configuration.AceColumnType.CreationTime;
+				m_dictAceColumnType["LastModificationTime"] = App.Configuration.AceColumnType.LastModificationTime;
+				m_dictAceColumnType["LastAccessTime"] = App.Configuration.AceColumnType.LastAccessTime;
+				m_dictAceColumnType["ExpiryTime"] = App.Configuration.AceColumnType.ExpiryTime;
+				m_dictAceColumnType["Uuid"] = App.Configuration.AceColumnType.Uuid;
+				m_dictAceColumnType["Attachment"] = App.Configuration.AceColumnType.Attachment;
+				m_dictAceColumnType["CustomString"] = App.Configuration.AceColumnType.CustomString;
+				m_dictAceColumnType["PluginExt"] = App.Configuration.AceColumnType.PluginExt;
+				m_dictAceColumnType["OverrideUrl"] = App.Configuration.AceColumnType.OverrideUrl;
+				m_dictAceColumnType["Tags"] = App.Configuration.AceColumnType.Tags;
+				m_dictAceColumnType["ExpiryTimeDateOnly"] = App.Configuration.AceColumnType.ExpiryTimeDateOnly;
+				m_dictAceColumnType["Size"] = App.Configuration.AceColumnType.Size;
+				m_dictAceColumnType["HistoryCount"] = App.Configuration.AceColumnType.HistoryCount;
+				m_dictAceColumnType["AttachmentCount"] = App.Configuration.AceColumnType.AttachmentCount;
+				m_dictAceColumnType["LastPasswordModTime"] = App.Configuration.AceColumnType.LastPasswordModTime;
+				m_dictAceColumnType["AutoTypeEnabled"] = App.Configuration.AceColumnType.AutoTypeEnabled;
+				m_dictAceColumnType["AutoTypeSequences"] = App.Configuration.AceColumnType.AutoTypeSequences;
+				m_dictAceColumnType["Count"] = App.Configuration.AceColumnType.Count;
 			}
 
 			string strValue = xr.ReadElementString();

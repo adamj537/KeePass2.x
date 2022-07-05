@@ -140,7 +140,7 @@ namespace KeePass.Util.Archive
 
 			List<ImageArchiveItem> lItems = new List<ImageArchiveItem>(
 				m_dItems.Values);
-			if (bSortByName) lItems.Sort(ImageArchive.CompareByName);
+			if (bSortByName) lItems.Sort(CompareByName);
 
 			List<Image> l = new List<Image>(lItems.Count);
 

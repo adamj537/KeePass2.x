@@ -456,7 +456,7 @@ namespace KeePass.UI
 				if (img == null)
 				{
 					Debug.Assert(false);
-					img = UIUtil.CreateColorBitmap24(nWidth, nHeight, Color.White);
+					img = CreateColorBitmap24(nWidth, nHeight, Color.White);
 				}
 
 				if ((img.Width != nWidth) || (img.Height != nHeight))
@@ -735,9 +735,9 @@ namespace KeePass.UI
 				for (int iCol = 1; iCol < vColumns.Count; ++iCol)
 					lvi.SubItems.Add(AppDefs.GetEntryField(pe, vColumns[iCol].Key));
 
-				if (!UIUtil.ColorsEqual(pe.ForegroundColor, Color.Empty))
+				if (!ColorsEqual(pe.ForegroundColor, Color.Empty))
 					lvi.ForeColor = pe.ForegroundColor;
-				if (!UIUtil.ColorsEqual(pe.BackgroundColor, Color.Empty))
+				if (!ColorsEqual(pe.BackgroundColor, Color.Empty))
 					lvi.BackColor = pe.BackgroundColor;
 
 				lvi.Tag = pe;
@@ -747,7 +747,7 @@ namespace KeePass.UI
 
 				if (bFirstEntry)
 				{
-					UIUtil.SetFocusedItem(lv, lvi, true);
+					SetFocusedItem(lv, lvi, true);
 					bFirstEntry = false;
 				}
 			}
@@ -888,9 +888,9 @@ namespace KeePass.UI
 					lvi.SubItems.Add(ctx.Sequence);
 				Debug.Assert(lvi.SubItems.Count == lv.Columns.Count);
 
-				if (!UIUtil.ColorsEqual(pe.ForegroundColor, Color.Empty))
+				if (!ColorsEqual(pe.ForegroundColor, Color.Empty))
 					lvi.ForeColor = pe.ForegroundColor;
-				if (!UIUtil.ColorsEqual(pe.BackgroundColor, Color.Empty))
+				if (!ColorsEqual(pe.BackgroundColor, Color.Empty))
 					lvi.BackColor = pe.BackgroundColor;
 
 				lvi.Tag = ctx;
@@ -900,7 +900,7 @@ namespace KeePass.UI
 
 				if (bFirstEntry)
 				{
-					UIUtil.SetFocusedItem(lv, lvi, true);
+					SetFocusedItem(lv, lvi, true);
 					bFirstEntry = false;
 				}
 			}
@@ -909,7 +909,7 @@ namespace KeePass.UI
 
 			// Resize columns *after* EndUpdate, otherwise sizing problem
 			// caused by the scrollbar
-			UIUtil.ResizeColumns(lv, true);
+			ResizeColumns(lv, true);
 		}
 
 		public static int GetHScrollBarHeight()
@@ -1088,7 +1088,7 @@ namespace KeePass.UI
 
 			dlg.AllowFullOpen = true;
 			dlg.AnyColor = true;
-			if (!UIUtil.ColorsEqual(clrDefault, Color.Empty)) dlg.Color = clrDefault;
+			if (!ColorsEqual(clrDefault, Color.Empty)) dlg.Color = clrDefault;
 			dlg.FullOpen = true;
 			dlg.ShowHelp = false;
 			// dlg.SolidColorOnly = false;
@@ -1564,7 +1564,7 @@ namespace KeePass.UI
 			}
 			catch (Exception) { Debug.Assert(false); }
 
-			UIUtil.SetToolTip(tt, c, str, false);
+			SetToolTip(tt, c, str, false);
 		}
 
 		public static void CreateGroupList(PwGroup pgContainer, ComboBox cmb,
@@ -1722,7 +1722,7 @@ namespace KeePass.UI
 					img = g_bmpCheck;
 
 					Color clrFG = tsmi.ForeColor;
-					if (!UIUtil.ColorsEqual(clrFG, Color.Empty) &&
+					if (!ColorsEqual(clrFG, Color.Empty) &&
 						(ColorToGrayscale(clrFG).R >= 128))
 					{
 						if (g_bmpCheckLight == null)
@@ -1772,7 +1772,7 @@ namespace KeePass.UI
 				Image imgCheck = Properties.Resources.B16x16_MenuRadio;
 
 				Color clrFG = tsmi.ForeColor;
-				if (!UIUtil.ColorsEqual(clrFG, Color.Empty) &&
+				if (!ColorsEqual(clrFG, Color.Empty) &&
 					(ColorToGrayscale(clrFG).R >= 128))
 				{
 					if (g_bmpRadioLight == null)
@@ -1833,7 +1833,7 @@ namespace KeePass.UI
 			// scrollbar or not (unreliable; for example the scrollbar
 			// width is not subtracted during a Form.Load even though
 			// a scrollbar is required); try to detect this situation
-			int cwScroll = UIUtil.GetVScrollBarWidth();
+			int cwScroll = GetVScrollBarWidth();
 			if ((lv.Width - w) < cwScroll) // Scrollbar not already subtracted
 			{
 				int nItems = lv.Items.Count;
@@ -1897,8 +1897,8 @@ namespace KeePass.UI
 			if (ColorsEqual(clrBase, Color.White)) return Color.FromArgb(238, 238, 255);
 
 			float b = clrBase.GetBrightness();
-			if (b >= 0.5f) return UIUtil.DarkenColor(clrBase, 0.1);
-			return UIUtil.LightenColor(clrBase, 0.25);
+			if (b >= 0.5f) return DarkenColor(clrBase, 0.1);
+			return LightenColor(clrBase, 0.25);
 		}
 
 		public static Color GetAlternateColorEx(Color clrBase)
@@ -1916,7 +1916,7 @@ namespace KeePass.UI
 
 			Color clrBg = lv.BackColor;
 
-			if (!UIUtil.GetGroupsEnabled(lv) || !bAlternate)
+			if (!GetGroupsEnabled(lv) || !bAlternate)
 			{
 				for (int i = 0; i < lv.Items.Count; ++i)
 				{
@@ -1944,7 +1944,7 @@ namespace KeePass.UI
 					List<ListViewItem> lItems = new List<ListViewItem>();
 					foreach (ListViewItem lviEnum in lvg.Items)
 						lItems.Add(lviEnum);
-					lItems.Sort(UIUtil.LviCompareByIndex);
+					lItems.Sort(LviCompareByIndex);
 
 					for (int i = 0; i < lItems.Count; ++i)
 					{
@@ -2131,40 +2131,40 @@ namespace KeePass.UI
 			CheckBox cbKeyFile, CheckBox cbUserAccount, CheckBox cbHidePassword)
 		{
 			if ((aceUIFlags & (ulong)AceKeyUIFlags.EnablePassword) != 0)
-				UIUtil.SetEnabled(cbPassword, true);
+				SetEnabled(cbPassword, true);
 			if ((aceUIFlags & (ulong)AceKeyUIFlags.EnableKeyFile) != 0)
-				UIUtil.SetEnabled(cbKeyFile, true);
+				SetEnabled(cbKeyFile, true);
 			if ((aceUIFlags & (ulong)AceKeyUIFlags.EnableUserAccount) != 0)
-				UIUtil.SetEnabled(cbUserAccount, true);
+				SetEnabled(cbUserAccount, true);
 			if ((aceUIFlags & (ulong)AceKeyUIFlags.EnableHidePassword) != 0)
-				UIUtil.SetEnabled(cbHidePassword, true);
+				SetEnabled(cbHidePassword, true);
 
 			if ((aceUIFlags & (ulong)AceKeyUIFlags.CheckPassword) != 0)
-				UIUtil.SetChecked(cbPassword, true);
+				SetChecked(cbPassword, true);
 			if ((aceUIFlags & (ulong)AceKeyUIFlags.CheckKeyFile) != 0)
-				UIUtil.SetChecked(cbKeyFile, true);
+				SetChecked(cbKeyFile, true);
 			if ((aceUIFlags & (ulong)AceKeyUIFlags.CheckUserAccount) != 0)
-				UIUtil.SetChecked(cbUserAccount, true);
+				SetChecked(cbUserAccount, true);
 			if ((aceUIFlags & (ulong)AceKeyUIFlags.CheckHidePassword) != 0)
-				UIUtil.SetChecked(cbHidePassword, true);
+				SetChecked(cbHidePassword, true);
 
 			if ((aceUIFlags & (ulong)AceKeyUIFlags.UncheckPassword) != 0)
-				UIUtil.SetChecked(cbPassword, false);
+				SetChecked(cbPassword, false);
 			if ((aceUIFlags & (ulong)AceKeyUIFlags.UncheckKeyFile) != 0)
-				UIUtil.SetChecked(cbKeyFile, false);
+				SetChecked(cbKeyFile, false);
 			if ((aceUIFlags & (ulong)AceKeyUIFlags.UncheckUserAccount) != 0)
-				UIUtil.SetChecked(cbUserAccount, false);
+				SetChecked(cbUserAccount, false);
 			if ((aceUIFlags & (ulong)AceKeyUIFlags.UncheckHidePassword) != 0)
-				UIUtil.SetChecked(cbHidePassword, false);
+				SetChecked(cbHidePassword, false);
 
 			if ((aceUIFlags & (ulong)AceKeyUIFlags.DisablePassword) != 0)
-				UIUtil.SetEnabled(cbPassword, false);
+				SetEnabled(cbPassword, false);
 			if ((aceUIFlags & (ulong)AceKeyUIFlags.DisableKeyFile) != 0)
-				UIUtil.SetEnabled(cbKeyFile, false);
+				SetEnabled(cbKeyFile, false);
 			if ((aceUIFlags & (ulong)AceKeyUIFlags.DisableUserAccount) != 0)
-				UIUtil.SetEnabled(cbUserAccount, false);
+				SetEnabled(cbUserAccount, false);
 			if ((aceUIFlags & (ulong)AceKeyUIFlags.DisableHidePassword) != 0)
-				UIUtil.SetEnabled(cbHidePassword, false);
+				SetEnabled(cbHidePassword, false);
 		}
 
 		public static bool GetGroupsEnabled(ListView lv)
@@ -2204,7 +2204,7 @@ namespace KeePass.UI
 				if (lv.Items.Count == 0) return nRes;
 
 				ListViewItem lvi = null;
-				if (!UIUtil.GetGroupsEnabled(lv)) lvi = lv.TopItem;
+				if (!GetGroupsEnabled(lv)) lvi = lv.TopItem;
 				else
 				{
 					// In grouped mode, the TopItem property does not work;
@@ -2335,7 +2335,7 @@ namespace KeePass.UI
 			if ((scrY == idxTop) && (idxTop > 0))
 			{
 				// Groups imply pixel position
-				Debug.Assert(!UIUtil.GetGroupsEnabled(lv));
+				Debug.Assert(!GetGroupsEnabled(lv));
 
 				if (!bForRestoreOnly)
 				{
@@ -2365,7 +2365,7 @@ namespace KeePass.UI
 			if (lv == null) { Debug.Assert(false); return; }
 			if (s == null) { Debug.Assert(false); return; }
 
-			if (UIUtil.GetGroupsEnabled(lv) && !NativeLib.IsUnix())
+			if (GetGroupsEnabled(lv) && !NativeLib.IsUnix())
 			{
 				// Only works correctly when groups are present
 				// (lv.ShowGroups is not sufficient)
@@ -2508,7 +2508,7 @@ namespace KeePass.UI
 				if (bSize) rect.Size = new Size(v[2], v[3]);
 				else rect.Size = f.Size;
 
-				if (UIUtil.IsScreenAreaVisible(rect))
+				if (IsScreenAreaVisible(rect))
 				{
 					f.Location = rect.Location;
 					if (bSize) f.Size = rect.Size;
@@ -2603,7 +2603,7 @@ namespace KeePass.UI
 			if (btn == null) { Debug.Assert(false); return; }
 			// imgNew may be null
 
-			Debug.Assert(object.ReferenceEquals(btn.Image, imgCur));
+			Debug.Assert(ReferenceEquals(btn.Image, imgCur));
 
 			Image imgPrev = imgCur;
 
@@ -2617,7 +2617,7 @@ namespace KeePass.UI
 		{
 			if (btn == null) { Debug.Assert(false); return; }
 
-			Debug.Assert(object.ReferenceEquals(btn.Image, imgCur));
+			Debug.Assert(ReferenceEquals(btn.Image, imgCur));
 
 			if (imgCur != null)
 			{
@@ -2629,7 +2629,7 @@ namespace KeePass.UI
 
 		internal static void OverwriteIfNotEqual(ref Image imgCur, Image imgNew)
 		{
-			if (object.ReferenceEquals(imgCur, imgNew)) return;
+			if (ReferenceEquals(imgCur, imgNew)) return;
 
 			if (imgCur != null) imgCur.Dispose();
 			imgCur = imgNew;
@@ -2762,7 +2762,7 @@ namespace KeePass.UI
 					}
 				}
 
-				if (bStdSetFocus) UIUtil.SetFocus(c, fParent, bToForegroundAndFocus);
+				if (bStdSetFocus) SetFocus(c, fParent, bToForegroundAndFocus);
 			}
 			catch (Exception) { Debug.Assert(false); }
 		}
@@ -2777,7 +2777,7 @@ namespace KeePass.UI
 			if (f == null) { Debug.Assert(false); return DialogResult.None; }
 
 			DialogResult dr = f.ShowDialog();
-			UIUtil.DestroyForm(f);
+			DestroyForm(f);
 			return dr;
 		}
 
@@ -2787,7 +2787,7 @@ namespace KeePass.UI
 			if (fParent == null) return ShowDialogAndDestroy(f);
 
 			DialogResult dr = f.ShowDialog(fParent);
-			UIUtil.DestroyForm(f);
+			DestroyForm(f);
 			return dr;
 		}
 
@@ -2805,7 +2805,7 @@ namespace KeePass.UI
 
 			if (f.ShowDialog() != drNotValue)
 			{
-				UIUtil.DestroyForm(f);
+				DestroyForm(f);
 				return true;
 			}
 
@@ -3034,8 +3034,8 @@ namespace KeePass.UI
 			Rectangle rectTop = new Rectangle(0, dyTrans, qSize, yCenter - dyTrans);
 			Rectangle rectBottom = new Rectangle(0, yCenter, qSize, qSize - yCenter);
 
-			Color clrLight = UIUtil.LightenColor(clr, 0.5);
-			Color clrDark = UIUtil.DarkenColor(clr, 0.1);
+			Color clrLight = LightenColor(clr, 0.5);
+			Color clrDark = DarkenColor(clr, 0.1);
 
 			Bitmap bmp = new Bitmap(qSize, qSize, PixelFormat.Format32bppArgb);
 			using (Graphics g = Graphics.FromImage(bmp))
@@ -3356,7 +3356,7 @@ namespace KeePass.UI
 				return new Bitmap(imgBase);
 
 			bool bRtl = Program.Translation.Properties.RightToLeft;
-			bool bStdClr = !UIUtil.IsDarkTheme;
+			bool bStdClr = !IsDarkTheme;
 
 			Bitmap bmp = new Bitmap(dx, dy, PixelFormat.Format32bppArgb);
 			using (Graphics g = Graphics.FromImage(bmp))
@@ -3538,7 +3538,7 @@ namespace KeePass.UI
 					}
 				}
 
-				UIUtil.SetHandled(e, true);
+				SetHandled(e, true);
 				return true;
 			}
 

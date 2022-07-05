@@ -61,7 +61,7 @@ namespace KeePass.Util
 		{
 			if (url == null) throw new ArgumentNullException("url");
 
-			HttpWebRequest hwr = (HttpWebRequest)HttpWebRequest.Create(url);
+			HttpWebRequest hwr = (HttpWebRequest)WebRequest.Create(url);
 
 			byte[] pbPostData = Encoding.ASCII.GetBytes(strPostData);
 
@@ -106,7 +106,7 @@ namespace KeePass.Util
 		{
 			if (url == null) throw new ArgumentNullException("url");
 
-			HttpWebRequest hwr = (HttpWebRequest)HttpWebRequest.Create(url);
+			HttpWebRequest hwr = (HttpWebRequest)WebRequest.Create(url);
 
 			hwr.Method = "GET";
 			hwr.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)";

@@ -303,7 +303,7 @@ namespace KeePass.UI
 					int txT = (!bRtl ? tx : (nWidth - tx));
 					// - TextRenderer.MeasureText(g, strTitle, font).Width));
 					// g.DrawString(strTitle, font, brush, fx, fy);
-					BannerFactory.DrawText(g, strTitle, txT, ty, font,
+					DrawText(g, strTitle, txT, ty, font,
 						clrText, bRtl, nWidth);
 				}
 
@@ -317,7 +317,7 @@ namespace KeePass.UI
 					int txL = (!bRtl ? tx : (nWidth - tx));
 					// - TextRenderer.MeasureText(g, strLine, fontSmall).Width));
 					// g.DrawString(strLine, fontSmall, brush, fx, fy);
-					BannerFactory.DrawText(g, strLine, txL, ty, fontSmall,
+					DrawText(g, strLine, txL, ty, fontSmall,
 						clrText, bRtl, nWidth);
 				}
 
@@ -455,7 +455,7 @@ namespace KeePass.UI
 				Image imgPrev = null;
 				if (nOldWidth >= 0) imgPrev = picBox.Image;
 
-				BannerFactory.CreateBannerEx(f, picBox, imgIcon, strTitle,
+				CreateBannerEx(f, picBox, imgIcon, strTitle,
 					strLine, true);
 
 				if (imgPrev != null) imgPrev.Dispose(); // Release old banner

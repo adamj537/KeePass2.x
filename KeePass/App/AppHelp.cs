@@ -66,7 +66,7 @@ namespace KeePass.App
 			{
 				try
 				{
-					string strFile = AppHelp.LocalHelpFile;
+					string strFile = LocalHelpFile;
 					if (!string.IsNullOrEmpty(strFile))
 						return File.Exists(strFile);
 				}
@@ -99,7 +99,7 @@ namespace KeePass.App
 		/// with the '#' character.</param>
 		public static void ShowHelp(string strTopic, string strSection)
 		{
-			AppHelp.ShowHelp(strTopic, strSection, false);
+			ShowHelp(strTopic, strSection, false);
 		}
 
 		/// <summary>
@@ -115,9 +115,9 @@ namespace KeePass.App
 		{
 			if (ShowHelpOverride(strTopic, strSection)) return;
 
-			if (AppHelp.LocalHelpAvailable)
+			if (LocalHelpAvailable)
 			{
-				if (bPreferLocal || (AppHelp.PreferredHelpSource == AppHelpSource.Local))
+				if (bPreferLocal || (PreferredHelpSource == AppHelpSource.Local))
 					ShowHelpLocal(strTopic, strSection);
 				else
 					ShowHelpOnline(strTopic, strSection);
@@ -127,7 +127,7 @@ namespace KeePass.App
 
 		private static void ShowHelpLocal(string strTopic, string strSection)
 		{
-			string strFile = AppHelp.LocalHelpFile;
+			string strFile = LocalHelpFile;
 			if (string.IsNullOrEmpty(strFile)) { Debug.Assert(false); return; }
 
 			// Unblock CHM file for proper display of help contents

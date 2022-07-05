@@ -124,16 +124,16 @@ namespace KeePass.Util
 		{
 			string str = strText;
 
-			str = AppLocator.ReplacePath(str, @"{INTERNETEXPLORER}",
-				AppLocator.InternetExplorerPath, ctx);
-			str = AppLocator.ReplacePath(str, @"{FIREFOX}",
-				AppLocator.FirefoxPath, ctx);
-			str = AppLocator.ReplacePath(str, @"{OPERA}",
-				AppLocator.OperaPath, ctx);
-			str = AppLocator.ReplacePath(str, @"{GOOGLECHROME}",
-				AppLocator.ChromePath, ctx);
-			str = AppLocator.ReplacePath(str, @"{SAFARI}",
-				AppLocator.SafariPath, ctx);
+			str = ReplacePath(str, @"{INTERNETEXPLORER}",
+				InternetExplorerPath, ctx);
+			str = ReplacePath(str, @"{FIREFOX}",
+				FirefoxPath, ctx);
+			str = ReplacePath(str, @"{OPERA}",
+				OperaPath, ctx);
+			str = ReplacePath(str, @"{GOOGLECHROME}",
+				ChromePath, ctx);
+			str = ReplacePath(str, @"{SAFARI}",
+				SafariPath, ctx);
 			// Edge executable cannot be run normally
 
 			return str;

@@ -302,22 +302,22 @@ namespace KeePass.App
 			if (pe == null) throw new ArgumentNullException("pe");
 			if (strFieldId == null) throw new ArgumentNullException("strFieldId");
 
-			if (strFieldId == AppDefs.ColumnIdnGroup)
+			if (strFieldId == ColumnIdnGroup)
 				return ((pe.ParentGroup != null) ? pe.ParentGroup.Name : string.Empty);
-			else if (strFieldId == AppDefs.ColumnIdnCreationTime)
+			else if (strFieldId == ColumnIdnCreationTime)
 				return TimeUtil.ToDisplayString(pe.CreationTime);
-			else if (strFieldId == AppDefs.ColumnIdnLastModificationTime)
+			else if (strFieldId == ColumnIdnLastModificationTime)
 				return TimeUtil.ToDisplayString(pe.LastModificationTime);
-			else if (strFieldId == AppDefs.ColumnIdnLastAccessTime)
+			else if (strFieldId == ColumnIdnLastAccessTime)
 				return TimeUtil.ToDisplayString(pe.LastAccessTime);
-			else if (strFieldId == AppDefs.ColumnIdnExpiryTime)
+			else if (strFieldId == ColumnIdnExpiryTime)
 			{
 				if (!pe.Expires) return KPRes.NeverExpires;
 				return TimeUtil.ToDisplayString(pe.ExpiryTime);
 			}
-			else if (strFieldId == AppDefs.ColumnIdnUuid)
+			else if (strFieldId == ColumnIdnUuid)
 				return pe.Uuid.ToHexString();
-			else if (strFieldId == AppDefs.ColumnIdnAttachment)
+			else if (strFieldId == ColumnIdnAttachment)
 				return pe.Binaries.UCount.ToString();
 
 			return pe.Strings.ReadSafe(strFieldId);
@@ -328,9 +328,9 @@ namespace KeePass.App
 			if (fQ < 0.0f) { Debug.Assert(false); fQ = 0.0f; }
 			if (fQ > 1.0f) { Debug.Assert(false); fQ = 1.0f; }
 
-			Color clrL = AppDefs.ColorQualityLow;
-			Color clrH = AppDefs.ColorQualityHigh;
-			Color clrM = AppDefs.ColorQualityMid;
+			Color clrL = ColorQualityLow;
+			Color clrH = ColorQualityHigh;
+			Color clrM = ColorQualityMid;
 
 			int iR, iG, iB;
 			if (fQ <= 0.5f)
@@ -357,14 +357,14 @@ namespace KeePass.App
 
 			Color clrQ = Color.FromArgb(iR, iG, iB);
 			if (bToControlBack)
-				return UIUtil.ColorTowards(clrQ, AppDefs.ColorControlNormal, 0.5);
+				return UIUtil.ColorTowards(clrQ, ColorControlNormal, 0.5);
 			return clrQ;
 		}
 
 		internal static string GetKeyFileFilter()
 		{
-			return UIUtil.CreateFileTypeFilter(AppDefs.FileExtension.KeyFile +
-				"|" + AppDefs.FileExtension.KeyFileAlt, KPRes.KeyFiles, true);
+			return UIUtil.CreateFileTypeFilter(FileExtension.KeyFile +
+				"|" + FileExtension.KeyFileAlt, KPRes.KeyFiles, true);
 		}
 	}
 }

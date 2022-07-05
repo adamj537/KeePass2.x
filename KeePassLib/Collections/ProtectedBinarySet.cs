@@ -73,7 +73,7 @@ namespace KeePassLib.Collections
 			// Fast search by reference
 			foreach (KeyValuePair<int, ProtectedBinary> kvp in m_d)
 			{
-				if (object.ReferenceEquals(pb, kvp.Value))
+				if (ReferenceEquals(pb, kvp.Value))
 				{
 					Debug.Assert(pb.Equals(kvp.Value));
 					return kvp.Key;

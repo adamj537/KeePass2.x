@@ -66,7 +66,7 @@ namespace KeePass.DataExchange.Formats
 
 		public override Image SmallIcon
 		{
-			get { return KeePass.Properties.Resources.B16x16_Services; }
+			get { return Properties.Resources.B16x16_Services; }
 		}
 
 		public WinFavorites10(bool bInRoot) : base()

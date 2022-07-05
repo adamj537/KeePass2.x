@@ -509,7 +509,7 @@ namespace KeePass.Util.SendInputExt
 			// Get out of a menu bar that was focused when only
 			// using Alt as hot key modifier
 			if (Program.Config.Integration.AutoTypeReleaseAltWithKeyPress &&
-				vKeys.TrueForAll(SiEngineWin.IsAltOrToggle))
+				vKeys.TrueForAll(IsAltOrToggle))
 			{
 				if (vKeys.Contains(NativeMethods.VK_LMENU))
 				{

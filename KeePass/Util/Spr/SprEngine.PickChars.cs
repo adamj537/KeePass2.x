@@ -80,7 +80,7 @@ namespace KeePass.Util.Spr
 			{
 				string strPassword = ps.ReadString();
 
-				string strPick = SprEngine.CompileInternal(strPassword,
+				string strPick = CompileInternal(strPassword,
 					ctx.WithoutContentTransformations(), uRecursionLevel + 1);
 
 				if (!string.IsNullOrEmpty(strPick))
@@ -90,7 +90,7 @@ namespace KeePass.Util.Spr
 						true, true, uCharCount, null) ?? string.Empty);
 
 					str = StrUtil.ReplaceCaseInsensitive(str, strPlaceholder,
-						SprEngine.TransformContent(strPicked, ctx));
+						TransformContent(strPicked, ctx));
 				}
 			}
 
@@ -181,7 +181,7 @@ namespace KeePass.Util.Spr
 				}
 
 				str = StrUtil.ReplaceCaseInsensitive(str, strPlaceholder,
-					bEncode ? SprEngine.TransformContent(strRep, ctx) : strRep);
+					bEncode ? TransformContent(strRep, ctx) : strRep);
 			}
 
 			return str;
@@ -190,7 +190,7 @@ namespace KeePass.Util.Spr
 		private static string ShowCharPickDlg(string strWord, uint uCharCount,
 			bool? bInitHide, SprContext ctx, uint uRecursionLevel)
 		{
-			string strPick = SprEngine.CompileInternal(strWord,
+			string strPick = CompileInternal(strWord,
 				ctx.WithoutContentTransformations(), uRecursionLevel + 1);
 
 			// No need to show the dialog when there's nothing to pick from

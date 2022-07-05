@@ -109,7 +109,7 @@ namespace KeePassLib.Utility
 		{
 			if (vLines == null) return string.Empty;
 
-			string strNewPara = MessageService.NewParagraph;
+			string strNewPara = NewParagraph;
 
 			StringBuilder sbText = new StringBuilder();
 			bool bSeparator = false;
@@ -240,8 +240,8 @@ namespace KeePassLib.Utility
 			strTitle = (strTitle ?? PwDefs.ShortProductName);
 			string strText = ObjectsToMessage(vLines);
 
-			if (MessageService.MessageShowing != null)
-				MessageService.MessageShowing(null, new MessageServiceEventArgs(
+			if (MessageShowing != null)
+				MessageShowing(null, new MessageServiceEventArgs(
 					strTitle, strText, MessageBoxButtons.OK, m_mbiInfo));
 
 			SafeShowMessageBox(strText, strTitle, MessageBoxButtons.OK, m_mbiInfo,
@@ -267,8 +267,8 @@ namespace KeePassLib.Utility
 			string strTitle = PwDefs.ShortProductName;
 			string strText = ObjectsToMessage(vLines, bFullExceptions);
 
-			if (MessageService.MessageShowing != null)
-				MessageService.MessageShowing(null, new MessageServiceEventArgs(
+			if (MessageShowing != null)
+				MessageShowing(null, new MessageServiceEventArgs(
 					strTitle, strText, MessageBoxButtons.OK, m_mbiWarning));
 
 			SafeShowMessageBox(strText, strTitle, MessageBoxButtons.OK, m_mbiWarning,
@@ -282,8 +282,8 @@ namespace KeePassLib.Utility
 			++m_uCurrentMessageCount;
 
 			string strTitle = PwDefs.ShortProductName + " - " + KLRes.FatalError;
-			string strText = KLRes.FatalErrorText + MessageService.NewParagraph +
-				KLRes.ErrorInClipboard + MessageService.NewParagraph +
+			string strText = KLRes.FatalErrorText + NewParagraph +
+				KLRes.ErrorInClipboard + NewParagraph +
 				// Please send it to the KeePass developers.
 				// KLRes.ErrorFeedbackRequest + MessageService.NewParagraph +
 				ObjectsToMessage(vLines);
@@ -301,8 +301,8 @@ namespace KeePassLib.Utility
 			}
 			catch (Exception) { Debug.Assert(false); }
 
-			if (MessageService.MessageShowing != null)
-				MessageService.MessageShowing(null, new MessageServiceEventArgs(
+			if (MessageShowing != null)
+				MessageShowing(null, new MessageServiceEventArgs(
 					strTitle, strText, MessageBoxButtons.OK, m_mbiFatal));
 
 			SafeShowMessageBox(strText, strTitle, MessageBoxButtons.OK, m_mbiFatal,
@@ -319,8 +319,8 @@ namespace KeePassLib.Utility
 			string strTextEx = (strText ?? string.Empty);
 			string strTitleEx = (strTitle ?? PwDefs.ShortProductName);
 
-			if (MessageService.MessageShowing != null)
-				MessageService.MessageShowing(null, new MessageServiceEventArgs(
+			if (MessageShowing != null)
+				MessageShowing(null, new MessageServiceEventArgs(
 					strTitleEx, strTextEx, mbb, m_mbiQuestion));
 
 			DialogResult dr = SafeShowMessageBox(strTextEx, strTitleEx, mbb,
@@ -338,8 +338,8 @@ namespace KeePassLib.Utility
 			string strTextEx = (strText ?? string.Empty);
 			string strTitleEx = (strTitle ?? PwDefs.ShortProductName);
 
-			if (MessageService.MessageShowing != null)
-				MessageService.MessageShowing(null, new MessageServiceEventArgs(
+			if (MessageShowing != null)
+				MessageShowing(null, new MessageServiceEventArgs(
 					strTitleEx, strTextEx, MessageBoxButtons.YesNo, mbi));
 
 			DialogResult dr = SafeShowMessageBox(strTextEx, strTitleEx,
@@ -412,13 +412,13 @@ namespace KeePassLib.Utility
 			string str = string.Empty;
 
 			if (!string.IsNullOrEmpty(strFilePath))
-				str += strFilePath + MessageService.NewParagraph;
+				str += strFilePath + NewParagraph;
 
 			str += KLRes.FileLoadFailed;
 
 			if ((ex != null) && !string.IsNullOrEmpty(ex.Message))
 			{
-				str += MessageService.NewParagraph;
+				str += NewParagraph;
 				if (!bFullException) str += ex.Message;
 				else str += ObjectsToMessage(new object[] { ex }, true);
 			}
@@ -431,15 +431,15 @@ namespace KeePassLib.Utility
 		{
 			string str = string.Empty;
 			if (!string.IsNullOrEmpty(strFilePath))
-				str += strFilePath + MessageService.NewParagraph;
+				str += strFilePath + NewParagraph;
 
 			str += KLRes.FileSaveFailed;
 
 			if ((ex != null) && !string.IsNullOrEmpty(ex.Message))
-				str += MessageService.NewParagraph + ex.Message;
+				str += NewParagraph + ex.Message;
 
 			if (bCorruptionWarning)
-				str += MessageService.NewParagraph + KLRes.FileSaveCorruptionWarning;
+				str += NewParagraph + KLRes.FileSaveCorruptionWarning;
 
 			return str;
 		}

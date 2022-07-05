@@ -126,10 +126,10 @@ namespace KeePass.Util
 			FixEventSeq(l);
 
 			ISiEngine si = null;
-			if (SendInputEx.CreateEngine != null)
+			if (CreateEngine != null)
 			{
 				SiEventArgs ea = new SiEventArgs();
-				SendInputEx.CreateEngine(null, ea);
+				CreateEngine(null, ea);
 				si = ea.Engine;
 			}
 			if (si == null)
@@ -462,7 +462,7 @@ namespace KeePass.Util
 
 		private static void Send(ISiEngine siEngine, List<SiEvent> l)
 		{
-			bool bHasClipOp = l.Exists(SendInputEx.IsClipboardOp);
+			bool bHasClipOp = l.Exists(IsClipboardOp);
 			ClipboardEventChainBlocker cev = null;
 			ClipboardContents cnt = null;
 			if (bHasClipOp)

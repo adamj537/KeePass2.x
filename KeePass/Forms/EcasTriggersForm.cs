@@ -88,7 +88,7 @@ namespace KeePass.Forms
 
 			EcasTriggerSystem ts = Program.TriggerSystem;
 			EcasTriggerSystem tsCfg = Program.Config.Application.TriggerSystem;
-			if (object.ReferenceEquals(m_triggersInOut, ts) &&
+			if (ReferenceEquals(m_triggersInOut, ts) &&
 				AppConfigEx.IsOptionEnforced(tsCfg, "Enabled"))
 				m_cbEnableTriggers.Enabled = false;
 

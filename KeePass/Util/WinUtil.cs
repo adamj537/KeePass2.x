@@ -244,30 +244,30 @@ namespace KeePass.Util
 		{
 			if (string.IsNullOrEmpty(strUrlToOpen)) { Debug.Assert(false); return; }
 
-			if (WinUtil.OpenUrlPre != null)
+			if (OpenUrlPre != null)
 			{
 				OpenUrlEventArgs e = new OpenUrlEventArgs(strUrlToOpen, peDataSource,
 					bAllowOverride, strBaseRaw);
-				WinUtil.OpenUrlPre(null, e);
+				OpenUrlPre(null, e);
 				strUrlToOpen = e.Url;
 
 				if (string.IsNullOrEmpty(strUrlToOpen)) return;
 			}
 
-			string strPrevWorkDir = WinUtil.GetWorkingDirectory();
-			string strThisExe = WinUtil.GetExecutable();
+			string strPrevWorkDir = GetWorkingDirectory();
+			string strThisExe = GetExecutable();
 
 			string strExeDir = UrlUtil.GetFileDirectory(strThisExe, false, true);
-			WinUtil.SetWorkingDirectory(strExeDir);
+			SetWorkingDirectory(strExeDir);
 
 			string strUrl = CompileUrl(strUrlToOpen, peDataSource, bAllowOverride,
 				strBaseRaw, null);
 
 			if (string.IsNullOrEmpty(strUrl)) { } // Might be placeholder only
-			else if (WinUtil.IsCommandLineUrl(strUrl))
+			else if (IsCommandLineUrl(strUrl))
 			{
 				string strApp, strArgs;
-				StrUtil.SplitCommandLine(WinUtil.GetCommandLineFromUrl(strUrl),
+				StrUtil.SplitCommandLine(GetCommandLineFromUrl(strUrl),
 					out strApp, out strArgs);
 
 				try
@@ -303,7 +303,7 @@ namespace KeePass.Util
 			}
 
 			// Restore previous working directory
-			WinUtil.SetWorkingDirectory(strPrevWorkDir);
+			SetWorkingDirectory(strPrevWorkDir);
 
 			if (peDataSource != null) peDataSource.Touch(false);
 
@@ -328,7 +328,7 @@ namespace KeePass.Util
 			strUrlFlt = strUrlFlt.TrimStart(new char[] { ' ', '\t', '\r', '\n' });
 
 			bool bEncCmd = (obForceEncCmd.HasValue ? obForceEncCmd.Value :
-				WinUtil.IsCommandLineUrl(strUrlFlt));
+				IsCommandLineUrl(strUrlFlt));
 
 			SprContext ctx = new SprContext(pe, pd, SprCompileFlags.All, false, bEncCmd);
 			ctx.Base = strBaseRaw;
@@ -341,7 +341,7 @@ namespace KeePass.Util
 			if (!bAllowOverride) strOvr = null;
 			if (strOvr != null)
 			{
-				bool bEncCmdOvr = WinUtil.IsCommandLineUrl(strOvr);
+				bool bEncCmdOvr = IsCommandLineUrl(strOvr);
 
 				SprContext ctxOvr = new SprContext(pe, pd, SprCompileFlags.All,
 					false, bEncCmdOvr);
@@ -382,7 +382,7 @@ namespace KeePass.Util
 
 		public static void Restart()
 		{
-			try { NativeLib.StartProcess(WinUtil.GetExecutable()); }
+			try { NativeLib.StartProcess(GetExecutable()); }
 			catch (Exception ex) { MessageService.ShowWarning(ex); }
 		}
 
@@ -498,7 +498,7 @@ namespace KeePass.Util
 				}
 				else bResult = false;
 
-				if (strDir.Length > 0) WinUtil.SetWorkingDirectory(strDir);
+				if (strDir.Length > 0) SetWorkingDirectory(strDir);
 
 				if (!NativeMethods.CloseHandle(hDevice)) { Debug.Assert(false); }
 			}
@@ -525,7 +525,7 @@ namespace KeePass.Util
 		{
 			try
 			{
-				string strCur = WinUtil.GetWorkingDirectory();
+				string strCur = GetWorkingDirectory();
 				if ((strCur == null) || (strCur.Length < 3)) return string.Empty;
 				if (strCur[1] != ':') return string.Empty;
 				if (strCur[2] != '\\') return string.Empty;
@@ -535,7 +535,7 @@ namespace KeePass.Util
 				if (chPar != chCur) return string.Empty;
 
 				string strTemp = UrlUtil.GetTempPath();
-				WinUtil.SetWorkingDirectory(strTemp);
+				SetWorkingDirectory(strTemp);
 
 				return strCur;
 			}
@@ -626,7 +626,7 @@ namespace KeePass.Util
 				psi.UseShellExecute = true;
 
 				// Elevate on Windows Vista and higher
-				if (WinUtil.IsAtLeastWindowsVista) psi.Verb = "runas";
+				if (IsAtLeastWindowsVista) psi.Verb = "runas";
 
 				NativeLib.StartProcess(psi);
 			}
@@ -862,7 +862,7 @@ namespace KeePass.Util
 					return;
 				}
 
-				string strExplorer = WinUtil.LocateSystemApp("Explorer.exe");
+				string strExplorer = LocateSystemApp("Explorer.exe");
 
 				if (File.Exists(strFilePath))
 					NativeLib.StartProcess(strExplorer, "/select,\"" +

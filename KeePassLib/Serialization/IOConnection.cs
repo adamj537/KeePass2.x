@@ -365,11 +365,11 @@ namespace KeePassLib.Serialization
 			if (ob.HasValue) request.PreAuthenticate = ob.Value;
 #endif
 
-			if (IOConnection.IOWebRequestPre != null)
+			if (IOWebRequestPre != null)
 			{
 				IOWebRequestEventArgs e = new IOWebRequestEventArgs(request,
 					((ioc != null) ? ioc.CloneDeep() : null));
-				IOConnection.IOWebRequestPre(null, e);
+				IOWebRequestPre(null, e);
 			}
 		}
 
@@ -498,7 +498,7 @@ namespace KeePassLib.Serialization
 			{
 				if (m_bSslCertsAcceptInvalid)
 					ServicePointManager.ServerCertificateValidationCallback =
-						IOConnection.AcceptCertificate;
+						AcceptCertificate;
 				else
 					ServicePointManager.ServerCertificateValidationCallback = null;
 			}
@@ -827,7 +827,7 @@ namespace KeePassLib.Serialization
 		{
 			try
 			{
-				using (Stream s = IOConnection.OpenRead(ioc))
+				using (Stream s = OpenRead(ioc))
 				{
 					return MemUtil.Read(s);
 				}
@@ -848,11 +848,11 @@ namespace KeePassLib.Serialization
 			if (ioc == null) { Debug.Assert(false); return; }
 			// ioc2 may be null
 
-			if (IOConnection.IOAccessPre != null)
+			if (IOAccessPre != null)
 			{
 				IOConnectionInfo ioc2Lcl = ((ioc2 != null) ? ioc2.CloneDeep() : null);
 				IOAccessEventArgs e = new IOAccessEventArgs(ioc.CloneDeep(), ioc2Lcl, t);
-				IOConnection.IOAccessPre(null, e);
+				IOAccessPre(null, e);
 			}
 		}
 

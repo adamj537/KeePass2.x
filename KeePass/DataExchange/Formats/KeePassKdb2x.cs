@@ -49,7 +49,7 @@ namespace KeePass.DataExchange.Formats
 
 		public override Image SmallIcon
 		{
-			get { return KeePass.Properties.Resources.B16x16_KeePass; }
+			get { return Properties.Resources.B16x16_KeePass; }
 		}
 
 		public override void Import(PwDatabase pwStorage, Stream sInput,

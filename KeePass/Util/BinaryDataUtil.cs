@@ -215,7 +215,7 @@ namespace KeePass.Util
 				psi.WorkingDirectory = strTempDir;
 
 				ParameterizedThreadStart pts = new ParameterizedThreadStart(
-					BinaryDataUtil.ShellOpenFn);
+					ShellOpenFn);
 				Thread th = new Thread(pts);
 				th.Start(psi);
 

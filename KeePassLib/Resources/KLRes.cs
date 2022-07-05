@@ -23,7 +23,7 @@ namespace KeePassLib.Resources
 	{
 		public static string FileSaveFailed
 		{
-			get { return KLRes.FileSaveFailed2; }
+			get { return FileSaveFailed2; }
 		}
 	}
 }

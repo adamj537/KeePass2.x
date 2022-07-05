@@ -54,7 +54,7 @@ namespace KeePass.Plugins
 			if (lCsproj.Count == 1)
 			{
 				plgxOutInfo.ProjectType = PlgxProjectType.CSharp;
-				PlgxCsprojLoader.Load(lCsproj[0], plgxOutInfo);
+				Load(lCsproj[0], plgxOutInfo);
 				return;
 			}
 

@@ -36,7 +36,7 @@ namespace KeePass.DataExchange.Formats
 		public override bool SupportsExport { get { return true; } }
 
 		public override string FormatName { get { return "KeePass KDB (1.x)"; } }
-		public override string DefaultExtension { get { return KeePassKdb1x.FileExt1; } }
+		public override string DefaultExtension { get { return FileExt1; } }
 		public override string ApplicationGroup { get { return PwDefs.ShortProductName; } }
 
 		public override bool RequiresKey { get { return true; } }
@@ -44,7 +44,7 @@ namespace KeePass.DataExchange.Formats
 
 		public override Image SmallIcon
 		{
-			get { return KeePass.Properties.Resources.B16x16_KeePass; }
+			get { return Properties.Resources.B16x16_KeePass; }
 		}
 
 		internal const string FileExt1 = "kdb";

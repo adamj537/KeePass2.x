@@ -74,7 +74,7 @@ namespace KeePass.App.Configuration
 
 		internal void SortProfiles()
 		{
-			m_lUserProfiles.Sort(AceSearch.CompareProfilesByName);
+			m_lUserProfiles.Sort(CompareProfilesByName);
 		}
 
 		private static int CompareProfilesByName(SearchParameters spA, SearchParameters spB)

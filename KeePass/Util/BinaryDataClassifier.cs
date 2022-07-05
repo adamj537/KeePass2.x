@@ -144,7 +144,7 @@ namespace KeePass.Util
 			uStartOffset = 0;
 
 			List<StrEncodingInfo> lEncs = new List<StrEncodingInfo>(StrUtil.Encodings);
-			lEncs.Sort(BinaryDataClassifier.CompareBySigLengthRev);
+			lEncs.Sort(CompareBySigLengthRev);
 
 			foreach (StrEncodingInfo sei in lEncs)
 			{

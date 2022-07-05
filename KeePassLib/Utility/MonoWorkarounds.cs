@@ -204,7 +204,7 @@ namespace KeePassLib.Utility
 		//   https://sourceforge.net/p/keepass/discussion/329220/thread/d50a79d6/
 		public static bool IsRequired(uint uBugID)
 		{
-			if (!MonoWorkarounds.IsRequired()) return false;
+			if (!IsRequired()) return false;
 
 			bool bForce;
 			if (g_dForceReq.TryGetValue(uBugID, out bForce)) return bForce;
@@ -260,7 +260,7 @@ namespace KeePassLib.Utility
 			{
 				try
 				{
-					ThreadStart ts = new ThreadStart(MonoWorkarounds.FixClipThread);
+					ThreadStart ts = new ThreadStart(FixClipThread);
 					g_thFixClip = new Thread(ts);
 					g_thFixClip.Start();
 				}
@@ -371,26 +371,26 @@ namespace KeePassLib.Utility
 
 		public static void ApplyTo(Form f)
 		{
-			if (!MonoWorkarounds.IsRequired()) return;
+			if (!IsRequired()) return;
 			if (f == null) { Debug.Assert(false); return; }
 
 #if !KeePassLibSD
-			f.HandleCreated += MonoWorkarounds.OnFormHandleCreated;
+			f.HandleCreated += OnFormHandleCreated;
 			SetWmClass(f);
 
-			ApplyToControlsRec(f.Controls, f, MonoWorkarounds.ApplyToControl);
+			ApplyToControlsRec(f.Controls, f, ApplyToControl);
 #endif
 		}
 
 		public static void Release(Form f)
 		{
-			if (!MonoWorkarounds.IsRequired()) return;
+			if (!IsRequired()) return;
 			if (f == null) { Debug.Assert(false); return; }
 
 #if !KeePassLibSD
-			f.HandleCreated -= MonoWorkarounds.OnFormHandleCreated;
+			f.HandleCreated -= OnFormHandleCreated;
 
-			ApplyToControlsRec(f.Controls, f, MonoWorkarounds.ReleaseControl);
+			ApplyToControlsRec(f.Controls, f, ReleaseControl);
 #endif
 		}
 
@@ -415,7 +415,7 @@ namespace KeePassLib.Utility
 			if (btn != null) ApplyToButton(btn, fContext);
 
 			NumericUpDown nc = (c as NumericUpDown);
-			if ((nc != null) && MonoWorkarounds.IsRequired(1254))
+			if ((nc != null) && IsRequired(1254))
 			{
 				if (nc.TextAlign == HorizontalAlignment.Right)
 					nc.TextAlign = HorizontalAlignment.Left;
@@ -488,7 +488,7 @@ namespace KeePassLib.Utility
 			if (ehl == null) { Debug.Assert(false); return; }
 			Delegate fnClick = ehl[objClickEvent]; // May be null
 
-			EventHandler fnOvr = new EventHandler(MonoWorkarounds.OnButtonClick);
+			EventHandler fnOvr = new EventHandler(OnButtonClick);
 			m_dictHandlers[btn] = new MwaHandlerInfo(fnClick, fnOvr, dr, fContext);
 
 			btn.DialogResult = DialogResult.None;
@@ -597,7 +597,7 @@ namespace KeePassLib.Utility
 		/// </summary>
 		internal static void EnsureRecentlyUsedValid()
 		{
-			if (!MonoWorkarounds.IsRequired(1358)) return;
+			if (!IsRequired(1358)) return;
 
 			try
 			{

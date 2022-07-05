@@ -363,7 +363,7 @@ namespace KeePass.App
 		{
 			return (KPRes.PolicyDisallowed + MessageService.NewParagraph +
 				KPRes.PolicyRequiredFlag + ":" + MessageService.NewLine +
-				AppPolicy.GetName(p) + ".");
+				GetName(p) + ".");
 		}
 
 		public static bool Try(AppPolicyId p)
@@ -407,7 +407,7 @@ namespace KeePass.App
 			{
 				AppConfigEx cfg = Program.Config;
 
-				if (!AppPolicy.Current.UnhidePasswords)
+				if (!Current.UnhidePasswords)
 				{
 					List<AceColumn> l = cfg.MainWindow.EntryListColumns;
 					foreach (AceColumn c in l)

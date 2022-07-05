@@ -96,7 +96,7 @@ namespace KeePass.UI
 			};
 
 			tsmi.Image = tsmiBase.Image;
-			Debug.Assert(object.ReferenceEquals(tsmi.Image, tsmiBase.Image));
+			Debug.Assert(ReferenceEquals(tsmi.Image, tsmiBase.Image));
 			Debug.Assert(tsmiBase.ImageTransparentColor == Color.Empty);
 
 			tsmi.Size = tsmiBase.Size;

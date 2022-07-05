@@ -282,7 +282,7 @@ namespace KeePass.Native
 				if (!strText.Equals("Start", StrUtil.CaseIgnoreCmp)) return false;
 
 				uint uProcessId;
-				NativeMethods.GetWindowThreadProcessId(hWnd, out uProcessId);
+				GetWindowThreadProcessId(hWnd, out uProcessId);
 
 				p = Process.GetProcessById((int)uProcessId);
 				string strExe = UrlUtil.GetFileName(p.MainModule.FileName).Trim();
@@ -344,12 +344,12 @@ namespace KeePass.Native
 					ColumnHeaderStyle.None) && (lv.Columns.Count > 0) &&
 					!NativeLib.IsUnix())
 				{
-					IntPtr hHeader = NativeMethods.SendMessage(lv.Handle,
-						NativeMethods.LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero);
+					IntPtr hHeader = SendMessage(lv.Handle,
+						LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero);
 					if (hHeader != IntPtr.Zero)
 					{
 						NativeMethods.RECT rect = new NativeMethods.RECT();
-						if (NativeMethods.GetWindowRect(hHeader, ref rect))
+						if (GetWindowRect(hHeader, ref rect))
 							return (rect.Bottom - rect.Top);
 						else { Debug.Assert(false); }
 					}
@@ -751,10 +751,10 @@ namespace KeePass.Native
 
 		private static bool? IsKeyDownMessage(ref Message m)
 		{
-			if (m.Msg == NativeMethods.WM_KEYDOWN) return true;
-			if (m.Msg == NativeMethods.WM_KEYUP) return false;
-			if (m.Msg == NativeMethods.WM_SYSKEYDOWN) return true;
-			if (m.Msg == NativeMethods.WM_SYSKEYUP) return false;
+			if (m.Msg == WM_KEYDOWN) return true;
+			if (m.Msg == WM_KEYUP) return false;
+			if (m.Msg == WM_SYSKEYDOWN) return true;
+			if (m.Msg == WM_SYSKEYUP) return false;
 			return null;
 		}
 

@@ -52,12 +52,12 @@ namespace KeePassLib.Cryptography.KeyDerivation
 
 		public static byte[] SerializeExt(KdfParameters p)
 		{
-			return VariantDictionary.Serialize(p);
+			return Serialize(p);
 		}
 
 		public static KdfParameters DeserializeExt(byte[] pb)
 		{
-			VariantDictionary d = VariantDictionary.Deserialize(pb);
+			VariantDictionary d = Deserialize(pb);
 			if (d == null) { Debug.Assert(false); return null; }
 
 			byte[] pbUuid = d.GetByteArray(ParamUuid);

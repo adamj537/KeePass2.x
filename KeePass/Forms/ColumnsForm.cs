@@ -443,7 +443,7 @@ namespace KeePass.Forms
 			{
 				for (int j = 0; j < l.Count; ++j)
 				{
-					if (object.ReferenceEquals(l[j].Column, lNew[i]))
+					if (ReferenceEquals(l[j].Column, lNew[i]))
 					{
 						v[i] = j;
 						break;

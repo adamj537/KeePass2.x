@@ -239,7 +239,7 @@ namespace KeePass.UI
 					PwDatabase pd = ds.Database;
 					if ((pd == null) || !pd.IsOpen) continue;
 
-					if (object.ReferenceEquals(pd.RootGroup, pg))
+					if (ReferenceEquals(pd.RootGroup, pg))
 						return pd;
 				}
 
@@ -259,7 +259,7 @@ namespace KeePass.UI
 
 				EntryHandler eh = delegate (PwEntry pe)
 				{
-					if (object.ReferenceEquals(pe, peObj))
+					if (ReferenceEquals(pe, peObj))
 					{
 						pdRet = pd;
 						return false; // Stop traversal

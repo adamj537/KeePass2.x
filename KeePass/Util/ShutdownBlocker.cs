@@ -72,7 +72,7 @@ namespace KeePass.Util
 
 		private void Dispose(bool bDisposing)
 		{
-			if (object.ReferenceEquals(this, g_sdbPrimary))
+			if (ReferenceEquals(this, g_sdbPrimary))
 			{
 				try
 				{

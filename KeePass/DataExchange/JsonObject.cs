@@ -150,7 +150,7 @@ namespace KeePass.DataExchange
 		private static void EndContainer(CharStream cs, object oCtx,
 			Stack<object> sCtx)
 		{
-			Debug.Assert(object.ReferenceEquals(oCtx, sCtx.Peek())); // For Pop()
+			Debug.Assert(ReferenceEquals(oCtx, sCtx.Peek())); // For Pop()
 
 			char chTerm = cs.ReadChar(true);
 			if (chTerm == '}')

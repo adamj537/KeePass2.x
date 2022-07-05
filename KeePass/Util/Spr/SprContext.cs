@@ -57,15 +57,15 @@ namespace KeePass.Util.Spr
 		All = 0x3FFFFF,
 
 		// Internal:
-		UIInteractive = (SprCompileFlags.PickChars | SprCompileFlags.Run),
-		StateChanging = (SprCompileFlags.NewPassword | SprCompileFlags.HmacOtp),
+		UIInteractive = (PickChars | Run),
+		StateChanging = (NewPassword | HmacOtp),
 
-		Active = (SprCompileFlags.UIInteractive | SprCompileFlags.StateChanging |
-			SprCompileFlags.DataActive | SprCompileFlags.ExtActive),
-		NonActive = (SprCompileFlags.All & ~SprCompileFlags.Active),
+		Active = (UIInteractive | StateChanging |
+			DataActive | ExtActive),
+		NonActive = (All & ~Active),
 
-		Deref = (SprCompileFlags.EntryStrings | SprCompileFlags.EntryStringsSpecial |
-			SprCompileFlags.References)
+		Deref = (EntryStrings | EntryStringsSpecial |
+			References)
 	}
 
 	public sealed class SprContext
@@ -181,9 +181,9 @@ namespace KeePass.Util.Spr
 			ctx.m_bMakeCmd = false;
 			// ctx.m_bNoUrlSchemeOnce = false;
 
-			Debug.Assert(object.ReferenceEquals(m_pe, ctx.m_pe));
-			Debug.Assert(object.ReferenceEquals(m_pd, ctx.m_pd));
-			Debug.Assert(object.ReferenceEquals(m_refCache, ctx.m_refCache));
+			Debug.Assert(ReferenceEquals(m_pe, ctx.m_pe));
+			Debug.Assert(ReferenceEquals(m_pd, ctx.m_pd));
+			Debug.Assert(ReferenceEquals(m_refCache, ctx.m_refCache));
 			return ctx;
 		}
 	}

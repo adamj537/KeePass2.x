@@ -94,7 +94,7 @@ namespace KeePass.Forms
 			GlobalWindowManager.AddWindow(this);
 
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
-				KeePass.Properties.Resources.B48x48_KGPG_Gen,
+				Properties.Resources.B48x48_KGPG_Gen,
 				KPRes.KeyFileCreateTitle, KPRes.KeyFileCreate + ".");
 			this.Icon = AppIcons.Default;
 			this.Text = KPRes.KeyFileCreateTitle;

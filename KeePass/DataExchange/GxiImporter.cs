@@ -65,17 +65,17 @@ namespace KeePass.DataExchange
 				m_pg = pg;
 				m_pe = pe;
 
-				m_dStringKeyRepl = GxiImporter.ParseRepl(p.StringKeyRepl);
-				m_dStringValueRepl = GxiImporter.ParseRepl(p.StringValueRepl);
-				m_dStringKeyRepl2 = GxiImporter.ParseRepl(p.StringKeyRepl2);
-				m_dStringValueRepl2 = GxiImporter.ParseRepl(p.StringValueRepl2);
-				m_dBinaryKeyRepl = GxiImporter.ParseRepl(p.BinaryKeyRepl);
+				m_dStringKeyRepl = ParseRepl(p.StringKeyRepl);
+				m_dStringValueRepl = ParseRepl(p.StringValueRepl);
+				m_dStringKeyRepl2 = ParseRepl(p.StringKeyRepl2);
+				m_dStringValueRepl2 = ParseRepl(p.StringValueRepl2);
+				m_dBinaryKeyRepl = ParseRepl(p.BinaryKeyRepl);
 			}
 
 			public GxiContext ModifyWith(PwGroup pg)
 			{
 				GxiContext c = (GxiContext)MemberwiseClone();
-				Debug.Assert(object.ReferenceEquals(c.m_dStringKeyRepl, m_dStringKeyRepl));
+				Debug.Assert(ReferenceEquals(c.m_dStringKeyRepl, m_dStringKeyRepl));
 
 				c.m_pg = pg;
 				return c;
@@ -84,7 +84,7 @@ namespace KeePass.DataExchange
 			public GxiContext ModifyWith(PwEntry pe)
 			{
 				GxiContext c = (GxiContext)MemberwiseClone();
-				Debug.Assert(object.ReferenceEquals(c.m_dStringKeyRepl, m_dStringKeyRepl));
+				Debug.Assert(ReferenceEquals(c.m_dStringKeyRepl, m_dStringKeyRepl));
 
 				c.m_pe = pe;
 				return c;
@@ -139,7 +139,7 @@ namespace KeePass.DataExchange
 					GxiContext c = new GxiContext(p, pdContext, pgStorage, null);
 
 					XPathNavigator xpDoc = xd.CreateNavigator();
-					ImportObject(xpDoc, p, p.RootXPath, "/*", GxiImporter.ImportRoot, c);
+					ImportObject(xpDoc, p, p.RootXPath, "/*", ImportRoot, c);
 				}
 			}
 		}
@@ -203,10 +203,10 @@ namespace KeePass.DataExchange
 		private static void ImportRoot(XPathNavigator xpBase, GxiProfile p,
 			GxiContext c)
 		{
-			ImportObject(xpBase, p, p.GroupXPath, null, GxiImporter.ImportGroup, c);
+			ImportObject(xpBase, p, p.GroupXPath, null, ImportGroup, c);
 
 			if (p.EntriesInRoot)
-				ImportObject(xpBase, p, p.EntryXPath, null, GxiImporter.ImportEntry, c);
+				ImportObject(xpBase, p, p.EntryXPath, null, ImportEntry, c);
 		}
 
 		private static void ImportGroup(XPathNavigator xpBase, GxiProfile p,
@@ -221,9 +221,9 @@ namespace KeePass.DataExchange
 			if (pg.Name.Length == 0) pg.Name = KPRes.Group;
 
 			if (p.GroupsInGroup)
-				ImportObject(xpBase, p, p.GroupXPath, null, GxiImporter.ImportGroup, cSub);
+				ImportObject(xpBase, p, p.GroupXPath, null, ImportGroup, cSub);
 			if (p.EntriesInGroup)
-				ImportObject(xpBase, p, p.EntryXPath, null, GxiImporter.ImportEntry, cSub);
+				ImportObject(xpBase, p, p.EntryXPath, null, ImportEntry, cSub);
 		}
 
 		private static void ImportEntry(XPathNavigator xpBase, GxiProfile p,
@@ -252,11 +252,11 @@ namespace KeePass.DataExchange
 			GxiContext cSub = c.ModifyWith(pe);
 
 			ImportObject(xpBase, p, p.StringKvpXPath, null,
-				GxiImporter.ImportStringKvp, cSub);
+				ImportStringKvp, cSub);
 			ImportObject(xpBase, p, p.StringKvpXPath2, null,
-				GxiImporter.ImportStringKvp2, cSub);
+				ImportStringKvp2, cSub);
 			ImportObject(xpBase, p, p.BinaryKvpXPath, null,
-				GxiImporter.ImportBinaryKvp, cSub);
+				ImportBinaryKvp, cSub);
 		}
 
 		private static void ImportStringKvp(XPathNavigator xpBase, GxiProfile p,

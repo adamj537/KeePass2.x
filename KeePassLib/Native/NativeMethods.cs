@@ -205,7 +205,7 @@ namespace KeePassLib.Native
 		internal static int StrCmpNaturally(string x, string y)
 		{
 #if (!KeePassLibSD && !KeePassUAP)
-			if (!NativeMethods.SupportsStrCmpNaturally)
+			if (!SupportsStrCmpNaturally)
 			{
 				Debug.Assert(false);
 				return string.Compare(x, y, true);

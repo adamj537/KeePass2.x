@@ -127,7 +127,7 @@ namespace KeePass.Forms
 			lTrls.Add(new KeyValuePair<string, KPTranslation>(string.Empty, trlEng));
 			AddTranslations(strDirA, lTrls);
 			if (WinUtil.IsAppX) AddTranslations(strDirU, lTrls);
-			lTrls.Sort(LanguageForm.CompareTrlItems);
+			lTrls.Sort(CompareTrlItems);
 
 			foreach (KeyValuePair<string, KPTranslation> kvp in lTrls)
 			{
