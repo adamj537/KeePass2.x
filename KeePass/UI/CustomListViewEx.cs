@@ -62,10 +62,10 @@ namespace KeePass.UI
 
 		public CustomListViewEx() : base()
 		{
-			if(Program.DesignMode) return;
+			if (Program.DesignMode) return;
 
 			try { this.DoubleBuffered = true; }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 #if DEBUG
@@ -80,7 +80,7 @@ namespace KeePass.UI
 		protected override void OnHandleCreated(EventArgs e)
 		{
 			base.OnHandleCreated(e);
-			if(Program.DesignMode) return;
+			if (Program.DesignMode) return;
 
 			UIUtil.ConfigureToolTip(this);
 		}
@@ -142,44 +142,44 @@ namespace KeePass.UI
 
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
-			if(UIUtil.HandleCommonKeyEvent(e, true, this)) return;
-			if(HandleRenameKeyEvent(e, true)) return;
+			if (UIUtil.HandleCommonKeyEvent(e, true, this)) return;
+			if (HandleRenameKeyEvent(e, true)) return;
 
-			try { if(SkipGroupHeaderIfRequired(e)) return; }
-			catch(Exception) { Debug.Assert(false); }
+			try { if (SkipGroupHeaderIfRequired(e)) return; }
+			catch (Exception) { Debug.Assert(false); }
 
 			base.OnKeyDown(e);
 		}
 
 		protected override void OnKeyUp(KeyEventArgs e)
 		{
-			if(UIUtil.HandleCommonKeyEvent(e, false, this)) return;
-			if(HandleRenameKeyEvent(e, false)) return;
+			if (UIUtil.HandleCommonKeyEvent(e, false, this)) return;
+			if (HandleRenameKeyEvent(e, false)) return;
 
 			base.OnKeyUp(e);
 		}
 
 		private bool SkipGroupHeaderIfRequired(KeyEventArgs e)
 		{
-			if(!UIUtil.GetGroupsEnabled(this)) return false;
-			if(this.MultiSelect) return false;
+			if (!UIUtil.GetGroupsEnabled(this)) return false;
+			if (this.MultiSelect) return false;
 
-			if(MonoWorkarounds.IsRequired(836428016)) return false;
+			if (MonoWorkarounds.IsRequired(836428016)) return false;
 
 			ListViewItem lvi = this.FocusedItem;
-			if(lvi != null)
+			if (lvi != null)
 			{
 				ListViewGroup g = lvi.Group;
 				ListViewItem lviChangeTo = null;
 
-				if((e.KeyCode == Keys.Up) && IsFirstLastItemInGroup(g, lvi, true))
+				if ((e.KeyCode == Keys.Up) && IsFirstLastItemInGroup(g, lvi, true))
 					lviChangeTo = (GetNextLvi(g, true) ?? lvi); // '??' for top item
-				else if((e.KeyCode == Keys.Down) && IsFirstLastItemInGroup(g, lvi, false))
+				else if ((e.KeyCode == Keys.Down) && IsFirstLastItemInGroup(g, lvi, false))
 					lviChangeTo = (GetNextLvi(g, false) ?? lvi); // '??' for bottom item
 
-				if(lviChangeTo != null)
+				if (lviChangeTo != null)
 				{
-					foreach(ListViewItem lviEnum in this.Items)
+					foreach (ListViewItem lviEnum in this.Items)
 						lviEnum.Selected = false;
 
 					EnsureVisible(lviChangeTo.Index);
@@ -196,28 +196,28 @@ namespace KeePass.UI
 		private static bool IsFirstLastItemInGroup(ListViewGroup g,
 			ListViewItem lvi, bool bFirst)
 		{
-			if(g == null) { Debug.Assert(false); return false; }
+			if (g == null) { Debug.Assert(false); return false; }
 
 			ListViewItemCollection c = g.Items;
-			if(c.Count == 0) { Debug.Assert(false); return false; }
+			if (c.Count == 0) { Debug.Assert(false); return false; }
 
 			return (bFirst ? (c[0] == lvi) : (c[c.Count - 1] == lvi));
 		}
 
 		private ListViewItem GetNextLvi(ListViewGroup gBaseExcl, bool bUp)
 		{
-			if(gBaseExcl == null) { Debug.Assert(false); return null; }
+			if (gBaseExcl == null) { Debug.Assert(false); return null; }
 
 			int i = this.Groups.IndexOf(gBaseExcl);
-			if(i < 0) { Debug.Assert(false); return null; }
+			if (i < 0) { Debug.Assert(false); return null; }
 
-			if(bUp)
+			if (bUp)
 			{
 				--i;
-				while(i >= 0)
+				while (i >= 0)
 				{
 					ListViewGroup g = this.Groups[i];
-					if(g.Items.Count > 0) return g.Items[g.Items.Count - 1];
+					if (g.Items.Count > 0) return g.Items[g.Items.Count - 1];
 
 					--i;
 				}
@@ -226,10 +226,10 @@ namespace KeePass.UI
 			{
 				++i;
 				int nGroups = this.Groups.Count;
-				while(i < nGroups)
+				while (i < nGroups)
 				{
 					ListViewGroup g = this.Groups[i];
-					if(g.Items.Count > 0) return g.Items[0];
+					if (g.Items.Count > 0) return g.Items[0];
 
 					++i;
 				}
@@ -242,18 +242,18 @@ namespace KeePass.UI
 		{
 			try
 			{
-				if((e.KeyData == Keys.F2) && this.LabelEdit)
+				if ((e.KeyData == Keys.F2) && this.LabelEdit)
 				{
 					ListView.SelectedListViewItemCollection lvsic = this.SelectedItems;
-					if(lvsic.Count >= 1)
+					if (lvsic.Count >= 1)
 					{
 						UIUtil.SetHandled(e, true);
-						if(bDown) lvsic[0].BeginEdit();
+						if (bDown) lvsic[0].BeginEdit();
 						return true;
 					}
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return false;
 		}
@@ -278,25 +278,25 @@ namespace KeePass.UI
 		{
 			try
 			{
-				if((m.Msg == NativeMethods.WM_CONTEXTMENU) && (m_ctxHeader != null) &&
+				if ((m.Msg == NativeMethods.WM_CONTEXTMENU) && (m_ctxHeader != null) &&
 					(this.View == View.Details) && (this.HeaderStyle !=
 					ColumnHeaderStyle.None) && !NativeLib.IsUnix())
 				{
 					IntPtr hList = this.Handle;
-					if(hList != IntPtr.Zero)
+					if (hList != IntPtr.Zero)
 					{
 						IntPtr hHeader = NativeMethods.SendMessage(hList,
 							NativeMethods.LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero);
-						if(hHeader != IntPtr.Zero)
+						if (hHeader != IntPtr.Zero)
 						{
 							NativeMethods.RECT rc = new NativeMethods.RECT();
-							if(NativeMethods.GetWindowRect(hHeader, ref rc))
+							if (NativeMethods.GetWindowRect(hHeader, ref rc))
 							{
 								long l = m.LParam.ToInt64();
 								short x = (short)(l & 0xFFFF);
 								short y = (short)((l >> 16) & 0xFFFF);
 
-								if((x >= rc.Left) && (x < rc.Right) &&
+								if ((x >= rc.Left) && (x < rc.Right) &&
 									(y >= rc.Top) && (y < rc.Bottom) &&
 									((x != -1) || (y != -1)))
 								{
@@ -311,7 +311,7 @@ namespace KeePass.UI
 					else { Debug.Assert(false); }
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			base.WndProc(ref m);
 		}
@@ -320,7 +320,7 @@ namespace KeePass.UI
 		{
 			BeginUpdate();
 
-			if(++m_cUpdating == 1) // Increment before setting properties
+			if (++m_cUpdating == 1) // Increment before setting properties
 			{
 				m_cmpUpdatingPre = this.ListViewItemSorter;
 				m_soUpdatingPre = this.Sorting;
@@ -339,14 +339,14 @@ namespace KeePass.UI
 		{
 			Debug.Assert(m_cUpdating > 0);
 
-			if(m_cUpdating == 1)
+			if (m_cUpdating == 1)
 			{
 				// The caller should not change the sorting while updating
 				Debug.Assert(this.ListViewItemSorter == null);
 				Debug.Assert(this.Sorting == SortOrder.None);
 
 				this.ListViewItemSorter = m_cmpUpdatingPre;
-				if(m_soUpdatingPre != SortOrder.None)
+				if (m_soUpdatingPre != SortOrder.None)
 					this.Sorting = m_soUpdatingPre;
 
 				m_cmpUpdatingPre = null;
@@ -354,7 +354,7 @@ namespace KeePass.UI
 
 				ApplyAlternatingItemStyles();
 
-				if(lviTop != null)
+				if (lviTop != null)
 				{
 					Debug.Assert(lviTop.ListView == this);
 					int i = lviTop.Index;
@@ -371,7 +371,7 @@ namespace KeePass.UI
 
 		private void ApplyAlternatingItemStyles()
 		{
-			if(!m_bAltItemStyles) return;
+			if (!m_bAltItemStyles) return;
 
 			Color clrAlt = UIUtil.GetAlternateColorEx(this.BackColor);
 

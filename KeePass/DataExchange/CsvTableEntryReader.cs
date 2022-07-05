@@ -43,14 +43,14 @@ namespace KeePass.DataExchange
 
 		private static CsvTableObjectAction<PwEntry> EntryCommit(PwDatabase pdContext)
 		{
-			CsvTableObjectAction<PwEntry> f = delegate(PwEntry pe, string[] vContextRow)
+			CsvTableObjectAction<PwEntry> f = delegate (PwEntry pe, string[] vContextRow)
 			{
-				if(pe == null) { Debug.Assert(false); return; }
+				if (pe == null) { Debug.Assert(false); return; }
 
-				if(pe.ParentGroup == null)
+				if (pe.ParentGroup == null)
 				{
 					PwGroup pg = ((pdContext != null) ? pdContext.RootGroup : null);
-					if(pg != null) pg.AddEntry(pe, true);
+					if (pg != null) pg.AddEntry(pe, true);
 					else { Debug.Assert(false); }
 				}
 			};
@@ -60,9 +60,9 @@ namespace KeePass.DataExchange
 
 		public void SetDataAppend(string strColumn, string strStringName)
 		{
-			if(string.IsNullOrEmpty(strStringName)) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strStringName)) { Debug.Assert(false); return; }
 
-			CsvTableDataHandler<PwEntry> f = delegate(string strData,
+			CsvTableDataHandler<PwEntry> f = delegate (string strData,
 				PwEntry peContext, string[] vContextRow)
 			{
 				ImportUtil.AppendToField(peContext, strStringName, strData, m_pd);

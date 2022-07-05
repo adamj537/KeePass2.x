@@ -73,11 +73,11 @@ namespace KeePass.Native
 
 		private static bool LoseFocusUnix(Form fCurrent)
 		{
-			if(fCurrent == null) { Debug.Assert(false); return true; }
+			if (fCurrent == null) { Debug.Assert(false); return true; }
 
 			try
 			{
-				if(!fCurrent.MinimizeBox || !fCurrent.Enabled) return false;
+				if (!fCurrent.MinimizeBox || !fCurrent.Enabled) return false;
 
 				string strCurrent = RunXDoTool("getwindowfocus -f");
 				long lCurrent;
@@ -85,12 +85,12 @@ namespace KeePass.Native
 
 				MainForm mf = Program.MainForm;
 				Debug.Assert(mf == fCurrent);
-				if(mf != null) mf.UIBlockWindowStateAuto(true); // Lose focus only
+				if (mf != null) mf.UIBlockWindowStateAuto(true); // Lose focus only
 
 				UIUtil.SetWindowState(fCurrent, FormWindowState.Minimized);
 
 				int tStart = Environment.TickCount;
-				while((Environment.TickCount - tStart) < 1000)
+				while ((Environment.TickCount - tStart) < 1000)
 				{
 					Application.DoEvents();
 
@@ -98,14 +98,14 @@ namespace KeePass.Native
 					long lActive;
 					long.TryParse(strActive.Trim(), out lActive);
 
-					if(lActive != lCurrent) break;
+					if (lActive != lCurrent) break;
 				}
 
-				if(mf != null) mf.UIBlockWindowStateAuto(false);
+				if (mf != null) mf.UIBlockWindowStateAuto(false);
 
 				return true;
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return false;
 		}
@@ -117,10 +117,10 @@ namespace KeePass.Native
 
 		internal static bool TryXDoTool(bool bRequireWindowNameSupport)
 		{
-			if(!bRequireWindowNameSupport) return TryXDoTool();
+			if (!bRequireWindowNameSupport) return TryXDoTool();
 
 			string str = RunXDoTool("getactivewindow getwindowname");
-			if(string.IsNullOrEmpty(str)) return false;
+			if (string.IsNullOrEmpty(str)) return false;
 
 			return !(str.Trim().Equals("usage: getactivewindow", StrUtil.CaseIgnoreCmp));
 		}
@@ -134,7 +134,7 @@ namespace KeePass.Native
 				Application.DoEvents(); // E.g. for clipboard updates
 				return (strOutput ?? string.Empty);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return string.Empty;
 		}

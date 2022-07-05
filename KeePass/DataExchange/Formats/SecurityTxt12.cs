@@ -58,25 +58,25 @@ namespace KeePass.DataExchange.Formats
 
 			char[] vTrim = new char[] { '\t', '\n', '\r', ' ' };
 
-			while(true)
+			while (true)
 			{
 				string str = sr.ReadLine();
-				if(str == null) break;
-				if(str.Length == 0) continue;
+				if (str == null) break;
+				if (str.Length == 0) continue;
 
 				SecLine line = new SecLine();
 				line.Text = str.Trim(vTrim);
 
 				int nTabs = CountTabs(str);
 
-				if(nTabs == vGroups.Count)
+				if (nTabs == vGroups.Count)
 				{
 					vGroups.Peek().SubLines.Add(line);
 					vGroups.Push(line);
 				}
 				else
 				{
-					while(nTabs < (vGroups.Count - 1))
+					while (nTabs < (vGroups.Count - 1))
 						vGroups.Pop();
 
 					vGroups.Peek().SubLines.Add(line);
@@ -91,13 +91,13 @@ namespace KeePass.DataExchange.Formats
 
 		private static int CountTabs(string str)
 		{
-			Debug.Assert(str != null); if(str == null) return 0;
+			Debug.Assert(str != null); if (str == null) return 0;
 
 			int nTabs = 0;
 
-			for(int i = 0; i < str.Length; ++i)
+			for (int i = 0; i < str.Length; ++i)
 			{
-				if(str[i] != '\t') break;
+				if (str[i] != '\t') break;
 				++nTabs;
 			}
 
@@ -107,9 +107,9 @@ namespace KeePass.DataExchange.Formats
 		private void AddSecLine(PwGroup pgContainer, SecLine line, bool bIsContainer,
 			PwDatabase pwParent)
 		{
-			if(!bIsContainer)
+			if (!bIsContainer)
 			{
-				if(line.SubLines.Count > 0)
+				if (line.SubLines.Count > 0)
 				{
 					PwGroup pg = new PwGroup(true, true);
 					pg.Name = line.Text;
@@ -128,7 +128,7 @@ namespace KeePass.DataExchange.Formats
 				}
 			}
 
-			foreach(SecLine subLine in line.SubLines)
+			foreach (SecLine subLine in line.SubLines)
 				AddSecLine(pgContainer, subLine, false, pwParent);
 		}
 	}

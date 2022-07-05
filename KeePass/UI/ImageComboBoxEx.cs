@@ -45,8 +45,8 @@ namespace KeePass.UI
 
 		public ImageComboBoxEx() : base()
 		{
-			if(Program.DesignMode) return;
-			if(NativeLib.IsUnix()) return;
+			if (Program.DesignMode) return;
+			if (NativeLib.IsUnix()) return;
 
 			Debug.Assert(this.DrawMode == DrawMode.Normal);
 			this.DrawMode = DrawMode.OwnerDrawVariable;
@@ -59,7 +59,7 @@ namespace KeePass.UI
 
 		private int GetStdItemHeight(Graphics g)
 		{
-			if(g == null)
+			if (g == null)
 				return Math.Max(18, TextRenderer.MeasureText("Wg", this.Font).Height);
 
 			return Math.Max(18, TextRenderer.MeasureText(g, "Wg", this.Font).Height);
@@ -74,7 +74,7 @@ namespace KeePass.UI
 		protected override void OnDrawItem(DrawItemEventArgs e)
 		{
 			Color clrBack = e.BackColor, clrFore = e.ForeColor;
-			if((e.State & DrawItemState.Selected) != DrawItemState.None)
+			if ((e.State & DrawItemState.Selected) != DrawItemState.None)
 			{
 				clrBack = SystemColors.Highlight;
 				clrFore = SystemColors.HighlightText;
@@ -89,14 +89,14 @@ namespace KeePass.UI
 			bool bRtl = (this.RightToLeft == RightToLeft.Yes);
 
 			Graphics g = e.Graphics;
-			using(SolidBrush brBack = new SolidBrush(clrBack))
+			using (SolidBrush brBack = new SolidBrush(clrBack))
 			{
 				g.FillRectangle(brBack, rectClip);
 			}
 
 			Rectangle rectImg = new Rectangle(bRtl ? (rectClip.Right - dImg - 1) :
 				(rectClip.Left + 1), rectClip.Top + 1, dImg, dImg);
-			if((m_vImages != null) && (nIdx >= 0) && (nIdx < m_vImages.Count) &&
+			if ((m_vImages != null) && (nIdx >= 0) && (nIdx < m_vImages.Count) &&
 				(m_vImages[nIdx] != null))
 			{
 				GfxUtil.SetHighQuality(g);
@@ -109,13 +109,13 @@ namespace KeePass.UI
 			TextFormatFlags tff = (TextFormatFlags.PreserveGraphicsClipping |
 				TextFormatFlags.EndEllipsis | TextFormatFlags.NoPrefix |
 				TextFormatFlags.SingleLine | TextFormatFlags.VerticalCenter);
-			if(bRtl) tff |= (TextFormatFlags.RightToLeft | TextFormatFlags.Right);
+			if (bRtl) tff |= (TextFormatFlags.RightToLeft | TextFormatFlags.Right);
 			string strText = string.Empty;
-			if((nIdx >= 0) && (nIdx < this.Items.Count))
+			if ((nIdx >= 0) && (nIdx < this.Items.Count))
 				strText = ((this.Items[nIdx] as string) ?? string.Empty);
 			TextRenderer.DrawText(g, strText, e.Font, rectText, clrFore, clrBack, tff);
 
-			if(((e.State & DrawItemState.Focus) != DrawItemState.None) &&
+			if (((e.State & DrawItemState.Focus) != DrawItemState.None) &&
 				((e.State & DrawItemState.NoFocusRect) == DrawItemState.None))
 				e.DrawFocusRectangle();
 		}

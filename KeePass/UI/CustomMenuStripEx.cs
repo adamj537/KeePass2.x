@@ -40,7 +40,7 @@ namespace KeePass.UI
 			base.WndProc(ref m);
 
 			// Enable 'click through' behavior
-			if((m.Msg == NativeMethods.WM_MOUSEACTIVATE) &&
+			if ((m.Msg == NativeMethods.WM_MOUSEACTIVATE) &&
 				(m.Result == (IntPtr)NativeMethods.MA_ACTIVATEANDEAT))
 			{
 				m.Result = (IntPtr)NativeMethods.MA_ACTIVATE;

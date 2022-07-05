@@ -37,7 +37,7 @@ namespace KeePass.Util
 
 		public ClipboardEventChainBlocker()
 		{
-			if(NativeLib.IsUnix()) return; // Unsupported
+			if (NativeLib.IsUnix()) return; // Unsupported
 
 			m_form = new ClipboardBlockerForm();
 
@@ -45,7 +45,7 @@ namespace KeePass.Util
 			{
 				m_hChain = NativeMethods.SetClipboardViewer(m_form.Handle);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		~ClipboardEventChainBlocker()
@@ -61,7 +61,7 @@ namespace KeePass.Util
 
 		private void Dispose(bool bDisposing)
 		{
-			if(bDisposing && (m_form != null))
+			if (bDisposing && (m_form != null))
 			{
 				try
 				{
@@ -69,7 +69,7 @@ namespace KeePass.Util
 					// of ChangeClipboardChain
 					NativeMethods.ChangeClipboardChain(m_form.Handle, m_hChain);
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 
 				m_form.Dispose();
 				m_form = null;
@@ -95,7 +95,7 @@ namespace KeePass.Util
 
 			public override bool PreProcessMessage(ref Message msg)
 			{
-				if(msg.Msg == NativeMethods.WM_DRAWCLIPBOARD)
+				if (msg.Msg == NativeMethods.WM_DRAWCLIPBOARD)
 					return true; // Block message
 
 				return base.PreProcessMessage(ref msg);

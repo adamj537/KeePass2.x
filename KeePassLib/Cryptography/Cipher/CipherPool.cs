@@ -38,7 +38,7 @@ namespace KeePassLib.Cryptography.Cipher
 			get
 			{
 				CipherPool cp = m_poolGlobal;
-				if(cp == null)
+				if (cp == null)
 				{
 					cp = new CipherPool();
 					cp.AddCipher(new StandardAesEngine());
@@ -65,12 +65,12 @@ namespace KeePassLib.Cryptography.Cipher
 		/// <param name="c">Cipher engine to add. Must not be <c>null</c>.</param>
 		public void AddCipher(ICipherEngine c)
 		{
-			if(c == null) { Debug.Assert(false); throw new ArgumentNullException("c"); }
+			if (c == null) { Debug.Assert(false); throw new ArgumentNullException("c"); }
 
 			// Return if a cipher with that ID is registered already
-			foreach(ICipherEngine cEx in m_lCiphers)
+			foreach (ICipherEngine cEx in m_lCiphers)
 			{
-				if(cEx.CipherUuid.Equals(c.CipherUuid))
+				if (cEx.CipherUuid.Equals(c.CipherUuid))
 					return;
 			}
 
@@ -85,9 +85,9 @@ namespace KeePassLib.Cryptography.Cipher
 		/// not found, <c>null</c> is returned.</returns>
 		public ICipherEngine GetCipher(PwUuid uuidCipher)
 		{
-			foreach(ICipherEngine c in m_lCiphers)
+			foreach (ICipherEngine c in m_lCiphers)
 			{
-				if(c.CipherUuid.Equals(uuidCipher))
+				if (c.CipherUuid.Equals(uuidCipher))
 					return c;
 			}
 
@@ -103,9 +103,9 @@ namespace KeePassLib.Cryptography.Cipher
 		/// the specified cipher is not found.</returns>
 		public int GetCipherIndex(PwUuid uuidCipher)
 		{
-			for(int i = 0; i < m_lCiphers.Count; ++i)
+			for (int i = 0; i < m_lCiphers.Count; ++i)
 			{
-				if(m_lCiphers[i].CipherUuid.Equals(uuidCipher))
+				if (m_lCiphers[i].CipherUuid.Equals(uuidCipher))
 					return i;
 			}
 
@@ -124,9 +124,9 @@ namespace KeePassLib.Cryptography.Cipher
 		/// no cipher with that name is found.</returns>
 		public int GetCipherIndex(string strDisplayName)
 		{
-			for(int i = 0; i < m_lCiphers.Count; ++i)
+			for (int i = 0; i < m_lCiphers.Count; ++i)
 			{
-				if(m_lCiphers[i].DisplayName == strDisplayName)
+				if (m_lCiphers[i].DisplayName == strDisplayName)
 					return i;
 			}
 
@@ -155,7 +155,7 @@ namespace KeePassLib.Cryptography.Cipher
 		{
 			get
 			{
-				if((nIndex < 0) || (nIndex >= m_lCiphers.Count))
+				if ((nIndex < 0) || (nIndex >= m_lCiphers.Count))
 					throw new ArgumentOutOfRangeException("nIndex");
 
 				return m_lCiphers[nIndex];

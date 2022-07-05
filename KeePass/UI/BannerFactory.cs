@@ -92,16 +92,16 @@ namespace KeePass.UI
 			Image imgIcon, string strTitle, string strLine, bool bNoCache)
 		{
 			// imgIcon may be null
-			if(strTitle == null) { Debug.Assert(false); strTitle = string.Empty; }
-			if(strLine == null) { Debug.Assert(false); strLine = string.Empty; }
+			if (strTitle == null) { Debug.Assert(false); strTitle = string.Empty; }
+			if (strLine == null) { Debug.Assert(false); strLine = string.Empty; }
 
 			Debug.Assert((nHeight == StdHeight) || DpiUtil.ScalingRequired ||
 				UISystemFonts.OverrideUIFont);
-			if(MonoWorkarounds.IsRequired(12525) && (nHeight > 0))
+			if (MonoWorkarounds.IsRequired(12525) && (nHeight > 0))
 				--nHeight;
 
-			if(bs == BannerStyle.Default) bs = Program.Config.UI.BannerStyle;
-			if(bs == BannerStyle.Default)
+			if (bs == BannerStyle.Default) bs = Program.Config.UI.BannerStyle;
+			if (bs == BannerStyle.Default)
 			{
 				Debug.Assert(false);
 				bs = BannerStyle.WinVistaBlack;
@@ -114,17 +114,17 @@ namespace KeePass.UI
 				":" + uIconHash.ToString(nfi);
 
 			Image img = null;
-			if(!bNoCache && g_dCache.TryGetValue(strID, out img))
+			if (!bNoCache && g_dCache.TryGetValue(strID, out img))
 				return img;
 
-			if(g_pCustomGen != null)
+			if (g_pCustomGen != null)
 				img = g_pCustomGen(new BfBannerInfo(nWidth, nHeight, bs, imgIcon,
 					strTitle, strLine));
 
 			const float fHorz = 0.90f;
 			const float fVert = 90.0f;
 
-			if(img == null)
+			if (img == null)
 			{
 				img = new Bitmap(nWidth, nHeight, PixelFormat.Format24bppRgb);
 				Graphics g = Graphics.FromImage(img);
@@ -133,7 +133,7 @@ namespace KeePass.UI
 				Color clrEnd = Color.LightBlue;
 				float fAngle = fHorz;
 
-				if(bs == BannerStyle.BlueCarbon)
+				if (bs == BannerStyle.BlueCarbon)
 				{
 					fAngle = fVert;
 
@@ -143,7 +143,7 @@ namespace KeePass.UI
 					clrEnd = Color.Black;
 
 					Rectangle rect = new Rectangle(0, 0, nWidth, (nHeight * 3) / 8);
-					using(LinearGradientBrush brCarbonT = new LinearGradientBrush(
+					using (LinearGradientBrush brCarbonT = new LinearGradientBrush(
 						rect, clrStart, clrEnd, fAngle, true))
 					{
 						g.FillRectangle(brCarbonT, rect);
@@ -157,7 +157,7 @@ namespace KeePass.UI
 					// rect = new Rectangle(0, nHeight / 2, nWidth, (nHeight * 5) / 8);
 					int hMid = nHeight / 2;
 					rect = new Rectangle(0, hMid - 1, nWidth, nHeight - hMid);
-					using(LinearGradientBrush brCarbonB = new LinearGradientBrush(
+					using (LinearGradientBrush brCarbonB = new LinearGradientBrush(
 						rect, clrStart, clrEnd, fAngle, true))
 					{
 						g.FillRectangle(brCarbonB, rect);
@@ -165,33 +165,33 @@ namespace KeePass.UI
 
 					// Workaround gradient drawing bug (e.g. occuring on
 					// Windows 8.1 with 150% DPI)
-					using(Pen pen = new Pen(Color.Black))
+					using (Pen pen = new Pen(Color.Black))
 					{
 						g.DrawLine(pen, 0, hMid - 1, nWidth - 1, hMid - 1);
 					}
 				}
 				else
 				{
-					if(bs == BannerStyle.WinXPLogin)
+					if (bs == BannerStyle.WinXPLogin)
 					{
 						clrStart = Color.FromArgb(200, 208, 248);
 						clrEnd = Color.FromArgb(40, 64, 216);
 					}
-					else if(bs == BannerStyle.WinVistaBlack)
+					else if (bs == BannerStyle.WinVistaBlack)
 					{
 						clrStart = Color.FromArgb(151, 154, 173);
 						clrEnd = Color.FromArgb(27, 27, 37);
 
 						fAngle = fVert;
 					}
-					else if(bs == BannerStyle.KeePassWin32)
+					else if (bs == BannerStyle.KeePassWin32)
 					{
 						clrStart = Color.FromArgb(235, 235, 255);
 						clrEnd = Color.FromArgb(192, 192, 255);
 					}
 
 					Rectangle rect = new Rectangle(0, 0, nWidth, nHeight);
-					using(LinearGradientBrush brBack = new LinearGradientBrush(
+					using (LinearGradientBrush brBack = new LinearGradientBrush(
 						rect, clrStart, clrEnd, fAngle, true))
 					{
 						g.FillRectangle(brBack, rect);
@@ -209,7 +209,7 @@ namespace KeePass.UI
 				int xIcon = DpiScaleInt(10, nHeight);
 				int wIconScaled = StdIconDim;
 				int hIconScaled = StdIconDim;
-				if(imgIcon != null)
+				if (imgIcon != null)
 				{
 					float fIconRel = (float)imgIcon.Width / (float)imgIcon.Height;
 					wIconScaled = (int)Math.Round(DpiScaleFloat(fIconRel *
@@ -218,7 +218,7 @@ namespace KeePass.UI
 
 					int xIconR = (bRtl ? (nWidth - xIcon - wIconScaled) : xIcon);
 					int yIconR = (nHeight - hIconScaled) / 2;
-					if(hIconScaled == imgIcon.Height)
+					if (hIconScaled == imgIcon.Height)
 						g.DrawImageUnscaled(imgIcon, xIconR, yIconR);
 					else
 						g.DrawImage(imgIcon, xIconR, yIconR, wIconScaled, hIconScaled);
@@ -236,7 +236,7 @@ namespace KeePass.UI
 						GraphicsUnit.Pixel, ia);
 				}
 
-				if((bs == BannerStyle.WinXPLogin) || (bs == BannerStyle.WinVistaBlack) ||
+				if ((bs == BannerStyle.WinXPLogin) || (bs == BannerStyle.WinVistaBlack) ||
 					(bs == BannerStyle.BlueCarbon))
 				{
 					int sh = DpiUtil.ScaleIntY(20) / 10; // Force floor
@@ -247,7 +247,7 @@ namespace KeePass.UI
 					rect.X = nWidth / 2;
 					clrStart = Color.FromArgb(248, 136, 24);
 					clrEnd = Color.White;
-					using(LinearGradientBrush brushOrangeWhite = new LinearGradientBrush(
+					using (LinearGradientBrush brushOrangeWhite = new LinearGradientBrush(
 						rect, clrStart, clrEnd, fHorz, true))
 					{
 						g.FillRectangle(brushOrangeWhite, rect);
@@ -257,20 +257,20 @@ namespace KeePass.UI
 					rect.X = 0;
 					clrStart = Color.White;
 					clrEnd = Color.FromArgb(248, 136, 24);
-					using(LinearGradientBrush brushWhiteOrange = new LinearGradientBrush(
+					using (LinearGradientBrush brushWhiteOrange = new LinearGradientBrush(
 						rect, clrStart, clrEnd, fHorz, true))
 					{
 						g.FillRectangle(brushWhiteOrange, rect);
 					}
 				}
-				else if(bs == BannerStyle.KeePassWin32)
+				else if (bs == BannerStyle.KeePassWin32)
 				{
 					int sh = DpiUtil.ScaleIntY(10) / 10; // Force floor
 
 					// Black separator line
-					using(Pen penBlack = new Pen(Color.Black))
+					using (Pen penBlack = new Pen(Color.Black))
 					{
-						for(int i = 0; i < sh; ++i)
+						for (int i = 0; i < sh; ++i)
 							g.DrawLine(penBlack, 0, nHeight - i - 1,
 								nWidth - 1, nHeight - i - 1);
 					}
@@ -280,7 +280,7 @@ namespace KeePass.UI
 
 				// Brush brush;
 				Color clrText;
-				if(bs == BannerStyle.KeePassWin32)
+				if (bs == BannerStyle.KeePassWin32)
 				{
 					// brush = Brushes.Black;
 					clrText = Color.Black;
@@ -293,18 +293,18 @@ namespace KeePass.UI
 
 				// float fx = 2 * xIcon, fy = 9.0f;
 				int tx = 2 * xIcon, ty = DpiScaleInt(9, nHeight);
-				if(imgIcon != null) tx += wIconScaled; // fx
+				if (imgIcon != null) tx += wIconScaled; // fx
 
 				// TextFormatFlags tff = (TextFormatFlags.PreserveGraphicsClipping |
 				//	TextFormatFlags.NoPrefix);
 				// if(bRtl) tff |= TextFormatFlags.RightToLeft;
 
 				float fFontSize = DpiScaleFloat((12.0f * 96.0f) / g.DpiY, nHeight);
-				using(Font font = FontUtil.CreateFont(FontFamily.GenericSansSerif,
+				using (Font font = FontUtil.CreateFont(FontFamily.GenericSansSerif,
 					fFontSize, FontStyle.Bold))
 				{
 					int txT = (!bRtl ? tx : (nWidth - tx));
-						// - TextRenderer.MeasureText(g, strTitle, font).Width));
+					// - TextRenderer.MeasureText(g, strTitle, font).Width));
 					// g.DrawString(strTitle, font, brush, fx, fy);
 					BannerFactory.DrawText(g, strTitle, txT, ty, font,
 						clrText, bRtl, nWidth);
@@ -314,11 +314,11 @@ namespace KeePass.UI
 				ty += xIcon * 2 + 2; // fy
 
 				float fFontSizeSm = DpiScaleFloat((9.0f * 96.0f) / g.DpiY, nHeight);
-				using(Font fontSmall = FontUtil.CreateFont(FontFamily.GenericSansSerif,
+				using (Font fontSmall = FontUtil.CreateFont(FontFamily.GenericSansSerif,
 					fFontSizeSm, FontStyle.Regular))
 				{
 					int txL = (!bRtl ? tx : (nWidth - tx));
-						// - TextRenderer.MeasureText(g, strLine, fontSmall).Width));
+					// - TextRenderer.MeasureText(g, strLine, fontSmall).Width));
 					// g.DrawString(strLine, fontSmall, brush, fx, fy);
 					BannerFactory.DrawText(g, strLine, txL, ty, fontSmall,
 						clrText, bRtl, nWidth);
@@ -327,9 +327,9 @@ namespace KeePass.UI
 				g.Dispose();
 			}
 
-			if(!bNoCache)
+			if (!bNoCache)
 			{
-				if(g_dCache.Count >= MaxCachedImages)
+				if (g_dCache.Count >= MaxCachedImages)
 				{
 					List<string> lK = new List<string>(g_dCache.Keys);
 					g_dCache.Remove(lK[Program.GlobalRandom.Next(lK.Count)]);
@@ -344,7 +344,7 @@ namespace KeePass.UI
 		private static void DrawText(Graphics g, string strText, int x,
 			int y, Font font, Color clrForeground, bool bRtl, int wImg)
 		{
-			if(string.IsNullOrEmpty(strText)) return;
+			if (string.IsNullOrEmpty(strText)) return;
 
 			// With ClearType on, text drawn using Graphics.DrawString
 			// looks better than TextRenderer.DrawText;
@@ -359,41 +359,41 @@ namespace KeePass.UI
 			else
 				TextRenderer.DrawText(g, strText, font, pt, clrForeground, tff); */
 
-			using(SolidBrush br = new SolidBrush(clrForeground))
+			using (SolidBrush br = new SolidBrush(clrForeground))
 			{
 				StringFormatFlags sff = (StringFormatFlags.FitBlackBox |
 					StringFormatFlags.NoClip);
-				if(bRtl) sff |= StringFormatFlags.DirectionRightToLeft;
+				if (bRtl) sff |= StringFormatFlags.DirectionRightToLeft;
 
-				using(StringFormat sf = new StringFormat(sff))
+				using (StringFormat sf = new StringFormat(sff))
 				{
 					bool bDrawn = false;
 
 					try
 					{
-						if(bRtl) return; // Default draw (in 'finally')
+						if (bRtl) return; // Default draw (in 'finally')
 
 						GraphicsUnit gu = g.PageUnit; // For MeasureString
-						if((gu != GraphicsUnit.Pixel) && (gu != GraphicsUnit.Display))
+						if ((gu != GraphicsUnit.Pixel) && (gu != GraphicsUnit.Display))
 						{
 							Debug.Assert(false); // The code below assumes pixels
 							return;
 						}
 
 						int wTextMax = wImg - x - 1; // 1 px free on right
-						if(wTextMax <= 0) { Debug.Assert(false); return; }
+						if (wTextMax <= 0) { Debug.Assert(false); return; }
 
-						for(int cch = strText.Length; cch > 0; --cch)
+						for (int cch = strText.Length; cch > 0; --cch)
 						{
 							string str = StrUtil.CompactString3Dots(strText, cch);
 							int wText = (int)g.MeasureString(str, font).Width;
 
-							if(wText <= 0)
+							if (wText <= 0)
 							{
 								Debug.Assert(false);
 								break; // Default draw (in 'finally')
 							}
-							if(wText <= wTextMax)
+							if (wText <= wTextMax)
 							{
 								g.DrawString(str, font, br, x, y, sf);
 								bDrawn = true;
@@ -402,10 +402,10 @@ namespace KeePass.UI
 						}
 						Debug.Assert(bDrawn); // Even one char too wide?!
 					}
-					catch(Exception) { Debug.Assert(false); }
+					catch (Exception) { Debug.Assert(false); }
 					finally
 					{
-						if(!bDrawn) g.DrawString(strText, font, br, x, y, sf);
+						if (!bDrawn) g.DrawString(strText, font, br, x, y, sf);
 					}
 				}
 			}
@@ -430,7 +430,7 @@ namespace KeePass.UI
 		public static void CreateBannerEx(Form f, PictureBox picBox, Image imgIcon,
 			string strTitle, string strLine, bool bNoCache)
 		{
-			if(picBox == null) { Debug.Assert(false); return; }
+			if (picBox == null) { Debug.Assert(false); return; }
 
 			try
 			{
@@ -439,7 +439,7 @@ namespace KeePass.UI
 
 				AccessibilityEx.SetName(picBox, strTitle, strLine);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		/// <summary>
@@ -453,15 +453,15 @@ namespace KeePass.UI
 			string strTitle, string strLine, ref int nOldWidth)
 		{
 			int nWidth = picBox.Width;
-			if(nWidth != nOldWidth)
+			if (nWidth != nOldWidth)
 			{
 				Image imgPrev = null;
-				if(nOldWidth >= 0) imgPrev = picBox.Image;
+				if (nOldWidth >= 0) imgPrev = picBox.Image;
 
 				BannerFactory.CreateBannerEx(f, picBox, imgIcon, strTitle,
 					strLine, true);
 
-				if(imgPrev != null) imgPrev.Dispose(); // Release old banner
+				if (imgPrev != null) imgPrev.Dispose(); // Release old banner
 
 				nOldWidth = nWidth;
 			}

@@ -44,7 +44,7 @@ namespace KeePass.UI
 		public Color[] Colors
 		{
 			get { return m_vColors; }
-			set { if(!Program.DesignMode) m_vColors = value; }
+			set { if (!Program.DesignMode) m_vColors = value; }
 		}
 		public bool ShouldSerializeColors() { return false; }
 
@@ -56,7 +56,7 @@ namespace KeePass.UI
 			get { return m_clr; }
 			set
 			{
-				if(Program.DesignMode) return;
+				if (Program.DesignMode) return;
 
 				m_clr = value;
 
@@ -75,7 +75,7 @@ namespace KeePass.UI
 
 		public ColorButtonEx() : base()
 		{
-			if(Program.DesignMode) return;
+			if (Program.DesignMode) return;
 
 			Debug.Assert(this.ImageAlign == ContentAlignment.MiddleCenter);
 			Debug.Assert(this.Text == string.Empty); // Foreground color?
@@ -88,11 +88,11 @@ namespace KeePass.UI
 
 		protected override void Dispose(bool disposing)
 		{
-			if(disposing)
+			if (disposing)
 			{
 				UIUtil.DisposeButtonImage(this, ref m_img);
 
-				if(m_tt != null)
+				if (m_tt != null)
 				{
 					m_tt.Dispose();
 					m_tt = null;
@@ -106,9 +106,9 @@ namespace KeePass.UI
 
 		private void DisposeColorMenu()
 		{
-			if(m_ctx == null) return;
+			if (m_ctx == null) return;
 
-			foreach(ColorMenuItem mi in m_lMenuItems)
+			foreach (ColorMenuItem mi in m_lMenuItems)
 				mi.Click -= this.OnColorMenuItemClick;
 			m_lMenuItems.Clear();
 
@@ -120,20 +120,20 @@ namespace KeePass.UI
 		{
 			DisposeColorMenu();
 
-			if(m_vColors == null) { Debug.Assert(false); return; }
+			if (m_vColors == null) { Debug.Assert(false); return; }
 
 			int cColors = m_vColors.Length;
-			if(cColors == 0) { Debug.Assert(false); return; }
+			if (cColors == 0) { Debug.Assert(false); return; }
 
 			int nBreakAt = Math.Max((int)Math.Sqrt(0.1 + cColors), 1);
 			int qSize = (int)((20.0f * this.Height) / 23.0f + 0.01f);
 
-			for(int i = 0; i < cColors; ++i)
+			for (int i = 0; i < cColors; ++i)
 			{
 				ColorMenuItem mi = new ColorMenuItem(m_vColors[i], qSize);
 				mi.Click += this.OnColorMenuItemClick;
 
-				if(((i % nBreakAt) == 0) && (i != 0))
+				if (((i % nBreakAt) == 0) && (i != 0))
 					mi.Break = true;
 
 				m_lMenuItems.Add(mi);
@@ -155,18 +155,18 @@ namespace KeePass.UI
 		{
 			// base.OnClick(e);
 
-			if(m_vColors != null) ShowColorMenu();
+			if (m_vColors != null) ShowColorMenu();
 			else
 			{
 				Color? oclr = UIUtil.ShowColorDialog(m_clr);
-				if(oclr.HasValue) this.SelectedColor = oclr.Value;
+				if (oclr.HasValue) this.SelectedColor = oclr.Value;
 			}
 		}
 
 		private void OnColorMenuItemClick(object sender, EventArgs e)
 		{
 			ColorMenuItem mi = (sender as ColorMenuItem);
-			if(mi == null) { Debug.Assert(false); return; }
+			if (mi == null) { Debug.Assert(false); return; }
 
 			this.SelectedColor = mi.Color;
 		}

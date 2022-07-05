@@ -56,7 +56,7 @@ namespace KeePassLib.Serialization
 
 		private static void EnsureInitialized()
 		{
-			if(m_l != null) return;
+			if (m_l != null) return;
 
 			string strGen = KLRes.General;
 			string strHttp = IocKnownProtocols.Http;
@@ -93,12 +93,12 @@ namespace KeePassLib.Serialization
 
 		public static IocPropertyInfo Get(string strName)
 		{
-			if(string.IsNullOrEmpty(strName)) { Debug.Assert(false); return null; }
+			if (string.IsNullOrEmpty(strName)) { Debug.Assert(false); return null; }
 
 			EnsureInitialized();
-			foreach(IocPropertyInfo pi in m_l)
+			foreach (IocPropertyInfo pi in m_l)
 			{
-				if(pi.Name.Equals(strName, StrUtil.CaseIgnoreCmp))
+				if (pi.Name.Equals(strName, StrUtil.CaseIgnoreCmp))
 					return pi;
 			}
 
@@ -107,14 +107,14 @@ namespace KeePassLib.Serialization
 
 		public static bool Add(IocPropertyInfo pi)
 		{
-			if(pi == null) { Debug.Assert(false); return false; }
+			if (pi == null) { Debug.Assert(false); return false; }
 
 			// Name must be non-empty
 			string strName = pi.Name;
-			if(string.IsNullOrEmpty(strName)) { Debug.Assert(false); return false; }
+			if (string.IsNullOrEmpty(strName)) { Debug.Assert(false); return false; }
 
 			IocPropertyInfo piEx = Get(strName); // Ensures initialized
-			if(piEx != null) { Debug.Assert(false); return false; } // Exists already
+			if (piEx != null) { Debug.Assert(false); return false; } // Exists already
 
 			m_l.Add(pi);
 			return true;

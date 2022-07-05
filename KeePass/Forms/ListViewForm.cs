@@ -73,9 +73,9 @@ namespace KeePass.Forms
 			m_strSubTitle = (strSubTitle ?? string.Empty);
 			m_strInfo = (strInfo ?? string.Empty);
 			m_imgIcon = imgIcon;
-			if(lData != null) m_lData = lData;
+			if (lData != null) m_lData = lData;
 
-			if(ilIcons != null)
+			if (ilIcons != null)
 				m_ilIcons = UIUtil.CloneImageList(ilIcons, true);
 
 			m_fInit = fInit;
@@ -93,7 +93,7 @@ namespace KeePass.Forms
 			// for better compatibility with plugins
 			Debug.Assert(!m_lblInfo.AutoSize); // For RTL support
 			m_lblInfo.Text = m_strInfo;
-			if(m_strInfo.Length == 0)
+			if (m_strInfo.Length == 0)
 			{
 				int yLabel = m_lblInfo.Location.Y;
 				Point ptList = m_lvMain.Location;
@@ -115,30 +115,30 @@ namespace KeePass.Forms
 
 			UIUtil.SetExplorerTheme(m_lvMain, true);
 
-			if(m_ilIcons != null) m_lvMain.SmallImageList = m_ilIcons;
+			if (m_ilIcons != null) m_lvMain.SmallImageList = m_ilIcons;
 
-			if(m_fInit != null)
+			if (m_fInit != null)
 			{
 				try { m_fInit(m_lvMain); }
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 
 			m_lvMain.BeginUpdate();
 
 			ListViewGroup lvgCur = null;
-			foreach(object o in m_lData)
+			foreach (object o in m_lData)
 			{
-				if(o == null) { Debug.Assert(false); continue; }
+				if (o == null) { Debug.Assert(false); continue; }
 
 				ListViewItem lvi = (o as ListViewItem);
-				if(lvi != null)
+				if (lvi != null)
 				{
 					// Caller should not care about associations
 					Debug.Assert(lvi.ListView == null);
 					Debug.Assert(lvi.Group == null);
 
 					m_lvMain.Items.Add(lvi);
-					if(lvgCur != null) lvgCur.Items.Add(lvi);
+					if (lvgCur != null) lvgCur.Items.Add(lvi);
 
 					Debug.Assert(lvi.ListView == m_lvMain);
 					Debug.Assert(lvi.Group == lvgCur);
@@ -146,7 +146,7 @@ namespace KeePass.Forms
 				}
 
 				ListViewGroup lvg = (o as ListViewGroup);
-				if(lvg != null)
+				if (lvg != null)
 				{
 					// Caller should not care about associations
 					Debug.Assert(lvg.ListView == null);
@@ -163,7 +163,7 @@ namespace KeePass.Forms
 
 			m_lvMain.EndUpdate();
 
-			if(m_bEnsureForeground)
+			if (m_bEnsureForeground)
 			{
 				this.BringToFront();
 				this.Activate();
@@ -172,7 +172,7 @@ namespace KeePass.Forms
 
 		private void OnFormClosed(object sender, FormClosedEventArgs e)
 		{
-			if(m_ilIcons != null)
+			if (m_ilIcons != null)
 			{
 				m_lvMain.SmallImageList = null; // Detach event handlers
 				m_ilIcons.Dispose();
@@ -185,10 +185,10 @@ namespace KeePass.Forms
 		private bool CreateResult()
 		{
 			ListView.SelectedListViewItemCollection lvic = m_lvMain.SelectedItems;
-			if(lvic.Count != 1) { Debug.Assert(false); return false; }
+			if (lvic.Count != 1) { Debug.Assert(false); return false; }
 
 			ListViewItem lvi = lvic[0];
-			if(lvi == null) { Debug.Assert(false); return false; }
+			if (lvi == null) { Debug.Assert(false); return false; }
 
 			m_resItem = lvi.Tag;
 			m_resGroup = ((lvi.Group != null) ? lvi.Group.Tag : null);
@@ -197,9 +197,9 @@ namespace KeePass.Forms
 
 		private void ProcessItemSelection()
 		{
-			if(this.DialogResult == DialogResult.OK) return; // Already closing
+			if (this.DialogResult == DialogResult.OK) return; // Already closing
 
-			if(CreateResult()) this.DialogResult = DialogResult.OK;
+			if (CreateResult()) this.DialogResult = DialogResult.OK;
 		}
 
 		private void OnListItemActivate(object sender, EventArgs e)

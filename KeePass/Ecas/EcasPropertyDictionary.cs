@@ -43,7 +43,7 @@ namespace KeePass.Ecas
 
 		public void Set(string strKey, object oValue)
 		{
-			if(string.IsNullOrEmpty(strKey)) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strKey)) { Debug.Assert(false); return; }
 
 			m_dict[strKey] = oValue;
 		}
@@ -51,12 +51,12 @@ namespace KeePass.Ecas
 		public T Get<T>(string strKey)
 			where T : class
 		{
-			if(string.IsNullOrEmpty(strKey)) { Debug.Assert(false); return null; }
+			if (string.IsNullOrEmpty(strKey)) { Debug.Assert(false); return null; }
 
 			object o;
-			if(m_dict.TryGetValue(strKey, out o))
+			if (m_dict.TryGetValue(strKey, out o))
 			{
-				if(o == null) return null;
+				if (o == null) return null;
 
 				T p = (o as T);
 				Debug.Assert(p != null);

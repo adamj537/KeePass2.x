@@ -49,17 +49,17 @@ namespace KeePass.UI
 			m_sbText = sbText;
 
 			m_pbProgress = pbProgress;
-			if(pbProgress != null)
+			if (pbProgress != null)
 			{
-				if(pbProgress.Minimum != 0) pbProgress.Minimum = 0;
-				if(pbProgress.Maximum != 100) pbProgress.Maximum = 100;
+				if (pbProgress.Minimum != 0) pbProgress.Minimum = 0;
+				if (pbProgress.Maximum != 100) pbProgress.Maximum = 100;
 			}
 		}
 
 		private void SetStyle(ProgressBarStyle s)
 		{
 			try { m_pbProgress.Style = s; }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		public void StartLogging(string strOperation, bool bWriteOperationToLog)
@@ -69,7 +69,7 @@ namespace KeePass.UI
 			m_bActive = true;
 			m_uLastPercent = 0;
 
-			if(m_pbProgress != null)
+			if (m_pbProgress != null)
 			{
 				m_pbProgress.Value = 0;
 				SetStyle(ProgressBarStyle.Marquee);
@@ -83,7 +83,7 @@ namespace KeePass.UI
 		{
 			Debug.Assert(m_bActive);
 
-			if(m_pbProgress != null)
+			if (m_pbProgress != null)
 			{
 				m_pbProgress.Visible = false;
 				SetStyle(ProgressBarStyle.Continuous);
@@ -98,9 +98,9 @@ namespace KeePass.UI
 		{
 			Debug.Assert(m_bActive);
 
-			if(m_pbProgress != null)
+			if (m_pbProgress != null)
 			{
-				if(uPercent != m_uLastPercent)
+				if (uPercent != m_uLastPercent)
 				{
 					m_pbProgress.Value = (int)uPercent;
 					m_uLastPercent = uPercent;
@@ -118,8 +118,8 @@ namespace KeePass.UI
 		public bool SetText(string strNewText, LogStatusType lsType)
 		{
 			Debug.Assert(m_bActive);
-			
-			if((m_sbText != null) && (lsType == LogStatusType.Info))
+
+			if ((m_sbText != null) && (lsType == LogStatusType.Info))
 			{
 				m_sbText.Text = (strNewText ?? string.Empty);
 				UIUtil.DoEventsByTime(true);

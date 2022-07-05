@@ -76,8 +76,8 @@ namespace KeePass.UI
 		public ProtectedDialog(UIFormConstructor fnConstruct,
 			UIFormResultBuilder fnResultBuilder)
 		{
-			if(fnConstruct == null) { Debug.Assert(false); throw new ArgumentNullException("fnConstruct"); }
-			if(fnResultBuilder == null) { Debug.Assert(false); throw new ArgumentNullException("fnResultBuilder"); }
+			if (fnConstruct == null) { Debug.Assert(false); throw new ArgumentNullException("fnConstruct"); }
+			if (fnResultBuilder == null) { Debug.Assert(false); throw new ArgumentNullException("fnResultBuilder"); }
 
 			m_fnConstruct = fnConstruct;
 			m_fnResultBuilder = fnResultBuilder;
@@ -101,10 +101,10 @@ namespace KeePass.UI
 			byte[] pbClipHash = ClipboardUtil.ComputeHash();
 
 			SecureThreadInfo stp = new SecureThreadInfo();
-			foreach(Screen sc in Screen.AllScreens)
+			foreach (Screen sc in Screen.AllScreens)
 			{
 				Bitmap bmpBack = UIUtil.CreateScreenshot(sc);
-				if(bmpBack != null) UIUtil.DimImage(bmpBack);
+				if (bmpBack != null) UIUtil.DimImage(bmpBack);
 				stp.BackgroundBitmaps.Add(bmpBack);
 			}
 
@@ -117,7 +117,7 @@ namespace KeePass.UI
 				string strName = "D" + Convert.ToBase64String(
 					CryptoRandom.Instance.GetRandomBytes(16));
 				strName = StrUtil.AlphaNumericOnly(strName);
-				if(strName.Length > 15) strName = strName.Substring(0, 15);
+				if (strName.Length > 15) strName = strName.Substring(0, 15);
 
 				NativeMethods.DesktopFlags deskFlags =
 					(NativeMethods.DesktopFlags.CreateMenu |
@@ -128,7 +128,7 @@ namespace KeePass.UI
 
 				IntPtr pNewDesktop = NativeMethods.CreateDesktop(strName,
 					null, IntPtr.Zero, 0, deskFlags, IntPtr.Zero);
-				if(pNewDesktop == IntPtr.Zero)
+				if (pNewDesktop == IntPtr.Zero)
 					throw new InvalidOperationException();
 
 				bool bNameSupported = NativeMethods.DesktopNameContains(pNewDesktop,
@@ -144,62 +144,62 @@ namespace KeePass.UI
 				th.Start(stp);
 
 				SecureThreadState st = SecureThreadState.None;
-				while(st != SecureThreadState.Terminated)
+				while (st != SecureThreadState.Terminated)
 				{
 					th.Join(150);
 
-					lock(stp) { st = stp.State; }
+					lock (stp) { st = stp.State; }
 
-					if((st == SecureThreadState.ShowingDialog) && bNameSupported)
+					if ((st == SecureThreadState.ShowingDialog) && bNameSupported)
 					{
 						IntPtr hCurDesk = NativeMethods.OpenInputDesktop(0,
 							false, NativeMethods.DesktopFlags.ReadObjects);
-						if(hCurDesk == IntPtr.Zero) { Debug.Assert(false); continue; }
-						if(hCurDesk == pNewDesktop)
+						if (hCurDesk == IntPtr.Zero) { Debug.Assert(false); continue; }
+						if (hCurDesk == pNewDesktop)
 						{
-							if(!NativeMethods.CloseDesktop(hCurDesk)) { Debug.Assert(false); }
+							if (!NativeMethods.CloseDesktop(hCurDesk)) { Debug.Assert(false); }
 							continue;
 						}
 						bool? obOnSec = NativeMethods.DesktopNameContains(hCurDesk, strName);
-						if(!NativeMethods.CloseDesktop(hCurDesk)) { Debug.Assert(false); }
+						if (!NativeMethods.CloseDesktop(hCurDesk)) { Debug.Assert(false); }
 
-						lock(stp) { st = stp.State; } // Update; might have changed
+						lock (stp) { st = stp.State; } // Update; might have changed
 
-						if(obOnSec.HasValue && !obOnSec.Value &&
+						if (obOnSec.HasValue && !obOnSec.Value &&
 							(st == SecureThreadState.ShowingDialog))
 							HandleUnexpectedDesktopSwitch(pOrgDesktop, pNewDesktop, stp);
 					}
 				}
 
-				if(!NativeMethods.SwitchDesktop(pOrgDesktop)) { Debug.Assert(false); }
+				if (!NativeMethods.SwitchDesktop(pOrgDesktop)) { Debug.Assert(false); }
 				NativeMethods.SetThreadDesktop(pOrgDesktop);
 
 				th.Join(); // Ensure thread terminated before closing desktop
 
-				if(!NativeMethods.CloseDesktop(pNewDesktop)) { Debug.Assert(false); }
+				if (!NativeMethods.CloseDesktop(pNewDesktop)) { Debug.Assert(false); }
 				NativeMethods.CloseDesktop(pOrgDesktop); // Optional
 
 				dr = stp.DialogResult;
 				objResult = stp.ResultObject;
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			byte[] pbNewClipHash = ClipboardUtil.ComputeHash();
-			if((pbClipHash != null) && (pbNewClipHash != null) &&
+			if ((pbClipHash != null) && (pbNewClipHash != null) &&
 				!MemUtil.ArraysEqual(pbClipHash, pbNewClipHash))
 				ClipboardUtil.Clear();
 			ccb.Dispose();
 
-			foreach(Bitmap bmpBack in stp.BackgroundBitmaps)
+			foreach (Bitmap bmpBack in stp.BackgroundBitmaps)
 			{
-				if(bmpBack != null) bmpBack.Dispose();
+				if (bmpBack != null) bmpBack.Dispose();
 			}
 			stp.BackgroundBitmaps.Clear();
 
 			cpsCtfMons.TerminateNewChildsAsync(4100);
 
 			// If something failed, show the dialog on the normal desktop
-			if(dr == DialogResult.None)
+			if (dr == DialogResult.None)
 			{
 				Form f = m_fnConstruct(objConstructParam);
 
@@ -208,7 +208,7 @@ namespace KeePass.UI
 					dr = f.ShowDialog();
 					objResult = m_fnResultBuilder(f); // Always
 				}
-				finally { if(f != null) UIUtil.DestroyForm(f); }
+				finally { if (f != null) UIUtil.DestroyForm(f); }
 			}
 
 			return dr;
@@ -224,7 +224,7 @@ namespace KeePass.UI
 		private void SecureDialogThread(object oParam)
 		{
 			SecureThreadInfo stp = (oParam as SecureThreadInfo);
-			if(stp == null) { Debug.Assert(false); return; }
+			if (stp == null) { Debug.Assert(false); return; }
 
 			List<BackgroundForm> lBackForms = new List<BackgroundForm>();
 			BackgroundForm formBackPrimary = null;
@@ -233,7 +233,7 @@ namespace KeePass.UI
 
 			try
 			{
-				if(!NativeMethods.SetThreadDesktop(stp.ThreadDesktop))
+				if (!NativeMethods.SetThreadDesktop(stp.ThreadDesktop))
 				{
 					Debug.Assert(false);
 					return;
@@ -243,7 +243,7 @@ namespace KeePass.UI
 
 				// Test whether we're really on the secure desktop
 				uint uThreadId = NativeMethods.GetCurrentThreadId();
-				if(NativeMethods.GetThreadDesktop(uThreadId) != stp.ThreadDesktop)
+				if (NativeMethods.GetThreadDesktop(uThreadId) != stp.ThreadDesktop)
 				{
 					Debug.Assert(false);
 					return;
@@ -258,10 +258,10 @@ namespace KeePass.UI
 				try
 				{
 					ulong uif = Program.Config.UI.UIFlags;
-					if((uif & (ulong)AceUIFlags.SecureDesktopIme) == 0)
+					if ((uif & (ulong)AceUIFlags.SecureDesktopIme) == 0)
 						NativeMethods.ImmDisableIME(0); // Always false on 2000/XP
 				}
-				catch(Exception) { Debug.Assert(!WinUtil.IsAtLeastWindows2000); }
+				catch (Exception) { Debug.Assert(!WinUtil.IsAtLeastWindows2000); }
 
 				ProcessMessagesEx();
 
@@ -269,64 +269,64 @@ namespace KeePass.UI
 				Screen scPrimary = Screen.PrimaryScreen;
 				Debug.Assert(vScreens.Length == stp.BackgroundBitmaps.Count);
 				int sMin = Math.Min(vScreens.Length, stp.BackgroundBitmaps.Count);
-				for(int i = sMin - 1; i >= 0; --i)
+				for (int i = sMin - 1; i >= 0; --i)
 				{
 					Bitmap bmpBack = stp.BackgroundBitmaps[i];
-					if(bmpBack == null) continue;
+					if (bmpBack == null) continue;
 					Debug.Assert(bmpBack.Size == vScreens[i].Bounds.Size);
 
 					BackgroundForm formBack = new BackgroundForm(bmpBack,
 						vScreens[i]);
 
 					lBackForms.Add(formBack);
-					if(vScreens[i].Equals(scPrimary))
+					if (vScreens[i].Equals(scPrimary))
 						formBackPrimary = formBack;
 
 					formBack.Show();
 				}
-				if(formBackPrimary == null)
+				if (formBackPrimary == null)
 				{
 					Debug.Assert(false);
-					if(lBackForms.Count > 0)
+					if (lBackForms.Count > 0)
 						formBackPrimary = lBackForms[lBackForms.Count - 1];
 				}
 
 				ProcessMessagesEx();
 
-				if(!NativeMethods.SwitchDesktop(stp.ThreadDesktop)) { Debug.Assert(false); }
+				if (!NativeMethods.SwitchDesktop(stp.ThreadDesktop)) { Debug.Assert(false); }
 
 				ProcessMessagesEx();
 
 				f = m_fnConstruct(stp.FormConstructParam);
-				if(f == null) { Debug.Assert(false); return; }
+				if (f == null) { Debug.Assert(false); return; }
 
-				if(Program.Config.UI.SecureDesktopPlaySound)
+				if (Program.Config.UI.SecureDesktopPlaySound)
 					UIUtil.PlayUacSound();
 
 				// bLangBar = ShowLangBar(true);
 
-				lock(stp) { stp.State = SecureThreadState.ShowingDialog; }
+				lock (stp) { stp.State = SecureThreadState.ShowingDialog; }
 				stp.DialogResult = f.ShowDialog(formBackPrimary);
 				stp.ResultObject = m_fnResultBuilder(f); // Always
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 			finally
 			{
-				if(f != null) UIUtil.DestroyForm(f);
+				if (f != null) UIUtil.DestroyForm(f);
 
 				// if(bLangBar) ShowLangBar(false);
 
-				foreach(BackgroundForm formBack in lBackForms)
+				foreach (BackgroundForm formBack in lBackForms)
 				{
 					try
 					{
 						formBack.Close();
 						UIUtil.DestroyForm(formBack);
 					}
-					catch(Exception) { Debug.Assert(false); }
+					catch (Exception) { Debug.Assert(false); }
 				}
 
-				lock(stp) { stp.State = SecureThreadState.Terminated; }
+				lock (stp) { stp.State = SecureThreadState.Terminated; }
 			}
 		}
 
@@ -358,7 +358,7 @@ namespace KeePass.UI
 				NativeMethods.MessageBoxFlags.MB_TASKMODAL |
 				NativeMethods.MessageBoxFlags.MB_SETFOREGROUND |
 				NativeMethods.MessageBoxFlags.MB_TOPMOST);
-			if(StrUtil.RightToLeft)
+			if (StrUtil.RightToLeft)
 				mbf |= (NativeMethods.MessageBoxFlags.MB_RTLREADING |
 					NativeMethods.MessageBoxFlags.MB_RIGHT);
 			NativeMethods.MessageBox(IntPtr.Zero, KPRes.SecDeskOtherSwitched +
@@ -367,8 +367,8 @@ namespace KeePass.UI
 			MessageService.ExternalDecrementMessageCount();
 
 			SecureThreadState st;
-			lock(stp) { st = stp.State; }
-			if(st != SecureThreadState.Terminated)
+			lock (stp) { st = stp.State; }
+			if (st != SecureThreadState.Terminated)
 			{
 				NativeMethods.SwitchDesktop(pNewDesktop);
 				ProcessMessagesEx();
@@ -403,15 +403,15 @@ namespace KeePass.UI
 			where TForm : Form
 			where TResult : class
 		{
-			if(fnConstruct == null) { Debug.Assert(false); throw new ArgumentNullException("fnConstruct"); }
-			if(fnResultBuilder == null) { Debug.Assert(false); throw new ArgumentNullException("fnResultBuilder"); }
+			if (fnConstruct == null) { Debug.Assert(false); throw new ArgumentNullException("fnConstruct"); }
+			if (fnResultBuilder == null) { Debug.Assert(false); throw new ArgumentNullException("fnResultBuilder"); }
 
 			r = null;
 
-			if(!bProtect)
+			if (!bProtect)
 			{
 				TForm tf = fnConstruct();
-				if(tf == null) { Debug.Assert(false); return DialogResult.None; }
+				if (tf == null) { Debug.Assert(false); return DialogResult.None; }
 
 				try
 				{
@@ -422,15 +422,15 @@ namespace KeePass.UI
 				finally { UIUtil.DestroyForm(tf); }
 			}
 
-			UIFormConstructor fnUifC = delegate(object objParam)
+			UIFormConstructor fnUifC = delegate (object objParam)
 			{
 				return fnConstruct();
 			};
 
-			UIFormResultBuilder fnUifRB = delegate(Form f)
+			UIFormResultBuilder fnUifRB = delegate (Form f)
 			{
 				TForm tf = (f as TForm);
-				if(tf == null) { Debug.Assert(false); return null; }
+				if (tf == null) { Debug.Assert(false); return null; }
 
 				return fnResultBuilder(tf);
 			};
@@ -453,13 +453,13 @@ namespace KeePass.UI
 		internal static void ContinueOnNormalDesktop(GAction fn, Form form,
 			ref GAction fnInvokeAfterClose, bool bSecureDesktop)
 		{
-			if(fn == null) { Debug.Assert(false); return; }
-			if(form == null) { Debug.Assert(false); return; }
+			if (fn == null) { Debug.Assert(false); return; }
+			if (form == null) { Debug.Assert(false); return; }
 			Debug.Assert(fnInvokeAfterClose == null);
 
-			if(bSecureDesktop)
+			if (bSecureDesktop)
 			{
-				if(!AskContinueOnNormalDesktop()) return;
+				if (!AskContinueOnNormalDesktop()) return;
 
 				fnInvokeAfterClose = fn;
 				form.DialogResult = DialogResult.Cancel;

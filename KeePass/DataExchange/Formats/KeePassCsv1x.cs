@@ -135,13 +135,13 @@ namespace KeePass.DataExchange.Formats
 			StreamWriter sw = new StreamWriter(sOutput, StrUtil.Utf8);
 			sw.Write("\"Account\",\"Login Name\",\"Password\",\"Web Site\",\"Comments\"\r\n");
 
-			EntryHandler eh = delegate(PwEntry pe)
+			EntryHandler eh = delegate (PwEntry pe)
 			{
 				WriteCsvEntry(sw, pe);
 				return true;
 			};
 
-			if(pg != null) pg.TraverseTree(TraversalMethod.PreOrder, null, eh);
+			if (pg != null) pg.TraverseTree(TraversalMethod.PreOrder, null, eh);
 
 			sw.Close();
 			return true;
@@ -149,8 +149,8 @@ namespace KeePass.DataExchange.Formats
 
 		private static void WriteCsvEntry(StreamWriter sw, PwEntry pe)
 		{
-			if(sw == null) { Debug.Assert(false); return; }
-			if(pe == null) { Debug.Assert(false); return; }
+			if (sw == null) { Debug.Assert(false); return; }
+			if (pe == null) { Debug.Assert(false); return; }
 
 			const string strSep = "\",\"";
 
@@ -166,7 +166,7 @@ namespace KeePass.DataExchange.Formats
 			string strAppend)
 		{
 			string str = strText;
-			if(!string.IsNullOrEmpty(str))
+			if (!string.IsNullOrEmpty(str))
 			{
 				str = str.Replace("\\", "\\\\");
 				str = str.Replace("\"", "\\\"");
@@ -174,7 +174,7 @@ namespace KeePass.DataExchange.Formats
 				sw.Write(str);
 			}
 
-			if(!string.IsNullOrEmpty(strAppend)) sw.Write(strAppend);
+			if (!string.IsNullOrEmpty(strAppend)) sw.Write(strAppend);
 		}
 	}
 }

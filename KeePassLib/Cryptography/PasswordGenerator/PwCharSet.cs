@@ -106,7 +106,7 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 		{
 			get
 			{
-				if(uPos >= (uint)m_lChars.Count)
+				if (uPos >= (uint)m_lChars.Count)
 					throw new ArgumentOutOfRangeException("uPos");
 
 				return m_lChars[(int)uPos];
@@ -130,11 +130,11 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 		public bool Contains(string strCharacters)
 		{
 			Debug.Assert(strCharacters != null);
-			if(strCharacters == null) throw new ArgumentNullException("strCharacters");
+			if (strCharacters == null) throw new ArgumentNullException("strCharacters");
 
-			foreach(char ch in strCharacters)
+			foreach (char ch in strCharacters)
 			{
-				if(!Contains(ch)) return false;
+				if (!Contains(ch)) return false;
 			}
 
 			return true;
@@ -146,9 +146,9 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 		/// <param name="ch">Character to add.</param>
 		public void Add(char ch)
 		{
-			if(ch == char.MinValue) { Debug.Assert(false); return; }
+			if (ch == char.MinValue) { Debug.Assert(false); return; }
 
-			if(!Contains(ch))
+			if (!Contains(ch))
 			{
 				m_lChars.Add(ch);
 				m_vTab[ch / 8] |= (byte)(1 << (ch % 8));
@@ -162,9 +162,9 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 		public void Add(string strCharSet)
 		{
 			Debug.Assert(strCharSet != null);
-			if(strCharSet == null) throw new ArgumentNullException("strCharSet");
+			if (strCharSet == null) throw new ArgumentNullException("strCharSet");
 
-			foreach(char ch in strCharSet)
+			foreach (char ch in strCharSet)
 				Add(ch);
 		}
 
@@ -183,7 +183,7 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 
 		public void AddRange(char chMin, char chMax)
 		{
-			for(char ch = chMin; ch < chMax; ++ch)
+			for (char ch = chMin; ch < chMax; ++ch)
 				Add(ch);
 
 			Add(chMax);
@@ -193,14 +193,16 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 		{
 			bool bResult = true;
 
-			switch(chCharSetIdentifier)
+			switch (chCharSetIdentifier)
 			{
 				case 'a': Add(PwCharSet.LowerCase, PwCharSet.Digits); break;
-				case 'A': Add(PwCharSet.LowerCase, PwCharSet.UpperCase,
+				case 'A':
+					Add(PwCharSet.LowerCase, PwCharSet.UpperCase,
 					PwCharSet.Digits); break;
 				case 'U': Add(PwCharSet.UpperCase, PwCharSet.Digits); break;
 				case 'c': Add(PwCharSet.LowerConsonants); break;
-				case 'C': Add(PwCharSet.LowerConsonants,
+				case 'C':
+					Add(PwCharSet.LowerConsonants,
 					PwCharSet.UpperConsonants); break;
 				case 'z': Add(PwCharSet.UpperConsonants); break;
 				case 'd': Add(PwCharSet.Digits); break; // Digit
@@ -212,7 +214,8 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 				case 'p': Add(PwCharSet.Punctuation); break;
 				case 'b': Add(PwCharSet.Brackets); break;
 				case 's': Add(PwCharSet.PrintableAsciiSpecial); break;
-				case 'S': Add(PwCharSet.UpperCase, PwCharSet.LowerCase);
+				case 'S':
+					Add(PwCharSet.UpperCase, PwCharSet.LowerCase);
 					Add(PwCharSet.Digits, PwCharSet.PrintableAsciiSpecial); break;
 				case 'v': Add(PwCharSet.LowerVowels); break;
 				case 'V': Add(PwCharSet.LowerVowels, PwCharSet.UpperVowels); break;
@@ -233,12 +236,12 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 		public bool Remove(string strCharacters)
 		{
 			Debug.Assert(strCharacters != null);
-			if(strCharacters == null) throw new ArgumentNullException("strCharacters");
+			if (strCharacters == null) throw new ArgumentNullException("strCharacters");
 
 			bool bResult = true;
-			foreach(char ch in strCharacters)
+			foreach (char ch in strCharacters)
 			{
-				if(!Remove(ch)) bResult = false;
+				if (!Remove(ch)) bResult = false;
 			}
 
 			return bResult;
@@ -247,9 +250,9 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 		public bool RemoveIfAllExist(string strCharacters)
 		{
 			Debug.Assert(strCharacters != null);
-			if(strCharacters == null) throw new ArgumentNullException("strCharacters");
+			if (strCharacters == null) throw new ArgumentNullException("strCharacters");
 
-			if(!Contains(strCharacters))
+			if (!Contains(strCharacters))
 				return false;
 
 			return Remove(strCharacters);
@@ -262,7 +265,7 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder(m_lChars.Count);
-			foreach(char ch in m_lChars)
+			foreach (char ch in m_lChars)
 				sb.Append(ch);
 
 			return sb.ToString();
@@ -288,19 +291,19 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 
 		public void UnpackCharRanges(string strRanges)
 		{
-			if(strRanges == null) { Debug.Assert(false); return; }
-			if(strRanges.Length < 10) { Debug.Assert(false); return; }
+			if (strRanges == null) { Debug.Assert(false); return; }
+			if (strRanges.Length < 10) { Debug.Assert(false); return; }
 
-			if(strRanges[0] != '_') Add(PwCharSet.UpperCase);
-			if(strRanges[1] != '_') Add(PwCharSet.LowerCase);
-			if(strRanges[2] != '_') Add(PwCharSet.Digits);
-			if(strRanges[3] != '_') Add(PwCharSet.Special);
-			if(strRanges[4] != '_') Add(PwCharSet.Punctuation);
-			if(strRanges[5] != '_') Add('-');
-			if(strRanges[6] != '_') Add('_');
-			if(strRanges[7] != '_') Add(' ');
-			if(strRanges[8] != '_') Add(PwCharSet.Brackets);
-			if(strRanges[9] != '_') Add(PwCharSet.Latin1S);
+			if (strRanges[0] != '_') Add(PwCharSet.UpperCase);
+			if (strRanges[1] != '_') Add(PwCharSet.LowerCase);
+			if (strRanges[2] != '_') Add(PwCharSet.Digits);
+			if (strRanges[3] != '_') Add(PwCharSet.Special);
+			if (strRanges[4] != '_') Add(PwCharSet.Punctuation);
+			if (strRanges[5] != '_') Add('-');
+			if (strRanges[6] != '_') Add('_');
+			if (strRanges[7] != '_') Add(' ');
+			if (strRanges[8] != '_') Add(PwCharSet.Brackets);
+			if (strRanges[9] != '_') Add(PwCharSet.Latin1S);
 		}
 	}
 }

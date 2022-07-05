@@ -84,13 +84,13 @@ namespace KeePass.DataExchange.Formats
 
 			XmlNode xnRoot = xd.DocumentElement;
 			Debug.Assert(xnRoot.Name == "SafeWallet");
-			foreach(XmlNode xn in xnRoot.ChildNodes)
+			foreach (XmlNode xn in xnRoot.ChildNodes)
 			{
-				if(Array.IndexOf<string>(ElemsGroup, xn.Name) >= 0)
+				if (Array.IndexOf<string>(ElemsGroup, xn.Name) >= 0)
 					AddGroup(xn, pwStorage.RootGroup, pwStorage); // 2.4.1.2
-				else if(Array.IndexOf<string>(ElemsEntry, xn.Name) >= 0)
+				else if (Array.IndexOf<string>(ElemsEntry, xn.Name) >= 0)
 					AddEntry(xn, pwStorage.RootGroup, pwStorage); // 3.0.4
-				else if(Array.IndexOf<string>(ElemsVault, xn.Name) >= 0)
+				else if (Array.IndexOf<string>(ElemsVault, xn.Name) >= 0)
 					ImportVault(xn, pwStorage); // 3.0.5
 			}
 		}
@@ -104,17 +104,17 @@ namespace KeePass.DataExchange.Formats
 			string strTitle = ((xnTitle != null) ? xnTitle.Value : string.Empty);
 			ImportUtil.AppendToField(pe, PwDefs.TitleField, strTitle ?? string.Empty, pd);
 
-			foreach(XmlNode xn in xnEntry.ChildNodes)
+			foreach (XmlNode xn in xnEntry.ChildNodes)
 			{
-				if(Array.IndexOf<string>(ElemsProps, xn.Name) >= 0)
+				if (Array.IndexOf<string>(ElemsProps, xn.Name) >= 0)
 				{
 					XmlNode xnField = xn.Attributes.GetNamedItem(AttribCaption);
 					string strField = ((xnField != null) ? xnField.Value : null);
-					if(string.IsNullOrEmpty(strField)) { Debug.Assert(false); }
+					if (string.IsNullOrEmpty(strField)) { Debug.Assert(false); }
 					else
 					{
 						string strMap = ImportUtil.MapNameToStandardField(strField, false);
-						if(string.IsNullOrEmpty(strMap)) strMap = strField;
+						if (string.IsNullOrEmpty(strMap)) strMap = strField;
 
 						ImportUtil.AppendToField(pe, strMap,
 							XmlUtil.SafeInnerText(xn), pd);
@@ -148,11 +148,11 @@ namespace KeePass.DataExchange.Formats
 
 		private static void ImportVault(XmlNode xnVault, PwDatabase pd)
 		{
-			foreach(XmlNode xn in xnVault.ChildNodes)
+			foreach (XmlNode xn in xnVault.ChildNodes)
 			{
-				if(Array.IndexOf<string>(ElemsGroup, xn.Name) >= 0)
+				if (Array.IndexOf<string>(ElemsGroup, xn.Name) >= 0)
 					AddGroup(xn, pd.RootGroup, pd);
-				else if(Array.IndexOf<string>(ElemsEntry, xn.Name) >= 0)
+				else if (Array.IndexOf<string>(ElemsEntry, xn.Name) >= 0)
 					AddEntry(xn, pd.RootGroup, pd);
 				else { Debug.Assert(false); } // Unknown node
 			}
@@ -165,16 +165,16 @@ namespace KeePass.DataExchange.Formats
 
 			XmlNode xnName = xnGrp.Attributes.GetNamedItem(AttribCaption);
 			string strName = ((xnName != null) ? xnName.Value : null);
-			if(string.IsNullOrEmpty(strName)) { Debug.Assert(false); strName = KPRes.Group; }
+			if (string.IsNullOrEmpty(strName)) { Debug.Assert(false); strName = KPRes.Group; }
 			pg.Name = strName;
 
-			foreach(XmlNode xn in xnGrp)
+			foreach (XmlNode xn in xnGrp)
 			{
-				if(Array.IndexOf<string>(ElemsGroup, xn.Name) >= 0)
+				if (Array.IndexOf<string>(ElemsGroup, xn.Name) >= 0)
 					AddGroup(xn, pg, pd);
-				else if(Array.IndexOf<string>(ElemsEntry, xn.Name) >= 0)
+				else if (Array.IndexOf<string>(ElemsEntry, xn.Name) >= 0)
 					AddEntry(xn, pg, pd);
-				else if(Array.IndexOf<string>(ElemsWebEntry, xn.Name) >= 0)
+				else if (Array.IndexOf<string>(ElemsWebEntry, xn.Name) >= 0)
 					AddWebEntry(xn, pg, pd);
 				else { Debug.Assert(false); } // Unknown node
 			}

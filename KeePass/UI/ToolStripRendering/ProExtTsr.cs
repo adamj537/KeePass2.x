@@ -64,7 +64,7 @@ namespace KeePass.UI.ToolStripRendering
 			get
 			{
 				ProfessionalColorTable ct = this.ColorTable;
-				if(ct == null) { Debug.Assert(false); return false; }
+				if (ct == null) { Debug.Assert(false); return false; }
 
 				return UIUtil.IsDarkColor(ct.ToolStripDropDownBackground);
 			}
@@ -93,9 +93,9 @@ namespace KeePass.UI.ToolStripRendering
 			// is pressed; thus in this case we draw it again using the
 			// correct color
 			ToolStripItem tsi = ((e != null) ? e.Item : null);
-			if((tsi != null) && tsi.Pressed && !NativeLib.IsUnix())
+			if ((tsi != null) && tsi.Pressed && !NativeLib.IsUnix())
 			{
-				using(Pen p = new Pen(this.ColorTable.ButtonPressedBorder))
+				using (Pen p = new Pen(this.ColorTable.ButtonPressedBorder))
 				{
 					e.Graphics.DrawRectangle(p, 0, 0, tsi.Width - 1, tsi.Height - 1);
 				}
@@ -104,7 +104,7 @@ namespace KeePass.UI.ToolStripRendering
 
 		protected override void OnRenderItemCheck(ToolStripItemImageRenderEventArgs e)
 		{
-			if(MonoWorkarounds.IsRequired())
+			if (MonoWorkarounds.IsRequired())
 			{
 				base.OnRenderItemCheck(e);
 				return;
@@ -126,26 +126,26 @@ namespace KeePass.UI.ToolStripRendering
 
 				// Override the .NET checkmark bitmap
 				ToolStripMenuItem tsmi = (tsi as ToolStripMenuItem);
-				if((tsmi != null) && tsmi.Checked && (tsmi.Image == null))
+				if ((tsmi != null) && tsmi.Checked && (tsmi.Image == null))
 					img = Properties.Resources.B16x16_MenuCheck;
 
-				if(tsi != null)
+				if (tsi != null)
 				{
 					Rectangle rContent = tsi.ContentRectangle;
 					Debug.Assert(rContent.Contains(r) || DpiUtil.ScalingRequired);
 					r.Intersect(rContent);
-					if(r.Height < r.Width) r.Width = r.Height;
+					if (r.Height < r.Width) r.Width = r.Height;
 				}
 				else { Debug.Assert(false); }
 
-				if((img != null) && (r.Size != img.Size))
+				if ((img != null) && (r.Size != img.Size))
 				{
 					img = GfxUtil.ScaleImage(img, r.Width, r.Height,
 						ScaleTransformFlags.UIIcon);
 					imgToDispose = img;
 				}
 
-				if((img != imgOrg) || (r != rOrg))
+				if ((img != imgOrg) || (r != rOrg))
 				{
 					ToolStripItemImageRenderEventArgs eNew =
 						new ToolStripItemImageRenderEventArgs(g, tsi, img, r);
@@ -234,10 +234,10 @@ namespace KeePass.UI.ToolStripRendering
 					return;
 				} */
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 			finally
 			{
-				if(imgToDispose != null) imgToDispose.Dispose();
+				if (imgToDispose != null) imgToDispose.Dispose();
 			}
 
 			base.OnRenderItemCheck(e); // Not in 'finally', see 'eNew'
@@ -245,22 +245,22 @@ namespace KeePass.UI.ToolStripRendering
 
 		protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
 		{
-			if(e != null)
+			if (e != null)
 			{
 				ToolStripItem tsi = e.Item;
 
 				// In high contrast mode, various colors of the default
 				// color table are incorrect, thus check m_bCustomColorTable
-				if((tsi != null) && this.EnsureTextContrast && m_bCustomColorTable)
+				if ((tsi != null) && this.EnsureTextContrast && m_bCustomColorTable)
 				{
 					bool bDarkBack = this.IsDarkStyle;
-					if(tsi.Selected || tsi.Pressed)
+					if (tsi.Selected || tsi.Pressed)
 					{
-						if((tsi.Owner is ContextMenuStrip) || (tsi.OwnerItem != null))
+						if ((tsi.Owner is ContextMenuStrip) || (tsi.OwnerItem != null))
 							bDarkBack = UIUtil.IsDarkColor(this.ColorTable.MenuItemSelected);
 						else // Top menu item
 						{
-							if(tsi.Pressed)
+							if (tsi.Pressed)
 								bDarkBack = UIUtil.IsDarkColor(
 									this.ColorTable.MenuItemPressedGradientMiddle);
 							else
@@ -273,12 +273,12 @@ namespace KeePass.UI.ToolStripRendering
 					// e.TextColor might be incorrect, thus use tsi.ForeColor
 					bool bDarkText = UIUtil.IsDarkColor(tsi.ForeColor);
 
-					if(bDarkBack && bDarkText)
+					if (bDarkBack && bDarkText)
 					{
 						Debug.Assert(false);
 						e.TextColor = Color.White;
 					}
-					else if(!bDarkBack && !bDarkText)
+					else if (!bDarkBack && !bDarkText)
 					{
 						Debug.Assert(false);
 						e.TextColor = Color.Black;

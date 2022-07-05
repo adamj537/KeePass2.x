@@ -50,21 +50,21 @@ namespace KeePass.Forms
 		{
 			IntPtr h = IntPtr.Zero;
 			try { h = NativeMethods.GetForegroundWindowHandle(); }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			FieldPickerForm dlg = new FieldPickerForm();
 			dlg.InitEx(strTitle, strText, lFields);
 
 			FpField fpResult = null;
-			if(UIUtil.ShowDialogAndDestroy(dlg) == DialogResult.OK)
+			if (UIUtil.ShowDialogAndDestroy(dlg) == DialogResult.OK)
 				fpResult = dlg.SelectedField;
 
 			try
 			{
-				if(h != IntPtr.Zero)
+				if (h != IntPtr.Zero)
 					NativeMethods.EnsureForegroundWindow(h);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return fpResult;
 		}
@@ -91,7 +91,7 @@ namespace KeePass.Forms
 
 			string strTitle = (m_strTitle ?? string.Empty);
 			string strTitleEx = strTitle;
-			if(strTitle.Length > 0) strTitleEx += " - ";
+			if (strTitle.Length > 0) strTitleEx += " - ";
 			strTitleEx += PwDefs.ShortProductName;
 
 			this.Icon = AppIcons.Default;
@@ -107,14 +107,14 @@ namespace KeePass.Forms
 			m_lvFields.Columns.Add(KPRes.Name, w);
 			m_lvFields.Columns.Add(KPRes.Value, w);
 
-			if(m_lFields != null)
+			if (m_lFields != null)
 			{
 				ListViewGroup lvg = null;
 				string strGroup = string.Empty;
 
-				foreach(FpField fpf in m_lFields)
+				foreach (FpField fpf in m_lFields)
 				{
-					if(fpf == null) { Debug.Assert(false); continue; }
+					if (fpf == null) { Debug.Assert(false); continue; }
 
 					ListViewItem lvi = new ListViewItem(fpf.Name);
 					lvi.SubItems.Add(fpf.Value.IsProtected ? PwDefs.HiddenPassword :
@@ -123,9 +123,9 @@ namespace KeePass.Forms
 
 					m_lvFields.Items.Add(lvi);
 
-					if(fpf.Group.Length > 0)
+					if (fpf.Group.Length > 0)
 					{
-						if(fpf.Group != strGroup)
+						if (fpf.Group != strGroup)
 						{
 							strGroup = fpf.Group;
 							lvg = new ListViewGroup(strGroup, HorizontalAlignment.Left);
@@ -140,7 +140,7 @@ namespace KeePass.Forms
 
 			this.BringToFront();
 			this.Activate();
-			if(m_lvFields.Items.Count > 0)
+			if (m_lvFields.Items.Count > 0)
 				UIUtil.SetFocusedItem(m_lvFields, m_lvFields.Items[0], true);
 			UIUtil.SetFocus(m_lvFields, this, true);
 		}
@@ -152,17 +152,17 @@ namespace KeePass.Forms
 
 		private void ProcessItemSelection()
 		{
-			if(this.DialogResult == DialogResult.OK) return; // Already closing
+			if (this.DialogResult == DialogResult.OK) return; // Already closing
 
 			ListView.SelectedListViewItemCollection lvsic =
 				m_lvFields.SelectedItems;
-			if((lvsic == null) || (lvsic.Count != 1)) { Debug.Assert(false); return; }
+			if ((lvsic == null) || (lvsic.Count != 1)) { Debug.Assert(false); return; }
 
 			ListViewItem lvi = lvsic[0];
-			if(lvi == null) { Debug.Assert(false); return; }
+			if (lvi == null) { Debug.Assert(false); return; }
 
 			FpField fpf = (lvi.Tag as FpField);
-			if(fpf == null) { Debug.Assert(false); return; }
+			if (fpf == null) { Debug.Assert(false); return; }
 
 			m_fpResult = fpf;
 			this.DialogResult = DialogResult.OK;

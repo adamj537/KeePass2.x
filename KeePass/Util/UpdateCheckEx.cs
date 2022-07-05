@@ -91,9 +91,9 @@ namespace KeePass.Util
 		public UpdateComponentInfo(string strName, ulong uVerInstalled,
 			string strUpdateUrl, string strCategory)
 		{
-			if(strName == null) throw new ArgumentNullException("strName");
-			if(strUpdateUrl == null) throw new ArgumentNullException("strUpdateUrl");
-			if(strCategory == null) throw new ArgumentNullException("strCategory");
+			if (strName == null) throw new ArgumentNullException("strName");
+			if (strUpdateUrl == null) throw new ArgumentNullException("strUpdateUrl");
+			if (strCategory == null) throw new ArgumentNullException("strCategory");
 
 			m_strName = strName;
 			m_uVerInstalled = uVerInstalled;
@@ -125,15 +125,15 @@ namespace KeePass.Util
 		{
 			DateTime dtNow = DateTime.UtcNow, dtLast;
 			string strLast = Program.Config.Application.LastUpdateCheck;
-			if(!bForceUI && (strLast.Length > 0) && TimeUtil.TryDeserializeUtc(
+			if (!bForceUI && (strLast.Length > 0) && TimeUtil.TryDeserializeUtc(
 				strLast, out dtLast))
 			{
-				if(CompareDates(dtLast, dtNow) == 0) return; // Checked today already
+				if (CompareDates(dtLast, dtNow) == 0) return; // Checked today already
 			}
 			Program.Config.Application.LastUpdateCheck = TimeUtil.SerializeUtc(dtNow);
 
 			UpdateCheckParams p = new UpdateCheckParams(bForceUI, fOptParent);
-			if(!bForceUI) // Async
+			if (!bForceUI) // Async
 			{
 				// // Local, but thread will continue to run anyway
 				// Thread th = new Thread(new ParameterizedThreadStart(
@@ -145,7 +145,7 @@ namespace KeePass.Util
 					ThreadPool.QueueUserWorkItem(new WaitCallback(
 						UpdateCheckEx.RunPriv), p);
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 			else RunPriv(p);
 		}
@@ -153,21 +153,21 @@ namespace KeePass.Util
 		private static int CompareDates(DateTime a, DateTime b)
 		{
 			Debug.Assert(a.Kind == b.Kind);
-			if(a.Year != b.Year) return ((a.Year < b.Year) ? -1 : 1);
-			if(a.Month != b.Month) return ((a.Month < b.Month) ? -1 : 1);
-			if(a.Day != b.Day) return ((a.Day < b.Day) ? -1 : 1);
+			if (a.Year != b.Year) return ((a.Year < b.Year) ? -1 : 1);
+			if (a.Month != b.Month) return ((a.Month < b.Month) ? -1 : 1);
+			if (a.Day != b.Day) return ((a.Day < b.Day) ? -1 : 1);
 			return 0;
 		}
 
 		private static void RunPriv(object o)
 		{
 			UpdateCheckParams p = (o as UpdateCheckParams);
-			if(p == null) { Debug.Assert(false); return; }
+			if (p == null) { Debug.Assert(false); return; }
 
 			IStatusLogger sl = null;
 			try
 			{
-				if(p.ForceUI)
+				if (p.ForceUI)
 				{
 					Form fStatusDialog;
 					sl = StatusUtil.CreateStatusDialog(p.Parent, out fStatusDialog,
@@ -178,30 +178,30 @@ namespace KeePass.Util
 				List<string> lUrls = GetUrls(lInst);
 				Dictionary<string, List<UpdateComponentInfo>> dictAvail =
 					DownloadInfoFiles(lUrls, sl);
-				if(dictAvail == null) return; // User cancelled
+				if (dictAvail == null) return; // User cancelled
 
 				MergeInfo(lInst, dictAvail);
 
 				bool bUpdAvail = false;
-				foreach(UpdateComponentInfo uc in lInst)
+				foreach (UpdateComponentInfo uc in lInst)
 				{
-					if(uc.Status == UpdateComponentStatus.NewVerAvailable)
+					if (uc.Status == UpdateComponentStatus.NewVerAvailable)
 					{
 						bUpdAvail = true;
 						break;
 					}
 				}
 
-				if(sl != null) { sl.EndLogging(); sl = null; }
+				if (sl != null) { sl.EndLogging(); sl = null; }
 
-				if(bUpdAvail || p.ForceUI)
+				if (bUpdAvail || p.ForceUI)
 					ShowUpdateDialogAsync(lInst, p.ForceUI);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 			finally
 			{
-				try { if(sl != null) sl.EndLogging(); }
-				catch(Exception) { Debug.Assert(false); }
+				try { if (sl != null) sl.EndLogging(); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 		}
 
@@ -211,12 +211,12 @@ namespace KeePass.Util
 			try
 			{
 				MainForm mf = Program.MainForm;
-				if((mf != null) && mf.InvokeRequired)
+				if ((mf != null) && mf.InvokeRequired)
 					mf.BeginInvoke(new UceShDlgDelegate(ShowUpdateDialogPriv),
 						lInst, bModal);
 				else ShowUpdateDialogPriv(lInst, bModal);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private delegate void UceShDlgDelegate(List<UpdateComponentInfo> lInst,
@@ -228,13 +228,13 @@ namespace KeePass.Util
 			{
 				// Do not show the update dialog while auto-typing;
 				// https://sourceforge.net/p/keepass/bugs/1265/
-				if(SendInputEx.IsSending) return;
+				if (SendInputEx.IsSending) return;
 
 				UpdateCheckForm dlg = new UpdateCheckForm();
 				dlg.InitEx(lInst, bModal);
 				UIUtil.ShowDialogAndDestroy(dlg);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private sealed class UpdateDownloadInfo
@@ -246,7 +246,7 @@ namespace KeePass.Util
 
 			public UpdateDownloadInfo(string strUrl)
 			{
-				if(strUrl == null) throw new ArgumentNullException("strUrl");
+				if (strUrl == null) throw new ArgumentNullException("strUrl");
 
 				this.Url = strUrl;
 			}
@@ -256,9 +256,9 @@ namespace KeePass.Util
 			DownloadInfoFiles(List<string> lUrls, IStatusLogger sl)
 		{
 			List<UpdateDownloadInfo> lDl = new List<UpdateDownloadInfo>();
-			foreach(string strUrl in lUrls)
+			foreach (string strUrl in lUrls)
 			{
-				if(string.IsNullOrEmpty(strUrl)) { Debug.Assert(false); continue; }
+				if (string.IsNullOrEmpty(strUrl)) { Debug.Assert(false); continue; }
 
 				UpdateDownloadInfo dl = new UpdateDownloadInfo(strUrl);
 				lDl.Add(dl);
@@ -267,26 +267,26 @@ namespace KeePass.Util
 					UpdateCheckEx.DownloadInfoFile), dl);
 			}
 
-			while(true)
+			while (true)
 			{
 				bool bReady = true;
-				foreach(UpdateDownloadInfo dl in lDl)
+				foreach (UpdateDownloadInfo dl in lDl)
 				{
-					lock(dl.SyncObj) { bReady &= dl.Ready; }
+					lock (dl.SyncObj) { bReady &= dl.Ready; }
 				}
 
-				if(bReady) break;
+				if (bReady) break;
 				Thread.Sleep(40);
 
-				if(sl != null)
+				if (sl != null)
 				{
-					if(!sl.ContinueWork()) return null;
+					if (!sl.ContinueWork()) return null;
 				}
 			}
 
 			Dictionary<string, List<UpdateComponentInfo>> dict =
 				new Dictionary<string, List<UpdateComponentInfo>>();
-			foreach(UpdateDownloadInfo dl in lDl)
+			foreach (UpdateDownloadInfo dl in lDl)
 			{
 				dict[dl.Url.ToLower()] = dl.ComponentInfo;
 			}
@@ -296,31 +296,31 @@ namespace KeePass.Util
 		private static void DownloadInfoFile(object o)
 		{
 			UpdateDownloadInfo dl = (o as UpdateDownloadInfo);
-			if(dl == null) { Debug.Assert(false); return; }
+			if (dl == null) { Debug.Assert(false); return; }
 
 			dl.ComponentInfo = LoadInfoFile(dl.Url);
-			lock(dl.SyncObj) { dl.Ready = true; }
+			lock (dl.SyncObj) { dl.Ready = true; }
 		}
 
 		private static List<string> GetUrls(List<UpdateComponentInfo> l)
 		{
 			List<string> lUrls = new List<string>();
-			foreach(UpdateComponentInfo uc in l)
+			foreach (UpdateComponentInfo uc in l)
 			{
 				string strUrl = uc.UpdateUrl;
-				if(string.IsNullOrEmpty(strUrl)) continue;
+				if (string.IsNullOrEmpty(strUrl)) continue;
 
 				bool bFound = false;
-				for(int i = 0; i < lUrls.Count; ++i)
+				for (int i = 0; i < lUrls.Count; ++i)
 				{
-					if(lUrls[i].Equals(strUrl, StrUtil.CaseIgnoreCmp))
+					if (lUrls[i].Equals(strUrl, StrUtil.CaseIgnoreCmp))
 					{
 						bFound = true;
 						break;
 					}
 				}
 
-				if(!bFound) lUrls.Add(strUrl);
+				if (!bFound) lUrls.Add(strUrl);
 			}
 
 			return lUrls;
@@ -333,12 +333,12 @@ namespace KeePass.Util
 				IOConnectionInfo ioc = IOConnectionInfo.FromPath(strUrl.Trim());
 
 				byte[] pb;
-				using(Stream s = IOConnection.OpenRead(ioc))
+				using (Stream s = IOConnection.OpenRead(ioc))
 				{
 					pb = MemUtil.Read(s);
 				}
 
-				if(ioc.Path.EndsWith(".gz", StrUtil.CaseIgnoreCmp))
+				if (ioc.Path.EndsWith(".gz", StrUtil.CaseIgnoreCmp))
 				{
 					// Decompress in try-catch, because some web filters
 					// incorrectly pre-decompress the returned data
@@ -347,14 +347,14 @@ namespace KeePass.Util
 					{
 						byte[] pbDec = MemUtil.Decompress(pb);
 						List<UpdateComponentInfo> l = LoadInfoFilePriv(pbDec, ioc);
-						if(l != null) return l;
+						if (l != null) return l;
 					}
-					catch(Exception) { }
+					catch (Exception) { }
 				}
 
 				return LoadInfoFilePriv(pb, ioc);
 			}
-			catch(Exception) { }
+			catch (Exception) { }
 
 			return null;
 		}
@@ -362,12 +362,12 @@ namespace KeePass.Util
 		private static List<UpdateComponentInfo> LoadInfoFilePriv(byte[] pbData,
 			IOConnectionInfo iocSource)
 		{
-			if((pbData == null) || (pbData.Length == 0)) return null;
+			if ((pbData == null) || (pbData.Length == 0)) return null;
 
 			int iOffset = 0;
 			StrEncodingInfo sei = StrUtil.GetEncoding(StrEncodingType.Utf8);
 			byte[] pbBom = sei.StartSignature;
-			if((pbData.Length >= pbBom.Length) && MemUtil.ArraysEqual(pbBom,
+			if ((pbData.Length >= pbBom.Length) && MemUtil.ArraysEqual(pbBom,
 				MemUtil.Mid(pbData, 0, pbBom.Length)))
 				iOffset += pbBom.Length;
 
@@ -383,34 +383,34 @@ namespace KeePass.Util
 			List<UpdateComponentInfo> l = new List<UpdateComponentInfo>();
 			bool bHeader = true, bFooterFound = false;
 			char chSep = ':'; // Modified by header
-			for(int i = 0; i < vLines.Length; ++i)
+			for (int i = 0; i < vLines.Length; ++i)
 			{
 				string str = vLines[i].Trim();
-				if(str.Length == 0) continue;
+				if (str.Length == 0) continue;
 
-				if(bHeader)
+				if (bHeader)
 				{
 					chSep = str[0];
 					bHeader = false;
 
 					string[] vHdr = str.Split(chSep);
-					if(vHdr.Length >= 2) strLdSig = vHdr[1];
+					if (vHdr.Length >= 2) strLdSig = vHdr[1];
 				}
-				else if(str[0] == chSep)
+				else if (str[0] == chSep)
 				{
 					bFooterFound = true;
 					break;
 				}
 				else // Component info
 				{
-					if(sbToVerify != null)
+					if (sbToVerify != null)
 					{
 						sbToVerify.Append(str);
 						sbToVerify.Append('\n');
 					}
 
 					string[] vInfo = str.Split(chSep);
-					if(vInfo.Length >= 2)
+					if (vInfo.Length >= 2)
 					{
 						UpdateComponentInfo c = new UpdateComponentInfo(
 							vInfo[0].Trim(), 0, iocSource.Path, string.Empty);
@@ -420,11 +420,11 @@ namespace KeePass.Util
 					}
 				}
 			}
-			if(!bFooterFound) { Debug.Assert(false); return null; }
+			if (!bFooterFound) { Debug.Assert(false); return null; }
 
-			if(sbToVerify != null)
+			if (sbToVerify != null)
 			{
-				if(!VerifySignature(sbToVerify.ToString(), strLdSig, strSigKey))
+				if (!VerifySignature(sbToVerify.ToString(), strLdSig, strSigKey))
 					return null;
 			}
 
@@ -434,11 +434,11 @@ namespace KeePass.Util
 		private static void AddComponent(List<UpdateComponentInfo> l,
 			UpdateComponentInfo c)
 		{
-			if((l == null) || (c == null)) { Debug.Assert(false); return; }
+			if ((l == null) || (c == null)) { Debug.Assert(false); return; }
 
-			for(int i = l.Count - 1; i >= 0; --i)
+			for (int i = l.Count - 1; i >= 0; --i)
 			{
-				if(l[i].Name.Equals(c.Name, StrUtil.CaseIgnoreCmp))
+				if (l[i].Name.Equals(c.Name, StrUtil.CaseIgnoreCmp))
 					l.RemoveAt(i);
 			}
 
@@ -449,7 +449,7 @@ namespace KeePass.Util
 		{
 			List<UpdateComponentInfo> l = new List<UpdateComponentInfo>();
 
-			foreach(PluginInfo pi in Program.MainForm.PluginManager)
+			foreach (PluginInfo pi in Program.MainForm.PluginManager)
 			{
 				Plugin p = pi.Interface;
 				string strUrl = ((p != null) ? (p.UpdateUrl ?? string.Empty) :
@@ -471,9 +471,9 @@ namespace KeePass.Util
 		private static int CompareComponents(UpdateComponentInfo a,
 			UpdateComponentInfo b)
 		{
-			if(a.Name == b.Name) return 0;
-			if(a.Name == CompMain) return -1;
-			if(b.Name == CompMain) return 1;
+			if (a.Name == b.Name) return 0;
+			if (a.Name == CompMain) return -1;
+			if (b.Name == CompMain) return 1;
 
 			return a.Name.CompareTo(b.Name);
 		}
@@ -485,15 +485,15 @@ namespace KeePass.Util
 			List<UpdateComponentInfo> lOvr;
 			dictAvail.TryGetValue(strOvrId, out lOvr);
 
-			foreach(UpdateComponentInfo uc in lInst)
+			foreach (UpdateComponentInfo uc in lInst)
 			{
 				string strUrlId = uc.UpdateUrl.ToLower();
 				List<UpdateComponentInfo> lAvail;
 				dictAvail.TryGetValue(strUrlId, out lAvail);
 
-				if(SetComponentAvail(uc, lOvr)) { }
-				else if(SetComponentAvail(uc, lAvail)) { }
-				else if((strUrlId.Length > 0) && (lAvail == null))
+				if (SetComponentAvail(uc, lOvr)) { }
+				else if (SetComponentAvail(uc, lAvail)) { }
+				else if ((strUrlId.Length > 0) && (lAvail == null))
 					uc.Status = UpdateComponentStatus.DownloadFailed;
 				else uc.Status = UpdateComponentStatus.Unknown;
 			}
@@ -502,10 +502,10 @@ namespace KeePass.Util
 		private static bool SetComponentAvail(UpdateComponentInfo uc,
 			List<UpdateComponentInfo> lAvail)
 		{
-			if(uc == null) { Debug.Assert(false); return false; }
-			if(lAvail == null) return false; // No assert
+			if (uc == null) { Debug.Assert(false); return false; }
+			if (lAvail == null) return false; // No assert
 
-			if((uc.Name == CompMain) && WinUtil.IsAppX)
+			if ((uc.Name == CompMain) && WinUtil.IsAppX)
 			{
 				// The user's AppX may be old; do not claim it's up-to-date
 				// uc.VerAvailable = uc.VerInstalled;
@@ -514,15 +514,15 @@ namespace KeePass.Util
 				return true;
 			}
 
-			foreach(UpdateComponentInfo ucAvail in lAvail)
+			foreach (UpdateComponentInfo ucAvail in lAvail)
 			{
-				if(ucAvail.Name.Equals(uc.Name, StrUtil.CaseIgnoreCmp))
+				if (ucAvail.Name.Equals(uc.Name, StrUtil.CaseIgnoreCmp))
 				{
 					uc.VerAvailable = ucAvail.VerAvailable;
 
-					if(uc.VerInstalled == uc.VerAvailable)
+					if (uc.VerInstalled == uc.VerAvailable)
 						uc.Status = UpdateComponentStatus.UpToDate;
-					else if(uc.VerInstalled < uc.VerAvailable)
+					else if (uc.VerInstalled < uc.VerAvailable)
 						uc.Status = UpdateComponentStatus.NewVerAvailable;
 					else uc.Status = UpdateComponentStatus.PreRelease;
 
@@ -536,16 +536,16 @@ namespace KeePass.Util
 		private static bool VerifySignature(string strContent, string strSig,
 			string strKey)
 		{
-			if(string.IsNullOrEmpty(strSig)) { Debug.Assert(false); return false; }
+			if (string.IsNullOrEmpty(strSig)) { Debug.Assert(false); return false; }
 
 			try
 			{
 				byte[] pbMsg = StrUtil.Utf8.GetBytes(strContent);
 				byte[] pbSig = Convert.FromBase64String(strSig);
 
-				using(SHA512Managed sha = new SHA512Managed())
+				using (SHA512Managed sha = new SHA512Managed())
 				{
-					using(RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
+					using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
 					{
 						// Watching this code in the debugger may result in a
 						// CryptographicException when disposing the object
@@ -553,7 +553,7 @@ namespace KeePass.Util
 						rsa.FromXmlString(strKey);
 						rsa.PersistKeyInCsp = false; // Loaded key
 
-						if(!rsa.VerifyData(pbMsg, sha, pbSig))
+						if (!rsa.VerifyData(pbMsg, sha, pbSig))
 						{
 							Debug.Assert(false);
 							return false;
@@ -563,15 +563,15 @@ namespace KeePass.Util
 					}
 				}
 			}
-			catch(Exception) { Debug.Assert(false); return false; }
+			catch (Exception) { Debug.Assert(false); return false; }
 
 			return true;
 		}
 
 		public static void SetFileSigKey(string strUrl, string strKey)
 		{
-			if(string.IsNullOrEmpty(strUrl)) { Debug.Assert(false); return; }
-			if(string.IsNullOrEmpty(strKey)) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strUrl)) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strKey)) { Debug.Assert(false); return; }
 
 			g_dFileSigKeys[strUrl.ToLowerInvariant()] = strKey;
 		}
@@ -580,11 +580,11 @@ namespace KeePass.Util
 		{
 			SetFileSigKey(PwDefs.VersionUrl, AppDefs.Rsa4096PublicKeyXml);
 
-			if(Program.Config.Application.Start.CheckForUpdateConfigured) return;
+			if (Program.Config.Application.Start.CheckForUpdateConfigured) return;
 
 			// If the user has manually enabled the automatic update check
 			// before, there's no need to ask him again
-			if(!Program.Config.Application.Start.CheckForUpdate &&
+			if (!Program.Config.Application.Start.CheckForUpdate &&
 				!Program.IsDevelopmentSnapshot())
 			{
 				string strHdr = KPRes.UpdateCheckInfo;
@@ -604,7 +604,7 @@ namespace KeePass.Util
 				dlg.SetFooterIcon(VtdIcon.Information);
 
 				int iResult;
-				if(dlg.ShowDialog(fParent)) iResult = dlg.Result;
+				if (dlg.ShowDialog(fParent)) iResult = dlg.Result;
 				else
 				{
 					string strMain = strHdr + MessageService.NewParagraph + strSub;

@@ -33,7 +33,7 @@ namespace KeePass.UI
 		{
 			int msg = m.Msg;
 
-			if((msg == NativeMethods.WM_KEYDOWN) || (msg == NativeMethods.WM_SYSKEYDOWN) ||
+			if ((msg == NativeMethods.WM_KEYDOWN) || (msg == NativeMethods.WM_SYSKEYDOWN) ||
 				(msg == NativeMethods.WM_LBUTTONDOWN) || (msg == NativeMethods.WM_RBUTTONDOWN) ||
 				(msg == NativeMethods.WM_MBUTTONDOWN))
 			{
@@ -45,10 +45,10 @@ namespace KeePass.UI
 			// https://sourceforge.net/p/keepass/bugs/1598/
 			// https://stackoverflow.com/questions/25619831/arithmetic-operation-resulted-in-an-overflow-in-inputlanguagechangingeventargs
 			// https://referencesource.microsoft.com/#System.Windows.Forms/winforms/Managed/System/WinForms/InputLanguage.cs
-			if(msg == NativeMethods.WM_INPUTLANGCHANGEREQUEST)
+			if (msg == NativeMethods.WM_INPUTLANGCHANGEREQUEST)
 			{
 				long l = m.LParam.ToInt64();
-				if((l < (long)int.MinValue) || (l > (long)int.MaxValue))
+				if ((l < (long)int.MinValue) || (l > (long)int.MaxValue))
 					return true; // Ignore it (better than an exception)
 			}
 

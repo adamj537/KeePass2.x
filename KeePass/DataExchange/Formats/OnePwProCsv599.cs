@@ -57,7 +57,7 @@ namespace KeePass.DataExchange.Formats
 				StringSplitOptions.RemoveEmptyEntries);
 
 			Dictionary<string, PwGroup> dictGroups = new Dictionary<string, PwGroup>();
-			foreach(string strLine in vLines)
+			foreach (string strLine in vLines)
 			{
 				ProcessCsvLine(strLine, pwStorage, dictGroups);
 			}
@@ -66,25 +66,25 @@ namespace KeePass.DataExchange.Formats
 		private static void ProcessCsvLine(string strLine, PwDatabase pwStorage,
 			Dictionary<string, PwGroup> dictGroups)
 		{
-			if(strLine == "\"Bezeichnung\"\t\"User/ID\"\t\"1.Passwort\"\t\"Url/Programm\"\t\"Geändert am\"\t\"Bemerkung\"\t\"2.Passwort\"\t\"Läuft ab\"\t\"Kategorie\"\t\"Eigene Felder\"")
+			if (strLine == "\"Bezeichnung\"\t\"User/ID\"\t\"1.Passwort\"\t\"Url/Programm\"\t\"Geändert am\"\t\"Bemerkung\"\t\"2.Passwort\"\t\"Läuft ab\"\t\"Kategorie\"\t\"Eigene Felder\"")
 				return;
 
 			string str = strLine;
-			if(str.StartsWith("\"") && str.EndsWith("\""))
+			if (str.StartsWith("\"") && str.EndsWith("\""))
 				str = str.Substring(1, str.Length - 2);
 			else { Debug.Assert(false); }
 
 			string[] list = str.Split(new string[] { "\"\t\"" }, StringSplitOptions.None);
 
 			int iOffset;
-			if(list.Length == 11) iOffset = 0; // 1Password Pro 5.99
-			else if(list.Length == 10) iOffset = -1; // 1PW 6.15
-			else if(list.Length > 11) iOffset = 0; // Unknown extension
+			if (list.Length == 11) iOffset = 0; // 1Password Pro 5.99
+			else if (list.Length == 10) iOffset = -1; // 1PW 6.15
+			else if (list.Length > 11) iOffset = 0; // Unknown extension
 			else return;
 
 			string strGroup = list[9 + iOffset];
 			PwGroup pg;
-			if(dictGroups.ContainsKey(strGroup)) pg = dictGroups[strGroup];
+			if (dictGroups.ContainsKey(strGroup)) pg = dictGroups[strGroup];
 			else
 			{
 				pg = new PwGroup(true, true, strGroup, PwIcon.Folder);
@@ -118,13 +118,13 @@ namespace KeePass.DataExchange.Formats
 			// Debug.Assert(list[9] == list[0]); // Very mysterious format...
 
 			DateTime dt;
-			if(ParseDateTime(list[5 + iOffset], out dt))
+			if (ParseDateTime(list[5 + iOffset], out dt))
 			{
 				pe.CreationTime = pe.LastAccessTime = pe.LastModificationTime = dt;
 			}
 			else { Debug.Assert(false); }
 
-			if(ParseDateTime(list[8 + iOffset], out dt))
+			if (ParseDateTime(list[8 + iOffset], out dt))
 			{
 				pe.Expires = true;
 				pe.ExpiryTime = dt;
@@ -146,10 +146,10 @@ namespace KeePass.DataExchange.Formats
 		private static bool ParseDateTime(string str, out DateTime dt)
 		{
 			dt = DateTime.MinValue;
-			if(string.IsNullOrEmpty(str)) return false;
-			if(str.Trim().Equals("nie", StrUtil.CaseIgnoreCmp)) return false;
-			if(str.Trim().Equals("never", StrUtil.CaseIgnoreCmp)) return false;
-			if(str.Trim().Equals("morgen", StrUtil.CaseIgnoreCmp))
+			if (string.IsNullOrEmpty(str)) return false;
+			if (str.Trim().Equals("nie", StrUtil.CaseIgnoreCmp)) return false;
+			if (str.Trim().Equals("never", StrUtil.CaseIgnoreCmp)) return false;
+			if (str.Trim().Equals("morgen", StrUtil.CaseIgnoreCmp))
 			{
 				dt = DateTime.UtcNow.AddDays(1.0);
 				return true;
@@ -160,16 +160,16 @@ namespace KeePass.DataExchange.Formats
 
 			try
 			{
-				if(list.Length == 6)
+				if (list.Length == 6)
 					dt = (new DateTime(int.Parse(list[2]), int.Parse(list[1]),
 						int.Parse(list[0]), int.Parse(list[3]), int.Parse(list[4]),
 						int.Parse(list[5]), DateTimeKind.Local)).ToUniversalTime();
-				else if(list.Length == 3)
+				else if (list.Length == 3)
 					dt = (new DateTime(int.Parse(list[2]), int.Parse(list[1]),
 						int.Parse(list[0]), 0, 0, 0, DateTimeKind.Local)).ToUniversalTime();
 				else { Debug.Assert(false); return false; }
 			}
-			catch(Exception) { Debug.Assert(false); return false; }
+			catch (Exception) { Debug.Assert(false); return false; }
 
 			return true;
 		}
@@ -179,15 +179,15 @@ namespace KeePass.DataExchange.Formats
 			string[] vItems = strCustom.Split(new string[] { @"|~#~|" },
 				StringSplitOptions.RemoveEmptyEntries);
 
-			foreach(string strItem in vItems)
+			foreach (string strItem in vItems)
 			{
 				string[] vData = strItem.Split(new char[] { '|' },
 					StringSplitOptions.None);
 
-				if(vData.Length >= 3)
+				if (vData.Length >= 3)
 				{
 					string strValue = vData[2];
-					for(int i = 3; i < vData.Length; ++i)
+					for (int i = 3; i < vData.Length; ++i)
 						strValue += @"|" + vData[i];
 
 					pe.Strings.Set(vData[1], new ProtectedString(false,

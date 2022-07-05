@@ -96,7 +96,7 @@ namespace KeePass.DataExchange.Formats
 			try
 			{
 				string strData = StrUtil.Utf8.GetString(pbData);
-				if(strData.StartsWith("<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+				if (strData.StartsWith("<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
 					StrUtil.CaseIgnoreCmp) && (strData.IndexOf(
 					"WhatSaved=\"Password Safe V3.29\"", StrUtil.CaseIgnoreCmp) >= 0))
 				{
@@ -110,10 +110,10 @@ namespace KeePass.DataExchange.Formats
 					pbData = StrUtil.Utf8.GetBytes(strData);
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			XmlDocument xmlDoc = XmlUtilEx.CreateXmlDocument();
-			using(MemoryStream ms = new MemoryStream(pbData, false))
+			using (MemoryStream ms = new MemoryStream(pbData, false))
 			{
 				xmlDoc.Load(ms);
 			}
@@ -127,29 +127,29 @@ namespace KeePass.DataExchange.Formats
 				XmlNode xmlBreak = xac.GetNamedItem(AttribLineBreak);
 				string strBreak = xmlBreak.Value;
 
-				if(!string.IsNullOrEmpty(strBreak))
+				if (!string.IsNullOrEmpty(strBreak))
 					strLineBreak = strBreak;
 				else { Debug.Assert(false); }
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
-			foreach(XmlNode xmlChild in xmlRoot.ChildNodes)
+			foreach (XmlNode xmlChild in xmlRoot.ChildNodes)
 			{
-				if(xmlChild.Name == ElemEntry)
+				if (xmlChild.Name == ElemEntry)
 					ImportEntry(xmlChild, pwStorage, strLineBreak);
 			}
 
 			XmlNode xnUse = xmlRoot.SelectSingleNode(XPathUseDefaultUser);
-			if(xnUse != null)
+			if (xnUse != null)
 			{
 				string strUse = XmlUtil.SafeInnerText(xnUse);
-				if(StrUtil.StringToBool(strUse))
+				if (StrUtil.StringToBool(strUse))
 				{
 					XmlNode xn = xmlRoot.SelectSingleNode(XPathDefaultUser);
-					if((xn != null) && (pwStorage.DefaultUserName.Length == 0))
+					if ((xn != null) && (pwStorage.DefaultUserName.Length == 0))
 					{
 						pwStorage.DefaultUserName = XmlUtil.SafeInnerText(xn);
-						if(pwStorage.DefaultUserName.Length != 0)
+						if (pwStorage.DefaultUserName.Length != 0)
 							pwStorage.DefaultUserNameChanged = DateTime.UtcNow;
 					}
 				}
@@ -159,80 +159,80 @@ namespace KeePass.DataExchange.Formats
 		private static void ImportEntry(XmlNode xmlNode, PwDatabase pwStorage,
 			string strLineBreak)
 		{
-			Debug.Assert(xmlNode != null); if(xmlNode == null) return;
+			Debug.Assert(xmlNode != null); if (xmlNode == null) return;
 
 			PwEntry pe = new PwEntry(true, true);
 			string strGroupName = string.Empty;
 
 			List<DatePasswordPair> listHistory = null;
 
-			foreach(XmlNode xmlChild in xmlNode.ChildNodes)
+			foreach (XmlNode xmlChild in xmlNode.ChildNodes)
 			{
-				if(xmlChild.Name == ElemGroup)
+				if (xmlChild.Name == ElemGroup)
 					strGroupName = XmlUtil.SafeInnerText(xmlChild);
-				else if(xmlChild.Name == ElemTitle)
+				else if (xmlChild.Name == ElemTitle)
 					pe.Strings.Set(PwDefs.TitleField,
 						new ProtectedString(pwStorage.MemoryProtection.ProtectTitle,
 						XmlUtil.SafeInnerText(xmlChild)));
-				else if(xmlChild.Name == ElemUserName)
+				else if (xmlChild.Name == ElemUserName)
 					pe.Strings.Set(PwDefs.UserNameField,
 						new ProtectedString(pwStorage.MemoryProtection.ProtectUserName,
 						XmlUtil.SafeInnerText(xmlChild)));
-				else if(xmlChild.Name == ElemPassword)
+				else if (xmlChild.Name == ElemPassword)
 					pe.Strings.Set(PwDefs.PasswordField,
 						new ProtectedString(pwStorage.MemoryProtection.ProtectPassword,
 						XmlUtil.SafeInnerText(xmlChild)));
-				else if(xmlChild.Name == ElemURL)
+				else if (xmlChild.Name == ElemURL)
 					pe.Strings.Set(PwDefs.UrlField,
 						new ProtectedString(pwStorage.MemoryProtection.ProtectUrl,
 						XmlUtil.SafeInnerText(xmlChild)));
-				else if(xmlChild.Name == ElemNotes)
+				else if (xmlChild.Name == ElemNotes)
 					pe.Strings.Set(PwDefs.NotesField,
 						new ProtectedString(pwStorage.MemoryProtection.ProtectNotes,
 						XmlUtil.SafeInnerText(xmlChild, strLineBreak)));
-				else if(xmlChild.Name == ElemEMail)
+				else if (xmlChild.Name == ElemEMail)
 					pe.Strings.Set("E-Mail", new ProtectedString(false,
 						XmlUtil.SafeInnerText(xmlChild)));
-				else if(xmlChild.Name == ElemCreationTime)
+				else if (xmlChild.Name == ElemCreationTime)
 					pe.CreationTime = ReadDateTime(xmlChild);
-				else if(xmlChild.Name == ElemLastAccessTime)
+				else if (xmlChild.Name == ElemLastAccessTime)
 					pe.LastAccessTime = ReadDateTime(xmlChild);
-				else if(xmlChild.Name == ElemExpireTime)
+				else if (xmlChild.Name == ElemExpireTime)
 				{
 					pe.ExpiryTime = ReadDateTime(xmlChild);
 					pe.Expires = true;
 				}
-				else if(xmlChild.Name == ElemLastModTime) // = last mod
+				else if (xmlChild.Name == ElemLastModTime) // = last mod
 					pe.LastModificationTime = ReadDateTime(xmlChild);
-				else if(xmlChild.Name == ElemRecordModTime) // = last mod
+				else if (xmlChild.Name == ElemRecordModTime) // = last mod
 					pe.LastModificationTime = ReadDateTime(xmlChild);
-				else if(xmlChild.Name == ElemCreationTimeX)
+				else if (xmlChild.Name == ElemCreationTimeX)
 					pe.CreationTime = ReadDateTimeX(xmlChild);
-				else if(xmlChild.Name == ElemLastAccessTimeX)
+				else if (xmlChild.Name == ElemLastAccessTimeX)
 					pe.LastAccessTime = ReadDateTimeX(xmlChild);
-				else if(xmlChild.Name == ElemExpireTimeX)
+				else if (xmlChild.Name == ElemExpireTimeX)
 				{
 					pe.ExpiryTime = ReadDateTimeX(xmlChild);
 					pe.Expires = true;
 				}
-				else if(xmlChild.Name == ElemLastModTimeX) // = last mod
+				else if (xmlChild.Name == ElemLastModTimeX) // = last mod
 					pe.LastModificationTime = ReadDateTimeX(xmlChild);
-				else if(xmlChild.Name == ElemRecordModTimeX) // = last mod
+				else if (xmlChild.Name == ElemRecordModTimeX) // = last mod
 					pe.LastModificationTime = ReadDateTimeX(xmlChild);
-				else if(xmlChild.Name == ElemAutoType)
+				else if (xmlChild.Name == ElemAutoType)
 					pe.AutoType.DefaultSequence = XmlUtil.SafeInnerText(xmlChild);
-				else if(xmlChild.Name == ElemRunCommand)
+				else if (xmlChild.Name == ElemRunCommand)
 					pe.OverrideUrl = XmlUtil.SafeInnerText(xmlChild);
-				else if(xmlChild.Name == ElemEntryHistory)
+				else if (xmlChild.Name == ElemEntryHistory)
 					listHistory = ReadEntryHistory(xmlChild);
 			}
 
-			if(listHistory != null)
+			if (listHistory != null)
 			{
 				string strPassword = pe.Strings.ReadSafe(PwDefs.PasswordField);
 				DateTime dtLastMod = pe.LastModificationTime;
 
-				foreach(DatePasswordPair dpp in listHistory)
+				foreach (DatePasswordPair dpp in listHistory)
 				{
 					pe.Strings.Set(PwDefs.PasswordField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectPassword,
@@ -252,7 +252,7 @@ namespace KeePass.DataExchange.Formats
 			}
 
 			PwGroup pgContainer = pwStorage.RootGroup;
-			if(strGroupName.Length != 0)
+			if (strGroupName.Length != 0)
 				pgContainer = pwStorage.RootGroup.FindCreateSubTree(strGroupName,
 					new string[1] { "." }, true);
 			pgContainer.AddEntry(pe, true);
@@ -261,24 +261,24 @@ namespace KeePass.DataExchange.Formats
 
 		private static DateTime ReadDateTime(XmlNode xmlNode)
 		{
-			Debug.Assert(xmlNode != null); if(xmlNode == null) return DateTime.UtcNow;
+			Debug.Assert(xmlNode != null); if (xmlNode == null) return DateTime.UtcNow;
 
 			int[] vTimeParts = new int[6];
 			DateTime dtTemp;
-			foreach(XmlNode xmlChild in xmlNode.ChildNodes)
+			foreach (XmlNode xmlChild in xmlNode.ChildNodes)
 			{
-				if(xmlChild.Name == ElemTimePartDate)
+				if (xmlChild.Name == ElemTimePartDate)
 				{
-					if(DateTime.TryParse(XmlUtil.SafeInnerText(xmlChild), out dtTemp))
+					if (DateTime.TryParse(XmlUtil.SafeInnerText(xmlChild), out dtTemp))
 					{
 						vTimeParts[0] = dtTemp.Year;
 						vTimeParts[1] = dtTemp.Month;
 						vTimeParts[2] = dtTemp.Day;
 					}
 				}
-				else if(xmlChild.Name == ElemTimePartTime)
+				else if (xmlChild.Name == ElemTimePartTime)
 				{
-					if(DateTime.TryParse(XmlUtil.SafeInnerText(xmlChild), out dtTemp))
+					if (DateTime.TryParse(XmlUtil.SafeInnerText(xmlChild), out dtTemp))
 					{
 						vTimeParts[3] = dtTemp.Hour;
 						vTimeParts[4] = dtTemp.Minute;
@@ -298,7 +298,7 @@ namespace KeePass.DataExchange.Formats
 			string strDate = XmlUtil.SafeInnerText(xmlNode);
 
 			DateTime dt;
-			if(StrUtil.TryParseDateTime(strDate, out dt))
+			if (StrUtil.TryParseDateTime(strDate, out dt))
 				return TimeUtil.ToUtc(dt, false);
 
 			Debug.Assert(false);
@@ -309,9 +309,9 @@ namespace KeePass.DataExchange.Formats
 		{
 			List<DatePasswordPair> list = null;
 
-			foreach(XmlNode xmlChild in xmlNode)
+			foreach (XmlNode xmlChild in xmlNode)
 			{
-				if(xmlChild.Name == ElemEntryHistoryContainer)
+				if (xmlChild.Name == ElemEntryHistoryContainer)
 					list = ReadEntryHistoryContainer(xmlChild);
 			}
 
@@ -322,9 +322,9 @@ namespace KeePass.DataExchange.Formats
 		{
 			List<DatePasswordPair> list = new List<DatePasswordPair>();
 
-			foreach(XmlNode xmlChild in xmlNode)
+			foreach (XmlNode xmlChild in xmlNode)
 			{
-				if(xmlChild.Name == ElemEntryHistoryItem)
+				if (xmlChild.Name == ElemEntryHistoryItem)
 					list.Add(ReadEntryHistoryItem(xmlChild));
 			}
 
@@ -335,13 +335,13 @@ namespace KeePass.DataExchange.Formats
 		{
 			DatePasswordPair dpp = new DatePasswordPair();
 
-			foreach(XmlNode xmlChild in xmlNode)
+			foreach (XmlNode xmlChild in xmlNode)
 			{
-				if(xmlChild.Name == ElemEntryHistoryItemTime)
+				if (xmlChild.Name == ElemEntryHistoryItemTime)
 					dpp.Time = ReadDateTime(xmlChild);
-				else if(xmlChild.Name == ElemEntryHistoryItemTimeX)
+				else if (xmlChild.Name == ElemEntryHistoryItemTimeX)
 					dpp.Time = ReadDateTimeX(xmlChild);
-				else if(xmlChild.Name == ElemEntryHistoryItemPassword)
+				else if (xmlChild.Name == ElemEntryHistoryItemPassword)
 					dpp.Password = XmlUtil.SafeInnerText(xmlChild);
 			}
 

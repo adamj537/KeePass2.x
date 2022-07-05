@@ -32,9 +32,9 @@ namespace KeePass.UI
 
 		public void ShowEx(Control cParent)
 		{
-			if(cParent == null) { Debug.Assert(false); return; }
+			if (cParent == null) { Debug.Assert(false); return; }
 
-			if(cParent.RightToLeft == RightToLeft.Yes)
+			if (cParent.RightToLeft == RightToLeft.Yes)
 			{
 				this.RightToLeft = RightToLeft.Yes;
 				Show(cParent, new Point(cParent.Width, cParent.Height),

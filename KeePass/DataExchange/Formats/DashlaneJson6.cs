@@ -48,10 +48,10 @@ namespace KeePass.DataExchange.Formats
 		public override void Import(PwDatabase pwStorage, Stream sInput,
 			IStatusLogger slLogger)
 		{
-			using(StreamReader sr = new StreamReader(sInput, StrUtil.Utf8, true))
+			using (StreamReader sr = new StreamReader(sInput, StrUtil.Utf8, true))
 			{
 				string str = sr.ReadToEnd();
-				if(!string.IsNullOrEmpty(str))
+				if (!string.IsNullOrEmpty(str))
 				{
 					CharStream cs = new CharStream(str);
 					ImportRoot(new JsonObject(cs), pwStorage);
@@ -61,17 +61,17 @@ namespace KeePass.DataExchange.Formats
 
 		private static void ImportRoot(JsonObject jo, PwDatabase pd)
 		{
-			foreach(string strType in jo.Items.Keys)
+			foreach (string strType in jo.Items.Keys)
 			{
-				if(strType == null) { Debug.Assert(false); continue; }
+				if (strType == null) { Debug.Assert(false); continue; }
 				string strTypeNorm = strType.Trim().ToLower();
 
 				JsonObject[] vEntries = jo.GetValueArray<JsonObject>(strType);
-				if(vEntries == null) { Debug.Assert(false); continue; }
+				if (vEntries == null) { Debug.Assert(false); continue; }
 
-				foreach(JsonObject joEntry in vEntries)
+				foreach (JsonObject joEntry in vEntries)
 				{
-					if(joEntry == null) { Debug.Assert(false); continue; }
+					if (joEntry == null) { Debug.Assert(false); continue; }
 					ImportEntry(joEntry, pd, strTypeNorm);
 				}
 			}
@@ -82,10 +82,10 @@ namespace KeePass.DataExchange.Formats
 			PwEntry pe = new PwEntry(true, true);
 			pd.RootGroup.AddEntry(pe, true);
 
-			if(strTypeNorm.StartsWith("paymentmean"))
+			if (strTypeNorm.StartsWith("paymentmean"))
 				strTypeNorm = "paymentmean";
 
-			switch(strTypeNorm)
+			switch (strTypeNorm)
 			{
 				case "bankstatement":
 				case "fiscalstatement":
@@ -116,35 +116,35 @@ namespace KeePass.DataExchange.Formats
 					break;
 			}
 
-			foreach(KeyValuePair<string, object> kvp in jo.Items)
+			foreach (KeyValuePair<string, object> kvp in jo.Items)
 			{
 				string strValue = (kvp.Value as string);
-				if(strValue == null)
+				if (strValue == null)
 				{
 					Debug.Assert(false);
-					if(kvp.Value != null) strValue = kvp.Value.ToString();
+					if (kvp.Value != null) strValue = kvp.Value.ToString();
 				}
-				if(strValue == null) { Debug.Assert(false); continue; }
+				if (strValue == null) { Debug.Assert(false); continue; }
 
 				// Ignore GUIDs
-				if(Regex.IsMatch(strValue, "^\\{\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}\\}$",
+				if (Regex.IsMatch(strValue, "^\\{\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}\\}$",
 					RegexOptions.Singleline))
 					continue;
 
 				string strKey = kvp.Key;
-				if(strKey == null) { Debug.Assert(false); continue; }
+				if (strKey == null) { Debug.Assert(false); continue; }
 				strKey = strKey.Trim();
-				if(string.IsNullOrEmpty(strKey)) { Debug.Assert(false); continue; }
-				if(strKey.StartsWith("BankAccount", StrUtil.CaseIgnoreCmp) &&
+				if (string.IsNullOrEmpty(strKey)) { Debug.Assert(false); continue; }
+				if (strKey.StartsWith("BankAccount", StrUtil.CaseIgnoreCmp) &&
 					(strKey.Length > 11))
 					strKey = strKey.Substring(11);
-				if(strKey.IndexOf("Number", StrUtil.CaseIgnoreCmp) >= 0)
+				if (strKey.IndexOf("Number", StrUtil.CaseIgnoreCmp) >= 0)
 					strKey = PwDefs.UserNameField;
 				strKey = (new string(char.ToUpper(strKey[0]), 1)) +
 					strKey.Substring(1);
 
 				string strNorm = strKey.ToLower();
-				switch(strNorm)
+				switch (strNorm)
 				{
 					case "fullname":
 					case "name":
@@ -158,7 +158,7 @@ namespace KeePass.DataExchange.Formats
 
 					case "expiredate":
 						DateTime? odt = ParseDate(strValue);
-						if(odt.HasValue)
+						if (odt.HasValue)
 						{
 							pe.Expires = true;
 							pe.ExpiryTime = odt.Value;
@@ -171,30 +171,30 @@ namespace KeePass.DataExchange.Formats
 						break;
 
 					default:
-						if(!strNorm.Contains("date") && !strNorm.Contains("time"))
+						if (!strNorm.Contains("date") && !strNorm.Contains("time"))
 						{
 							string strStd = ImportUtil.MapNameToStandardField(strKey, true);
-							if(!string.IsNullOrEmpty(strStd)) strKey = strStd;
+							if (!string.IsNullOrEmpty(strStd)) strKey = strStd;
 						}
 						break;
 				}
 
-				if(strKey == PwDefs.UrlField)
+				if (strKey == PwDefs.UrlField)
 					strValue = ImportUtil.FixUrl(strValue);
-				else if(strNorm.Contains("time"))
+				else if (strNorm.Contains("time"))
 					strValue = TryConvertTime(strValue);
 
-				if(!string.IsNullOrEmpty(strValue))
+				if (!string.IsNullOrEmpty(strValue))
 					ImportUtil.AppendToField(pe, strKey, strValue, pd);
 			}
 		}
 
 		private static DateTime? ParseDate(string str)
 		{
-			if(string.IsNullOrEmpty(str)) { Debug.Assert(false); return null; }
+			if (string.IsNullOrEmpty(str)) { Debug.Assert(false); return null; }
 
 			DateTime dt;
-			if(DateTime.TryParseExact(str.Trim(), "yyyy'-'M'-'d",
+			if (DateTime.TryParseExact(str.Trim(), "yyyy'-'M'-'d",
 				NumberFormatInfo.InvariantInfo, DateTimeStyles.AssumeLocal, out dt))
 				return TimeUtil.ToUtc(dt, false);
 
@@ -204,23 +204,23 @@ namespace KeePass.DataExchange.Formats
 
 		private static string TryConvertTime(string str)
 		{
-			if(string.IsNullOrEmpty(str)) return string.Empty;
+			if (string.IsNullOrEmpty(str)) return string.Empty;
 
 			try
 			{
-				if(Regex.IsMatch(str, "^\\d+$", RegexOptions.Singleline))
+				if (Regex.IsMatch(str, "^\\d+$", RegexOptions.Singleline))
 				{
 					ulong u;
-					if(ulong.TryParse(str, out u))
+					if (ulong.TryParse(str, out u))
 					{
 						DateTime dt = TimeUtil.ConvertUnixTime(u);
-						if(dt > TimeUtil.UnixRoot)
+						if (dt > TimeUtil.UnixRoot)
 							return TimeUtil.ToDisplayString(dt);
 					}
 					else { Debug.Assert(false); }
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return str;
 		}

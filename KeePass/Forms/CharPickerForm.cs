@@ -66,7 +66,7 @@ namespace KeePass.Forms
 		{
 			IntPtr h = IntPtr.Zero;
 			try { h = NativeMethods.GetForegroundWindowHandle(); }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			CharPickerForm dlg = new CharPickerForm();
 			dlg.InitEx(psWord, bCenterScreen, bSetForeground, uCharCount, bInitHide);
@@ -75,16 +75,16 @@ namespace KeePass.Forms
 
 			ProtectedString ps = dlg.SelectedCharacters;
 			string strRet = null;
-			if((dr == DialogResult.OK) && (ps != null)) strRet = ps.ReadString();
+			if ((dr == DialogResult.OK) && (ps != null)) strRet = ps.ReadString();
 
 			UIUtil.DestroyForm(dlg);
 
 			try
 			{
-				if(h != IntPtr.Zero)
+				if (h != IntPtr.Zero)
 					NativeMethods.EnsureForegroundWindow(h);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return strRet;
 		}
@@ -112,7 +112,7 @@ namespace KeePass.Forms
 		{
 			m_psWord = psWord;
 
-			if(bCenterScreen) this.StartPosition = FormStartPosition.CenterScreen;
+			if (bCenterScreen) this.StartPosition = FormStartPosition.CenterScreen;
 
 			m_bSetForeground = bSetForeground;
 			m_uCharCount = uCharCount;
@@ -121,7 +121,7 @@ namespace KeePass.Forms
 
 		private void OnFormLoad(object sender, EventArgs e)
 		{
-			if(m_psWord == null) { Debug.Assert(false); throw new InvalidOperationException(); }
+			if (m_psWord == null) { Debug.Assert(false); throw new InvalidOperationException(); }
 
 			// The password text box should not be focused by default
 			// in order to avoid a Caps Lock warning tooltip bug;
@@ -149,19 +149,19 @@ namespace KeePass.Forms
 
 			AceColumn colPw = Program.Config.MainWindow.FindColumn(AceColumnType.Password);
 			bool bHide = ((colPw != null) ? colPw.HideWithAsterisks : true);
-			if(m_obInitHide.HasValue) bHide = m_obInitHide.Value;
+			if (m_obInitHide.HasValue) bHide = m_obInitHide.Value;
 			bHide |= !AppPolicy.Current.UnhidePasswords;
 			m_cbHideChars.Checked = bHide;
 
 			RecreateResizableWindowControls();
 
-			if(m_uCharCount > 0)
+			if (m_uCharCount > 0)
 			{
 				m_btnOK.Enabled = false;
 				// m_btnOK.Visible = false;
 			}
 
-			if(m_bSetForeground)
+			if (m_bSetForeground)
 			{
 				this.BringToFront();
 				this.Activate();
@@ -178,7 +178,7 @@ namespace KeePass.Forms
 		private void OnFormClosed(object sender, FormClosedEventArgs e)
 		{
 			string strRect = UIUtil.GetWindowScreenRect(this);
-			if(strRect != m_strInitialFormRect) // Don't overwrite ""
+			if (strRect != m_strInitialFormRect) // Don't overwrite ""
 				Program.Config.UI.CharPickerRect = strRect;
 
 			m_tbSelected.TextChanged -= this.OnSelectedTextChangedEx;
@@ -200,9 +200,9 @@ namespace KeePass.Forms
 
 		private void RemoveAllCharButtons()
 		{
-			if((m_lButtons != null) && (m_pnlSelect != null))
+			if ((m_lButtons != null) && (m_pnlSelect != null))
 			{
-				foreach(Button btn in m_lButtons)
+				foreach (Button btn in m_lButtons)
 				{
 					btn.Click -= this.OnSelectCharacter;
 					m_pnlSelect.Controls.Remove(btn);
@@ -212,9 +212,9 @@ namespace KeePass.Forms
 				m_lButtons.Clear();
 			}
 
-			if((m_lLabels != null) && (m_pnlSelect != null))
+			if ((m_lLabels != null) && (m_pnlSelect != null))
 			{
-				foreach(Label lbl in m_lLabels)
+				foreach (Label lbl in m_lLabels)
 				{
 					m_pnlSelect.Controls.Remove(lbl);
 					lbl.Dispose();
@@ -227,7 +227,7 @@ namespace KeePass.Forms
 		private void RecreateResizableWindowControls()
 		{
 			string strTitle = KPRes.PickCharacters;
-			if(m_uCharCount > 0) strTitle += " (" + m_uCharCount.ToString() + ")";
+			if (m_uCharCount > 0) strTitle += " (" + m_uCharCount.ToString() + ")";
 
 			BannerFactory.UpdateBanner(this, m_bannerImage,
 				Properties.Resources.B48x48_KGPG_Key2, strTitle,
@@ -238,11 +238,11 @@ namespace KeePass.Forms
 			bool bRtl = (this.RightToLeft == RightToLeft.Yes);
 
 			char[] vWord = ((m_psWord != null) ? m_psWord.ReadChars() : new char[0]);
-			if(vWord.Length >= 1)
+			if (vWord.Length >= 1)
 			{
 				int x = 0;
 				int nPnlWidth = m_pnlSelect.Width, nPnlHeight = m_pnlSelect.Height;
-				for(int i = 0; i < vWord.Length; ++i)
+				for (int i = 0; i < vWord.Length; ++i)
 				{
 					int w = ((nPnlWidth * (i + 1)) / vWord.Length) - x;
 
@@ -278,7 +278,7 @@ namespace KeePass.Forms
 		private void OnHideCharsCheckedChanged(object sender, EventArgs e)
 		{
 			bool bHide = m_cbHideChars.Checked;
-			if(!bHide && !AppPolicy.Try(AppPolicyId.UnhidePasswords))
+			if (!bHide && !AppPolicy.Try(AppPolicyId.UnhidePasswords))
 			{
 				m_cbHideChars.Checked = true;
 				return;
@@ -290,9 +290,9 @@ namespace KeePass.Forms
 
 			bool bHideBtns = bHide;
 			bHideBtns |= !Program.Config.UI.Hiding.UnhideButtonAlsoUnhidesSource;
-			foreach(Button btn in m_lButtons)
+			foreach (Button btn in m_lButtons)
 			{
-				if(bHideBtns) btn.Text = strHiddenChar;
+				if (bHideBtns) btn.Text = strHiddenChar;
 				else btn.Text = new string((char)btn.Tag, 1);
 			}
 		}
@@ -300,24 +300,24 @@ namespace KeePass.Forms
 		private void OnSelectCharacter(object sender, EventArgs e)
 		{
 			Button btn = (sender as Button);
-			if(btn == null) { Debug.Assert(false); return; }
+			if (btn == null) { Debug.Assert(false); return; }
 
 			try
 			{
 				char ch = (char)btn.Tag;
-				if(ch == char.MinValue) { Debug.Assert(false); return; }
+				if (ch == char.MinValue) { Debug.Assert(false); return; }
 
 				string strMask = m_tbSelected.Text;
 				int iSelStart = m_tbSelected.SelectionStart;
 				int iSelLen = m_tbSelected.SelectionLength;
 
-				if(iSelLen >= 1) strMask = strMask.Remove(iSelStart, iSelLen);
+				if (iSelLen >= 1) strMask = strMask.Remove(iSelStart, iSelLen);
 				strMask = strMask.Insert(iSelStart, new string(ch, 1));
 
 				m_tbSelected.Text = strMask;
 				m_tbSelected.Select(iSelStart + 1, 0);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private void OnFormResize(object sender, EventArgs e)
@@ -332,15 +332,15 @@ namespace KeePass.Forms
 
 		private void ProcessResize()
 		{
-			if((this.Height != m_nFormHeight) && (m_nFormHeight != 0))
+			if ((this.Height != m_nFormHeight) && (m_nFormHeight != 0))
 				this.Height = m_nFormHeight;
 
-			if(m_bFormLoaded) RecreateResizableWindowControls();
+			if (m_bFormLoaded) RecreateResizableWindowControls();
 		}
 
 		private void OnSelectedTextChangedEx(object sender, EventArgs e)
 		{
-			if((m_uCharCount > 0) && (m_tbSelected.TextLength == (int)m_uCharCount))
+			if ((m_uCharCount > 0) && (m_tbSelected.TextLength == (int)m_uCharCount))
 			{
 				// m_btnOK.Visible = true;
 				m_btnOK.Enabled = true;

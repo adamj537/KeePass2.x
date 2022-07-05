@@ -105,49 +105,49 @@ namespace KeePass.Util
 		public static ProtectedBinary Open(string strName, ProtectedBinary pb,
 			BinaryDataOpenOptions opt)
 		{
-			if(string.IsNullOrEmpty(strName)) { Debug.Assert(false); return null; }
-			if(pb == null) { Debug.Assert(false); return null; }
-			if(opt == null) opt = new BinaryDataOpenOptions();
+			if (string.IsNullOrEmpty(strName)) { Debug.Assert(false); return null; }
+			if (pb == null) { Debug.Assert(false); return null; }
+			if (opt == null) opt = new BinaryDataOpenOptions();
 
 			byte[] pbData = pb.ReadData();
-			if(pbData == null) { Debug.Assert(false); return null; }
+			if (pbData == null) { Debug.Assert(false); return null; }
 
 			BinaryDataHandler h = opt.Handler;
-			if(h == BinaryDataHandler.Default)
+			if (h == BinaryDataHandler.Default)
 				h = ChooseHandler(strName, pbData, opt);
 
 			byte[] pbModData = null;
-			if(h == BinaryDataHandler.InternalViewer)
+			if (h == BinaryDataHandler.InternalViewer)
 			{
 				DataViewerForm dvf = new DataViewerForm();
 				dvf.InitEx(strName, pbData);
 				UIUtil.ShowDialogAndDestroy(dvf);
 			}
-			else if(h == BinaryDataHandler.InternalEditor)
+			else if (h == BinaryDataHandler.InternalEditor)
 			{
 				DataEditorForm def = new DataEditorForm();
 				def.InitEx(strName, pbData);
 				def.ShowDialog();
 
-				if(def.EditedBinaryData != null)
+				if (def.EditedBinaryData != null)
 					pbModData = def.EditedBinaryData;
 
 				UIUtil.DestroyForm(def);
 			}
-			else if(h == BinaryDataHandler.ExternalApp)
+			else if (h == BinaryDataHandler.ExternalApp)
 				pbModData = OpenExternal(strName, pbData, opt);
 			else { Debug.Assert(false); }
 
 			ProtectedBinary r = null;
-			if((pbModData != null) && !MemUtil.ArraysEqual(pbData, pbModData) &&
+			if ((pbModData != null) && !MemUtil.ArraysEqual(pbData, pbModData) &&
 				!opt.ReadOnly)
 			{
-				if(FileDialogsEx.CheckAttachmentSize(pbModData.LongLength,
+				if (FileDialogsEx.CheckAttachmentSize(pbModData.LongLength,
 					KPRes.AttachFailed + MessageService.NewParagraph + strName))
 					r = new ProtectedBinary(pb.IsProtected, pbModData);
 			}
 
-			if(pb.IsProtected) MemUtil.ZeroByteArray(pbData);
+			if (pb.IsProtected) MemUtil.ZeroByteArray(pbData);
 			return r;
 		}
 
@@ -156,10 +156,10 @@ namespace KeePass.Util
 		{
 			BinaryDataClass bdc = BinaryDataClassifier.Classify(strName, pbData);
 
-			if(DataEditorForm.SupportsDataType(bdc) && !opt.ReadOnly)
+			if (DataEditorForm.SupportsDataType(bdc) && !opt.ReadOnly)
 				return BinaryDataHandler.InternalEditor;
 
-			if(DataViewerForm.SupportsDataType(bdc))
+			if (DataViewerForm.SupportsDataType(bdc))
 				return BinaryDataHandler.InternalViewer;
 
 			return BinaryDataHandler.ExternalApp;
@@ -176,15 +176,15 @@ namespace KeePass.Util
 					UrlUtil.GetTempPath(), false);
 
 				string strTempID, strTempDir;
-				while(true)
+				while (true)
 				{
 					byte[] pbRandomID = CryptoRandom.Instance.GetRandomBytes(8);
 					strTempID = Convert.ToBase64String(pbRandomID);
 					strTempID = StrUtil.AlphaNumericOnly(strTempID);
-					if(strTempID.Length == 0) { Debug.Assert(false); continue; }
+					if (strTempID.Length == 0) { Debug.Assert(false); continue; }
 
 					strTempDir = strBaseTempDir + strTempID;
-					if(!Directory.Exists(strTempDir))
+					if (!Directory.Exists(strTempDir))
 					{
 						Directory.CreateDirectory(strTempDir);
 
@@ -197,7 +197,7 @@ namespace KeePass.Util
 						// because this internally uses the EncryptFile API
 						// function, which works with directories
 						try { File.Encrypt(strTempDir); }
-						catch(Exception) { Debug.Assert(false); }
+						catch (Exception) { Debug.Assert(false); }
 
 						break;
 					}
@@ -210,7 +210,7 @@ namespace KeePass.Util
 
 				// Encrypt again, in case the directory encryption above failed
 				try { File.Encrypt(strFile); }
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 
 				ProcessStartInfo psi = new ProcessStartInfo();
 				psi.FileName = strFile;
@@ -243,7 +243,7 @@ namespace KeePass.Util
 				vtd.SetFooterIcon(VtdIcon.Information);
 
 				bool bImport;
-				if(vtd.ShowDialog())
+				if (vtd.ShowDialog())
 					bImport = ((vtd.Result == (int)DialogResult.OK) ||
 						(vtd.Result == (int)DialogResult.Yes));
 				else
@@ -266,33 +266,33 @@ namespace KeePass.Util
 					bImport = MessageService.AskYesNo(sb.ToString());
 				}
 
-				if(bImport && !opt.ReadOnly)
+				if (bImport && !opt.ReadOnly)
 				{
-					while(true)
+					while (true)
 					{
 						try
 						{
 							pbResult = File.ReadAllBytes(strFile);
 							break;
 						}
-						catch(Exception exRead)
+						catch (Exception exRead)
 						{
-							if(!AskForRetry(strFile, exRead.Message)) break;
+							if (!AskForRetry(strFile, exRead.Message)) break;
 						}
 					}
 				}
 
 				string strReportObj = null;
-				while(true)
+				while (true)
 				{
 					try
 					{
 						strReportObj = strFile;
-						if(File.Exists(strFile))
+						if (File.Exists(strFile))
 						{
 							FileInfo fiTemp = new FileInfo(strFile);
 							long cb = fiTemp.Length;
-							if(cb > 0)
+							if (cb > 0)
 							{
 								byte[] pbOvr = new byte[cb];
 								Program.GlobalRandom.NextBytes(pbOvr);
@@ -303,18 +303,18 @@ namespace KeePass.Util
 						}
 
 						strReportObj = strTempDir;
-						if(Directory.Exists(strTempDir))
+						if (Directory.Exists(strTempDir))
 							Directory.Delete(strTempDir, true);
 
 						break;
 					}
-					catch(Exception exDel)
+					catch (Exception exDel)
 					{
-						if(!AskForRetry(strReportObj, exDel.Message)) break;
+						if (!AskForRetry(strReportObj, exDel.Message)) break;
 					}
 				}
 			}
-			catch(Exception ex) { MessageService.ShowWarning(ex); }
+			catch (Exception ex) { MessageService.ShowWarning(ex); }
 
 			return pbResult;
 		}
@@ -327,7 +327,7 @@ namespace KeePass.Util
 				PwDefs.ShortProductName, VtdIcon.Warning, null,
 				KPRes.RetryCmd, (int)DialogResult.Retry,
 				KPRes.Cancel, (int)DialogResult.Cancel);
-			if(i < 0)
+			if (i < 0)
 				i = (int)MessageService.Ask(strContent, PwDefs.ShortProductName,
 					MessageBoxButtons.RetryCancel);
 
@@ -337,33 +337,33 @@ namespace KeePass.Util
 
 		private static void ShellOpenFn(object o)
 		{
-			if(o == null) { Debug.Assert(false); return; }
+			if (o == null) { Debug.Assert(false); return; }
 
 			try
 			{
 				ProcessStartInfo psi = (o as ProcessStartInfo);
-				if(psi == null) { Debug.Assert(false); return; }
+				if (psi == null) { Debug.Assert(false); return; }
 
 				// Let the main thread finish showing the message box
 				Thread.Sleep(200);
 
 				NativeLib.StartProcess(psi);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				try { MessageService.ShowWarning(ex); }
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 		}
 
 		internal static void BuildOpenWithMenu(DynamicMenu dm, string strItem,
 			ProtectedBinary pb, bool bReadOnly)
 		{
-			if(dm == null) { Debug.Assert(false); return; }
+			if (dm == null) { Debug.Assert(false); return; }
 			dm.Clear();
 
-			if(string.IsNullOrEmpty(strItem)) { Debug.Assert(false); return; }
-			if(pb == null) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strItem)) { Debug.Assert(false); return; }
+			if (pb == null) { Debug.Assert(false); return; }
 
 			BinaryDataClass bdc = BinaryDataClassifier.Classify(strItem, pb);
 
@@ -381,9 +381,9 @@ namespace KeePass.Util
 			ToolStripMenuItem tsmiExt = dm.AddItem(KPRes.ExternalApp,
 				Properties.Resources.B16x16_Make_KDevelop, oo);
 
-			if(!DataEditorForm.SupportsDataType(bdc) || bReadOnly)
+			if (!DataEditorForm.SupportsDataType(bdc) || bReadOnly)
 				tsmiIntEditor.Enabled = false;
-			if(bReadOnly) tsmiExt.Enabled = false;
+			if (bReadOnly) tsmiExt.Enabled = false;
 		}
 	}
 }

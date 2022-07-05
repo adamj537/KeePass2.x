@@ -91,12 +91,12 @@ namespace KeePass.DataExchange.Formats
 			// see also KdbxFile.GetMinKdbxVersion
 
 			PwUuid puCipher = pd.DataCipherUuid;
-			if(puCipher.Equals(ChaCha20Engine.ChaCha20Uuid))
+			if (puCipher.Equals(ChaCha20Engine.ChaCha20Uuid))
 				pd.DataCipherUuid = StandardAesEngine.AesUuid;
 
 			KdfParameters pKdf = pd.KdfParameters;
 			AesKdf kdfAes = new AesKdf();
-			if(!pKdf.KdfUuid.Equals(kdfAes.Uuid))
+			if (!pKdf.KdfUuid.Equals(kdfAes.Uuid))
 				pd.KdfParameters = kdfAes.GetDefaultParameters();
 
 			VariantDictionary vdPublic = pd.PublicCustomData;
@@ -107,10 +107,10 @@ namespace KeePass.DataExchange.Formats
 			List<PwEntry> lCustomEK = new List<PwEntry>();
 			List<StringDictionaryEx> lCustomEV = new List<StringDictionaryEx>();
 
-			GroupHandler gh = delegate(PwGroup pg)
+			GroupHandler gh = delegate (PwGroup pg)
 			{
-				if(pg == null) { Debug.Assert(false); return true; }
-				if(pg.CustomData.Count > 0)
+				if (pg == null) { Debug.Assert(false); return true; }
+				if (pg.CustomData.Count > 0)
 				{
 					lCustomGK.Add(pg);
 					lCustomGV.Add(pg.CustomData);
@@ -118,10 +118,10 @@ namespace KeePass.DataExchange.Formats
 				}
 				return true;
 			};
-			EntryHandler eh = delegate(PwEntry pe)
+			EntryHandler eh = delegate (PwEntry pe)
 			{
-				if(pe == null) { Debug.Assert(false); return true; }
-				if(pe.CustomData.Count > 0)
+				if (pe == null) { Debug.Assert(false); return true; }
+				if (pe.CustomData.Count > 0)
 				{
 					lCustomEK.Add(pe);
 					lCustomEV.Add(pe.CustomData);
@@ -147,9 +147,9 @@ namespace KeePass.DataExchange.Formats
 				pd.KdfParameters = pKdf;
 				pd.PublicCustomData = vdPublic;
 
-				for(int i = 0; i < lCustomGK.Count; ++i)
+				for (int i = 0; i < lCustomGK.Count; ++i)
 					lCustomGK[i].CustomData = lCustomGV[i];
-				for(int i = 0; i < lCustomEK.Count; ++i)
+				for (int i = 0; i < lCustomEK.Count; ++i)
 					lCustomEK[i].CustomData = lCustomEV[i];
 			}
 

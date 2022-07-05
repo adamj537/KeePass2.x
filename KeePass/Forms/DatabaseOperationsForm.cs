@@ -58,7 +58,7 @@ namespace KeePass.Forms
 
 		private void OnFormLoad(object sender, EventArgs e)
 		{
-			Debug.Assert(m_pwDatabase != null); if(m_pwDatabase == null) throw new InvalidOperationException();
+			Debug.Assert(m_pwDatabase != null); if (m_pwDatabase == null) throw new InvalidOperationException();
 
 			GlobalWindowManager.AddWindow(this, this);
 
@@ -82,7 +82,7 @@ namespace KeePass.Forms
 		{
 			m_pwDatabase.MaintenanceHistoryDays = (uint)m_numHistoryDays.Value;
 
-			if(m_sdCustomData.Count != m_pwDatabase.CustomData.Count)
+			if (m_sdCustomData.Count != m_pwDatabase.CustomData.Count)
 			{
 				m_pwDatabase.CustomData = m_sdCustomData;
 				m_bModified = true;
@@ -97,11 +97,11 @@ namespace KeePass.Forms
 
 		private void EnableStatusMsgEx(bool bEnable)
 		{
-			if(bEnable)
+			if (bEnable)
 			{
 				m_btnClose.Enabled = m_btnHistoryEntriesDelete.Enabled =
 					m_btnRemoveDelObjInfo.Enabled = false;
-				if(!m_pbStatus.Visible) m_pbStatus.Visible = true;
+				if (!m_pbStatus.Visible) m_pbStatus.Visible = true;
 
 				m_pbStatus.Value = 0;
 			}
@@ -125,13 +125,13 @@ namespace KeePass.Forms
 			m_pwDatabase.RootGroup.GetCounts(true, out uNumGroups, out uNumEntries);
 
 			uint uCurEntryNumber = 1;
-			EntryHandler eh = delegate(PwEntry pe)
+			EntryHandler eh = delegate (PwEntry pe)
 			{
-				for(uint u = 0; u < pe.History.UCount; ++u)
+				for (uint u = 0; u < pe.History.UCount; ++u)
 				{
 					PwEntry peHist = pe.History.GetAt(u);
 
-					if((dtNow - peHist.LastModificationTime) >= tsSpan)
+					if ((dtNow - peHist.LastModificationTime) >= tsSpan)
 					{
 						pe.History.Remove(peHist);
 						--u;
@@ -159,7 +159,7 @@ namespace KeePass.Forms
 		{
 			EnableStatusMsgEx(true);
 
-			if(m_pwDatabase.DeletedObjects.UCount > 0)
+			if (m_pwDatabase.DeletedObjects.UCount > 0)
 			{
 				m_pwDatabase.DeletedObjects.Clear();
 				m_bModified = true;

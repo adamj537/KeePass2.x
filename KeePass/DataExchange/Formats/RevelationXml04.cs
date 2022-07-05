@@ -60,15 +60,15 @@ namespace KeePass.DataExchange.Formats
 		private static void ProcessEntries(PwDatabase pd, PwGroup pgParent,
 			XmlNodeList xlNodes)
 		{
-			foreach(XmlNode xmlChild in xlNodes)
+			foreach (XmlNode xmlChild in xlNodes)
 			{
-				if(xmlChild.Name == "entry")
+				if (xmlChild.Name == "entry")
 				{
 					XmlNode xnType = xmlChild.Attributes.GetNamedItem("type");
-					if(xnType == null) { Debug.Assert(false); }
+					if (xnType == null) { Debug.Assert(false); }
 					else
 					{
-						if(xnType.Value == "folder")
+						if (xnType.Value == "folder")
 							ImportGroup(pd, pgParent, xmlChild);
 						else ImportEntry(pd, pgParent, xmlChild);
 					}
@@ -81,14 +81,14 @@ namespace KeePass.DataExchange.Formats
 			PwGroup pg = new PwGroup(true, true);
 			pgParent.AddGroup(pg, true);
 
-			foreach(XmlNode xmlChild in xmlNode.ChildNodes)
+			foreach (XmlNode xmlChild in xmlNode.ChildNodes)
 			{
-				if(xmlChild.Name == "name")
+				if (xmlChild.Name == "name")
 					pg.Name = XmlUtil.SafeInnerText(xmlChild);
-				else if(xmlChild.Name == "description")
+				else if (xmlChild.Name == "description")
 					pg.Notes = XmlUtil.SafeInnerText(xmlChild);
-				else if(xmlChild.Name == "entry") { }
-				else if(xmlChild.Name == "updated")
+				else if (xmlChild.Name == "entry") { }
+				else if (xmlChild.Name == "updated")
 					pg.LastModificationTime = ImportTime(xmlChild);
 				else { Debug.Assert(false); }
 			}
@@ -101,20 +101,20 @@ namespace KeePass.DataExchange.Formats
 			PwEntry pe = new PwEntry(true, true);
 			pgParent.AddEntry(pe, true);
 
-			foreach(XmlNode xmlChild in xmlNode.ChildNodes)
+			foreach (XmlNode xmlChild in xmlNode.ChildNodes)
 			{
-				if(xmlChild.Name == "name")
+				if (xmlChild.Name == "name")
 					pe.Strings.Set(PwDefs.TitleField, new ProtectedString(
 						pd.MemoryProtection.ProtectTitle, XmlUtil.SafeInnerText(xmlChild)));
-				else if(xmlChild.Name == "description")
+				else if (xmlChild.Name == "description")
 					pe.Strings.Set(PwDefs.NotesField, new ProtectedString(
 						pd.MemoryProtection.ProtectNotes, XmlUtil.SafeInnerText(xmlChild)));
-				else if(xmlChild.Name == "updated")
+				else if (xmlChild.Name == "updated")
 					pe.LastModificationTime = ImportTime(xmlChild);
-				else if(xmlChild.Name == "field")
+				else if (xmlChild.Name == "field")
 				{
 					XmlNode xnName = xmlChild.Attributes.GetNamedItem("id");
-					if(xnName == null) { Debug.Assert(false); }
+					if (xnName == null) { Debug.Assert(false); }
 					else
 					{
 						KeyValuePair<string, bool> kvp = MapFieldName(xnName.Value, pd);
@@ -129,7 +129,7 @@ namespace KeePass.DataExchange.Formats
 		private static KeyValuePair<string, bool> MapFieldName(string strFieldName,
 			PwDatabase pdContext)
 		{
-			switch(strFieldName)
+			switch (strFieldName)
 			{
 				case "creditcard-cardnumber":
 				case "generic-username":
@@ -175,7 +175,7 @@ namespace KeePass.DataExchange.Formats
 			string str = XmlUtil.SafeInnerText(xn);
 
 			double dtUnix;
-			if(!double.TryParse(str, out dtUnix)) { Debug.Assert(false); }
+			if (!double.TryParse(str, out dtUnix)) { Debug.Assert(false); }
 			else return TimeUtil.ConvertUnixTime(dtUnix);
 
 			return DateTime.UtcNow;

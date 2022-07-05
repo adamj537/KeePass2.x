@@ -75,7 +75,7 @@ namespace KeePass.UI
 
 		internal static void EnableWindowPeekPreview(MainForm mf)
 		{
-			if(mf == null) { Debug.Assert(false); return; }
+			if (mf == null) { Debug.Assert(false); return; }
 
 			FormWindowState ws = mf.WindowState;
 			bool bPeek = ((ws == FormWindowState.Normal) ||
@@ -89,10 +89,10 @@ namespace KeePass.UI
 			try
 			{
 				// Static iconic bitmaps only supported by Windows >= 7
-				if(!WinUtil.IsAtLeastWindows7) return;
+				if (!WinUtil.IsAtLeastWindows7) return;
 
 				IntPtr h = f.Handle;
-				if(h == IntPtr.Zero) { Debug.Assert(false); return; }
+				if (h == IntPtr.Zero) { Debug.Assert(false); return; }
 
 				int s = (bEnable ? 0 : 1);
 
@@ -107,7 +107,7 @@ namespace KeePass.UI
 
 				DwmInvalidateIconicBitmaps(h);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		public static void SetIconicThumbnail(Form f, Icon ico, ref Message m)
@@ -122,13 +122,13 @@ namespace KeePass.UI
 
 		public static void SetIconicPreview(Form f, Icon ico, ref Message m)
 		{
-			if(f == null) { Debug.Assert(false); return; }
+			if (f == null) { Debug.Assert(false); return; }
 
 			Size sz = new Size(0, 0);
 			MainForm mf = (f as MainForm);
 
-			if(mf != null) sz = mf.LastClientSize;
-			if((sz.Width <= 0) || (sz.Height <= 0)) sz = f.ClientSize;
+			if (mf != null) sz = mf.LastClientSize;
+			if ((sz.Width <= 0) || (sz.Height <= 0)) sz = f.ClientSize;
 
 			SetIconicBitmap(f, ico, sz, false);
 
@@ -144,47 +144,47 @@ namespace KeePass.UI
 			try
 			{
 				IntPtr hWnd = f.Handle;
-				if(hWnd == IntPtr.Zero) { Debug.Assert(false); return; }
+				if (hWnd == IntPtr.Zero) { Debug.Assert(false); return; }
 
 				img = UIUtil.ExtractVistaIcon(ico);
-				if(img == null) img = ico.ToBitmap();
-				if(img == null) { Debug.Assert(false); return; }
+				if (img == null) img = ico.ToBitmap();
+				if (img == null) { Debug.Assert(false); return; }
 
 				int sw = sz.Width, sh = sz.Height;
-				if(sw <= 0) { Debug.Assert(false); sw = 200; } // Default Windows 7
-				if(sh <= 0) { Debug.Assert(false); sh = 109; } // Default Windows 7
+				if (sw <= 0) { Debug.Assert(false); sw = 200; } // Default Windows 7
+				if (sh <= 0) { Debug.Assert(false); sh = 109; } // Default Windows 7
 
 				int iImgW = Math.Min(img.Width, 128);
 				int iImgH = Math.Min(img.Height, 128);
 				int iImgWMax = (sw * 4) / 6;
 				int iImgHMax = (sh * 4) / 6;
-				if(iImgW > iImgWMax)
+				if (iImgW > iImgWMax)
 				{
 					float fRatio = (float)iImgWMax / (float)iImgW;
 					iImgW = iImgWMax;
 					iImgH = (int)((float)iImgH * fRatio);
 				}
-				if(iImgH > iImgHMax)
+				if (iImgH > iImgHMax)
 				{
 					float fRatio = (float)iImgHMax / (float)iImgH;
 					iImgW = (int)((float)iImgW * fRatio);
 					iImgH = iImgHMax;
 				}
-				if((iImgW <= 0) || (iImgH <= 0)) { Debug.Assert(false); return; }
-				if(iImgW > sw) { Debug.Assert(false); iImgW = sw; }
-				if(iImgH > sh) { Debug.Assert(false); iImgH = sh; }
+				if ((iImgW <= 0) || (iImgH <= 0)) { Debug.Assert(false); return; }
+				if (iImgW > sw) { Debug.Assert(false); iImgW = sw; }
+				if (iImgH > sh) { Debug.Assert(false); iImgH = sh; }
 
 				int iImgX = (sw - iImgW) / 2;
 				int iImgY = (sh - iImgH) / 2;
 
 				// 32-bit color depth required by API
 				bmp = new Bitmap(sw, sh, PixelFormat.Format32bppArgb);
-				using(Graphics g = Graphics.FromImage(bmp))
+				using (Graphics g = Graphics.FromImage(bmp))
 				{
 					Color clr = AppDefs.ColorControlDisabled;
 					g.Clear(clr);
 
-					using(LinearGradientBrush br = new LinearGradientBrush(
+					using (LinearGradientBrush br = new LinearGradientBrush(
 						new Point(0, 0), new Point(sw, sh), UIUtil.LightenColor(
 						clr, 0.25), UIUtil.DarkenColor(clr, 0.25)))
 					{
@@ -205,22 +205,22 @@ namespace KeePass.UI
 
 				hBmp = bmp.GetHbitmap();
 
-				if(bThumbnail)
+				if (bThumbnail)
 					DwmSetIconicThumbnail(hWnd, hBmp, DWM_SIT_DISPLAYFRAME);
 				else
 					DwmSetIconicLivePreviewBitmap(hWnd, hBmp, IntPtr.Zero,
 						DWM_SIT_DISPLAYFRAME);
 			}
-			catch(Exception) { Debug.Assert(!WinUtil.IsAtLeastWindows7); }
+			catch (Exception) { Debug.Assert(!WinUtil.IsAtLeastWindows7); }
 			finally
 			{
-				if(hBmp != IntPtr.Zero)
+				if (hBmp != IntPtr.Zero)
 				{
 					try { NativeMethods.DeleteObject(hBmp); }
-					catch(Exception) { Debug.Assert(false); }
+					catch (Exception) { Debug.Assert(false); }
 				}
-				if(bmp != null) bmp.Dispose();
-				if(img != null) img.Dispose();
+				if (bmp != null) bmp.Dispose();
+				if (img != null) img.Dispose();
 			}
 		}
 	}

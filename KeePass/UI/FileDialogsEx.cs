@@ -50,12 +50,12 @@ namespace KeePass.UI
 		{
 			bool bFile = ((strFile != null) && (strFile.Length > 0));
 
-			if(WinUtil.IsAtLeastWindowsVista)
+			if (WinUtil.IsAtLeastWindowsVista)
 			{
 				VistaTaskDialog dlg = new VistaTaskDialog();
 
 				string strText = KPRes.DatabaseModifiedNoDot;
-				if(bFile) strText += ":\r\n" + strFile;
+				if (bFile) strText += ":\r\n" + strFile;
 				else strText += ".";
 
 				dlg.CommandLinks = true;
@@ -64,7 +64,7 @@ namespace KeePass.UI
 				dlg.SetIcon(VtdCustomIcon.Question);
 
 				bool bShowCheckBox = true;
-				if(fsOrigin == FileSaveOrigin.Locking)
+				if (fsOrigin == FileSaveOrigin.Locking)
 				{
 					dlg.MainInstruction = KPRes.FileSaveQLocking;
 					dlg.AddButton((int)DialogResult.Yes, KPRes.SaveCmd, KPRes.FileSaveQOpYesLocking);
@@ -72,7 +72,7 @@ namespace KeePass.UI
 					dlg.AddButton((int)DialogResult.Cancel, KPRes.Cancel, KPRes.FileSaveQOpCancel +
 						" " + KPRes.FileSaveQOpCancelLocking);
 				}
-				else if(fsOrigin == FileSaveOrigin.Exiting)
+				else if (fsOrigin == FileSaveOrigin.Exiting)
 				{
 					dlg.MainInstruction = KPRes.FileSaveQExiting;
 					dlg.AddButton((int)DialogResult.Yes, KPRes.SaveCmd, KPRes.FileSaveQOpYesExiting);
@@ -90,12 +90,12 @@ namespace KeePass.UI
 					bShowCheckBox = false;
 				}
 
-				if(Program.Config.Application.FileClosing.AutoSave) bShowCheckBox = false;
-				if(bShowCheckBox) dlg.VerificationText = KPRes.AutoSaveAtExit;
+				if (Program.Config.Application.FileClosing.AutoSave) bShowCheckBox = false;
+				if (bShowCheckBox) dlg.VerificationText = KPRes.AutoSaveAtExit;
 
-				if(dlg.ShowDialog())
+				if (dlg.ShowDialog())
 				{
-					if(bShowCheckBox && (dlg.Result == (int)DialogResult.Yes))
+					if (bShowCheckBox && (dlg.Result == (int)DialogResult.Yes))
 						Program.Config.Application.FileClosing.AutoSave = dlg.ResultVerificationChecked;
 
 					return (DialogResult)dlg.Result;
@@ -118,7 +118,7 @@ namespace KeePass.UI
 			int r = VistaTaskDialog.ShowMessageBoxEx(str, KPRes.NewDatabase,
 				PwDefs.ShortProductName, VtdIcon.Information, fParent, KPRes.Ok,
 				(int)DialogResult.OK, KPRes.Cancel, (int)DialogResult.Cancel);
-			if(r >= 0) return (r == (int)DialogResult.OK);
+			if (r >= 0) return (r == (int)DialogResult.OK);
 
 			MessageService.ShowInfo(str);
 			return true;
@@ -129,7 +129,7 @@ namespace KeePass.UI
 			// https://sourceforge.net/p/keepass/discussion/329221/thread/42ddc71a/
 			const long cbMax = 512 * 1024 * 1024;
 
-			if(lSize > cbMax)
+			if (lSize > cbMax)
 			{
 				MessageService.ShowWarning(strOp, KPRes.FileTooLarge +
 					" " + KPRes.MaxAttachmentSize.Replace(@"{PARAM}",
@@ -149,11 +149,11 @@ namespace KeePass.UI
 		internal static void ShowConfigError(string strPath, string strError,
 			bool bSaving, bool bCreateBackup)
 		{
-			if(string.IsNullOrEmpty(strError)) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strError)) { Debug.Assert(false); return; }
 
 			StringBuilder sb = new StringBuilder();
 
-			if(!string.IsNullOrEmpty(strPath))
+			if (!string.IsNullOrEmpty(strPath))
 			{
 				sb.AppendLine(VistaTaskDialog.CreateLink("c", strPath));
 				sb.AppendLine();
@@ -178,7 +178,7 @@ namespace KeePass.UI
 			string strBackupText = null;
 			string strBackupPath = (bCreateBackup ? AppConfigSerializer.TryCreateBackup(
 				strPath) : null);
-			if(!string.IsNullOrEmpty(strBackupPath))
+			if (!string.IsNullOrEmpty(strBackupPath))
 			{
 				strBackupText = KPRes.ConfigOverwriteBackup + MessageService.NewLine +
 					VistaTaskDialog.CreateLink("b", strBackupPath);
@@ -186,19 +186,19 @@ namespace KeePass.UI
 				dlg.SetFooterIcon(VtdIcon.Information);
 			}
 
-			dlg.LinkClicked += delegate(object sender, LinkClickedEventArgs e)
+			dlg.LinkClicked += delegate (object sender, LinkClickedEventArgs e)
 			{
 				string str = (e.LinkText ?? string.Empty);
-				if(str.Equals("c", StrUtil.CaseIgnoreCmp))
+				if (str.Equals("c", StrUtil.CaseIgnoreCmp))
 					WinUtil.ShowFileInFileManager(strPath, false);
-				else if(str.Equals("b", StrUtil.CaseIgnoreCmp))
+				else if (str.Equals("b", StrUtil.CaseIgnoreCmp))
 					WinUtil.ShowFileInFileManager(strBackupPath, false);
 				else { Debug.Assert(false); }
 			};
 
-			if(!dlg.ShowDialog())
+			if (!dlg.ShowDialog())
 			{
-				if(!string.IsNullOrEmpty(strBackupText))
+				if (!string.IsNullOrEmpty(strBackupText))
 					strText += MessageService.NewParagraph + strBackupText;
 				strText = VistaTaskDialog.Unlink(strText);
 
@@ -210,7 +210,7 @@ namespace KeePass.UI
 			string strSuggestedFileName, string strFilter, int iFilterIndex,
 			string strDefaultExt, string strContext, bool bSecureDesktop)
 		{
-			if(bSecureDesktop)
+			if (bSecureDesktop)
 			{
 				FileBrowserForm fbf = new FileBrowserForm();
 				fbf.InitEx(bSaveMode, strTitle, KPRes.SecDeskFileDialogHint, strContext);
@@ -223,7 +223,7 @@ namespace KeePass.UI
 				finally { UIUtil.DestroyForm(fbf); }
 			}
 
-			if(bSaveMode)
+			if (bSaveMode)
 			{
 				SaveFileDialogEx sfd = UIUtil.CreateSaveFileDialog(strTitle,
 					strSuggestedFileName, strFilter, iFilterIndex, strDefaultExt,
@@ -334,7 +334,7 @@ namespace KeePass.UI
 			string strPrevWorkDir = WinUtil.GetWorkingDirectory();
 
 			string strNew = Program.Config.Application.GetWorkingDirectory(m_strContext);
-			if(!string.IsNullOrEmpty(m_strInitialDirectoryOvr))
+			if (!string.IsNullOrEmpty(m_strInitialDirectoryOvr))
 				strNew = m_strInitialDirectoryOvr;
 			WinUtil.SetWorkingDirectory(strNew); // Always, even when no context
 
@@ -343,7 +343,7 @@ namespace KeePass.UI
 				string strWD = WinUtil.GetWorkingDirectory();
 				this.FileDialog.InitialDirectory = strWD;
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return strPrevWorkDir;
 		}
@@ -356,20 +356,20 @@ namespace KeePass.UI
 			// derive the working directory from the first file
 			try
 			{
-				if(dr == DialogResult.OK)
+				if (dr == DialogResult.OK)
 				{
 					string strFile = null;
-					if(m_bSaveMode) strFile = this.FileDialog.FileName;
-					else if(this.FileDialog.FileNames.Length > 0)
+					if (m_bSaveMode) strFile = this.FileDialog.FileName;
+					else if (this.FileDialog.FileNames.Length > 0)
 						strFile = this.FileDialog.FileNames[0];
 
-					if(!string.IsNullOrEmpty(strFile))
+					if (!string.IsNullOrEmpty(strFile))
 						strCur = UrlUtil.GetFileDirectory(strFile, false, true);
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
-			if(!string.IsNullOrEmpty(strCur))
+			if (!string.IsNullOrEmpty(strCur))
 				Program.Config.Application.SetWorkingDirectory(m_strContext, strCur);
 
 			WinUtil.SetWorkingDirectory(strPrevWorkDir);

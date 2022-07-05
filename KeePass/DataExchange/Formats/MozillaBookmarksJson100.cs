@@ -46,10 +46,10 @@ namespace KeePass.DataExchange.Formats
 			IStatusLogger slLogger)
 		{
 			JsonObject jo;
-			using(StreamReader sr = new StreamReader(sInput, StrUtil.Utf8, true))
+			using (StreamReader sr = new StreamReader(sInput, StrUtil.Utf8, true))
 			{
 				string strJson = sr.ReadToEnd();
-				if(string.IsNullOrEmpty(strJson)) return;
+				if (string.IsNullOrEmpty(strJson)) return;
 
 				jo = new JsonObject(new CharStream(strJson));
 			}
@@ -62,16 +62,16 @@ namespace KeePass.DataExchange.Formats
 				lCreatedEntries);
 
 			// Tags support (old versions)
-			foreach(PwEntry pe in lCreatedEntries)
+			foreach (PwEntry pe in lCreatedEntries)
 			{
 				string strUri = pe.Strings.ReadSafe(PwDefs.UrlField);
-				if(strUri.Length == 0) continue;
+				if (strUri.Length == 0) continue;
 
-				foreach(KeyValuePair<string, List<string>> kvp in dTags)
+				foreach (KeyValuePair<string, List<string>> kvp in dTags)
 				{
-					foreach(string strTagUri in kvp.Value)
+					foreach (string strTagUri in kvp.Value)
 					{
-						if(strUri.Equals(strTagUri, StrUtil.CaseIgnoreCmp))
+						if (strUri.Equals(strTagUri, StrUtil.CaseIgnoreCmp))
 							pe.AddTag(kvp.Key);
 					}
 				}
@@ -83,17 +83,17 @@ namespace KeePass.DataExchange.Formats
 			Dictionary<string, List<string>> dTags, List<PwEntry> lCreatedEntries)
 		{
 			string strRoot = jo.GetValue<string>("root");
-			if(string.Equals(strRoot, "tagsFolder", StrUtil.CaseIgnoreCmp))
+			if (string.Equals(strRoot, "tagsFolder", StrUtil.CaseIgnoreCmp))
 			{
 				ImportTags(jo, dTags);
 				return;
 			}
 
 			JsonObject[] v = jo.GetValueArray<JsonObject>("children");
-			if(v != null)
+			if (v != null)
 			{
 				PwGroup pgNew;
-				if(bCreateSubGroups)
+				if (bCreateSubGroups)
 				{
 					pgNew = new PwGroup(true, true);
 					pgNew.Name = (jo.GetValue<string>("title") ?? string.Empty);
@@ -102,9 +102,9 @@ namespace KeePass.DataExchange.Formats
 				}
 				else pgNew = pgStorage;
 
-				foreach(JsonObject joSub in v)
+				foreach (JsonObject joSub in v)
 				{
-					if(joSub == null) { Debug.Assert(false); continue; }
+					if (joSub == null) { Debug.Assert(false); continue; }
 
 					AddObject(pgNew, joSub, pwContext, true, dTags, lCreatedEntries);
 				}
@@ -123,16 +123,16 @@ namespace KeePass.DataExchange.Formats
 			// SetString(pe, "CharSet", false, jo, "charset");
 
 			v = jo.GetValueArray<JsonObject>("annos");
-			if(v != null)
+			if (v != null)
 			{
-				foreach(JsonObject joAnno in v)
+				foreach (JsonObject joAnno in v)
 				{
-					if(joAnno == null) { Debug.Assert(false); continue; }
+					if (joAnno == null) { Debug.Assert(false); continue; }
 
 					string strName = joAnno.GetValue<string>("name");
 					string strValue = joAnno.GetValue<string>("value");
 
-					if((strName == "bookmarkProperties/description") &&
+					if ((strName == "bookmarkProperties/description") &&
 						!string.IsNullOrEmpty(strValue))
 						pe.Strings.Set(PwDefs.NotesField, new ProtectedString(
 							pwContext.MemoryProtection.ProtectNotes, strValue));
@@ -141,14 +141,14 @@ namespace KeePass.DataExchange.Formats
 
 			// Tags support (new versions)
 			string strTags = jo.GetValue<string>("tags");
-			if(!string.IsNullOrEmpty(strTags))
+			if (!string.IsNullOrEmpty(strTags))
 				StrUtil.AddTags(pe.Tags, strTags.Split(','));
 
 			string strKeyword = jo.GetValue<string>("keyword");
-			if(!string.IsNullOrEmpty(strKeyword))
+			if (!string.IsNullOrEmpty(strKeyword))
 				ImportUtil.AppendToField(pe, "Keyword", strKeyword, pwContext);
 
-			if((pe.Strings.ReadSafe(PwDefs.TitleField).Length != 0) ||
+			if ((pe.Strings.ReadSafe(PwDefs.TitleField).Length != 0) ||
 				(pe.Strings.ReadSafe(PwDefs.UrlField).Length != 0))
 			{
 				pgStorage.AddEntry(pe, true);
@@ -160,7 +160,7 @@ namespace KeePass.DataExchange.Formats
 			JsonObject jo, string strObjectKey)
 		{
 			string str = jo.GetValue<string>(strObjectKey);
-			if(string.IsNullOrEmpty(str)) return;
+			if (string.IsNullOrEmpty(str)) return;
 
 			pe.Strings.Set(strEntryKey, new ProtectedString(bProtect, str));
 		}
@@ -170,32 +170,32 @@ namespace KeePass.DataExchange.Formats
 			Dictionary<string, List<string>> dTags)
 		{
 			JsonObject[] v = joTagsRoot.GetValueArray<JsonObject>("children");
-			if(v == null) { Debug.Assert(false); return; }
+			if (v == null) { Debug.Assert(false); return; }
 
-			foreach(JsonObject joTag in v)
+			foreach (JsonObject joTag in v)
 			{
-				if(joTag == null) { Debug.Assert(false); continue; }
+				if (joTag == null) { Debug.Assert(false); continue; }
 
 				string strName = joTag.GetValue<string>("title");
-				if(string.IsNullOrEmpty(strName)) { Debug.Assert(false); continue; }
+				if (string.IsNullOrEmpty(strName)) { Debug.Assert(false); continue; }
 
 				List<string> lUris;
 				dTags.TryGetValue(strName, out lUris);
-				if(lUris == null)
+				if (lUris == null)
 				{
 					lUris = new List<string>();
 					dTags[strName] = lUris;
 				}
 
 				JsonObject[] vUris = joTag.GetValueArray<JsonObject>("children");
-				if(vUris == null) { Debug.Assert(false); continue; }
+				if (vUris == null) { Debug.Assert(false); continue; }
 
-				foreach(JsonObject joUri in vUris)
+				foreach (JsonObject joUri in vUris)
 				{
-					if(joUri == null) { Debug.Assert(false); continue; }
+					if (joUri == null) { Debug.Assert(false); continue; }
 
 					string strUri = joUri.GetValue<string>("uri");
-					if(!string.IsNullOrEmpty(strUri)) lUris.Add(strUri);
+					if (!string.IsNullOrEmpty(strUri)) lUris.Add(strUri);
 				}
 			}
 		}

@@ -59,14 +59,14 @@ namespace KeePass.Forms
 					false, true);
 				List<string> l = UrlUtil.GetFilePaths(strDir, "*." +
 					KPTranslation.FileExtension, SearchOption.TopDirectoryOnly);
-				if(l.Count != 0)
+				if (l.Count != 0)
 				{
 					string str = KPRes.LngInAppDir + MessageService.NewParagraph;
 
 					const int cMaxFL = 6;
-					for(int i = 0; i < Math.Min(l.Count, cMaxFL); ++i)
+					for (int i = 0; i < Math.Min(l.Count, cMaxFL); ++i)
 					{
-						if(i == (cMaxFL - 1)) str += "...";
+						if (i == (cMaxFL - 1)) str += "...";
 						else str += l[i];
 						str += MessageService.NewLine;
 					}
@@ -75,7 +75,7 @@ namespace KeePass.Forms
 					str += KPRes.LngInAppDirNote + MessageService.NewParagraph;
 					str += KPRes.LngInAppDirQ;
 
-					if(MessageService.AskYesNo(str, PwDefs.ShortProductName, true,
+					if (MessageService.AskYesNo(str, PwDefs.ShortProductName, true,
 						MessageBoxIcon.Warning))
 					{
 						WinUtil.OpenUrlDirectly(strDir);
@@ -83,7 +83,7 @@ namespace KeePass.Forms
 					}
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return true;
 		}
@@ -128,10 +128,10 @@ namespace KeePass.Forms
 				new List<KeyValuePair<string, KPTranslation>>();
 			lTrls.Add(new KeyValuePair<string, KPTranslation>(string.Empty, trlEng));
 			AddTranslations(strDirA, lTrls);
-			if(WinUtil.IsAppX) AddTranslations(strDirU, lTrls);
+			if (WinUtil.IsAppX) AddTranslations(strDirU, lTrls);
 			lTrls.Sort(LanguageForm.CompareTrlItems);
 
-			foreach(KeyValuePair<string, KPTranslation> kvp in lTrls)
+			foreach (KeyValuePair<string, KPTranslation> kvp in lTrls)
 			{
 				KPTranslationProperties p = kvp.Value.Properties;
 				string strName = p.NameEnglish + " (" + p.NameNative + ")";
@@ -169,26 +169,26 @@ namespace KeePass.Forms
 			{
 				List<string> lFiles = UrlUtil.GetFilePaths(strDir, "*." +
 					KPTranslation.FileExtension, SearchOption.TopDirectoryOnly);
-				foreach(string strFilePath in lFiles)
+				foreach (string strFilePath in lFiles)
 				{
 					try
 					{
 						XmlSerializerEx xs = new XmlSerializerEx(typeof(KPTranslation));
 						KPTranslation t = KPTranslation.Load(strFilePath, xs);
 
-						if(t != null)
+						if (t != null)
 							lTrls.Add(new KeyValuePair<string, KPTranslation>(
 								strFilePath, t));
 						else { Debug.Assert(false); }
 					}
-					catch(Exception ex) { MessageService.ShowWarning(ex); }
+					catch (Exception ex) { MessageService.ShowWarning(ex); }
 				}
 
 				Debug.Assert(KPTranslation.FileExtension != KPTranslation.FileExtension1x);
 
 				lFiles = UrlUtil.GetFilePaths(strDir, "*." +
 					KPTranslation.FileExtension1x, SearchOption.TopDirectoryOnly);
-				foreach(string strFilePath in lFiles)
+				foreach (string strFilePath in lFiles)
 				{
 					KPTranslation t = new KPTranslation();
 					t.Properties.NameEnglish = UrlUtil.StripExtension(
@@ -202,7 +202,7 @@ namespace KeePass.Forms
 						strFilePath, t));
 				}
 			}
-			catch(Exception) { } // Directory might not exist or cause access violation
+			catch (Exception) { } // Directory might not exist or cause access violation
 		}
 
 		private static int CompareTrlItems(KeyValuePair<string, KPTranslation> a,
@@ -212,13 +212,13 @@ namespace KeePass.Forms
 			KPTranslationProperties pB = b.Value.Properties;
 
 			int c = StrUtil.CompareNaturally(pA.NameEnglish, pB.NameEnglish);
-			if(c != 0) return c;
+			if (c != 0) return c;
 
 			c = StrUtil.CompareNaturally(pA.NameNative, pB.NameNative);
-			if(c != 0) return c;
+			if (c != 0) return c;
 
 			c = StrUtil.CompareNaturally(pA.ApplicationVersion, pB.ApplicationVersion);
-			if(c != 0) return ((c < 0) ? 1 : -1); // Descending
+			if (c != 0) return ((c < 0) ? 1 : -1); // Descending
 
 			return string.Compare(a.Key, b.Key, StrUtil.CaseIgnoreCmp);
 		}
@@ -230,11 +230,11 @@ namespace KeePass.Forms
 		private void OnLanguagesItemActivate(object sender, EventArgs e)
 		{
 			ListView.SelectedListViewItemCollection lvic = m_lvLanguages.SelectedItems;
-			if((lvic == null) || (lvic.Count != 1)) return;
+			if ((lvic == null) || (lvic.Count != 1)) return;
 
 			string strSel = ((lvic[0].Tag as string) ?? string.Empty);
 
-			if(strSel.EndsWith("." + KPTranslation.FileExtension1x, StrUtil.CaseIgnoreCmp))
+			if (strSel.EndsWith("." + KPTranslation.FileExtension1x, StrUtil.CaseIgnoreCmp))
 			{
 				string strMsg = strSel + MessageService.NewParagraph + KPRes.Lng1xSel +
 					MessageService.NewParagraph + KPRes.Lng2xWeb + MessageService.NewLine;
@@ -249,7 +249,7 @@ namespace KeePass.Forms
 				vtd.SetIcon(VtdIcon.Warning);
 				vtd.WindowTitle = PwDefs.ShortProductName;
 
-				if(!vtd.ShowDialog())
+				if (!vtd.ShowDialog())
 					MessageService.ShowWarning(strMsg + strUrl);
 				return;
 			}
@@ -267,7 +267,7 @@ namespace KeePass.Forms
 
 		private void OnFormClosed(object sender, FormClosedEventArgs e)
 		{
-			if(m_ilIcons != null)
+			if (m_ilIcons != null)
 			{
 				m_lvLanguages.SmallImageList = null;
 				m_ilIcons.Dispose();
@@ -300,12 +300,12 @@ namespace KeePass.Forms
 				// catch(Exception) { }
 
 				string str = AceApplication.GetLanguagesDir(d, false);
-				if(!Directory.Exists(str)) Directory.CreateDirectory(str);
+				if (!Directory.Exists(str)) Directory.CreateDirectory(str);
 
 				WinUtil.OpenUrlDirectly(str);
 				this.DialogResult = DialogResult.Cancel;
 			}
-			catch(Exception ex) { MessageService.ShowWarning(ex); }
+			catch (Exception ex) { MessageService.ShowWarning(ex); }
 		}
 	}
 }

@@ -32,19 +32,19 @@ namespace KeePass.UI
 
 		public SuspendLayoutScope(bool bPerformLayoutOnDispose, params Control[] v)
 		{
-			if(v != null)
+			if (v != null)
 			{
-				for(int i = 0; i < v.Length; ++i)
+				for (int i = 0; i < v.Length; ++i)
 				{
 					Control c = v[i];
-					if(c == null) { Debug.Assert(false); continue; }
+					if (c == null) { Debug.Assert(false); continue; }
 
 #if DEBUG
 					// Nested controls should be passed from outer to inner
 					string strName = c.Name;
-					if(!string.IsNullOrEmpty(strName))
+					if (!string.IsNullOrEmpty(strName))
 					{
-						for(int j = i + 1; j < v.Length; ++j)
+						for (int j = i + 1; j < v.Length; ++j)
 						{
 							Debug.Assert((v[j] == null) || (v[j].Controls.Find(
 								strName, true).Length == 0));
@@ -68,7 +68,7 @@ namespace KeePass.UI
 		{
 			Debug.Assert(m_l.Count != 0);
 
-			foreach(Control c in m_l) c.ResumeLayout(m_bPerformLayoutOnDispose);
+			foreach (Control c in m_l) c.ResumeLayout(m_bPerformLayoutOnDispose);
 			m_l.Clear();
 		}
 	}

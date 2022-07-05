@@ -69,7 +69,7 @@ namespace KeePass.DataExchange
 			get { return m_strNewLineSeq; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strNewLineSeq = value;
 			}
 		}
@@ -92,7 +92,7 @@ namespace KeePass.DataExchange
 
 		private void Init(string strData, CsvOptions opt)
 		{
-			if(strData == null) throw new ArgumentNullException("strData");
+			if (strData == null) throw new ArgumentNullException("strData");
 
 			m_opt = (opt ?? new CsvOptions());
 
@@ -110,7 +110,7 @@ namespace KeePass.DataExchange
 		public string[] ReadLine()
 		{
 			char chFirst = m_sChars.PeekChar();
-			if(chFirst == char.MinValue) return null;
+			if (chFirst == char.MinValue) return null;
 
 			List<string> v = new List<string>();
 			StringBuilder sb = new StringBuilder();
@@ -119,28 +119,28 @@ namespace KeePass.DataExchange
 			char chFS = m_opt.FieldSeparator, chRS = m_opt.RecordSeparator;
 			char chTQ = m_opt.TextQualifier;
 
-			while(true)
+			while (true)
 			{
 				char ch = m_sChars.ReadChar();
-				if(ch == char.MinValue) break;
+				if (ch == char.MinValue) break;
 
 				Debug.Assert(ch != '\r'); // Was normalized to Unix "\n"
 
-				if((ch == '\\') && m_opt.BackslashIsEscape)
+				if ((ch == '\\') && m_opt.BackslashIsEscape)
 				{
 					char chEsc = m_sChars.ReadChar();
-					if(chEsc == char.MinValue) break;
+					if (chEsc == char.MinValue) break;
 
-					if(chEsc == 'n') sb.Append('\n');
-					else if(chEsc == 'r') sb.Append('\r');
-					else if(chEsc == 't') sb.Append('\t');
-					else if(chEsc == 'u')
+					if (chEsc == 'n') sb.Append('\n');
+					else if (chEsc == 'r') sb.Append('\r');
+					else if (chEsc == 't') sb.Append('\t');
+					else if (chEsc == 'u')
 					{
 						char chNum1 = m_sChars.ReadChar();
 						char chNum2 = m_sChars.ReadChar();
 						char chNum3 = m_sChars.ReadChar();
 						char chNum4 = m_sChars.ReadChar();
-						if(chNum4 != char.MinValue) // Implies the others
+						if (chNum4 != char.MinValue) // Implies the others
 						{
 							StringBuilder sbNum = new StringBuilder();
 							sbNum.Append(chNum3); // Little-endian
@@ -156,13 +156,13 @@ namespace KeePass.DataExchange
 					}
 					else sb.Append(chEsc);
 				}
-				else if(ch == chTQ)
+				else if (ch == chTQ)
 				{
-					if(!bInText) bInText = true;
+					if (!bInText) bInText = true;
 					else // bInText
 					{
 						char chNext = m_sChars.PeekChar();
-						if(chNext == chTQ)
+						if (chNext == chTQ)
 						{
 							m_sChars.ReadChar();
 							sb.Append(chTQ);
@@ -170,12 +170,12 @@ namespace KeePass.DataExchange
 						else bInText = false;
 					}
 				}
-				else if((ch == chRS) && !bInText) break;
-				else if(bInText) sb.Append(ch);
-				else if(ch == chFS)
+				else if ((ch == chRS) && !bInText) break;
+				else if (bInText) sb.Append(ch);
+				else if (ch == chFS)
 				{
 					AddField(v, sb.ToString());
-					if(sb.Length > 0) sb.Remove(0, sb.Length);
+					if (sb.Length > 0) sb.Remove(0, sb.Length);
 				}
 				else sb.Append(ch);
 			}
@@ -194,7 +194,7 @@ namespace KeePass.DataExchange
 			// Transform to final form of new lines
 			strField = strField.Replace("\n", m_opt.NewLineSequence);
 
-			if(m_opt.TrimFields) strField = strField.Trim();
+			if (m_opt.TrimFields) strField = strField.Trim();
 
 			v.Add(strField);
 		}

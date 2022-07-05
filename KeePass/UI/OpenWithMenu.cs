@@ -75,9 +75,9 @@ namespace KeePass.UI
 		public OpenWithItem(string strFilePath, OwFilePathType tPath,
 			string strName, Image imgIcon, DynamicMenu dynMenu)
 		{
-			if(strFilePath == null) { Debug.Assert(false); throw new ArgumentNullException("strFilePath"); }
-			if(strName == null) { Debug.Assert(false); throw new ArgumentNullException("strName"); }
-			if(dynMenu == null) { Debug.Assert(false); throw new ArgumentNullException("dynMenu"); }
+			if (strFilePath == null) { Debug.Assert(false); throw new ArgumentNullException("strFilePath"); }
+			if (strName == null) { Debug.Assert(false); throw new ArgumentNullException("strName"); }
+			if (dynMenu == null) { Debug.Assert(false); throw new ArgumentNullException("dynMenu"); }
 
 			m_strPath = strFilePath;
 			m_tPath = tPath;
@@ -85,17 +85,17 @@ namespace KeePass.UI
 			m_imgIcon = imgIcon;
 			m_dynMenu = dynMenu;
 
-			if(m_strName.Length == 0)
+			if (m_strName.Length == 0)
 			{
 				Debug.Assert(false);
 				m_strName = m_strPath;
-				if(m_strName.Length == 0) m_strName = KPRes.Unknown;
+				if (m_strName.Length == 0) m_strName = KPRes.Unknown;
 			}
 		}
 
 		public void AddMenuItem(List<char> lAvailKeys)
 		{
-			if(m_tsmi != null) { Debug.Assert(false); return; }
+			if (m_tsmi != null) { Debug.Assert(false); return; }
 
 			string strNameAccel = StrUtil.AddAccelerator(
 				StrUtil.EncodeMenuText(m_strName), lAvailKeys);
@@ -108,18 +108,18 @@ namespace KeePass.UI
 			try
 			{
 				string strTip = m_strPath;
-				if(strTip.StartsWith("cmd://", StrUtil.CaseIgnoreCmp))
+				if (strTip.StartsWith("cmd://", StrUtil.CaseIgnoreCmp))
 					strTip = strTip.Substring(6);
 
-				if(strTip.Length != 0) m_tsmi.ToolTipText = strTip;
+				if (strTip.Length != 0) m_tsmi.ToolTipText = strTip;
 			}
-			catch(Exception) { Debug.Assert(false); } // Too long?
+			catch (Exception) { Debug.Assert(false); } // Too long?
 		}
 
 		public static int CompareByName(OpenWithItem itA, OpenWithItem itB)
 		{
-			if(itA == null) { Debug.Assert(false); return ((itB == null) ? 0 : -1); }
-			if(itB == null) { Debug.Assert(false); return 1; }
+			if (itA == null) { Debug.Assert(false); return ((itB == null) ? 0 : -1); }
+			if (itB == null) { Debug.Assert(false); return 1; }
 
 			return string.Compare(itA.Name, itB.Name, StrUtil.CaseIgnoreCmp);
 		}
@@ -136,7 +136,7 @@ namespace KeePass.UI
 
 		public OpenWithMenu(ToolStripDropDownItem tsmiHost)
 		{
-			if(tsmiHost == null) { Debug.Assert(false); return; }
+			if (tsmiHost == null) { Debug.Assert(false); return; }
 
 			m_tsmiHost = tsmiHost;
 			m_dynMenu = new DynamicMenu(m_tsmiHost);
@@ -154,7 +154,7 @@ namespace KeePass.UI
 
 		public void Destroy()
 		{
-			if(m_dynMenu != null)
+			if (m_dynMenu != null)
 			{
 				m_dynMenu.Clear();
 				m_dynMenu.MenuClick -= this.OnOpenUrl;
@@ -170,26 +170,26 @@ namespace KeePass.UI
 
 		private void OnMenuOpening(object sender, EventArgs e)
 		{
-			if(m_dynMenu == null) { Debug.Assert(false); return; }
+			if (m_dynMenu == null) { Debug.Assert(false); return; }
 
-			if(m_lOpenWith == null) CreateOpenWithList();
+			if (m_lOpenWith == null) CreateOpenWithList();
 
 			PwEntry[] v = Program.MainForm.GetSelectedEntries();
-			if(v == null) v = new PwEntry[0];
+			if (v == null) v = new PwEntry[0];
 
 			bool bCanOpenWith = true;
 			uint uValidUrls = 0;
-			foreach(PwEntry pe in v)
+			foreach (PwEntry pe in v)
 			{
 				string strUrl = pe.Strings.ReadSafe(PwDefs.UrlField);
-				if(string.IsNullOrEmpty(strUrl)) continue;
+				if (string.IsNullOrEmpty(strUrl)) continue;
 
 				++uValidUrls;
 				bCanOpenWith &= !WinUtil.IsCommandLineUrl(strUrl);
 			}
-			if((v.Length == 0) || (uValidUrls == 0)) bCanOpenWith = false;
+			if ((v.Length == 0) || (uValidUrls == 0)) bCanOpenWith = false;
 
-			foreach(OpenWithItem it in m_lOpenWith)
+			foreach (OpenWithItem it in m_lOpenWith)
 				it.MenuItem.Enabled = bCanOpenWith;
 		}
 
@@ -205,21 +205,21 @@ namespace KeePass.UI
 			FindAppsByRegistry();
 			FinishOpenWithList();
 
-			if(m_lOpenWith.Count == 0) m_dynMenu.Clear(); // Remove separator
+			if (m_lOpenWith.Count == 0) m_dynMenu.Clear(); // Remove separator
 			else
 			{
 				List<char> lAvailKeys = new List<char>(PwCharSet.MenuAccels);
 
 				// Remove keys that are used by non-dynamic menu items
-				foreach(ToolStripItem tsi in m_tsmiHost.DropDownItems)
+				foreach (ToolStripItem tsi in m_tsmiHost.DropDownItems)
 				{
 					string str = ((tsi != null) ? tsi.Text : null);
-					if(!string.IsNullOrEmpty(str))
+					if (!string.IsNullOrEmpty(str))
 					{
 						str = str.Replace(@"&&", string.Empty);
 						int i = str.IndexOf('&');
 						Debug.Assert(i == str.LastIndexOf('&'));
-						if((i >= 0) && (i < (str.Length - 1)))
+						if ((i >= 0) && (i < (str.Length - 1)))
 						{
 							lAvailKeys.Remove(char.ToLowerInvariant(str[i + 1]));
 							lAvailKeys.Remove(char.ToUpperInvariant(str[i + 1]));
@@ -227,18 +227,18 @@ namespace KeePass.UI
 					}
 				}
 
-				foreach(OpenWithItem it in m_lOpenWith)
+				foreach (OpenWithItem it in m_lOpenWith)
 					it.AddMenuItem(lAvailKeys);
 			}
 		}
 
 		private void ReleaseOpenWithList()
 		{
-			if(m_lOpenWith == null) return;
+			if (m_lOpenWith == null) return;
 
-			foreach(OpenWithItem it in m_lOpenWith)
+			foreach (OpenWithItem it in m_lOpenWith)
 			{
-				if(it.Image != null) it.Image.Dispose();
+				if (it.Image != null) it.Image.Dispose();
 			}
 
 			m_lOpenWith = null;
@@ -246,25 +246,25 @@ namespace KeePass.UI
 
 		private void OnOpenUrl(object sender, DynamicMenuEventArgs e)
 		{
-			if(e == null) { Debug.Assert(false); return; }
+			if (e == null) { Debug.Assert(false); return; }
 
 			OpenWithItem it = (e.Tag as OpenWithItem);
-			if(it == null) { Debug.Assert(false); return; }
+			if (it == null) { Debug.Assert(false); return; }
 
 			string strApp = it.FilePath;
 
 			PwEntry[] v = Program.MainForm.GetSelectedEntries();
-			if(v == null) { Debug.Assert(false); return; }
+			if (v == null) { Debug.Assert(false); return; }
 
-			foreach(PwEntry pe in v)
+			foreach (PwEntry pe in v)
 			{
 				// Get the entry's URL, avoid URL override
 				string strUrl = pe.Strings.ReadSafe(PwDefs.UrlField);
-				if(string.IsNullOrEmpty(strUrl)) continue;
+				if (string.IsNullOrEmpty(strUrl)) continue;
 
-				if(it.FilePathType == OwFilePathType.Executable)
+				if (it.FilePathType == OwFilePathType.Executable)
 					WinUtil.OpenUrlWithApp(strUrl, pe, strApp);
-				else if(it.FilePathType == OwFilePathType.ShellExpand)
+				else if (it.FilePathType == OwFilePathType.ShellExpand)
 				{
 					string str = strApp.Replace(PlhTargetUri,
 						SprEncoding.EncodeForCommandLine(strUrl));
@@ -276,23 +276,23 @@ namespace KeePass.UI
 
 		private bool AddAppByFile(string strAppCmdLine, string strName)
 		{
-			if(string.IsNullOrEmpty(strAppCmdLine)) return false; // No assert
+			if (string.IsNullOrEmpty(strAppCmdLine)) return false; // No assert
 
 			string strPath = UrlUtil.GetShortestAbsolutePath(
 				UrlUtil.GetQuotedAppPath(strAppCmdLine).Trim());
-			if(strPath.Length == 0) { Debug.Assert(false); return false; }
+			if (strPath.Length == 0) { Debug.Assert(false); return false; }
 
-			foreach(OpenWithItem it in m_lOpenWith)
+			foreach (OpenWithItem it in m_lOpenWith)
 			{
-				if(it.FilePath.Equals(strPath, StrUtil.CaseIgnoreCmp))
+				if (it.FilePath.Equals(strPath, StrUtil.CaseIgnoreCmp))
 					return false; // Already have an item for this
 			}
 
 			// Filter non-existing/legacy applications
-			try { if(!File.Exists(strPath)) return false; }
-			catch(Exception) { Debug.Assert(false); return false; }
+			try { if (!File.Exists(strPath)) return false; }
+			catch (Exception) { Debug.Assert(false); return false; }
 
-			if(string.IsNullOrEmpty(strName))
+			if (string.IsNullOrEmpty(strName))
 				strName = UrlUtil.StripExtension(UrlUtil.GetFileName(strPath));
 
 			Image img = FileIcons.GetImageForPath(strPath, null, true, true);
@@ -306,12 +306,12 @@ namespace KeePass.UI
 		private void AddAppByShellExpand(string strShell, string strName,
 			string strIconExe)
 		{
-			if(string.IsNullOrEmpty(strShell)) return;
+			if (string.IsNullOrEmpty(strShell)) return;
 
-			if(string.IsNullOrEmpty(strName)) strName = strShell;
+			if (string.IsNullOrEmpty(strName)) strName = strShell;
 
 			Image img = null;
-			if(!string.IsNullOrEmpty(strIconExe))
+			if (!string.IsNullOrEmpty(strIconExe))
 				img = FileIcons.GetImageForPath(strIconExe, null, true, true);
 
 			OpenWithItem owi = new OpenWithItem(strShell, OwFilePathType.ShellExpand,
@@ -322,13 +322,13 @@ namespace KeePass.UI
 		private void AddAppVariant(OpenWithItem itBase, string strVarName,
 			string strCmdOpt)
 		{
-			if(itBase == null) { Debug.Assert(false); return; }
-			if(itBase.FilePathType != OwFilePathType.Executable) { Debug.Assert(false); return; }
-			if(string.IsNullOrEmpty(strVarName)) { Debug.Assert(false); return; }
-			if(string.IsNullOrEmpty(strCmdOpt)) { Debug.Assert(false); return; }
+			if (itBase == null) { Debug.Assert(false); return; }
+			if (itBase.FilePathType != OwFilePathType.Executable) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strVarName)) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strCmdOpt)) { Debug.Assert(false); return; }
 
 			string strPath = itBase.FilePath;
-			if(string.IsNullOrEmpty(strPath)) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strPath)) { Debug.Assert(false); return; }
 
 			AddAppByShellExpand("cmd://\"" + SprEncoding.EncodeForCommandLine(
 				strPath) + "\" " + strCmdOpt + " \"" + PlhTargetUri + "\"",
@@ -337,7 +337,7 @@ namespace KeePass.UI
 
 		private void FindAppsByKnown()
 		{
-			if(NativeLib.IsUnix())
+			if (NativeLib.IsUnix())
 			{
 				// AppLocator.ChromePath prefers Chrome and falls back to
 				// Chromium, therefore try to find Chromium first, in order
@@ -354,7 +354,7 @@ namespace KeePass.UI
 			AddAppByFile(AppLocator.OperaPath, "Opera");
 			AddAppByFile(AppLocator.SafariPath, "Safari");
 
-			if(NativeLib.IsUnix())
+			if (NativeLib.IsUnix())
 			{
 				AddAppByFile(AppLocator.FindAppUnix("arora"), "Arora");
 				AddAppByFile(AppLocator.FindAppUnix("brave-browser"), "Brave");
@@ -376,34 +376,34 @@ namespace KeePass.UI
 
 			// https://msdn.microsoft.com/en-us/library/windows/desktop/dd203067.aspx
 			try { FindAppsByRegistryPriv(Registry.CurrentUser, strSmiDef); }
-			catch(Exception) { Debug.Assert(NativeLib.IsUnix()); }
+			catch (Exception) { Debug.Assert(NativeLib.IsUnix()); }
 			try { FindAppsByRegistryPriv(Registry.CurrentUser, strSmiWow); }
-			catch(Exception) { Debug.Assert(NativeLib.IsUnix()); }
+			catch (Exception) { Debug.Assert(NativeLib.IsUnix()); }
 			try { FindAppsByRegistryPriv(Registry.LocalMachine, strSmiDef); }
-			catch(Exception) { Debug.Assert(NativeLib.IsUnix()); }
+			catch (Exception) { Debug.Assert(NativeLib.IsUnix()); }
 			try { FindAppsByRegistryPriv(Registry.LocalMachine, strSmiWow); }
-			catch(Exception) { Debug.Assert(NativeLib.IsUnix()); }
+			catch (Exception) { Debug.Assert(NativeLib.IsUnix()); }
 		}
 
 		private void FindAppsByRegistryPriv(RegistryKey kBase, string strRootSubKey)
 		{
 			RegistryKey kRoot = kBase.OpenSubKey(strRootSubKey, false);
-			if(kRoot == null) return; // No assert, key might not exist
+			if (kRoot == null) return; // No assert, key might not exist
 			string[] vAppSubKeys = kRoot.GetSubKeyNames();
 
-			foreach(string strAppSubKey in vAppSubKeys)
+			foreach (string strAppSubKey in vAppSubKeys)
 			{
 				RegistryKey kApp = kRoot.OpenSubKey(strAppSubKey, false);
 				string strName = (kApp.GetValue(string.Empty) as string);
 				string strAltName = null;
 
 				RegistryKey kCmd = kApp.OpenSubKey("shell\\open\\command", false);
-				if(kCmd == null) { kApp.Close(); continue; } // No assert (XP)
+				if (kCmd == null) { kApp.Close(); continue; } // No assert (XP)
 				string strCmdLine = (kCmd.GetValue(string.Empty) as string);
 				kCmd.Close();
 
 				RegistryKey kCaps = kApp.OpenSubKey("Capabilities", false);
-				if(kCaps != null)
+				if (kCaps != null)
 				{
 					strAltName = (kCaps.GetValue("ApplicationName") as string);
 					kCaps.Close();
@@ -412,8 +412,8 @@ namespace KeePass.UI
 				kApp.Close();
 
 				string strDisplayName = string.Empty;
-				if(strName != null) strDisplayName = strName;
-				if((strAltName != null) && (strAltName.Length <= strDisplayName.Length))
+				if (strName != null) strDisplayName = strName;
+				if ((strAltName != null) && (strAltName.Length <= strDisplayName.Length))
 					strDisplayName = strAltName;
 
 				AddAppByFile(strCmdLine, strDisplayName);
@@ -427,9 +427,9 @@ namespace KeePass.UI
 			bool bFoundEdge = false;
 
 			List<OpenWithItem> lOrg = new List<OpenWithItem>(m_lOpenWith);
-			foreach(OpenWithItem it in lOrg)
+			foreach (OpenWithItem it in lOrg)
 			{
-				if(it.FilePathType != OwFilePathType.Executable) continue;
+				if (it.FilePathType != OwFilePathType.Executable) continue;
 
 				string strPath = it.FilePath;
 				string strPathL = strPath.ToLowerInvariant();
@@ -437,12 +437,12 @@ namespace KeePass.UI
 				string strFileL = UrlUtil.GetFileName(strPathL);
 				string s = UrlUtil.StripExtension(strFileL);
 
-				if(s == "iexplore")
+				if (s == "iexplore")
 				{
 					// https://msdn.microsoft.com/en-us/library/hh826025.aspx
 					AddAppVariant(it, KPRes.Private, "-private");
 				}
-				else if(s == "msedge")
+				else if (s == "msedge")
 				{
 					// The legacy Edge (EdgeHTML) doesn't register itself in the
 					// 'StartMenuInternet' registry key, whereas the new one
@@ -452,7 +452,7 @@ namespace KeePass.UI
 					AddAppVariant(it, KPRes.Private, "--inprivate");
 					bFoundEdge = true;
 				}
-				else if((s == "firefox") || (s == "palemoon") || (s == "waterfox"))
+				else if ((s == "firefox") || (s == "palemoon") || (s == "waterfox"))
 				{
 					// The command line options -private and -private-window work
 					// correctly with Firefox 49.0.1 (before, they did not);
@@ -461,7 +461,7 @@ namespace KeePass.UI
 					// https://bugzilla.mozilla.org/show_bug.cgi?id=829180
 					AddAppVariant(it, KPRes.Private, "-private-window");
 				}
-				else if((s == "brave") || (s == "brave-browser") ||
+				else if ((s == "brave") || (s == "brave-browser") ||
 					(s == "chrome") || (s == "chromium") ||
 					(s == "chromium-browser") || (s == "google-chrome") ||
 					(s == "vivaldi"))
@@ -470,7 +470,7 @@ namespace KeePass.UI
 					// https://peter.sh/experiments/chromium-command-line-switches/
 					AddAppVariant(it, KPRes.Private, "--incognito");
 				}
-				else if((s == "opera") || ((s == "launcher") &&
+				else if ((s == "opera") || ((s == "launcher") &&
 					// Folder "Opera", "Opera Beta", "Opera Developer", ...
 					(strPathN.Contains("/opera/") || strPathN.Contains("/opera "))))
 				{
@@ -483,15 +483,15 @@ namespace KeePass.UI
 					// Works with Opera >= 40.0.2308.81:
 					AddAppVariant(it, KPRes.Private, "--private");
 				}
-				else if(s == "epiphany")
+				else if (s == "epiphany")
 					AddAppVariant(it, KPRes.Private, "--incognito-mode");
-				else if(s == "midori")
+				else if (s == "midori")
 					AddAppVariant(it, KPRes.Private, "--private");
 			}
 
-			if(!bFoundEdge) // Add the legacy Edge (EdgeHTML), if available
+			if (!bFoundEdge) // Add the legacy Edge (EdgeHTML), if available
 			{
-				if(AppLocator.EdgeProtocolSupported)
+				if (AppLocator.EdgeProtocolSupported)
 					AddAppByShellExpand("microsoft-edge:" + PlhTargetUri,
 						"Microsoft Edge", AppLocator.EdgePath);
 			}

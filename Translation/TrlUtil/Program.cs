@@ -42,7 +42,7 @@ namespace TrlUtil
 		{
 			get
 			{
-				if(m_cfg == null) { Debug.Assert(false); m_cfg = new TceConfig(); }
+				if (m_cfg == null) { Debug.Assert(false); m_cfg = new TceConfig(); }
 				return m_cfg;
 			}
 		}
@@ -58,13 +58,13 @@ namespace TrlUtil
 				Application.SetCompatibleTextRenderingDefault(false);
 
 				KeePass.Program.EnableTranslation = false; // We need English
-				if(!KeePass.Program.CommonInit()) return;
+				if (!KeePass.Program.CommonInit()) return;
 
 				m_cfg = (TceConfig.Load() ?? new TceConfig());
 
 				MainPriv(args);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message, TuDefs.ProductName,
 					MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -73,12 +73,12 @@ namespace TrlUtil
 			TceConfig.Save(m_cfg);
 
 			try { KeePass.Program.CommonTerminate(); }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private static void MainPriv(string[] args)
 		{
-			if((args != null) && (args.Length == 2))
+			if ((args != null) && (args.Length == 2))
 			{
 				ExecuteCmd(args[0], args[1]);
 				return;
@@ -92,21 +92,21 @@ namespace TrlUtil
 			// Ensure that base hashes are computed with respect to 100% DPI
 			try
 			{
-				if(WinUtil.IsAtLeastWindows10) // 8.1 partially
+				if (WinUtil.IsAtLeastWindows10) // 8.1 partially
 				{
-					if(NativeMethods.SetProcessDpiAwareness(
+					if (NativeMethods.SetProcessDpiAwareness(
 						NativeMethods.ProcessDpiAwareness.Unaware) < 0)
 					{
 						Debug.Assert(false);
 					}
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private static void ExecuteCmd(string strCmd, string strFile)
 		{
-			if(strCmd == "convert_resx")
+			if (strCmd == "convert_resx")
 			{
 				StreamWriter swOut = new StreamWriter(strFile + ".lng.xml",
 					false, new UTF8Encoding(false));
@@ -114,9 +114,9 @@ namespace TrlUtil
 				XmlDocument xmlIn = XmlUtilEx.CreateXmlDocument();
 				xmlIn.Load(strFile);
 
-				foreach(XmlNode xmlChild in xmlIn.DocumentElement.ChildNodes)
+				foreach (XmlNode xmlChild in xmlIn.DocumentElement.ChildNodes)
 				{
-					if(xmlChild.Name != "data") continue;
+					if (xmlChild.Name != "data") continue;
 
 					swOut.Write("<Data Name=\"" + xmlChild.Attributes["name"].Value +
 						"\">\r\n\t<Value>" + xmlChild.SelectSingleNode("value").InnerXml +
@@ -137,12 +137,12 @@ namespace TrlUtil
 				gz.Close();
 				fs.Close();
 			} */
-			else if(strCmd == "src_from_xml")
+			else if (strCmd == "src_from_xml")
 			{
 				XmlDocument xmlIn = XmlUtilEx.CreateXmlDocument();
 				xmlIn.Load(strFile);
 
-				foreach(XmlNode xmlTable in xmlIn.DocumentElement.SelectNodes("StringTable"))
+				foreach (XmlNode xmlTable in xmlIn.DocumentElement.SelectNodes("StringTable"))
 				{
 					StreamWriter swOut = new StreamWriter(xmlTable.Attributes["Name"].Value +
 						".Generated.cs", false, new UTF8Encoding(false));
@@ -181,7 +181,7 @@ namespace TrlUtil
 #if DEBUG
 					string strLastName = string.Empty;
 #endif
-					foreach(XmlNode xmlData in xmlTable.SelectNodes("Data"))
+					foreach (XmlNode xmlData in xmlTable.SelectNodes("Data"))
 					{
 						string strName = xmlData.Attributes["Name"].Value;
 
@@ -201,7 +201,7 @@ namespace TrlUtil
 
 					swOut.WriteLine("\t\tprivate static readonly string[] m_vKeyNames = {");
 					XmlNodeList xNodes = xmlTable.SelectNodes("Data");
-					for(int i = 0; i < xNodes.Count; ++i)
+					for (int i = 0; i < xNodes.Count; ++i)
 					{
 						XmlNode xmlData = xNodes.Item(i);
 						swOut.WriteLine("\t\t\t\"" + xmlData.Attributes["Name"].Value +
@@ -216,11 +216,11 @@ namespace TrlUtil
 					swOut.WriteLine("\t\t\treturn m_vKeyNames;");
 					swOut.WriteLine("\t\t}");
 
-					foreach(XmlNode xmlData in xmlTable.SelectNodes("Data"))
+					foreach (XmlNode xmlData in xmlTable.SelectNodes("Data"))
 					{
 						string strName = xmlData.Attributes["Name"].Value;
 						string strValue = xmlData.SelectSingleNode("Value").InnerText;
-						if(strValue.Contains("\""))
+						if (strValue.Contains("\""))
 						{
 							// Console.WriteLine(strValue);
 							strValue = strValue.Replace("\"", "\"\"");

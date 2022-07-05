@@ -56,9 +56,9 @@ namespace KeePass.Util
 			public FsxContext(string strRoot, string strVolumeLabel,
 				FsxMatchFn fMatch)
 			{
-				if(strRoot == null) throw new ArgumentNullException("strRoot");
-				if(strVolumeLabel == null) throw new ArgumentNullException("strVolumeLabel");
-				if(fMatch == null) throw new ArgumentNullException("fMatch");
+				if (strRoot == null) throw new ArgumentNullException("strRoot");
+				if (strVolumeLabel == null) throw new ArgumentNullException("strVolumeLabel");
+				if (fMatch == null) throw new ArgumentNullException("fMatch");
 
 				this.RootDirectory = strRoot;
 				this.VolumeLabel = strVolumeLabel;
@@ -67,15 +67,15 @@ namespace KeePass.Util
 
 			public void AddResult(FsxResult r)
 			{
-				if(r == null) { Debug.Assert(false); return; }
+				if (r == null) { Debug.Assert(false); return; }
 
-				lock(m_oResultsSync) { m_lResults.Add(r); }
+				lock (m_oResultsSync) { m_lResults.Add(r); }
 			}
 
 			public List<FsxResult> GetResults()
 			{
 				List<FsxResult> l;
-				lock(m_oResultsSync)
+				lock (m_oResultsSync)
 				{
 					m_lResults.Sort(FsxResult.CompareByPath);
 					l = new List<FsxResult>(m_lResults);
@@ -85,8 +85,8 @@ namespace KeePass.Util
 
 			public static int CompareByRoot(FsxContext a, FsxContext b)
 			{
-				if(a == null) { Debug.Assert(false); return ((b == null) ? 0 : -1); }
-				if(b == null) { Debug.Assert(false); return 1; }
+				if (a == null) { Debug.Assert(false); return ((b == null) ? 0 : -1); }
+				if (b == null) { Debug.Assert(false); return 1; }
 
 				return StrUtil.CompareNaturally(a.RootDirectory, b.RootDirectory);
 			}
@@ -99,8 +99,8 @@ namespace KeePass.Util
 
 			public FsxResult(string strPath, string strType)
 			{
-				if(strPath == null) throw new ArgumentNullException("strPath");
-				if(strType == null) throw new ArgumentNullException("strType");
+				if (strPath == null) throw new ArgumentNullException("strPath");
+				if (strType == null) throw new ArgumentNullException("strType");
 
 				this.Path = strPath;
 				this.Type = strType;
@@ -108,8 +108,8 @@ namespace KeePass.Util
 
 			public static int CompareByPath(FsxResult a, FsxResult b)
 			{
-				if(a == null) { Debug.Assert(false); return ((b == null) ? 0 : -1); }
-				if(b == null) { Debug.Assert(false); return 1; }
+				if (a == null) { Debug.Assert(false); return ((b == null) ? 0 : -1); }
+				if (b == null) { Debug.Assert(false); return 1; }
 
 				return StrUtil.CompareNaturally(a.Path, b.Path);
 			}
@@ -117,7 +117,7 @@ namespace KeePass.Util
 
 		public static void FindDatabaseFiles(MainForm mf, string strRootPath)
 		{
-			if(mf == null) { Debug.Assert(false); return; }
+			if (mf == null) { Debug.Assert(false); return; }
 			Debug.Assert(GlobalWindowManager.TopWindow == null); // mf should be parent
 
 			VistaTaskDialog dlg = new VistaTaskDialog();
@@ -132,7 +132,7 @@ namespace KeePass.Util
 			dlg.AddButton((int)DialogResult.Cancel, KPRes.Cancel, null);
 
 			int dr;
-			if(dlg.ShowDialog(mf)) dr = dlg.Result;
+			if (dlg.ShowDialog(mf)) dr = dlg.Result;
 			else
 				dr = (int)MessageService.Ask(KPRes.FileSearchModes + MessageService.NewParagraph +
 					KPRes.Quick + ": " + KPRes.FileSearchQuickDesc + MessageService.NewParagraph +
@@ -140,22 +140,22 @@ namespace KeePass.Util
 					KPRes.QuickSearchQ, PwDefs.ShortProductName, MessageBoxButtons.YesNoCancel);
 
 			FsxMatchFn fMatch;
-			if(dr == (int)DialogResult.Yes) fMatch = MatchDatabaseFileQuick;
-			else if(dr == (int)DialogResult.No) fMatch = MatchDatabaseFileContent;
+			if (dr == (int)DialogResult.Yes) fMatch = MatchDatabaseFileQuick;
+			else if (dr == (int)DialogResult.No) fMatch = MatchDatabaseFileContent;
 			else return;
 
 			string strFile = FindUI(mf, fMatch, strRootPath);
-			if(!string.IsNullOrEmpty(strFile))
+			if (!string.IsNullOrEmpty(strFile))
 				mf.OpenDatabase(IOConnectionInfo.FromPath(strFile), null, true);
 		}
 
 		private static volatile string[] g_vQuickSuffixes = null;
 		private static FsxResult MatchDatabaseFileQuick(string strFile)
 		{
-			if(string.IsNullOrEmpty(strFile)) { Debug.Assert(false); return null; }
+			if (string.IsNullOrEmpty(strFile)) { Debug.Assert(false); return null; }
 
 			string[] vSfx = g_vQuickSuffixes;
-			if(vSfx == null)
+			if (vSfx == null)
 			{
 				Dictionary<string, bool> d = new Dictionary<string, bool>(
 					StrUtil.CaseIgnoreComparer);
@@ -166,15 +166,15 @@ namespace KeePass.Util
 				d[FileTransactionEx.StrTempSuffix] = true;
 				d[FileTransactionEx.StrTxfTempSuffix] = true;
 
-				if(d.ContainsKey(string.Empty)) { Debug.Assert(false); d.Remove(string.Empty); }
+				if (d.ContainsKey(string.Empty)) { Debug.Assert(false); d.Remove(string.Empty); }
 
 				vSfx = (new List<string>(d.Keys)).ToArray();
 				g_vQuickSuffixes = vSfx;
 			}
 
-			foreach(string strSuffix in vSfx)
+			foreach (string strSuffix in vSfx)
 			{
-				if(strFile.EndsWith(strSuffix, StrUtil.CaseIgnoreCmp))
+				if (strFile.EndsWith(strSuffix, StrUtil.CaseIgnoreCmp))
 					return MatchDatabaseFileContent(strFile);
 			}
 
@@ -183,7 +183,7 @@ namespace KeePass.Util
 
 		private static FsxResult MatchDatabaseFileContent(string strFile)
 		{
-			if(string.IsNullOrEmpty(strFile)) { Debug.Assert(false); return null; }
+			if (string.IsNullOrEmpty(strFile)) { Debug.Assert(false); return null; }
 
 			const ulong u2x = ((ulong)KdbxFile.FileSignature2 << 32) |
 				KdbxFile.FileSignature1;
@@ -194,20 +194,20 @@ namespace KeePass.Util
 
 			try
 			{
-				using(FileStream fs = new FileStream(strFile, FileMode.Open,
+				using (FileStream fs = new FileStream(strFile, FileMode.Open,
 					FileAccess.Read, FileShare.Read, 64))
 				{
-					using(BinaryReader br = new BinaryReader(fs))
+					using (BinaryReader br = new BinaryReader(fs))
 					{
 						byte[] pb = br.ReadBytes(8);
-						if((pb != null) && (pb.Length == 8))
+						if ((pb != null) && (pb.Length == 8))
 						{
 							ulong u = MemUtil.BytesToUInt64(pb);
-							if((u == u2x) || (u == u2p))
+							if ((u == u2x) || (u == u2p))
 								return new FsxResult(strFile,
 									AppDefs.FileExtension.FileExt.ToUpperInvariant() +
 									" (" + PwDefs.ShortProductName + " 2.x)");
-							if(u == u1x)
+							if (u == u1x)
 								return new FsxResult(strFile,
 									KeePassKdb1x.FileExt1.ToUpperInvariant() +
 									" (" + PwDefs.ShortProductName + " 1.x)");
@@ -215,15 +215,15 @@ namespace KeePass.Util
 					}
 				}
 			}
-			catch(Exception) { }
+			catch (Exception) { }
 
 			return null;
 		}
 
 		private static string FindUI(MainForm mf, FsxMatchFn fMatch, string strRootPath)
 		{
-			if(mf == null) { Debug.Assert(false); return null; }
-			if(fMatch == null) { Debug.Assert(false); return null; }
+			if (mf == null) { Debug.Assert(false); return null; }
+			if (fMatch == null) { Debug.Assert(false); return null; }
 
 			Form fOptDialog;
 			IStatusLogger sl = StatusUtil.CreateStatusDialog(mf, out fOptDialog,
@@ -233,20 +233,20 @@ namespace KeePass.Util
 			List<FsxContext> lContexts = new List<FsxContext>();
 			string strExcp = null;
 			try { lContexts = Find(fMatch, sl, strRootPath); }
-			catch(Exception ex) { strExcp = ex.Message; }
+			catch (Exception ex) { strExcp = ex.Message; }
 
 			bool bAborted = !sl.ContinueWork();
 
 			mf.UIBlockInteraction(false);
 			sl.EndLogging();
 
-			if(!string.IsNullOrEmpty(strExcp))
+			if (!string.IsNullOrEmpty(strExcp))
 			{
 				MessageService.ShowWarning(strExcp);
 				return null;
 			}
 
-			Action<ListView> fInit = delegate(ListView lv)
+			Action<ListView> fInit = delegate (ListView lv)
 			{
 				int w = lv.ClientSize.Width - UIUtil.GetVScrollBarWidth();
 				int ws = w / 70;
@@ -259,17 +259,17 @@ namespace KeePass.Util
 
 			List<object> lItems = new List<object>();
 			int cFiles = 0;
-			foreach(FsxContext ctx in lContexts)
+			foreach (FsxContext ctx in lContexts)
 			{
 				List<FsxResult> lResults = ctx.GetResults();
-				if(lResults.Count == 0) continue;
+				if (lResults.Count == 0) continue;
 
 				string strGroup = UrlUtil.EnsureTerminatingSeparator(ctx.RootDirectory, false);
-				if(ctx.VolumeLabel.Length != 0)
+				if (ctx.VolumeLabel.Length != 0)
 					strGroup += " (" + ctx.VolumeLabel + ")";
 				lItems.Add(new ListViewGroup(strGroup));
 
-				foreach(FsxResult r in lResults)
+				foreach (FsxResult r in lResults)
 				{
 					try
 					{
@@ -286,12 +286,12 @@ namespace KeePass.Util
 						lItems.Add(lvi);
 						++cFiles;
 					}
-					catch(Exception) { Debug.Assert(false); }
+					catch (Exception) { Debug.Assert(false); }
 				}
 			}
 
 			string strSub = KPRes.ObjectsFound.Replace("{PARAM}", cFiles.ToString()) + ".";
-			if(bAborted) strSub += " " + (new OperationCanceledException()).Message;
+			if (bAborted) strSub += " " + (new OperationCanceledException()).Message;
 
 			ListViewForm dlg = new ListViewForm();
 			dlg.InitEx(KPRes.SearchGroupName, strSub, null,
@@ -307,13 +307,13 @@ namespace KeePass.Util
 			sb.Append(KPRes.SearchingOp);
 			sb.Append("...");
 
-			if((lToDo != null) && (lToDo.Count != 0))
+			if ((lToDo != null) && (lToDo.Count != 0))
 			{
 				sb.Append(" (");
 
-				for(int i = 0; i < lToDo.Count; ++i)
+				for (int i = 0; i < lToDo.Count; ++i)
 				{
-					if(i != 0) sb.Append(", ");
+					if (i != 0) sb.Append(", ");
 					sb.Append(lToDo[i].RootDirectory);
 				}
 
@@ -326,57 +326,57 @@ namespace KeePass.Util
 		private static List<FsxContext> Find(FsxMatchFn fMatch, IStatusLogger sl,
 			string strRootPath)
 		{
-			if(sl == null) { Debug.Assert(false); sl = new NullStatusLogger(); }
+			if (sl == null) { Debug.Assert(false); sl = new NullStatusLogger(); }
 
 			List<FsxContext> lContexts = new List<FsxContext>();
 
-			if(!string.IsNullOrEmpty(strRootPath))
+			if (!string.IsNullOrEmpty(strRootPath))
 				lContexts.Add(new FsxContext(strRootPath, string.Empty, fMatch));
 			else
 			{
 				DriveInfo[] vDrives = DriveInfo.GetDrives();
-				if(vDrives == null) { Debug.Assert(false); vDrives = new DriveInfo[0]; }
-				foreach(DriveInfo di in vDrives)
+				if (vDrives == null) { Debug.Assert(false); vDrives = new DriveInfo[0]; }
+				foreach (DriveInfo di in vDrives)
 				{
-					if(di == null) { Debug.Assert(false); continue; }
+					if (di == null) { Debug.Assert(false); continue; }
 
 					try
 					{
-						if(!di.IsReady) continue;
+						if (!di.IsReady) continue;
 
 						string strRoot = di.RootDirectory.FullName;
-						if(string.IsNullOrEmpty(strRoot)) { Debug.Assert(false); continue; }
+						if (string.IsNullOrEmpty(strRoot)) { Debug.Assert(false); continue; }
 
 						string strVolumeLabel = string.Empty;
 						try { strVolumeLabel = (di.VolumeLabel ?? string.Empty); }
-						catch(Exception) { Debug.Assert(false); }
+						catch (Exception) { Debug.Assert(false); }
 
 						lContexts.Add(new FsxContext(strRoot, strVolumeLabel, fMatch));
 					}
-					catch(Exception) { Debug.Assert(false); }
+					catch (Exception) { Debug.Assert(false); }
 				}
 			}
 
-			for(int i = lContexts.Count - 1; i >= 0; --i)
+			for (int i = lContexts.Count - 1; i >= 0; --i)
 			{
 				FsxContext ctx = lContexts[i];
 
 				try
 				{
-					Thread th = new Thread(delegate()
+					Thread th = new Thread(delegate ()
 					{
 						try
 						{
 							try { FindInDirectory(ctx.RootDirectory, ctx); }
-							catch(Exception) { Debug.Assert(false); }
+							catch (Exception) { Debug.Assert(false); }
 
 							ctx.End = true;
 						}
-						catch(Exception) { Debug.Assert(false); }
+						catch (Exception) { Debug.Assert(false); }
 					});
 					th.Start();
 				}
-				catch(Exception) { Debug.Assert(false); lContexts.RemoveAt(i); }
+				catch (Exception) { Debug.Assert(false); lContexts.RemoveAt(i); }
 			}
 
 			lContexts.Sort(FsxContext.CompareByRoot);
@@ -384,28 +384,28 @@ namespace KeePass.Util
 
 			List<FsxContext> lRunning = new List<FsxContext>(lContexts);
 			int msSleep = Math.Max(PwDefs.UIUpdateDelay / 4, 1);
-			while(lRunning.Count != 0)
+			while (lRunning.Count != 0)
 			{
 				try
 				{
 					Thread.Sleep(msSleep);
 
-					for(int i = lRunning.Count - 1; i >= 0; --i)
+					for (int i = lRunning.Count - 1; i >= 0; --i)
 					{
-						if(lRunning[i].End)
+						if (lRunning[i].End)
 						{
 							lRunning.RemoveAt(i);
 							sl.SetText(GetSearchingText(lRunning), LogStatusType.Info);
 						}
 					}
 
-					if(!sl.ContinueWork())
+					if (!sl.ContinueWork())
 					{
-						foreach(FsxContext ctx in lRunning) { ctx.End = true; }
+						foreach (FsxContext ctx in lRunning) { ctx.End = true; }
 						lRunning.Clear();
 					}
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 
 			return lContexts;
@@ -413,51 +413,51 @@ namespace KeePass.Util
 
 		private static void FindInDirectory(string strPath, FsxContext ctx)
 		{
-			if(string.IsNullOrEmpty(strPath)) { Debug.Assert(false); return; }
-			if(ctx == null) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strPath)) { Debug.Assert(false); return; }
+			if (ctx == null) { Debug.Assert(false); return; }
 
 			try
 			{
 				string[] vFiles = Directory.GetFiles(strPath, "*",
 					SearchOption.TopDirectoryOnly);
-				if(vFiles == null) { Debug.Assert(false); vFiles = new string[0]; }
+				if (vFiles == null) { Debug.Assert(false); vFiles = new string[0]; }
 
-				foreach(string strFile in vFiles)
+				foreach (string strFile in vFiles)
 				{
-					if(string.IsNullOrEmpty(strFile)) { Debug.Assert(false); continue; }
-					if(ctx.End) return;
+					if (string.IsNullOrEmpty(strFile)) { Debug.Assert(false); continue; }
+					if (ctx.End) return;
 
 					FsxResult r = ctx.Match(strFile);
-					if(r != null) ctx.AddResult(r);
+					if (r != null) ctx.AddResult(r);
 				}
 
 				string[] vDirs = Directory.GetDirectories(strPath, "*",
 					SearchOption.TopDirectoryOnly);
-				if(vDirs == null) { Debug.Assert(false); vDirs = new string[0]; }
+				if (vDirs == null) { Debug.Assert(false); vDirs = new string[0]; }
 
-				foreach(string strDir in vDirs)
+				foreach (string strDir in vDirs)
 				{
-					if(string.IsNullOrEmpty(strDir)) { Debug.Assert(false); continue; }
-					if(ctx.End) return;
+					if (string.IsNullOrEmpty(strDir)) { Debug.Assert(false); continue; }
+					if (ctx.End) return;
 
 					string strTerm = UrlUtil.EnsureTerminatingSeparator(strDir, false);
-					if(IsDirTraversal(strTerm)) { Debug.Assert(false); continue; }
+					if (IsDirTraversal(strTerm)) { Debug.Assert(false); continue; }
 
 					FindInDirectory(strDir, ctx);
 				}
 			}
-			catch(UnauthorizedAccessException) { }
-			catch(Exception) { Debug.Assert(false); }
+			catch (UnauthorizedAccessException) { }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private static bool IsDirTraversal(string str)
 		{
-			if(string.IsNullOrEmpty(str)) { Debug.Assert(false); return false; }
+			if (string.IsNullOrEmpty(str)) { Debug.Assert(false); return false; }
 			Debug.Assert(UrlUtil.EnsureTerminatingSeparator(str, false) == str);
 
 			string strCnc = UrlUtil.ConvertSeparators(str, '/');
-			if(strCnc.EndsWith("/../")) return true;
-			if(strCnc.EndsWith("/./")) return true;
+			if (strCnc.EndsWith("/../")) return true;
+			if (strCnc.EndsWith("/./")) return true;
 
 			return false;
 		}

@@ -61,7 +61,7 @@ namespace KeePass.Forms
 			bool bTestConnection)
 		{
 			m_bSave = bSave;
-			if(ioc != null) m_ioc = ioc.CloneDeep();
+			if (ioc != null) m_ioc = ioc.CloneDeep();
 			m_bCanRememberCred = bCanRememberCred;
 			m_bTestConnection = bTestConnection;
 		}
@@ -109,31 +109,31 @@ namespace KeePass.Forms
 			m_cmbCredSaveMode.Items.Add(KPRes.CredSaveUserOnly);
 			m_cmbCredSaveMode.Items.Add(KPRes.CredSaveAll);
 
-			if(m_ioc.CredSaveMode == IOCredSaveMode.UserNameOnly)
+			if (m_ioc.CredSaveMode == IOCredSaveMode.UserNameOnly)
 				m_cmbCredSaveMode.SelectedIndex = 1;
-			else if(m_ioc.CredSaveMode == IOCredSaveMode.SaveCred)
+			else if (m_ioc.CredSaveMode == IOCredSaveMode.SaveCred)
 				m_cmbCredSaveMode.SelectedIndex = 2;
 			else
 				m_cmbCredSaveMode.SelectedIndex = 0;
 
-			if(!m_bCanRememberCred)
+			if (!m_bCanRememberCred)
 			{
 				m_cmbCredSaveMode.SelectedIndex = 0;
 				m_cmbCredSaveMode.Enabled = false;
 			}
 
-			ThreadPool.QueueUserWorkItem(delegate(object state)
+			ThreadPool.QueueUserWorkItem(delegate (object state)
 			{
 				try { InitAutoCompletions(); }
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			});
 		}
 
 		private void OnFormShown(object sender, EventArgs e)
 		{
-			if((m_tbUrl.TextLength > 0) && (m_tbUserName.TextLength > 0))
+			if ((m_tbUrl.TextLength > 0) && (m_tbUserName.TextLength > 0))
 				UIUtil.ResetFocus(m_tbPassword, this);
-			else if(m_tbUrl.TextLength > 0)
+			else if (m_tbUrl.TextLength > 0)
 				UIUtil.SetFocus(m_tbUserName, this);
 			else UIUtil.SetFocus(m_tbUrl, this);
 		}
@@ -141,7 +141,7 @@ namespace KeePass.Forms
 		private void OnBtnOK(object sender, EventArgs e)
 		{
 			string strUrl = m_tbUrl.Text;
-			if(strUrl.IndexOf("://") < 0)
+			if (strUrl.IndexOf("://") < 0)
 			{
 				// m_ttInvalidUrl.Show(KPRes.InvalidUrl, m_tbUrl);
 				MessageService.ShowWarning(strUrl, KPRes.InvalidUrl);
@@ -153,15 +153,15 @@ namespace KeePass.Forms
 			m_ioc.UserName = m_tbUserName.Text;
 			m_ioc.Password = m_tbPassword.TextEx.ReadString();
 
-			if(m_cmbCredSaveMode.SelectedIndex == 1)
+			if (m_cmbCredSaveMode.SelectedIndex == 1)
 				m_ioc.CredSaveMode = IOCredSaveMode.UserNameOnly;
-			else if(m_cmbCredSaveMode.SelectedIndex == 2)
+			else if (m_cmbCredSaveMode.SelectedIndex == 2)
 				m_ioc.CredSaveMode = IOCredSaveMode.SaveCred;
 			else
 				m_ioc.CredSaveMode = IOCredSaveMode.NoSave;
 
 			IocProperties p = m_ioc.Properties;
-			foreach(KeyValuePair<IocPropertyInfo, Control> kvp in m_lProps)
+			foreach (KeyValuePair<IocPropertyInfo, Control> kvp in m_lProps)
 			{
 				IocPropertyInfo pi = kvp.Key;
 				string strName = pi.Name;
@@ -170,30 +170,30 @@ namespace KeePass.Forms
 
 				try
 				{
-					if(t == typeof(string))
+					if (t == typeof(string))
 					{
 						TextBox tb = (c as TextBox);
-						if(tb != null) p.Set(strName, tb.Text.Trim());
+						if (tb != null) p.Set(strName, tb.Text.Trim());
 						else { Debug.Assert(false); }
 					}
-					else if(t == typeof(bool))
+					else if (t == typeof(bool))
 					{
 						ComboBox cmb = (c as ComboBox);
-						if(cmb != null)
+						if (cmb != null)
 						{
 							int iSel = cmb.SelectedIndex;
-							if(iSel == 0) p.SetBool(strName, null);
+							if (iSel == 0) p.SetBool(strName, null);
 							else p.SetBool(strName, (iSel == 1));
 						}
 						else { Debug.Assert(false); }
 					}
-					else if(t == typeof(long))
+					else if (t == typeof(long))
 					{
 						TextBox tb = (c as TextBox);
-						if(tb != null)
+						if (tb != null)
 						{
 							string str = tb.Text.Trim();
-							if(str.Length == 0) p.SetLong(strName, null);
+							if (str.Length == 0) p.SetLong(strName, null);
 							else
 							{
 								// Validate and store number
@@ -205,7 +205,7 @@ namespace KeePass.Forms
 					}
 					else { Debug.Assert(false); }
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
 					string strMsg = KPRes.Field + @" '" + pi.DisplayName +
 						@"':" + MessageService.NewLine + ex.Message;
@@ -218,9 +218,9 @@ namespace KeePass.Forms
 				}
 			}
 
-			if(m_bTestConnection && !m_bSave)
+			if (m_bTestConnection && !m_bSave)
 			{
-				if(!TestConnectionEx())
+				if (!TestConnectionEx())
 					this.DialogResult = DialogResult.None;
 			}
 		}
@@ -239,17 +239,17 @@ namespace KeePass.Forms
 
 			try
 			{
-				if(!IOConnection.FileExists(m_ioc, true))
+				if (!IOConnection.FileExists(m_ioc, true))
 					throw new FileNotFoundException();
 			}
-			catch(Exception exTest)
+			catch (Exception exTest)
 			{
-				if(Program.CommandLineArgs[AppDefs.CommandLineOptions.Debug] != null)
+				if (Program.CommandLineArgs[AppDefs.CommandLineOptions.Debug] != null)
 					MessageService.ShowWarningExcp(m_ioc.GetDisplayName(), exTest);
 				else
 				{
 					string strError = exTest.Message;
-					if((exTest.InnerException != null) &&
+					if ((exTest.InnerException != null) &&
 						!string.IsNullOrEmpty(exTest.InnerException.Message))
 						strError += MessageService.NewParagraph +
 							exTest.InnerException.Message;
@@ -287,22 +287,22 @@ namespace KeePass.Forms
 			Dictionary<string, List<IocPropertyInfo>> d =
 				new Dictionary<string, List<IocPropertyInfo>>(StrUtil.CaseIgnoreComparer);
 
-			foreach(IocPropertyInfo pi in IocPropertyInfoPool.PropertyInfos)
+			foreach (IocPropertyInfo pi in IocPropertyInfoPool.PropertyInfos)
 			{
-				if(pi == null) { Debug.Assert(false); continue; }
+				if (pi == null) { Debug.Assert(false); continue; }
 
 				List<string> lPrt = new List<string>(pi.Protocols);
 				lPrt.Sort(StrUtil.CaseIgnoreComparer);
 				StringBuilder sbPrt = new StringBuilder();
-				foreach(string str in lPrt)
+				foreach (string str in lPrt)
 				{
-					if(sbPrt.Length > 0) sbPrt.Append(" / ");
+					if (sbPrt.Length > 0) sbPrt.Append(" / ");
 					sbPrt.Append(str);
 				}
 				string strPrt = sbPrt.ToString();
 
 				List<IocPropertyInfo> l;
-				if(d.TryGetValue(strPrt, out l)) l.Add(pi);
+				if (d.TryGetValue(strPrt, out l)) l.Add(pi);
 				else
 				{
 					l = new List<IocPropertyInfo>();
@@ -335,7 +335,7 @@ namespace KeePass.Forms
 			int xInput = d + wCell + d - 1;
 			int xGroup = xText;
 
-			if(this.RightToLeft == RightToLeft.Yes)
+			if (this.RightToLeft == RightToLeft.Yes)
 			{
 				int iTemp = xText;
 				xText = xInput;
@@ -347,7 +347,7 @@ namespace KeePass.Forms
 
 			m_pnlAdv.SuspendLayout();
 
-			foreach(KeyValuePair<string, List<IocPropertyInfo>> kvp in dProps)
+			foreach (KeyValuePair<string, List<IocPropertyInfo>> kvp in dProps)
 			{
 				string strGroup = kvp.Key;
 				y += d;
@@ -368,7 +368,7 @@ namespace KeePass.Forms
 				m_pnlAdv.Controls.Add(lblGroup);
 				y += hLabel;
 
-				foreach(IocPropertyInfo pi in kvp.Value)
+				foreach (IocPropertyInfo pi in kvp.Value)
 				{
 					string strName = pi.Name;
 					string strText = pi.DisplayName + ":";
@@ -377,7 +377,7 @@ namespace KeePass.Forms
 
 					int hText = hLabel;
 					int wRem = TextRenderer.MeasureText(strText, f).Width;
-					while(wRem >= wCell)
+					while (wRem >= wCell)
 					{
 						hText += (hLabel + 1);
 						wRem -= wCell;
@@ -395,7 +395,7 @@ namespace KeePass.Forms
 					// lblText.BackColor = Color.Green;
 
 					Control cInput = null;
-					if((t == typeof(string)) || (t == typeof(long)))
+					if ((t == typeof(string)) || (t == typeof(long)))
 					{
 						TextBox tb = new TextBox();
 						tb.Size = new Size(wCell, hTextBox);
@@ -404,7 +404,7 @@ namespace KeePass.Forms
 
 						cInput = tb;
 					}
-					else if(t == typeof(bool))
+					else if (t == typeof(bool))
 					{
 						ComboBox cmb = new ComboBox();
 						cmb.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -415,7 +415,7 @@ namespace KeePass.Forms
 						cmb.Items.Add(KPRes.No);
 
 						bool? ob = p.GetBool(strName);
-						if(ob.HasValue) cmb.SelectedIndex = (ob.Value ? 1 : 2);
+						if (ob.HasValue) cmb.SelectedIndex = (ob.Value ? 1 : 2);
 						else cmb.SelectedIndex = 0;
 
 						cInput = cmb;
@@ -427,7 +427,7 @@ namespace KeePass.Forms
 					++iID;
 
 					int hDiff = lblText.Height - cInput.Height;
-					if(hDiff >= 0)
+					if (hDiff >= 0)
 					{
 						lblText.Location = new Point(xText, y);
 						cInput.Location = new Point(xInput, y + (hDiff / 2));
@@ -455,7 +455,7 @@ namespace KeePass.Forms
 
 		private static void InitAutoCompletion(TextBox tb, Dictionary<string, bool> d)
 		{
-			if(d.Count == 0) return;
+			if (d.Count == 0) return;
 
 			string[] v = new string[d.Count];
 			d.Keys.CopyTo(v, 0);
@@ -472,19 +472,19 @@ namespace KeePass.Forms
 
 			MainForm mf = Program.MainForm;
 			MruList l = ((mf != null) ? mf.FileMruList : null);
-			if(l == null) { Debug.Assert(false); return; }
+			if (l == null) { Debug.Assert(false); return; }
 
-			for(uint u = 0; u < l.ItemCount; ++u)
+			for (uint u = 0; u < l.ItemCount; ++u)
 			{
 				IOConnectionInfo ioc = (l.GetItem(u).Value as IOConnectionInfo);
-				if(ioc == null) { Debug.Assert(false); continue; }
-				if(ioc.IsLocalFile()) continue;
+				if (ioc == null) { Debug.Assert(false); continue; }
+				if (ioc.IsLocalFile()) continue;
 
 				string str = ioc.Path;
-				if(!string.IsNullOrEmpty(str)) dUrls[str] = true;
+				if (!string.IsNullOrEmpty(str)) dUrls[str] = true;
 
 				str = ioc.UserName;
-				if(!string.IsNullOrEmpty(str)) dUsers[str] = true;
+				if (!string.IsNullOrEmpty(str)) dUsers[str] = true;
 			}
 
 			InitAutoCompletion(m_tbUrl, dUrls);

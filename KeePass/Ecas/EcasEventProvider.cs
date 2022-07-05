@@ -37,11 +37,11 @@ namespace KeePass.Ecas
 
 		public bool IsSupported(PwUuid uuidType)
 		{
-			if(uuidType == null) throw new ArgumentNullException("uuidType");
+			if (uuidType == null) throw new ArgumentNullException("uuidType");
 
-			foreach(EcasEventType t in m_events)
+			foreach (EcasEventType t in m_events)
 			{
-				if(t.Type.Equals(uuidType))
+				if (t.Type.Equals(uuidType))
 					return true;
 			}
 
@@ -50,11 +50,11 @@ namespace KeePass.Ecas
 
 		public EcasEventType Find(string strEventName)
 		{
-			if(strEventName == null) throw new ArgumentNullException("strEventName");
+			if (strEventName == null) throw new ArgumentNullException("strEventName");
 
-			foreach(EcasEventType t in m_events)
+			foreach (EcasEventType t in m_events)
 			{
-				if(t.Name == strEventName) return t;
+				if (t.Name == strEventName) return t;
 			}
 
 			return null;
@@ -62,11 +62,11 @@ namespace KeePass.Ecas
 
 		public EcasEventType Find(PwUuid uuid)
 		{
-			if(uuid == null) throw new ArgumentNullException("uuid");
+			if (uuid == null) throw new ArgumentNullException("uuid");
 
-			foreach(EcasEventType t in m_events)
+			foreach (EcasEventType t in m_events)
 			{
-				if(t.Type.Equals(uuid)) return t;
+				if (t.Type.Equals(uuid)) return t;
 			}
 
 			return null;
@@ -74,14 +74,14 @@ namespace KeePass.Ecas
 
 		public bool Compare(EcasEvent e, EcasContext ctx)
 		{
-			if(e == null) throw new ArgumentNullException("e");
-			if(ctx == null) throw new ArgumentNullException("ctx");
+			if (e == null) throw new ArgumentNullException("e");
+			if (ctx == null) throw new ArgumentNullException("ctx");
 
 			Debug.Assert(e.Type.Equals(ctx.Event.Type));
 
-			foreach(EcasEventType t in m_events)
+			foreach (EcasEventType t in m_events)
 			{
-				if(t.Type.Equals(e.Type))
+				if (t.Type.Equals(e.Type))
 					return t.CompareMethod(e, ctx);
 			}
 

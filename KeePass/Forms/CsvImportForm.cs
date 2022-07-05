@@ -102,7 +102,7 @@ namespace KeePass.Forms
 
 		private void OnFormLoad(object sender, EventArgs e)
 		{
-			if((m_pbData == null) || (m_pwDatabase == null))
+			if ((m_pbData == null) || (m_pwDatabase == null))
 				throw new InvalidOperationException();
 
 			m_bInitializing = true;
@@ -125,7 +125,7 @@ namespace KeePass.Forms
 			UIUtil.SetExplorerTheme(m_lvFields, false);
 			UIUtil.SetExplorerTheme(m_lvImportPreview, false);
 
-			foreach(StrEncodingInfo seiEnum in StrUtil.Encodings)
+			foreach (StrEncodingInfo seiEnum in StrUtil.Encodings)
 			{
 				m_cmbEnc.Items.Add(seiEnum.Name);
 			}
@@ -134,13 +134,13 @@ namespace KeePass.Forms
 				m_pbData, out m_uStartOffset);
 
 			int iSel = 0;
-			if(seiGuess != null)
+			if (seiGuess != null)
 				iSel = Math.Max(m_cmbEnc.FindStringExact(seiGuess.Name), 0);
 			m_cmbEnc.SelectedIndex = iSel;
 
 			string[] vChars = new string[] { ",", ";", ".", ":", "\"", @"'",
 				StrCharTab, StrCharNewLine };
-			foreach(string strChar in vChars)
+			foreach (string strChar in vChars)
 			{
 				m_cmbFieldSep.Items.Add(strChar);
 				m_cmbRecSep.Items.Add(strChar);
@@ -158,7 +158,7 @@ namespace KeePass.Forms
 			AddCsvField(CsvFieldType.Url, null, null);
 			AddCsvField(CsvFieldType.Notes, null, null);
 
-			for(int i = (int)CsvFieldType.First; i < (int)CsvFieldType.Count; ++i)
+			for (int i = (int)CsvFieldType.First; i < (int)CsvFieldType.Count; ++i)
 				m_cmbFieldType.Items.Add(CsvFieldToString((CsvFieldType)i));
 			m_cmbFieldType.SelectedIndex = (int)CsvFieldType.Group;
 
@@ -184,7 +184,7 @@ namespace KeePass.Forms
 
 		private void EnableControlsEx()
 		{
-			if(m_bInitializing) return;
+			if (m_bInitializing) return;
 
 			List<CsvFieldInfo> lFields = GetCsvFieldInfos();
 
@@ -210,11 +210,11 @@ namespace KeePass.Forms
 			bool bValidRecSep = (GetCharFromDef(m_cmbRecSep.Text) != char.MinValue);
 			bool bValidTextQual = (GetCharFromDef(m_cmbTextQual.Text) != char.MinValue);
 
-			if(bValidFieldSep) m_cmbFieldSep.ResetBackColor();
+			if (bValidFieldSep) m_cmbFieldSep.ResetBackColor();
 			else m_cmbFieldSep.BackColor = AppDefs.ColorEditError;
-			if(bValidRecSep) m_cmbRecSep.ResetBackColor();
+			if (bValidRecSep) m_cmbRecSep.ResetBackColor();
 			else m_cmbRecSep.BackColor = AppDefs.ColorEditError;
-			if(bValidTextQual) m_cmbTextQual.ResetBackColor();
+			if (bValidTextQual) m_cmbTextQual.ResetBackColor();
 			else m_cmbTextQual.BackColor = AppDefs.ColorEditError;
 
 			bool bOK = true;
@@ -222,12 +222,12 @@ namespace KeePass.Forms
 			bOK &= (bValidFieldSep && bValidRecSep && bValidTextQual);
 			m_btnOK.Enabled = bOK;
 
-			if(t != m_tLastCsvType)
+			if (t != m_tLastCsvType)
 			{
 				m_cmbFieldFormat.Items.Clear();
 
 				string[] vItems;
-				if(IsTimeField(t))
+				if (IsTimeField(t))
 					vItems = new string[] {
 						string.Empty,
 						@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffzz",
@@ -236,25 +236,25 @@ namespace KeePass.Forms
 						@"yyyy/MM/dd HH:mm:ss",
 						@"yyyy/MM/dd", @"MM/dd/yy", @"MMMM dd, yyyy", @"MM/dd/yy H:mm:ss zzz"
 					};
-				else if(t == CsvFieldType.Group)
+				else if (t == CsvFieldType.Group)
 					vItems = new string[] { string.Empty, ".", "/", "\\" };
 				else vItems = new string[0];
 
-				foreach(string strPre in vItems)
+				foreach (string strPre in vItems)
 					m_cmbFieldFormat.Items.Add(strPre);
 
-				if(t == CsvFieldType.Group)
+				if (t == CsvFieldType.Group)
 					UIUtil.SetText(m_lblFieldFormat, KPRes.Separator + ":");
 				else UIUtil.SetText(m_lblFieldFormat, KPRes.Format + ":");
 			}
 			m_tLastCsvType = t;
 
 			bool bHasGroup = false;
-			foreach(CsvFieldInfo cfi in lFields)
+			foreach (CsvFieldInfo cfi in lFields)
 			{
-				if(cfi.Type == CsvFieldType.Group) { bHasGroup = true; break; }
+				if (cfi.Type == CsvFieldType.Group) { bHasGroup = true; break; }
 			}
-			if(!bHasGroup) m_cbMergeGroups.Checked = false;
+			if (!bHasGroup) m_cbMergeGroups.Checked = false;
 			m_cbMergeGroups.Enabled = bHasGroup;
 		}
 
@@ -267,14 +267,14 @@ namespace KeePass.Forms
 					m_pbData.Length - (int)m_uStartOffset) ?? string.Empty);
 				return StrUtil.ReplaceNulls(str);
 			}
-			catch(Exception) { }
+			catch (Exception) { }
 
 			return string.Empty;
 		}
 
 		private void UpdateTextPreview()
 		{
-			if(m_bInitializing) return;
+			if (m_bInitializing) return;
 
 			m_rtbEncPreview.Clear(); // Clear formatting
 			m_rtbEncPreview.Text = GetDecodedText();
@@ -282,15 +282,15 @@ namespace KeePass.Forms
 
 		private void UpdateImportPreview()
 		{
-			if(m_bInitializing) return;
+			if (m_bInitializing) return;
 
 			try { PerformImport(new PwGroup(true, true), true); }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private void ProcessResize()
 		{
-			if(m_bInitializing) return;
+			if (m_bInitializing) return;
 
 			int dx = m_lvFields.ClientRectangle.Width;
 			m_lvFields.Columns[0].Width = dx -
@@ -302,24 +302,24 @@ namespace KeePass.Forms
 		private static string CsvFieldToString(CsvFieldType t)
 		{
 			string strText;
-			if(t == CsvFieldType.Ignore) strText = "(" + KPRes.Ignore + ")";
-			else if(t == CsvFieldType.Group) strText = KPRes.Group;
-			else if(t == CsvFieldType.Title) strText = KPRes.Title;
-			else if(t == CsvFieldType.UserName) strText = KPRes.UserName;
-			else if(t == CsvFieldType.Password) strText = KPRes.Password;
-			else if(t == CsvFieldType.Url) strText = KPRes.Url;
-			else if(t == CsvFieldType.Notes) strText = KPRes.Notes;
-			else if(t == CsvFieldType.CustomString)
+			if (t == CsvFieldType.Ignore) strText = "(" + KPRes.Ignore + ")";
+			else if (t == CsvFieldType.Group) strText = KPRes.Group;
+			else if (t == CsvFieldType.Title) strText = KPRes.Title;
+			else if (t == CsvFieldType.UserName) strText = KPRes.UserName;
+			else if (t == CsvFieldType.Password) strText = KPRes.Password;
+			else if (t == CsvFieldType.Url) strText = KPRes.Url;
+			else if (t == CsvFieldType.Notes) strText = KPRes.Notes;
+			else if (t == CsvFieldType.CustomString)
 				strText = KPRes.String;
-			else if(t == CsvFieldType.CreationTime)
+			else if (t == CsvFieldType.CreationTime)
 				strText = KPRes.CreationTime;
 			// else if(t == CsvFieldType.LastAccessTime)
 			//	strText = KPRes.LastAccessTime;
-			else if(t == CsvFieldType.LastModTime)
+			else if (t == CsvFieldType.LastModTime)
 				strText = KPRes.LastModificationTime;
-			else if(t == CsvFieldType.ExpiryTime)
+			else if (t == CsvFieldType.ExpiryTime)
 				strText = KPRes.ExpiryTime;
-			else if(t == CsvFieldType.Tags)
+			else if (t == CsvFieldType.Tags)
 				strText = KPRes.Tags;
 			else { Debug.Assert(false); strText = KPRes.Unknown; }
 
@@ -331,14 +331,14 @@ namespace KeePass.Forms
 			string strText = CsvFieldToString(t);
 
 			string strSub = string.Empty;
-			if(strName != null) strSub += strName;
-			if(!string.IsNullOrEmpty(strFormat))
+			if (strName != null) strSub += strName;
+			if (!string.IsNullOrEmpty(strFormat))
 			{
-				if(strSub.Length > 0) strSub += ", ";
+				if (strSub.Length > 0) strSub += ", ";
 				strSub += strFormat;
 			}
 
-			if(strSub.Length > 0) strText += " (" + strSub + ")";
+			if (strSub.Length > 0) strText += " (" + strSub + ")";
 
 			ListViewItem lvi = m_lvFields.Items.Add(strText);
 			lvi.Tag = new CsvFieldInfo(t, strName, strFormat);
@@ -353,7 +353,7 @@ namespace KeePass.Forms
 		private CsvFieldType GetCsvFieldType(out bool bName, out bool bFormat)
 		{
 			int i = m_cmbFieldType.SelectedIndex;
-			if((i < (int)CsvFieldType.First) || (i >= (int)CsvFieldType.Count))
+			if ((i < (int)CsvFieldType.First) || (i >= (int)CsvFieldType.Count))
 			{
 				Debug.Assert(false);
 				bName = false;
@@ -369,11 +369,11 @@ namespace KeePass.Forms
 
 		private char GetCharFromDef(string strDef)
 		{
-			if(strDef.Equals(StrCharTab, StrUtil.CaseIgnoreCmp))
+			if (strDef.Equals(StrCharTab, StrUtil.CaseIgnoreCmp))
 				return '\t';
-			if(strDef.Equals(StrCharNewLine, StrUtil.CaseIgnoreCmp))
+			if (strDef.Equals(StrCharNewLine, StrUtil.CaseIgnoreCmp))
 				return '\n';
-			if(strDef.Length == 1) return strDef[0];
+			if (strDef.Length == 1) return strDef[0];
 			return char.MinValue;
 		}
 
@@ -400,7 +400,7 @@ namespace KeePass.Forms
 		private void OnBtnFieldDel(object sender, EventArgs e)
 		{
 			ListView.SelectedIndexCollection lvsic = m_lvFields.SelectedIndices;
-			for(int i = lvsic.Count - 1; i >= 0; --i)
+			for (int i = lvsic.Count - 1; i >= 0; --i)
 				m_lvFields.Items.RemoveAt(lvsic[i]);
 
 			EnableControlsEx();
@@ -414,10 +414,10 @@ namespace KeePass.Forms
 		private void OnBtnFieldMoveUp(object sender, EventArgs e)
 		{
 			ListView.SelectedIndexCollection lvsic = m_lvFields.SelectedIndices;
-			if(lvsic.Count != 1) { Debug.Assert(false); return; }
+			if (lvsic.Count != 1) { Debug.Assert(false); return; }
 
 			int iPos = lvsic[0];
-			if(iPos == 0) return;
+			if (iPos == 0) return;
 
 			ListViewItem lviMove = m_lvFields.Items[iPos];
 			m_lvFields.Items.RemoveAt(iPos);
@@ -427,10 +427,10 @@ namespace KeePass.Forms
 		private void OnBtnFieldMoveDown(object sender, EventArgs e)
 		{
 			ListView.SelectedIndexCollection lvsic = m_lvFields.SelectedIndices;
-			if(lvsic.Count != 1) { Debug.Assert(false); return; }
+			if (lvsic.Count != 1) { Debug.Assert(false); return; }
 
 			int iPos = lvsic[0];
-			if(iPos == (m_lvFields.Items.Count - 1)) return;
+			if (iPos == (m_lvFields.Items.Count - 1)) return;
 
 			ListViewItem lviMove = m_lvFields.Items[iPos];
 			m_lvFields.Items.RemoveAt(iPos);
@@ -440,7 +440,7 @@ namespace KeePass.Forms
 		private void OnFieldTypeSelectedIndexChanged(object sender, EventArgs e)
 		{
 			CsvFieldType t = GetCsvFieldType();
-			if(t != m_tLastCsvType) m_cmbFieldFormat.Text = string.Empty;
+			if (t != m_tLastCsvType) m_cmbFieldFormat.Text = string.Empty;
 
 			EnableControlsEx();
 		}
@@ -450,7 +450,7 @@ namespace KeePass.Forms
 			CsvFieldType t = GetCsvFieldType();
 
 			string strUrl = null;
-			if(IsTimeField(t))
+			if (IsTimeField(t))
 				strUrl = "https://msdn.microsoft.com/en-us/library/8kb3ddd4.aspx";
 			// else if(t == CsvFieldType.Group)
 			// {
@@ -472,7 +472,7 @@ namespace KeePass.Forms
 
 			AddCsvField(t, strName, strFormat);
 			ProcessResize();
-			for(int i = 0; i < (m_lvFields.Items.Count - 1); ++i)
+			for (int i = 0; i < (m_lvFields.Items.Count - 1); ++i)
 				m_lvFields.Items[i].Selected = false;
 			m_lvFields.EnsureVisible(m_lvFields.Items.Count - 1);
 			UIUtil.SetFocusedItem(m_lvFields, m_lvFields.Items[
@@ -481,7 +481,7 @@ namespace KeePass.Forms
 
 		private void OnTabMainSelectedIndexChanged(object sender, EventArgs e)
 		{
-			if(m_tabMain.SelectedTab == m_tabPreview)
+			if (m_tabMain.SelectedTab == m_tabPreview)
 				UpdateImportPreview();
 
 			EnableControlsEx();
@@ -493,7 +493,7 @@ namespace KeePass.Forms
 			opt.FieldSeparator = GetCharFromDef(m_cmbFieldSep.Text);
 			opt.RecordSeparator = GetCharFromDef(m_cmbRecSep.Text);
 			opt.TextQualifier = GetCharFromDef(m_cmbTextQual.Text);
-			if((opt.FieldSeparator == char.MinValue) || (opt.RecordSeparator == char.MinValue) ||
+			if ((opt.FieldSeparator == char.MinValue) || (opt.RecordSeparator == char.MinValue) ||
 				(opt.TextQualifier == char.MinValue))
 				return null;
 			opt.BackslashIsEscape = m_cbBackEscape.Checked;
@@ -506,10 +506,10 @@ namespace KeePass.Forms
 		{
 			List<CsvFieldInfo> lFields = new List<CsvFieldInfo>();
 
-			for(int i = 0; i < m_lvFields.Items.Count; ++i)
+			for (int i = 0; i < m_lvFields.Items.Count; ++i)
 			{
 				CsvFieldInfo cfi = (m_lvFields.Items[i].Tag as CsvFieldInfo);
-				if(cfi == null) { Debug.Assert(false); continue; }
+				if (cfi == null) { Debug.Assert(false); continue; }
 				lFields.Add(cfi);
 			}
 
@@ -520,24 +520,24 @@ namespace KeePass.Forms
 		{
 			List<CsvFieldInfo> lFields = GetCsvFieldInfos();
 
-			if(bCreatePreview)
+			if (bCreatePreview)
 			{
 				int dx = m_lvImportPreview.ClientRectangle.Width; // Before clearing
 
 				m_lvImportPreview.Items.Clear();
 				m_lvImportPreview.Columns.Clear();
 
-				foreach(CsvFieldInfo cfi in lFields)
+				foreach (CsvFieldInfo cfi in lFields)
 				{
 					string strCol = CsvFieldToString(cfi.Type);
-					if(cfi.Type == CsvFieldType.CustomString)
+					if (cfi.Type == CsvFieldType.CustomString)
 						strCol = (cfi.Name ?? string.Empty);
 					m_lvImportPreview.Columns.Add(strCol, dx / lFields.Count);
 				}
 			}
 
 			CsvOptions opt = GetCsvOptions();
-			if(opt == null) { Debug.Assert(bCreatePreview); return; }
+			if (opt == null) { Debug.Assert(bCreatePreview); return; }
 
 			string strData = GetDecodedText();
 			CsvStreamReaderEx csr = new CsvStreamReaderEx(strData, opt);
@@ -545,7 +545,7 @@ namespace KeePass.Forms
 			Dictionary<string, PwGroup> dGroups = new Dictionary<string, PwGroup>();
 			dGroups[string.Empty] = pgStorage;
 
-			if(bCreatePreview) m_lvImportPreview.BeginUpdate();
+			if (bCreatePreview) m_lvImportPreview.BeginUpdate();
 
 			DateTime dtNow = DateTime.UtcNow;
 			DateTime dtNoExpire = KdbTime.NeverExpireTime.ToDateTime();
@@ -553,14 +553,14 @@ namespace KeePass.Forms
 			bool bIsFirstRow = true;
 			bool bMergeGroups = m_cbMergeGroups.Checked;
 
-			while(true)
+			while (true)
 			{
 				string[] v = csr.ReadLine();
-				if(v == null) break;
-				if(v.Length == 0) continue;
-				if((v.Length == 1) && (v[0].Length == 0)) continue;
+				if (v == null) break;
+				if (v.Length == 0) continue;
+				if ((v.Length == 1) && (v[0].Length == 0)) continue;
 
-				if(bIsFirstRow && bIgnoreFirstRow)
+				if (bIsFirstRow && bIgnoreFirstRow)
 				{
 					bIsFirstRow = false;
 					continue;
@@ -571,65 +571,65 @@ namespace KeePass.Forms
 				PwEntry pe = new PwEntry(true, true);
 
 				ListViewItem lvi = null;
-				for(int i = 0; i < Math.Min(v.Length, lFields.Count); ++i)
+				for (int i = 0; i < Math.Min(v.Length, lFields.Count); ++i)
 				{
 					string strField = v[i];
 					CsvFieldInfo cfi = lFields[i];
 
-					if(cfi.Type == CsvFieldType.Ignore) { }
-					else if(cfi.Type == CsvFieldType.Group)
+					if (cfi.Type == CsvFieldType.Ignore) { }
+					else if (cfi.Type == CsvFieldType.Group)
 						pg = FindCreateGroup(strField, pgStorage, dGroups,
 							cfi.Format, opt, bMergeGroups);
-					else if(cfi.Type == CsvFieldType.Title)
+					else if (cfi.Type == CsvFieldType.Title)
 						ImportUtil.AppendToField(pe, PwDefs.TitleField,
 							strField, m_pwDatabase);
-					else if(cfi.Type == CsvFieldType.UserName)
+					else if (cfi.Type == CsvFieldType.UserName)
 						ImportUtil.AppendToField(pe, PwDefs.UserNameField,
 							strField, m_pwDatabase);
-					else if(cfi.Type == CsvFieldType.Password)
+					else if (cfi.Type == CsvFieldType.Password)
 						ImportUtil.AppendToField(pe, PwDefs.PasswordField,
 							strField, m_pwDatabase);
-					else if(cfi.Type == CsvFieldType.Url)
+					else if (cfi.Type == CsvFieldType.Url)
 						ImportUtil.AppendToField(pe, PwDefs.UrlField,
 							strField, m_pwDatabase);
-					else if(cfi.Type == CsvFieldType.Notes)
+					else if (cfi.Type == CsvFieldType.Notes)
 						ImportUtil.AppendToField(pe, PwDefs.NotesField,
 							strField, m_pwDatabase);
-					else if(cfi.Type == CsvFieldType.CustomString)
+					else if (cfi.Type == CsvFieldType.CustomString)
 						ImportUtil.AppendToField(pe, (string.IsNullOrEmpty(cfi.Name) ?
 							PwDefs.NotesField : cfi.Name), strField, m_pwDatabase);
-					else if(cfi.Type == CsvFieldType.CreationTime)
+					else if (cfi.Type == CsvFieldType.CreationTime)
 						pe.CreationTime = ParseDateTime(ref strField, cfi, dtNow);
 					// else if(cfi.Type == CsvFieldType.LastAccessTime)
 					//	pe.LastAccessTime = ParseDateTime(ref strField, cfi, dtNow);
-					else if(cfi.Type == CsvFieldType.LastModTime)
+					else if (cfi.Type == CsvFieldType.LastModTime)
 						pe.LastModificationTime = ParseDateTime(ref strField, cfi, dtNow);
-					else if(cfi.Type == CsvFieldType.ExpiryTime)
+					else if (cfi.Type == CsvFieldType.ExpiryTime)
 					{
 						bool bParseSuccess;
 						pe.ExpiryTime = ParseDateTime(ref strField, cfi, dtNow,
 							out bParseSuccess);
 						pe.Expires = (bParseSuccess && (pe.ExpiryTime != dtNoExpire));
 					}
-					else if(cfi.Type == CsvFieldType.Tags)
+					else if (cfi.Type == CsvFieldType.Tags)
 						StrUtil.AddTags(pe.Tags, StrUtil.StringToTags(strField));
 					else { Debug.Assert(false); }
 
-					if(bCreatePreview)
+					if (bCreatePreview)
 					{
 						strField = StrUtil.MultiToSingleLine(strField);
 
-						if(lvi != null) lvi.SubItems.Add(strField);
+						if (lvi != null) lvi.SubItems.Add(strField);
 						else lvi = m_lvImportPreview.Items.Add(strField);
 					}
 				}
 
-				if(bCreatePreview)
+				if (bCreatePreview)
 				{
 					// Create remaining subitems
-					for(int r = v.Length; r < lFields.Count; ++r)
+					for (int r = v.Length; r < lFields.Count; ++r)
 					{
-						if(lvi != null) lvi.SubItems.Add(string.Empty);
+						if (lvi != null) lvi.SubItems.Add(string.Empty);
 						else lvi = m_lvImportPreview.Items.Add(string.Empty);
 					}
 				}
@@ -637,7 +637,7 @@ namespace KeePass.Forms
 				pg.AddEntry(pe, true);
 			}
 
-			if(bCreatePreview)
+			if (bCreatePreview)
 			{
 				m_lvImportPreview.EndUpdate();
 				ProcessResize();
@@ -656,25 +656,25 @@ namespace KeePass.Forms
 		{
 			DateTime? odt = null;
 
-			if(!string.IsNullOrEmpty(cfi.Format))
+			if (!string.IsNullOrEmpty(cfi.Format))
 			{
 				const DateTimeStyles dts = (DateTimeStyles.AllowWhiteSpaces |
 					DateTimeStyles.AssumeLocal);
 
 				DateTime dtExact;
-				if(DateTime.TryParseExact(strData, cfi.Format, null, dts,
+				if (DateTime.TryParseExact(strData, cfi.Format, null, dts,
 					out dtExact))
 					odt = TimeUtil.ToUtc(dtExact, false);
 			}
 
-			if(!odt.HasValue)
+			if (!odt.HasValue)
 			{
 				DateTime dtStd;
-				if(DateTime.TryParse(strData, out dtStd))
+				if (DateTime.TryParse(strData, out dtStd))
 					odt = TimeUtil.ToUtc(dtStd, false);
 			}
 
-			if(odt.HasValue)
+			if (odt.HasValue)
 			{
 				strData = TimeUtil.ToDisplayString(odt.Value);
 				bSuccess = true;
@@ -695,18 +695,18 @@ namespace KeePass.Forms
 		{
 			List<string> l = new List<string>();
 
-			if(string.IsNullOrEmpty(strSep)) l.Add(strSpec);
+			if (string.IsNullOrEmpty(strSep)) l.Add(strSpec);
 			else
 			{
 				string[] vChain = strSpec.Split(new string[1] { strSep },
 					StringSplitOptions.RemoveEmptyEntries);
-				for(int i = 0; i < vChain.Length; ++i)
+				for (int i = 0; i < vChain.Length; ++i)
 				{
 					string strGrp = vChain[i];
-					if(opt.TrimFields) strGrp = strGrp.Trim();
-					if(strGrp.Length > 0) l.Add(strGrp);
+					if (opt.TrimFields) strGrp = strGrp.Trim();
+					if (strGrp.Length > 0) l.Add(strGrp);
 				}
-				if(l.Count == 0) l.Add(strSpec);
+				if (l.Count == 0) l.Add(strSpec);
 			}
 
 			return l;
@@ -717,9 +717,9 @@ namespace KeePass.Forms
 		{
 			StringBuilder sb = new StringBuilder();
 
-			for(int i = iOffset; i < l.Count; ++i)
+			for (int i = iOffset; i < l.Count; ++i)
 			{
-				if(i > iOffset) sb.Append(chSep);
+				if (i > iOffset) sb.Append(chSep);
 				sb.Append(l[i]);
 			}
 
@@ -732,7 +732,7 @@ namespace KeePass.Forms
 		{
 			List<string> l = SplitGroupPath(strSpec, strSep, opt);
 
-			if(bMergeGroups)
+			if (bMergeGroups)
 			{
 				char chSep = StrUtil.GetUnusedChar(strSpec);
 				string strPath = AssembleGroupPath(l, 0, chSep);
@@ -741,7 +741,7 @@ namespace KeePass.Forms
 			}
 
 			string strRootSub = l[0];
-			if(!dRootGroups.ContainsKey(strRootSub))
+			if (!dRootGroups.ContainsKey(strRootSub))
 			{
 				PwGroup pgNew = new PwGroup(true, true);
 				pgNew.Name = strRootSub;
@@ -750,7 +750,7 @@ namespace KeePass.Forms
 			}
 			PwGroup pg = dRootGroups[strRootSub];
 
-			if(l.Count > 1)
+			if (l.Count > 1)
 			{
 				char chSep = StrUtil.GetUnusedChar(strSpec);
 				string strSubPath = AssembleGroupPath(l, 1, chSep);
@@ -764,19 +764,19 @@ namespace KeePass.Forms
 		private void OnBtnTabBack(object sender, EventArgs e)
 		{
 			int i = m_tabMain.SelectedIndex;
-			if(i > 0) m_tabMain.SelectedIndex = i - 1;
+			if (i > 0) m_tabMain.SelectedIndex = i - 1;
 		}
 
 		private void OnBtnTabNext(object sender, EventArgs e)
 		{
 			int i = m_tabMain.SelectedIndex;
-			if(i < (m_tabMain.TabCount - 1)) m_tabMain.SelectedIndex = i + 1;
+			if (i < (m_tabMain.TabCount - 1)) m_tabMain.SelectedIndex = i + 1;
 		}
 
 		private void OnBtnOK(object sender, EventArgs e)
 		{
 			try { PerformImport(m_pwDatabase.RootGroup, false); }
-			catch(Exception ex) { MessageService.ShowWarning(ex); }
+			catch (Exception ex) { MessageService.ShowWarning(ex); }
 		}
 
 		private void OnFieldSepSelectedIndexChanged(object sender, EventArgs e)
@@ -803,28 +803,28 @@ namespace KeePass.Forms
 		private bool GuessFieldTypes()
 		{
 			CsvOptions opt = GetCsvOptions();
-			if(opt == null) { Debug.Assert(false); return false; }
+			if (opt == null) { Debug.Assert(false); return false; }
 
 			string strData = GetDecodedText();
 			CsvStreamReaderEx csv = new CsvStreamReaderEx(strData, opt);
 
 			string[] v;
-			while(true)
+			while (true)
 			{
 				v = csv.ReadLine();
-				if(v == null) return false;
-				if(v.Length == 0) continue;
-				if((v.Length == 1) && (v[0].Length == 0)) continue;
+				if (v == null) return false;
+				if (v.Length == 0) continue;
+				if ((v.Length == 1) && (v[0].Length == 0)) continue;
 				break;
 			}
-			if(v.Length <= 3) return false;
+			if (v.Length <= 3) return false;
 
 			CsvFieldInfo[] vFields = new CsvFieldInfo[v.Length];
 			int nDetermined = 0;
-			for(int i = 0; i < v.Length; ++i)
+			for (int i = 0; i < v.Length; ++i)
 			{
 				CsvFieldInfo fi = GuessFieldType(v[i]);
-				if(fi != null) ++nDetermined;
+				if (fi != null) ++nDetermined;
 				else fi = new CsvFieldInfo(CsvFieldType.Ignore, null, null);
 
 				vFields[i] = fi;
@@ -832,10 +832,10 @@ namespace KeePass.Forms
 
 			// Accept the guesses only if at least half of them are
 			// probably correct
-			if(nDetermined < (v.Length + 1) / 2) return false;
+			if (nDetermined < (v.Length + 1) / 2) return false;
 
 			m_lvFields.Items.Clear();
-			foreach(CsvFieldInfo fi in vFields)
+			foreach (CsvFieldInfo fi in vFields)
 				AddCsvField(fi.Type, fi.Name, fi.Format);
 
 			return true;
@@ -843,28 +843,28 @@ namespace KeePass.Forms
 
 		private static CsvFieldInfo GuessFieldType(string strRawName)
 		{
-			if(strRawName == null) return null;
+			if (strRawName == null) return null;
 			string strName = strRawName.Trim();
-			if(strName.Length == 0) return null;
+			if (strName.Length == 0) return null;
 
 			string str = ImportUtil.MapNameToStandardField(strName, false);
-			if(str == PwDefs.TitleField)
+			if (str == PwDefs.TitleField)
 				return new CsvFieldInfo(CsvFieldType.Title, null, null);
-			if(str == PwDefs.UserNameField)
+			if (str == PwDefs.UserNameField)
 				return new CsvFieldInfo(CsvFieldType.UserName, null, null);
-			if(str == PwDefs.PasswordField)
+			if (str == PwDefs.PasswordField)
 				return new CsvFieldInfo(CsvFieldType.Password, null, null);
-			if(str == PwDefs.UrlField)
+			if (str == PwDefs.UrlField)
 				return new CsvFieldInfo(CsvFieldType.Url, null, null);
-			if(str == PwDefs.NotesField)
+			if (str == PwDefs.NotesField)
 				return new CsvFieldInfo(CsvFieldType.Notes, null, null);
 
 			string[] vGroupNames = new string[] {
 				"Password Groups", "Group", "Groups", "Group Tree", KPRes.Group
 			};
-			foreach(string strGroupName in vGroupNames)
+			foreach (string strGroupName in vGroupNames)
 			{
-				if(strName.Equals(strGroupName, StrUtil.CaseIgnoreCmp))
+				if (strName.Equals(strGroupName, StrUtil.CaseIgnoreCmp))
 					return new CsvFieldInfo(CsvFieldType.Group, null, null);
 			}
 
@@ -872,9 +872,9 @@ namespace KeePass.Forms
 				"Creation", "Creation Time",
 				KPRes.CreationTime
 			};
-			foreach(string strCreation in vCreationNames)
+			foreach (string strCreation in vCreationNames)
 			{
-				if(strName.Equals(strCreation, StrUtil.CaseIgnoreCmp))
+				if (strName.Equals(strCreation, StrUtil.CaseIgnoreCmp))
 					return new CsvFieldInfo(CsvFieldType.CreationTime, null, null);
 			}
 
@@ -893,9 +893,9 @@ namespace KeePass.Forms
 				"Last Mod Time",
 				KPRes.LastModificationTime
 			};
-			foreach(string strLastMod in vLastMod)
+			foreach (string strLastMod in vLastMod)
 			{
-				if(strName.Equals(strLastMod, StrUtil.CaseIgnoreCmp))
+				if (strName.Equals(strLastMod, StrUtil.CaseIgnoreCmp))
 					return new CsvFieldInfo(CsvFieldType.LastModTime, null, null);
 			}
 
@@ -903,18 +903,18 @@ namespace KeePass.Forms
 				"Expires", "Expire", "Expiry", "Expiry Time",
 				KPRes.ExpiryTime, KPRes.ExpiryTimeDateOnly
 			};
-			foreach(string strExpire in vExpiry)
+			foreach (string strExpire in vExpiry)
 			{
-				if(strName.Equals(strExpire, StrUtil.CaseIgnoreCmp))
+				if (strName.Equals(strExpire, StrUtil.CaseIgnoreCmp))
 					return new CsvFieldInfo(CsvFieldType.ExpiryTime, null, null);
 			}
 
 			string[] vTags = new string[] {
 				"Tags", "Tag", KPRes.Tags, KPRes.Tag
 			};
-			foreach(string strTag in vTags)
+			foreach (string strTag in vTags)
 			{
-				if(strName.Equals(strTag, StrUtil.CaseIgnoreCmp))
+				if (strName.Equals(strTag, StrUtil.CaseIgnoreCmp))
 					return new CsvFieldInfo(CsvFieldType.Tags, null, null);
 			}
 

@@ -355,7 +355,7 @@ namespace KeePass.Native
 		[DllImport("ComCtl32.dll", CharSet = CharSet.Auto)]
 		internal static extern Int32 TaskDialogIndirect([In] ref VtdConfig pTaskConfig,
 			[Out] out int pnButton, [Out] out int pnRadioButton,
-			[Out] [MarshalAs(UnmanagedType.Bool)] out bool pfVerificationFlagChecked);
+			[Out][MarshalAs(UnmanagedType.Bool)] out bool pfVerificationFlagChecked);
 
 		[DllImport("UxTheme.dll", ExactSpelling = true, CharSet = CharSet.Unicode)]
 		internal static extern int SetWindowTheme(IntPtr hWnd, string pszSubAppName,

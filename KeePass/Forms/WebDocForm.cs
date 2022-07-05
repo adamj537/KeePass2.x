@@ -54,7 +54,7 @@ namespace KeePass.Forms
 
 		public void InitEx(string strTitle, string strDocHtml)
 		{
-			if(!string.IsNullOrEmpty(strTitle)) m_strTitle = strTitle;
+			if (!string.IsNullOrEmpty(strTitle)) m_strTitle = strTitle;
 
 			m_strDocHtml = strDocHtml;
 		}
@@ -78,13 +78,13 @@ namespace KeePass.Forms
 
 		private void OnWebNavigating(object sender, WebBrowserNavigatingEventArgs e)
 		{
-			if(e == null) { Debug.Assert(false); return; }
-			if(m_uBlockEvents != 0) return;
+			if (e == null) { Debug.Assert(false); return; }
+			if (m_uBlockEvents != 0) return;
 
 			e.Cancel = true;
 
 			Uri uri = e.Url;
-			if(uri != null)
+			if (uri != null)
 			{
 				m_strResultUri = uri.ToString();
 				this.DialogResult = DialogResult.OK;

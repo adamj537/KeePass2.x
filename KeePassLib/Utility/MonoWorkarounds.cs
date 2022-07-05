@@ -54,7 +54,7 @@ namespace KeePassLib.Utility
 		private static bool? g_bReq = null;
 		public static bool IsRequired()
 		{
-			if(!g_bReq.HasValue) g_bReq = NativeLib.IsUnix();
+			if (!g_bReq.HasValue) g_bReq = NativeLib.IsUnix();
 			return g_bReq.Value;
 		}
 
@@ -205,16 +205,16 @@ namespace KeePassLib.Utility
 		//   https://sourceforge.net/p/keepass/discussion/329220/thread/d50a79d6/
 		public static bool IsRequired(uint uBugID)
 		{
-			if(!MonoWorkarounds.IsRequired()) return false;
+			if (!MonoWorkarounds.IsRequired()) return false;
 
 			bool bForce;
-			if(g_dForceReq.TryGetValue(uBugID, out bForce)) return bForce;
+			if (g_dForceReq.TryGetValue(uBugID, out bForce)) return bForce;
 
 			ulong v = NativeLib.MonoVersion;
-			if(v == 0) return true;
+			if (v == 0) return true;
 
 			bool b = true;
-			switch(uBugID)
+			switch (uBugID)
 			{
 				case 5795:
 					b = (v < 0x0005000A00000000UL); break;
@@ -231,22 +231,22 @@ namespace KeePassLib.Utility
 		// Public for plugins
 		public static void SetEnabled(uint uBugID, bool? obEnabled)
 		{
-			if(obEnabled.HasValue)
+			if (obEnabled.HasValue)
 				g_dForceReq[uBugID] = obEnabled.Value;
 			else g_dForceReq.Remove(uBugID);
 		}
 
 		internal static void SetEnabled(string strIDs, bool bEnabled)
 		{
-			if(string.IsNullOrEmpty(strIDs)) return;
+			if (string.IsNullOrEmpty(strIDs)) return;
 
 			string[] vIDs = strIDs.Split(new char[] { ',' });
-			foreach(string strID in vIDs)
+			foreach (string strID in vIDs)
 			{
-				if(string.IsNullOrEmpty(strID)) continue;
+				if (string.IsNullOrEmpty(strID)) continue;
 
 				uint uID;
-				if(StrUtil.TryParseUInt(strID.Trim(), out uID))
+				if (StrUtil.TryParseUInt(strID.Trim(), out uID))
 					SetEnabled(uID, bEnabled);
 			}
 		}
@@ -257,7 +257,7 @@ namespace KeePassLib.Utility
 
 			// g_fOwnWindow = fOwnWindow;
 
-			if(IsRequired(1530))
+			if (IsRequired(1530))
 			{
 				try
 				{
@@ -265,7 +265,7 @@ namespace KeePassLib.Utility
 					g_thFixClip = new Thread(ts);
 					g_thFixClip.Start();
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 
 #if DEBUG_BREAKONFAIL
@@ -279,10 +279,10 @@ namespace KeePassLib.Utility
 
 		internal static void Terminate()
 		{
-			if(g_thFixClip != null)
+			if (g_thFixClip != null)
 			{
 				try { g_thFixClip.Abort(); }
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 
 				g_thFixClip = null;
 			}
@@ -296,7 +296,7 @@ namespace KeePassLib.Utility
 				const int msDelay = 250;
 
 				string strTest = ClipboardU.GetText();
-				if(strTest == null) return; // No clipboard support
+				if (strTest == null) return; // No clipboard support
 
 				// Without XDoTool, the workaround would be applied to
 				// all applications, which may corrupt the clipboard
@@ -304,18 +304,18 @@ namespace KeePassLib.Utility
 				// https://sourceforge.net/p/keepass/bugs/1603/#a113
 				strTest = (NativeLib.RunConsoleApp(AppXDoTool,
 					"help") ?? string.Empty).Trim();
-				if(strTest.Length == 0) return;
+				if (strTest.Length == 0) return;
 
 				Thread.Sleep(msDelay);
 
 				string strLast = null;
-				while(true)
+				while (true)
 				{
 					string str = ClipboardU.GetText();
-					if(str == null) { Debug.Assert(false); }
-					else if(str != strLast)
+					if (str == null) { Debug.Assert(false); }
+					else if (str != strLast)
 					{
-						if(NeedClipboardWorkaround())
+						if (NeedClipboardWorkaround())
 							ClipboardU.SetText(str, true);
 
 						strLast = str;
@@ -325,12 +325,12 @@ namespace KeePassLib.Utility
 				}
 #endif
 			}
-			catch(ThreadAbortException)
+			catch (ThreadAbortException)
 			{
 				try { Thread.ResetAbort(); }
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 			finally { g_thFixClip = null; }
 		}
 
@@ -341,7 +341,7 @@ namespace KeePassLib.Utility
 			{
 				string strHandle = (NativeLib.RunConsoleApp(AppXDoTool,
 					"getactivewindow") ?? string.Empty).Trim();
-				if(strHandle.Length == 0) { Debug.Assert(false); return false; }
+				if (strHandle.Length == 0) { Debug.Assert(false); return false; }
 
 				// IntPtr h = new IntPtr(long.Parse(strHandle));
 				long.Parse(strHandle); // Validate
@@ -359,21 +359,21 @@ namespace KeePassLib.Utility
 				string strWmClass = (NativeLib.RunConsoleApp("xprop",
 					"-id " + strHandle + " WM_CLASS") ?? string.Empty);
 
-				if(strWmClass.IndexOf("\"" + PwDefs.ResClass + "\"",
+				if (strWmClass.IndexOf("\"" + PwDefs.ResClass + "\"",
 					StrUtil.CaseIgnoreCmp) >= 0) return true;
-				if(strWmClass.IndexOf("\"Remmina\"",
+				if (strWmClass.IndexOf("\"Remmina\"",
 					StrUtil.CaseIgnoreCmp) >= 0) return true;
 			}
-			catch(ThreadAbortException) { throw; }
-			catch(Exception) { Debug.Assert(false); }
+			catch (ThreadAbortException) { throw; }
+			catch (Exception) { Debug.Assert(false); }
 
 			return false;
 		}
 
 		public static void ApplyTo(Form f)
 		{
-			if(!MonoWorkarounds.IsRequired()) return;
-			if(f == null) { Debug.Assert(false); return; }
+			if (!MonoWorkarounds.IsRequired()) return;
+			if (f == null) { Debug.Assert(false); return; }
 
 #if !KeePassLibSD
 			f.HandleCreated += MonoWorkarounds.OnFormHandleCreated;
@@ -385,8 +385,8 @@ namespace KeePassLib.Utility
 
 		public static void Release(Form f)
 		{
-			if(!MonoWorkarounds.IsRequired()) return;
-			if(f == null) { Debug.Assert(false); return; }
+			if (!MonoWorkarounds.IsRequired()) return;
+			if (f == null) { Debug.Assert(false); return; }
 
 #if !KeePassLibSD
 			f.HandleCreated -= MonoWorkarounds.OnFormHandleCreated;
@@ -401,9 +401,9 @@ namespace KeePassLib.Utility
 		private static void ApplyToControlsRec(Control.ControlCollection cc,
 			Form fContext, MwaControlHandler fn)
 		{
-			if(cc == null) { Debug.Assert(false); return; }
+			if (cc == null) { Debug.Assert(false); return; }
 
-			foreach(Control c in cc)
+			foreach (Control c in cc)
 			{
 				fn(c, fContext);
 				ApplyToControlsRec(c.Controls, fContext, fn);
@@ -413,12 +413,12 @@ namespace KeePassLib.Utility
 		private static void ApplyToControl(Control c, Form fContext)
 		{
 			Button btn = (c as Button);
-			if(btn != null) ApplyToButton(btn, fContext);
+			if (btn != null) ApplyToButton(btn, fContext);
 
 			NumericUpDown nc = (c as NumericUpDown);
-			if((nc != null) && MonoWorkarounds.IsRequired(1254))
+			if ((nc != null) && MonoWorkarounds.IsRequired(1254))
 			{
-				if(nc.TextAlign == HorizontalAlignment.Right)
+				if (nc.TextAlign == HorizontalAlignment.Right)
 					nc.TextAlign = HorizontalAlignment.Left;
 			}
 		}
@@ -464,13 +464,13 @@ namespace KeePassLib.Utility
 		{
 			FieldInfo fi = typeof(Control).GetField("ClickEvent", // Mono
 				BindingFlags.Static | BindingFlags.NonPublic);
-			if(fi == null)
+			if (fi == null)
 				fi = typeof(Control).GetField("EventClick", // .NET
 					BindingFlags.Static | BindingFlags.NonPublic);
-			if(fi == null) { Debug.Assert(false); objClickEvent = null; return null; }
+			if (fi == null) { Debug.Assert(false); objClickEvent = null; return null; }
 
 			objClickEvent = fi.GetValue(null);
-			if(objClickEvent == null) { Debug.Assert(false); return null; }
+			if (objClickEvent == null) { Debug.Assert(false); return null; }
 
 			PropertyInfo pi = typeof(Component).GetProperty("Events",
 				BindingFlags.Instance | BindingFlags.NonPublic);
@@ -482,39 +482,39 @@ namespace KeePassLib.Utility
 		private static void ApplyToButton(Button btn, Form fContext)
 		{
 			DialogResult dr = btn.DialogResult;
-			if(dr == DialogResult.None) return; // No workaround required
+			if (dr == DialogResult.None) return; // No workaround required
 
 			object objClickEvent;
 			EventHandlerList ehl = GetEventHandlers(btn, out objClickEvent);
-			if(ehl == null) { Debug.Assert(false); return; }
+			if (ehl == null) { Debug.Assert(false); return; }
 			Delegate fnClick = ehl[objClickEvent]; // May be null
 
 			EventHandler fnOvr = new EventHandler(MonoWorkarounds.OnButtonClick);
 			m_dictHandlers[btn] = new MwaHandlerInfo(fnClick, fnOvr, dr, fContext);
 
 			btn.DialogResult = DialogResult.None;
-			if(fnClick != null) ehl.RemoveHandler(objClickEvent, fnClick);
+			if (fnClick != null) ehl.RemoveHandler(objClickEvent, fnClick);
 			ehl[objClickEvent] = fnOvr;
 		}
 
 		private static void ReleaseControl(Control c, Form fContext)
 		{
 			Button btn = (c as Button);
-			if(btn != null) ReleaseButton(btn, fContext);
+			if (btn != null) ReleaseButton(btn, fContext);
 		}
 
 		private static void ReleaseButton(Button btn, Form fContext)
 		{
 			MwaHandlerInfo hi;
 			m_dictHandlers.TryGetValue(btn, out hi);
-			if(hi == null) return;
+			if (hi == null) return;
 
 			object objClickEvent;
 			EventHandlerList ehl = GetEventHandlers(btn, out objClickEvent);
-			if(ehl == null) { Debug.Assert(false); return; }
+			if (ehl == null) { Debug.Assert(false); return; }
 
 			ehl.RemoveHandler(objClickEvent, hi.FunctionOverride);
-			if(hi.FunctionOriginal != null)
+			if (hi.FunctionOriginal != null)
 				ehl[objClickEvent] = hi.FunctionOriginal;
 
 			btn.DialogResult = hi.Result;
@@ -524,11 +524,11 @@ namespace KeePassLib.Utility
 		private static void OnButtonClick(object sender, EventArgs e)
 		{
 			Button btn = (sender as Button);
-			if(btn == null) { Debug.Assert(false); return; }
+			if (btn == null) { Debug.Assert(false); return; }
 
 			MwaHandlerInfo hi;
 			m_dictHandlers.TryGetValue(btn, out hi);
-			if(hi == null) { Debug.Assert(false); return; }
+			if (hi == null) { Debug.Assert(false); return; }
 
 			Form f = hi.FormContext;
 
@@ -537,16 +537,16 @@ namespace KeePassLib.Utility
 			// because it raises close events
 			FieldInfo fiRes = typeof(Form).GetField("dialog_result",
 				BindingFlags.Instance | BindingFlags.NonPublic);
-			if(fiRes == null) { Debug.Assert(false); return; }
-			if(f != null) fiRes.SetValue(f, hi.Result);
+			if (fiRes == null) { Debug.Assert(false); return; }
+			if (f != null) fiRes.SetValue(f, hi.Result);
 
-			if(hi.FunctionOriginal != null)
+			if (hi.FunctionOriginal != null)
 				hi.FunctionOriginal.Method.Invoke(hi.FunctionOriginal.Target,
 					new object[] { btn, e });
 
 			// Raise close events, if the click event handler hasn't
 			// reset the dialog result
-			if((f != null) && (f.DialogResult == hi.Result))
+			if ((f != null) && (f.DialogResult == hi.Result))
 				f.DialogResult = hi.Result; // Raises close events
 		}
 
@@ -558,9 +558,9 @@ namespace KeePassLib.Utility
 		private static void OnFormHandleCreated(object sender, EventArgs e)
 		{
 			Form f = (sender as Form);
-			if(f == null) { Debug.Assert(false); return; }
+			if (f == null) { Debug.Assert(false); return; }
 
-			if(!f.IsHandleCreated) return; // Prevent infinite loop
+			if (!f.IsHandleCreated) return; // Prevent infinite loop
 
 			SetWmClass(f);
 		}
@@ -572,13 +572,13 @@ namespace KeePassLib.Utility
 		/// <returns>Previous <c>shown_raised</c> value.</returns>
 		internal static bool ExchangeFormShownRaised(Form f, bool bNewValue)
 		{
-			if(f == null) { Debug.Assert(false); return true; }
+			if (f == null) { Debug.Assert(false); return true; }
 
 			try
 			{
 				FieldInfo fi = typeof(Form).GetField("shown_raised",
 					BindingFlags.Instance | BindingFlags.NonPublic);
-				if(fi == null) { Debug.Assert(false); return true; }
+				if (fi == null) { Debug.Assert(false); return true; }
 
 				bool bPrevious = (bool)fi.GetValue(f);
 
@@ -586,7 +586,7 @@ namespace KeePassLib.Utility
 
 				return bPrevious;
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return true;
 		}
@@ -598,7 +598,7 @@ namespace KeePassLib.Utility
 		/// </summary>
 		internal static void EnsureRecentlyUsedValid()
 		{
-			if(!MonoWorkarounds.IsRequired(1358)) return;
+			if (!MonoWorkarounds.IsRequired(1358)) return;
 
 			try
 			{
@@ -607,7 +607,7 @@ namespace KeePassLib.Utility
 				strFile = UrlUtil.EnsureTerminatingSeparator(strFile, false);
 				strFile += ".recently-used";
 
-				if(File.Exists(strFile))
+				if (File.Exists(strFile))
 				{
 					try
 					{
@@ -616,13 +616,13 @@ namespace KeePassLib.Utility
 						XmlDocument xd = XmlUtilEx.CreateXmlDocument();
 						xd.Load(strFile);
 					}
-					catch(Exception) // The XML file is invalid
+					catch (Exception) // The XML file is invalid
 					{
 						File.Delete(strFile);
 					}
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 #endif // !KeePassUAP
 

@@ -88,7 +88,7 @@ namespace KeePass.App.Configuration
 			get { return m_strUrlOverride; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strUrlOverride = value;
 			}
 		}
@@ -99,7 +99,7 @@ namespace KeePass.App.Configuration
 			get { return m_vSchemeOverrides; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_vSchemeOverrides = value;
 			}
 		}
@@ -247,7 +247,7 @@ namespace KeePass.App.Configuration
 			get { return m_lAbortWindows; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_lAbortWindows = value;
 			}
 		}
@@ -267,7 +267,7 @@ namespace KeePass.App.Configuration
 			get { return m_strProxyAddr; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strProxyAddr = value;
 			}
 		}
@@ -279,7 +279,7 @@ namespace KeePass.App.Configuration
 			get { return m_strProxyPort; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strProxyPort = value;
 			}
 		}
@@ -299,7 +299,7 @@ namespace KeePass.App.Configuration
 			get { return m_strProxyUser; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strProxyUser = value;
 			}
 		}
@@ -311,7 +311,7 @@ namespace KeePass.App.Configuration
 			get { return m_strProxyPassword; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strProxyPassword = value;
 			}
 		}
@@ -331,7 +331,7 @@ namespace KeePass.App.Configuration
 			get { return m_lBuiltInOverrides; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_lBuiltInOverrides = value;
 			}
 		}
@@ -350,7 +350,7 @@ namespace KeePass.App.Configuration
 			get { return m_lCustomOverrides; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_lCustomOverrides = value;
 			}
 		}
@@ -418,7 +418,7 @@ namespace KeePass.App.Configuration
 
 #if DEBUG
 			ulong u = 0;
-			foreach(AceUrlSchemeOverride o in m_lBuiltInOverrides)
+			foreach (AceUrlSchemeOverride o in m_lBuiltInOverrides)
 			{
 				Debug.Assert(o.IsBuiltIn);
 				ulong f = o.BuiltInFlagID;
@@ -431,18 +431,18 @@ namespace KeePass.App.Configuration
 
 		public string GetOverrideForUrl(string strUrl)
 		{
-			if(string.IsNullOrEmpty(strUrl)) return null;
+			if (string.IsNullOrEmpty(strUrl)) return null;
 
-			for(int i = 0; i < 2; ++i)
+			for (int i = 0; i < 2; ++i)
 			{
 				List<AceUrlSchemeOverride> l = ((i == 0) ? m_lBuiltInOverrides :
 					m_lCustomOverrides);
 
-				foreach(AceUrlSchemeOverride ovr in l)
+				foreach (AceUrlSchemeOverride ovr in l)
 				{
-					if(!ovr.Enabled) continue;
+					if (!ovr.Enabled) continue;
 
-					if(strUrl.StartsWith(ovr.Scheme + ":", StrUtil.CaseIgnoreCmp))
+					if (strUrl.StartsWith(ovr.Scheme + ":", StrUtil.CaseIgnoreCmp))
 						return ovr.UrlOverride;
 				}
 			}
@@ -460,13 +460,13 @@ namespace KeePass.App.Configuration
 		public void CopyTo(AceUrlSchemeOverrides ovrTarget)
 		{
 			ovrTarget.m_lBuiltInOverrides.Clear();
-			foreach(AceUrlSchemeOverride shB in m_lBuiltInOverrides)
+			foreach (AceUrlSchemeOverride shB in m_lBuiltInOverrides)
 			{
 				ovrTarget.m_lBuiltInOverrides.Add(shB.CloneDeep());
 			}
 
 			ovrTarget.m_lCustomOverrides.Clear();
-			foreach(AceUrlSchemeOverride shC in m_lCustomOverrides)
+			foreach (AceUrlSchemeOverride shC in m_lCustomOverrides)
 			{
 				ovrTarget.m_lCustomOverrides.Add(shC.CloneDeep());
 			}
@@ -475,9 +475,9 @@ namespace KeePass.App.Configuration
 		private ulong GetEnabledBuiltInOverrides()
 		{
 			ulong u = 0;
-			for(int i = 0; i < m_lBuiltInOverrides.Count; ++i)
+			for (int i = 0; i < m_lBuiltInOverrides.Count; ++i)
 			{
-				if(m_lBuiltInOverrides[i].Enabled)
+				if (m_lBuiltInOverrides[i].Enabled)
 					u |= m_lBuiltInOverrides[i].BuiltInFlagID;
 			}
 
@@ -486,7 +486,7 @@ namespace KeePass.App.Configuration
 
 		private void SetEnabledBuiltInOverrides(ulong uFlags)
 		{
-			for(int i = 0; i < m_lBuiltInOverrides.Count; ++i)
+			for (int i = 0; i < m_lBuiltInOverrides.Count; ++i)
 				m_lBuiltInOverrides[i].Enabled = ((uFlags &
 					m_lBuiltInOverrides[i].BuiltInFlagID) != 0UL);
 		}
@@ -494,18 +494,18 @@ namespace KeePass.App.Configuration
 		internal void AddCustomOverride(string strScheme, string strOverride,
 			bool bEnable, bool bDisableOthers)
 		{
-			if(string.IsNullOrEmpty(strScheme)) return; // No assert
-			if(strOverride == null) return; // No assert
+			if (string.IsNullOrEmpty(strScheme)) return; // No assert
+			if (strOverride == null) return; // No assert
 
-			if(bDisableOthers)
+			if (bDisableOthers)
 			{
 				List<AceUrlSchemeOverride> l = new List<AceUrlSchemeOverride>();
 				l.AddRange(m_lBuiltInOverrides);
 				l.AddRange(m_lCustomOverrides);
 
-				foreach(AceUrlSchemeOverride o in l)
+				foreach (AceUrlSchemeOverride o in l)
 				{
-					if(o.Scheme.Equals(strScheme, StrUtil.CaseIgnoreCmp))
+					if (o.Scheme.Equals(strScheme, StrUtil.CaseIgnoreCmp))
 						o.Enabled = false;
 				}
 			}
@@ -516,13 +516,13 @@ namespace KeePass.App.Configuration
 
 		internal void RemoveCustomOverride(string strScheme, string strOverride)
 		{
-			if(string.IsNullOrEmpty(strScheme)) return; // No assert
-			if(strOverride == null) return; // No assert
+			if (string.IsNullOrEmpty(strScheme)) return; // No assert
+			if (strOverride == null) return; // No assert
 
-			for(int i = m_lCustomOverrides.Count - 1; i >= 0; --i)
+			for (int i = m_lCustomOverrides.Count - 1; i >= 0; --i)
 			{
 				AceUrlSchemeOverride o = m_lCustomOverrides[i];
-				if(o.Scheme.Equals(strScheme, StrUtil.CaseIgnoreCmp) &&
+				if (o.Scheme.Equals(strScheme, StrUtil.CaseIgnoreCmp) &&
 					(o.UrlOverride == strOverride))
 				{
 					m_lCustomOverrides.RemoveAt(i);
@@ -547,7 +547,7 @@ namespace KeePass.App.Configuration
 			get { return m_strScheme; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strScheme = value;
 			}
 		}
@@ -558,7 +558,7 @@ namespace KeePass.App.Configuration
 			get { return m_strOvr; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strOvr = value;
 			}
 		}
@@ -595,8 +595,8 @@ namespace KeePass.App.Configuration
 		private void Init(bool bEnable, string strScheme, string strUrlOverride,
 			ulong uBuiltInFlagID)
 		{
-			if(strScheme == null) throw new ArgumentNullException("strScheme");
-			if(strUrlOverride == null) throw new ArgumentNullException("strUrlOverride");
+			if (strScheme == null) throw new ArgumentNullException("strScheme");
+			if (strUrlOverride == null) throw new ArgumentNullException("strUrlOverride");
 
 			m_bEnabled = bEnable;
 			m_strScheme = strScheme;

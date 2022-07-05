@@ -87,56 +87,56 @@ namespace KeePass.DataExchange.Formats
 		private static void AddFolder(PwGroup pgParent, HspFolder hspFolder,
 			bool bNewGroup)
 		{
-			if(hspFolder == null) { Debug.Assert(false); return; }
+			if (hspFolder == null) { Debug.Assert(false); return; }
 
 			PwGroup pg;
-			if(bNewGroup)
+			if (bNewGroup)
 			{
 				pg = new PwGroup(true, true);
 				pgParent.AddGroup(pg, true);
 
-				if(!string.IsNullOrEmpty(hspFolder.Name))
+				if (!string.IsNullOrEmpty(hspFolder.Name))
 					pg.Name = hspFolder.Name;
 			}
 			else pg = pgParent;
 
-			if(hspFolder.Folders != null)
+			if (hspFolder.Folders != null)
 			{
-				foreach(HspFolder fld in hspFolder.Folders)
+				foreach (HspFolder fld in hspFolder.Folders)
 					AddFolder(pg, fld, true);
 			}
 
-			if(hspFolder.Cards != null)
+			if (hspFolder.Cards != null)
 			{
-				foreach(HspCard crd in hspFolder.Cards)
+				foreach (HspCard crd in hspFolder.Cards)
 					AddCard(pg, crd);
 			}
 		}
 
 		private static void AddCard(PwGroup pgParent, HspCard hspCard)
 		{
-			if(hspCard == null) { Debug.Assert(false); return; }
+			if (hspCard == null) { Debug.Assert(false); return; }
 
 			PwEntry pe = new PwEntry(true, true);
 			pgParent.AddEntry(pe, true);
 
-			if(!string.IsNullOrEmpty(hspCard.Name))
+			if (!string.IsNullOrEmpty(hspCard.Name))
 				pe.Strings.Set(PwDefs.TitleField, new ProtectedString(false, hspCard.Name));
 
-			if(!string.IsNullOrEmpty(hspCard.Note))
+			if (!string.IsNullOrEmpty(hspCard.Note))
 				pe.Strings.Set(PwDefs.NotesField, new ProtectedString(false, hspCard.Note));
 
-			if(hspCard.Fields == null) return;
-			foreach(HspField fld in hspCard.Fields)
+			if (hspCard.Fields == null) return;
+			foreach (HspField fld in hspCard.Fields)
 			{
-				if(fld == null) { Debug.Assert(false); continue; }
-				if(string.IsNullOrEmpty(fld.Name) || string.IsNullOrEmpty(fld.Value)) continue;
+				if (fld == null) { Debug.Assert(false); continue; }
+				if (string.IsNullOrEmpty(fld.Name) || string.IsNullOrEmpty(fld.Value)) continue;
 
 				string strKey = ImportUtil.MapNameToStandardField(fld.Name, true);
-				if(string.IsNullOrEmpty(strKey)) strKey = fld.Name;
+				if (string.IsNullOrEmpty(strKey)) strKey = fld.Name;
 
 				string strValue = pe.Strings.ReadSafe(strKey);
-				if(strValue.Length > 0) strValue += ", ";
+				if (strValue.Length > 0) strValue += ", ";
 				strValue += fld.Value;
 				pe.Strings.Set(strKey, new ProtectedString(false, strValue));
 			}

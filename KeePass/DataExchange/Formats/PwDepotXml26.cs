@@ -96,10 +96,10 @@ namespace KeePass.DataExchange.Formats
 
 			XmlNode xmlRoot = xmlDoc.DocumentElement;
 
-			foreach(XmlNode xmlChild in xmlRoot.ChildNodes)
+			foreach (XmlNode xmlChild in xmlRoot.ChildNodes)
 			{
-				if(xmlChild.Name == ElemHeader) { } // Unsupported
-				else if(xmlChild.Name == ElemContainer)
+				if (xmlChild.Name == ElemHeader) { } // Unsupported
+				else if (xmlChild.Name == ElemContainer)
 					ReadContainer(xmlChild, pwStorage);
 				else { Debug.Assert(false); }
 			}
@@ -107,9 +107,9 @@ namespace KeePass.DataExchange.Formats
 
 		private static void ReadContainer(XmlNode xmlNode, PwDatabase pwStorage)
 		{
-			foreach(XmlNode xmlChild in xmlNode.ChildNodes)
+			foreach (XmlNode xmlChild in xmlNode.ChildNodes)
 			{
-				if(xmlChild.Name == ElemGroup)
+				if (xmlChild.Name == ElemGroup)
 					ReadGroup(xmlChild, pwStorage.RootGroup, pwStorage);
 				else { Debug.Assert(false); }
 			}
@@ -125,13 +125,13 @@ namespace KeePass.DataExchange.Formats
 				XmlAttributeCollection xac = xmlNode.Attributes;
 				pg.Name = xac.GetNamedItem(AttribGroupName).Value;
 			}
-			catch(Exception) { }
+			catch (Exception) { }
 
-			foreach(XmlNode xmlChild in xmlNode)
+			foreach (XmlNode xmlChild in xmlNode)
 			{
-				if(xmlChild.Name == ElemGroup)
+				if (xmlChild.Name == ElemGroup)
 					ReadGroup(xmlChild, pg, pwStorage);
-				else if(xmlChild.Name == ElemEntry)
+				else if (xmlChild.Name == ElemEntry)
 					ReadEntry(xmlChild, pg, pwStorage);
 				else { Debug.Assert(false); }
 			}
@@ -144,72 +144,72 @@ namespace KeePass.DataExchange.Formats
 			pgParent.AddEntry(pe, true);
 
 			DateTime? ndt;
-			foreach(XmlNode xmlChild in xmlNode)
+			foreach (XmlNode xmlChild in xmlNode)
 			{
-				if(xmlChild.Name == ElemEntryName)
+				if (xmlChild.Name == ElemEntryName)
 					pe.Strings.Set(PwDefs.TitleField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectTitle,
 						XmlUtil.SafeInnerText(xmlChild)));
-				else if(xmlChild.Name == ElemEntryUser)
+				else if (xmlChild.Name == ElemEntryUser)
 					pe.Strings.Set(PwDefs.UserNameField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectUserName,
 						XmlUtil.SafeInnerText(xmlChild)));
-				else if(xmlChild.Name == ElemEntryPassword)
+				else if (xmlChild.Name == ElemEntryPassword)
 					pe.Strings.Set(PwDefs.PasswordField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectPassword,
 						XmlUtil.SafeInnerText(xmlChild)));
-				else if(xmlChild.Name == ElemEntryURL)
+				else if (xmlChild.Name == ElemEntryURL)
 					pe.Strings.Set(PwDefs.UrlField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectUrl,
 						XmlUtil.SafeInnerText(xmlChild)));
-				else if(xmlChild.Name == ElemEntryNotes)
+				else if (xmlChild.Name == ElemEntryNotes)
 					pe.Strings.Set(PwDefs.NotesField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectNotes,
 						XmlUtil.SafeInnerText(xmlChild)));
-				else if(xmlChild.Name == ElemEntryLastModTime)
+				else if (xmlChild.Name == ElemEntryLastModTime)
 				{
 					ndt = ReadTime(xmlChild);
-					if(ndt.HasValue) pe.LastModificationTime = ndt.Value;
+					if (ndt.HasValue) pe.LastModificationTime = ndt.Value;
 				}
-				else if(xmlChild.Name == ElemEntryExpireTime)
+				else if (xmlChild.Name == ElemEntryExpireTime)
 				{
 					ndt = ReadTime(xmlChild);
-					if(ndt.HasValue)
+					if (ndt.HasValue)
 					{
 						pe.ExpiryTime = ndt.Value;
 						pe.Expires = true;
 					}
 				}
-				else if(xmlChild.Name == ElemEntryCreatedTime)
+				else if (xmlChild.Name == ElemEntryCreatedTime)
 				{
 					ndt = ReadTime(xmlChild);
-					if(ndt.HasValue) pe.CreationTime = ndt.Value;
+					if (ndt.HasValue) pe.CreationTime = ndt.Value;
 				}
-				else if(xmlChild.Name == ElemEntryLastAccTime)
+				else if (xmlChild.Name == ElemEntryLastAccTime)
 				{
 					ndt = ReadTime(xmlChild);
-					if(ndt.HasValue) pe.LastAccessTime = ndt.Value;
+					if (ndt.HasValue) pe.LastAccessTime = ndt.Value;
 				}
-				else if(xmlChild.Name == ElemEntryUsageCount)
+				else if (xmlChild.Name == ElemEntryUsageCount)
 				{
 					ulong uUsageCount;
-					if(ulong.TryParse(XmlUtil.SafeInnerText(xmlChild), out uUsageCount))
+					if (ulong.TryParse(XmlUtil.SafeInnerText(xmlChild), out uUsageCount))
 						pe.UsageCount = uUsageCount;
 				}
-				else if(xmlChild.Name == ElemEntryAutoType)
+				else if (xmlChild.Name == ElemEntryAutoType)
 					pe.AutoType.DefaultSequence = MapAutoType(
 						XmlUtil.SafeInnerText(xmlChild));
-				else if(xmlChild.Name == ElemEntryCustom)
+				else if (xmlChild.Name == ElemEntryCustom)
 					ReadCustomContainer(xmlChild, pe);
-				else if(xmlChild.Name == ElemImageIndex)
+				else if (xmlChild.Name == ElemImageIndex)
 					pe.IconId = MapIcon(XmlUtil.SafeInnerText(xmlChild), true);
-				else if(Array.IndexOf<string>(ElemEntryUnsupportedItems,
+				else if (Array.IndexOf<string>(ElemEntryUnsupportedItems,
 					xmlChild.Name) >= 0) { }
 				else { Debug.Assert(false, xmlChild.Name); }
 			}
 
 			string strInfoText = pe.Strings.ReadSafe(FieldInfoText);
-			if((pe.Strings.ReadSafe(PwDefs.NotesField).Length == 0) &&
+			if ((pe.Strings.ReadSafe(PwDefs.NotesField).Length == 0) &&
 				(strInfoText.Length > 0))
 			{
 				pe.Strings.Remove(FieldInfoText);
@@ -220,9 +220,9 @@ namespace KeePass.DataExchange.Formats
 
 		private static void ReadCustomContainer(XmlNode xmlNode, PwEntry pe)
 		{
-			foreach(XmlNode xmlChild in xmlNode)
+			foreach (XmlNode xmlChild in xmlNode)
 			{
-				if(xmlChild.Name == ElemCustomField)
+				if (xmlChild.Name == ElemCustomField)
 					ReadCustomField(xmlChild, pe);
 				else { Debug.Assert(false); }
 			}
@@ -232,16 +232,16 @@ namespace KeePass.DataExchange.Formats
 		{
 			string strName = string.Empty, strValue = string.Empty;
 
-			foreach(XmlNode xmlChild in xmlNode)
+			foreach (XmlNode xmlChild in xmlNode)
 			{
-				if(xmlChild.Name == ElemCustomFieldName)
+				if (xmlChild.Name == ElemCustomFieldName)
 					strName = XmlUtil.SafeInnerText(xmlChild);
-				else if(xmlChild.Name == ElemCustomFieldValue)
+				else if (xmlChild.Name == ElemCustomFieldValue)
 					strValue = XmlUtil.SafeInnerText(xmlChild);
 				// else { } // Field 'VISIBLE'
 			}
 
-			if((strName.Length == 0) || PwDefs.IsStandardField(strName))
+			if ((strName.Length == 0) || PwDefs.IsStandardField(strName))
 				pe.Strings.Set(Guid.NewGuid().ToString(), new ProtectedString(false, strValue));
 			else
 				pe.Strings.Set(strName, new ProtectedString(false, strValue));
@@ -252,10 +252,10 @@ namespace KeePass.DataExchange.Formats
 			PwIcon ico = (bEntryIcon ? PwIcon.Key : PwIcon.Folder);
 
 			int idIcon;
-			if(!int.TryParse(strIconId, out idIcon)) return ico;
+			if (!int.TryParse(strIconId, out idIcon)) return ico;
 
 			++idIcon; // In the icon picker dialog, all indices are + 1
-			switch(idIcon)
+			switch (idIcon)
 			{
 				case 1: ico = PwIcon.Key; break;
 				case 4: ico = PwIcon.Folder; break;
@@ -295,7 +295,7 @@ namespace KeePass.DataExchange.Formats
 			str = StrUtil.ReplaceCaseInsensitive(str, @"{ARROW_RIGHT}", @"{RIGHT}");
 			str = StrUtil.ReplaceCaseInsensitive(str, @"{ARROW_DOWN}", @"{DOWN}");
 
-			if(str.Equals(PwDefs.DefaultAutoTypeSequence, StrUtil.CaseIgnoreCmp))
+			if (str.Equals(PwDefs.DefaultAutoTypeSequence, StrUtil.CaseIgnoreCmp))
 				return string.Empty;
 			return str;
 		}
@@ -303,9 +303,9 @@ namespace KeePass.DataExchange.Formats
 		private static DateTime? ReadTime(XmlNode xmlNode)
 		{
 			DateTime? ndt = ReadTimeRaw(xmlNode);
-			if(!ndt.HasValue) return null;
+			if (!ndt.HasValue) return null;
 
-			if(ndt.Value.Year < 1950) return null;
+			if (ndt.Value.Year < 1950) return null;
 
 			return ndt.Value;
 		}
@@ -320,18 +320,18 @@ namespace KeePass.DataExchange.Formats
 				XmlAttributeCollection xac = xmlNode.Attributes;
 				strFormat = xac.GetNamedItem(AttribFormat).Value;
 			}
-			catch(Exception) { }
+			catch (Exception) { }
 
 			DateTime dt;
-			if(!string.IsNullOrEmpty(strFormat))
+			if (!string.IsNullOrEmpty(strFormat))
 			{
 				strFormat = strFormat.Replace("mm", "MM");
-				if(DateTime.TryParseExact(strTime, strFormat, null,
+				if (DateTime.TryParseExact(strTime, strFormat, null,
 					DateTimeStyles.AssumeLocal, out dt))
 					return TimeUtil.ToUtc(dt, false);
 			}
 
-			if(DateTime.TryParse(strTime, out dt))
+			if (DateTime.TryParse(strTime, out dt))
 				return TimeUtil.ToUtc(dt, false);
 
 			return null;

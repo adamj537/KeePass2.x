@@ -58,16 +58,16 @@ namespace KeePass.DataExchange.Formats
 			CsvStreamReaderEx csv = new CsvStreamReaderEx(strData, opt);
 
 			string[] vNames = csv.ReadLine();
-			if((vNames == null) || (vNames.Length == 0)) { Debug.Assert(false); return; }
+			if ((vNames == null) || (vNames.Length == 0)) { Debug.Assert(false); return; }
 
-			for(int i = 0; i < vNames.Length; ++i)
+			for (int i = 0; i < vNames.Length; ++i)
 				vNames[i] = (vNames[i] ?? string.Empty).ToLowerInvariant();
 
-			while(true)
+			while (true)
 			{
 				string[] v = csv.ReadLine();
-				if(v == null) break;
-				if(v.Length == 0) continue;
+				if (v == null) break;
+				if (v.Length == 0) continue;
 
 				PwEntry pe = new PwEntry(true, true);
 				pwStorage.RootGroup.AddEntry(pe, true);
@@ -75,16 +75,16 @@ namespace KeePass.DataExchange.Formats
 				Debug.Assert(v.Length == vNames.Length);
 				int m = Math.Min(v.Length, vNames.Length);
 
-				for(int i = 0; i < m; ++i)
+				for (int i = 0; i < m; ++i)
 				{
 					string strValue = v[i];
-					if(string.IsNullOrEmpty(strValue)) continue;
+					if (string.IsNullOrEmpty(strValue)) continue;
 
 					string strName = vNames[i];
 					string strTo = null;
 					DateTime? odt;
 
-					switch(strName)
+					switch (strName)
 					{
 						case "autologin":
 						case "protectedwithpassword":
@@ -94,16 +94,16 @@ namespace KeePass.DataExchange.Formats
 							break; // Ignore
 
 						case "kind":
-							if(strValue.Equals("note", StrUtil.CaseIgnoreCmp))
+							if (strValue.Equals("note", StrUtil.CaseIgnoreCmp))
 								pe.IconId = PwIcon.Note;
-							else if(strValue.Equals("identity", StrUtil.CaseIgnoreCmp) ||
+							else if (strValue.Equals("identity", StrUtil.CaseIgnoreCmp) ||
 								strValue.Equals("drivers", StrUtil.CaseIgnoreCmp) ||
 								strValue.Equals("passport", StrUtil.CaseIgnoreCmp) ||
 								strValue.Equals("ssn", StrUtil.CaseIgnoreCmp))
 								pe.IconId = PwIcon.Identity;
-							else if(strValue.Equals("cc", StrUtil.CaseIgnoreCmp))
+							else if (strValue.Equals("cc", StrUtil.CaseIgnoreCmp))
 								pe.IconId = PwIcon.Money;
-							else if(strValue.Equals("membership", StrUtil.CaseIgnoreCmp))
+							else if (strValue.Equals("membership", StrUtil.CaseIgnoreCmp))
 								pe.IconId = PwIcon.UserKey;
 							break;
 
@@ -174,7 +174,7 @@ namespace KeePass.DataExchange.Formats
 						case "expirationdate":
 						case "expirydate":
 							odt = ParseTime(strValue);
-							if(odt.HasValue)
+							if (odt.HasValue)
 							{
 								pe.Expires = true;
 								pe.ExpiryTime = odt.Value;
@@ -182,12 +182,12 @@ namespace KeePass.DataExchange.Formats
 							break;
 
 						case "favorite":
-							if(StrUtil.StringToBoolEx(strValue).GetValueOrDefault(false))
+							if (StrUtil.StringToBoolEx(strValue).GetValueOrDefault(false))
 								pe.AddTag(PwDefs.FavoriteTag);
 							break;
 
 						case "gender":
-							if((strValue == "0") || (strValue == "1"))
+							if ((strValue == "0") || (strValue == "1"))
 							{
 								strTo = "Gender";
 								strValue = ((strValue == "0") ? "Male" : "Female");
@@ -196,13 +196,13 @@ namespace KeePass.DataExchange.Formats
 							break;
 
 						case "hexcolor":
-							if((strValue.Length == 6) && StrUtil.IsHexString(strValue, true))
+							if ((strValue.Length == 6) && StrUtil.IsHexString(strValue, true))
 							{
 								Color c = Color.FromArgb(unchecked((int)(0xFF000000U |
 									Convert.ToUInt32(strValue, 16))));
 
 								Color cG = UIUtil.ColorToGrayscale(c);
-								if(cG.B < 128) c = UIUtil.LightenColor(c, 0.5);
+								if (cG.B < 128) c = UIUtil.LightenColor(c, 0.5);
 
 								pe.BackgroundColor = c;
 							}
@@ -225,7 +225,7 @@ namespace KeePass.DataExchange.Formats
 							break;
 					}
 
-					if(!string.IsNullOrEmpty(strTo))
+					if (!string.IsNullOrEmpty(strTo))
 						ImportUtil.AppendToField(pe, strTo, strValue, pwStorage);
 				}
 			}
@@ -233,10 +233,10 @@ namespace KeePass.DataExchange.Formats
 
 		private static DateTime? ParseTime(string strTime)
 		{
-			if(string.IsNullOrEmpty(strTime)) return null;
+			if (string.IsNullOrEmpty(strTime)) return null;
 
 			DateTime dt;
-			if(TimeUtil.TryDeserializeUtc(strTime, out dt)) return dt;
+			if (TimeUtil.TryDeserializeUtc(strTime, out dt)) return dt;
 
 			Debug.Assert(false);
 			return null;
@@ -244,10 +244,10 @@ namespace KeePass.DataExchange.Formats
 
 		private static string DateToString(string strTime)
 		{
-			if(string.IsNullOrEmpty(strTime)) return string.Empty;
+			if (string.IsNullOrEmpty(strTime)) return string.Empty;
 
 			DateTime? odt = ParseTime(strTime);
-			if(odt.HasValue)
+			if (odt.HasValue)
 			{
 				DateTime dt = TimeUtil.ToLocal(odt.Value, false);
 				return TimeUtil.ToDisplayStringDateOnly(dt);

@@ -37,7 +37,7 @@ namespace KeePassLib.Security
 		{
 			get
 			{
-				if(m_pbCT == null) { Debug.Assert(false); throw new ObjectDisposedException(null); }
+				if (m_pbCT == null) { Debug.Assert(false); throw new ObjectDisposedException(null); }
 				return (uint)m_pbCT.Length;
 			}
 		}
@@ -54,9 +54,9 @@ namespace KeePassLib.Security
 		/// <paramref name="pbCT" /> byte array.</param>
 		public XorredBuffer(byte[] pbCT, byte[] pbXorPad)
 		{
-			if(pbCT == null) { Debug.Assert(false); throw new ArgumentNullException("pbCT"); }
-			if(pbXorPad == null) { Debug.Assert(false); throw new ArgumentNullException("pbXorPad"); }
-			if(pbCT.Length != pbXorPad.Length)
+			if (pbCT == null) { Debug.Assert(false); throw new ArgumentNullException("pbCT"); }
+			if (pbXorPad == null) { Debug.Assert(false); throw new ArgumentNullException("pbXorPad"); }
+			if (pbCT.Length != pbXorPad.Length)
 			{
 				Debug.Assert(false);
 				throw new ArgumentOutOfRangeException("pbXorPad");
@@ -75,7 +75,7 @@ namespace KeePassLib.Security
 
 		public void Dispose()
 		{
-			if(m_pbCT == null) return;
+			if (m_pbCT == null) return;
 
 			MemUtil.ZeroByteArray(m_pbCT);
 			m_pbCT = null;
@@ -92,7 +92,7 @@ namespace KeePassLib.Security
 		public byte[] ReadPlainText()
 		{
 			byte[] pbCT = m_pbCT, pbX = m_pbXorPad;
-			if((pbCT == null) || (pbX == null) || (pbCT.Length != pbX.Length))
+			if ((pbCT == null) || (pbX == null) || (pbCT.Length != pbX.Length))
 			{
 				Debug.Assert(false);
 				throw new ObjectDisposedException(null);
@@ -100,7 +100,7 @@ namespace KeePassLib.Security
 
 			byte[] pbPT = new byte[pbCT.Length];
 
-			for(int i = 0; i < pbPT.Length; ++i)
+			for (int i = 0; i < pbPT.Length; ++i)
 				pbPT[i] = (byte)(pbCT[i] ^ pbX[i]);
 
 			return pbPT;

@@ -72,7 +72,7 @@ namespace KeePass.DataExchange.Formats
 		public override void Import(PwDatabase pwStorage, Stream sInput,
 			IStatusLogger slLogger)
 		{
-			if(m_dAutoTypeConv == null)
+			if (m_dAutoTypeConv == null)
 			{
 				Dictionary<string, string> d = new Dictionary<string, string>();
 
@@ -91,7 +91,7 @@ namespace KeePass.DataExchange.Formats
 
 			// nPassword has options for encrypting/compressing exports,
 			// which are unsupported; the file must start with "<?xml"
-			if((pbData.Length < 6) || (pbData[0] != 0x3C) || (pbData[1] != 0x3F) ||
+			if ((pbData.Length < 6) || (pbData[0] != 0x3C) || (pbData[1] != 0x3F) ||
 				(pbData[2] != 0x78) || (pbData[3] != 0x6D) || (pbData[4] != 0x6C))
 				throw new FormatException(KPRes.NoEncNoCompress);
 
@@ -101,9 +101,9 @@ namespace KeePass.DataExchange.Formats
 			byte[] pbDataUtf8 = StrUtil.Utf8.GetBytes(strData);
 
 			XmlDocument xmlDoc = XmlUtilEx.CreateXmlDocument();
-			using(MemoryStream ms = new MemoryStream(pbDataUtf8, false))
+			using (MemoryStream ms = new MemoryStream(pbDataUtf8, false))
 			{
-				using(StreamReader sr = new StreamReader(ms, StrUtil.Utf8))
+				using (StreamReader sr = new StreamReader(ms, StrUtil.Utf8))
 				{
 					xmlDoc.Load(sr);
 				}
@@ -111,13 +111,13 @@ namespace KeePass.DataExchange.Formats
 
 			XmlNode xmlRoot = xmlDoc.DocumentElement;
 
-			foreach(XmlNode xmlChild in xmlRoot.ChildNodes)
+			foreach (XmlNode xmlChild in xmlRoot.ChildNodes)
 			{
-				if(xmlChild.Name == ElemGroup)
+				if (xmlChild.Name == ElemGroup)
 					ReadGroup(xmlChild, pwStorage.RootGroup, pwStorage);
-				else if(xmlChild.Name == ElemEntry)
+				else if (xmlChild.Name == ElemEntry)
 					ReadEntry(xmlChild, pwStorage.RootGroup, pwStorage);
-				else if(xmlChild.Name == ElemUnsupp0) { }
+				else if (xmlChild.Name == ElemUnsupp0) { }
 				else { Debug.Assert(false); }
 			}
 		}
@@ -127,22 +127,22 @@ namespace KeePass.DataExchange.Formats
 			PwGroup pg = new PwGroup(true, true);
 			pgParent.AddGroup(pg, true);
 
-			foreach(XmlNode xmlChild in xmlNode)
+			foreach (XmlNode xmlChild in xmlNode)
 			{
-				if(xmlChild.NodeType == XmlNodeType.Text)
+				if (xmlChild.NodeType == XmlNodeType.Text)
 				{
 					string strValue = (xmlChild.Value ?? string.Empty).Trim();
-					if(strValue.Length > 0)
+					if (strValue.Length > 0)
 					{
-						if(pg.Name.Length > 0) pg.Name += " ";
+						if (pg.Name.Length > 0) pg.Name += " ";
 						pg.Name += strValue;
 					}
 				}
-				else if(xmlChild.Name == ElemGroup)
+				else if (xmlChild.Name == ElemGroup)
 					ReadGroup(xmlChild, pg, pwStorage);
-				else if(xmlChild.Name == ElemEntry)
+				else if (xmlChild.Name == ElemEntry)
 					ReadEntry(xmlChild, pg, pwStorage);
-				else if(xmlChild.Name == ElemTags)
+				else if (xmlChild.Name == ElemTags)
 					AddTags(pg.Tags, XmlUtil.SafeInnerText(xmlChild));
 				else { Debug.Assert(false); }
 			}
@@ -155,50 +155,50 @@ namespace KeePass.DataExchange.Formats
 
 			DateTime? odtExpiry = null;
 
-			foreach(XmlNode xmlChild in xmlNode)
+			foreach (XmlNode xmlChild in xmlNode)
 			{
 				string strValue = XmlUtil.SafeInnerText(xmlChild);
 
-				if(xmlChild.NodeType == XmlNodeType.Text)
+				if (xmlChild.NodeType == XmlNodeType.Text)
 					ImportUtil.AppendToField(pe, PwDefs.TitleField, (xmlChild.Value ??
 						string.Empty).Trim(), pwStorage, " ", false);
-				else if(xmlChild.Name == ElemEntryUser)
+				else if (xmlChild.Name == ElemEntryUser)
 					pe.Strings.Set(PwDefs.UserNameField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectUserName, strValue));
-				else if(xmlChild.Name == ElemEntryPassword)
+				else if (xmlChild.Name == ElemEntryPassword)
 					pe.Strings.Set(PwDefs.PasswordField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectPassword, strValue));
-				else if(xmlChild.Name == ElemEntryPassword2)
+				else if (xmlChild.Name == ElemEntryPassword2)
 				{
-					if(strValue.Length > 0) // Prevent empty item
+					if (strValue.Length > 0) // Prevent empty item
 						pe.Strings.Set(Password2Key, new ProtectedString(
 							pwStorage.MemoryProtection.ProtectPassword, strValue));
 				}
-				else if(xmlChild.Name == ElemEntryUrl)
+				else if (xmlChild.Name == ElemEntryUrl)
 					pe.Strings.Set(PwDefs.UrlField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectUrl, strValue));
-				else if(xmlChild.Name == ElemEntryNotes)
+				else if (xmlChild.Name == ElemEntryNotes)
 					pe.Strings.Set(PwDefs.NotesField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectNotes, strValue));
-				else if(xmlChild.Name == ElemTags)
+				else if (xmlChild.Name == ElemTags)
 					AddTags(pe.Tags, strValue);
-				else if(xmlChild.Name == ElemEntryExpires)
+				else if (xmlChild.Name == ElemEntryExpires)
 					pe.Expires = StrUtil.StringToBool(strValue);
-				else if(xmlChild.Name == ElemEntryExpiryTime)
+				else if (xmlChild.Name == ElemEntryExpiryTime)
 				{
 					DateTime dt;
-					if(TimeUtil.FromDisplayStringEx(strValue, out dt))
+					if (TimeUtil.FromDisplayStringEx(strValue, out dt))
 						odtExpiry = TimeUtil.ToUtc(dt, false);
 					else { Debug.Assert(false); }
 				}
-				else if(xmlChild.Name == ElemAutoType)
+				else if (xmlChild.Name == ElemAutoType)
 					ReadAutoType(xmlChild, pe);
-				else if(xmlChild.Name == ElemEntryUnsupp0) { }
-				else if(xmlChild.Name == ElemEntryUnsupp1) { }
+				else if (xmlChild.Name == ElemEntryUnsupp0) { }
+				else if (xmlChild.Name == ElemEntryUnsupp1) { }
 				else { Debug.Assert(false); }
 			}
 
-			if(odtExpiry.HasValue) pe.ExpiryTime = odtExpiry.Value;
+			if (odtExpiry.HasValue) pe.ExpiryTime = odtExpiry.Value;
 			else pe.Expires = false;
 		}
 
@@ -206,23 +206,23 @@ namespace KeePass.DataExchange.Formats
 		{
 			string strSeq = string.Empty;
 
-			foreach(XmlNode xmlChild in xmlNode)
+			foreach (XmlNode xmlChild in xmlNode)
 			{
-				if(xmlChild.Name == ElemAutoTypePlh)
+				if (xmlChild.Name == ElemAutoTypePlh)
 				{
 					string strValue = XmlUtil.SafeInnerText(xmlChild);
 
 					string strConv = null;
-					foreach(KeyValuePair<string, string> kvp in m_dAutoTypeConv)
+					foreach (KeyValuePair<string, string> kvp in m_dAutoTypeConv)
 					{
-						if(kvp.Key.Equals(strValue, StrUtil.CaseIgnoreCmp))
+						if (kvp.Key.Equals(strValue, StrUtil.CaseIgnoreCmp))
 						{
 							strConv = kvp.Value;
 							break;
 						}
 					}
 
-					if(strConv != null) strSeq += strConv;
+					if (strConv != null) strSeq += strConv;
 					else { Debug.Assert(false); strSeq += strValue; }
 				}
 				else { Debug.Assert(false); }
@@ -233,7 +233,7 @@ namespace KeePass.DataExchange.Formats
 
 		private static void AddTags(List<string> lTags, string strNewTags)
 		{
-			if(string.IsNullOrEmpty(strNewTags)) return;
+			if (string.IsNullOrEmpty(strNewTags)) return;
 
 			StrUtil.AddTags(lTags, StrUtil.StringToTags(
 				strNewTags.Replace(' ', ';')));

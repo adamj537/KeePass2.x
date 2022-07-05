@@ -47,7 +47,7 @@ namespace KeePass.Util
 		private List<uint> GetChildPids()
 		{
 			List<uint> lPids = new List<uint>();
-			if(KeePassLib.Native.NativeLib.IsUnix()) return lPids;
+			if (KeePassLib.Native.NativeLib.IsUnix()) return lPids;
 
 			try
 			{
@@ -55,14 +55,14 @@ namespace KeePass.Util
 
 				uint uEntrySize = (uint)Marshal.SizeOf(typeof(
 					NativeMethods.PROCESSENTRY32));
-				if(Marshal.SystemDefaultCharSize >= 2)
+				if (Marshal.SystemDefaultCharSize >= 2)
 				{
-					if(IntPtr.Size == 4)
+					if (IntPtr.Size == 4)
 					{
 						Debug.Assert(uEntrySize ==
 							NativeMethods.PROCESSENTRY32SizeUni32);
 					}
-					else if(IntPtr.Size == 8)
+					else if (IntPtr.Size == 8)
 					{
 						Debug.Assert(uEntrySize ==
 							NativeMethods.PROCESSENTRY32SizeUni64);
@@ -72,40 +72,40 @@ namespace KeePass.Util
 
 				IntPtr hSnap = NativeMethods.CreateToolhelp32Snapshot(
 					NativeMethods.ToolHelpFlags.SnapProcess, 0);
-				if(NativeMethods.IsInvalidHandleValue(hSnap))
+				if (NativeMethods.IsInvalidHandleValue(hSnap))
 				{
 					Debug.Assert(false);
 					return lPids;
 				}
 
-				for(int i = 0; i < int.MaxValue; ++i)
+				for (int i = 0; i < int.MaxValue; ++i)
 				{
 					NativeMethods.PROCESSENTRY32 pe = new NativeMethods.PROCESSENTRY32();
 					pe.dwSize = uEntrySize;
 
 					bool b;
-					if(i == 0) b = NativeMethods.Process32First(hSnap, ref pe);
+					if (i == 0) b = NativeMethods.Process32First(hSnap, ref pe);
 					else b = NativeMethods.Process32Next(hSnap, ref pe);
-					if(!b) break;
+					if (!b) break;
 
-					if(pe.th32ProcessID == pidThis) continue;
-					if(pe.th32ParentProcessID != pidThis) continue;
+					if (pe.th32ProcessID == pidThis) continue;
+					if (pe.th32ParentProcessID != pidThis) continue;
 
-					if(!string.IsNullOrEmpty(m_strChildExeName))
+					if (!string.IsNullOrEmpty(m_strChildExeName))
 					{
-						if(pe.szExeFile == null) { Debug.Assert(false); continue; }
+						if (pe.szExeFile == null) { Debug.Assert(false); continue; }
 
 						string str = GetExeName(pe.szExeFile);
-						if(!str.Equals(m_strChildExeName, StrUtil.CaseIgnoreCmp))
+						if (!str.Equals(m_strChildExeName, StrUtil.CaseIgnoreCmp))
 							continue;
 					}
 
 					lPids.Add(pe.th32ProcessID);
 				}
 
-				if(!NativeMethods.CloseHandle(hSnap)) { Debug.Assert(false); }
+				if (!NativeMethods.CloseHandle(hSnap)) { Debug.Assert(false); }
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return lPids;
 		}
@@ -113,9 +113,9 @@ namespace KeePass.Util
 		private static char[] m_vTrimChars = null;
 		private static string GetExeName(string strPath)
 		{
-			if(strPath == null) { Debug.Assert(false); return string.Empty; }
+			if (strPath == null) { Debug.Assert(false); return string.Empty; }
 
-			if(m_vTrimChars == null)
+			if (m_vTrimChars == null)
 				m_vTrimChars = new char[] { '\r', '\n', ' ', '\t', '\"', '\'' };
 
 			string str = strPath.Trim(m_vTrimChars);
@@ -128,9 +128,9 @@ namespace KeePass.Util
 		{
 			List<uint> lPids = GetChildPids();
 
-			foreach(uint uPid in lPids)
+			foreach (uint uPid in lPids)
 			{
-				if(m_lPids.IndexOf(uPid) < 0)
+				if (m_lPids.IndexOf(uPid) < 0)
 				{
 					CpsTermInfo ti = new CpsTermInfo(uPid, m_strChildExeName,
 						nDelayMs);
@@ -167,18 +167,18 @@ namespace KeePass.Util
 			try
 			{
 				CpsTermInfo ti = (oTermInfo as CpsTermInfo);
-				if(ti == null) { Debug.Assert(false); return; }
+				if (ti == null) { Debug.Assert(false); return; }
 
-				if(ti.Delay > 0) Thread.Sleep(ti.Delay);
+				if (ti.Delay > 0) Thread.Sleep(ti.Delay);
 
 				Process p = Process.GetProcessById((int)ti.ProcessId);
-				if(p == null) { Debug.Assert(false); return; }
+				if (p == null) { Debug.Assert(false); return; }
 
 				// Verify that likely it's indeed the correct process
-				if(!string.IsNullOrEmpty(ti.ExeName))
+				if (!string.IsNullOrEmpty(ti.ExeName))
 				{
 					string str = GetExeName(p.MainModule.FileName);
-					if(!str.Equals(ti.ExeName, StrUtil.CaseIgnoreCmp))
+					if (!str.Equals(ti.ExeName, StrUtil.CaseIgnoreCmp))
 					{
 						Debug.Assert(false);
 						return;
@@ -188,8 +188,8 @@ namespace KeePass.Util
 				p.Kill();
 				p.Close();
 			}
-			catch(ArgumentException) { } // Not running
-			catch(Exception) { Debug.Assert(false); }
+			catch (ArgumentException) { } // Not running
+			catch (Exception) { Debug.Assert(false); }
 		}
 	}
 }

@@ -68,12 +68,12 @@ namespace KeePass.DataExchange.Formats
 
 			// Fix '<' characters, for version 1.0.5
 			int nIndex = strDoc.IndexOf('<');
-			while(nIndex >= 0)
+			while (nIndex >= 0)
 			{
 				int nAttrib = strDoc.LastIndexOf("=\"", nIndex);
 				int nElem = strDoc.LastIndexOf('>', nIndex);
-				
-				if(nAttrib > nElem)
+
+				if (nAttrib > nElem)
 				{
 					strDoc = strDoc.Remove(nIndex, 1);
 					strDoc = strDoc.Insert(nIndex, @"&lt;");
@@ -83,12 +83,12 @@ namespace KeePass.DataExchange.Formats
 
 			// Fix '>' characters, for version 1.0.5
 			nIndex = strDoc.IndexOf('>');
-			while(nIndex >= 0)
+			while (nIndex >= 0)
 			{
 				char chPrev = strDoc[nIndex - 1];
 				string strPrev4 = strDoc.Substring(nIndex - 3, 4);
 
-				if((chPrev != '/') && (chPrev != '\"') && (strPrev4 != @"xml>") &&
+				if ((chPrev != '/') && (chPrev != '\"') && (strPrev4 != @"xml>") &&
 					(strPrev4 != @"ies>"))
 				{
 					strDoc = strDoc.Remove(nIndex, 1);
@@ -103,12 +103,12 @@ namespace KeePass.DataExchange.Formats
 			ms.Close();
 
 			XmlNode xmlRoot = xmlDoc.DocumentElement;
-			if(xmlRoot.Name != ElemRoot)
+			if (xmlRoot.Name != ElemRoot)
 				throw new FormatException("Invalid root element!");
 
-			foreach(XmlNode xmlChild in xmlRoot.ChildNodes)
+			foreach (XmlNode xmlChild in xmlRoot.ChildNodes)
 			{
-				if(xmlChild.Name == ElemEntries)
+				if (xmlChild.Name == ElemEntries)
 					ImportEntries(xmlChild, pwStorage);
 				else { Debug.Assert(false); }
 			}
@@ -116,9 +116,9 @@ namespace KeePass.DataExchange.Formats
 
 		private static void ImportEntries(XmlNode xmlNode, PwDatabase pwStorage)
 		{
-			foreach(XmlNode xmlChild in xmlNode)
+			foreach (XmlNode xmlChild in xmlNode)
 			{
-				if(xmlChild.Name == ElemEntry)
+				if (xmlChild.Name == ElemEntry)
 					ImportEntry(xmlChild, pwStorage);
 				else { Debug.Assert(false); }
 			}
@@ -130,31 +130,31 @@ namespace KeePass.DataExchange.Formats
 			pwStorage.RootGroup.AddEntry(pe, true);
 
 			XmlAttributeCollection col = xmlNode.Attributes;
-			if(col == null) return;
+			if (col == null) return;
 
 			XmlNode xmlAttrib;
 			xmlAttrib = col.GetNamedItem(AttrUser);
-			if(xmlAttrib != null) pe.Strings.Set(PwDefs.UserNameField, new ProtectedString(
+			if (xmlAttrib != null) pe.Strings.Set(PwDefs.UserNameField, new ProtectedString(
 				pwStorage.MemoryProtection.ProtectUserName, PctDecode(xmlAttrib.Value)));
 			else { Debug.Assert(false); }
 
 			xmlAttrib = col.GetNamedItem(AttrPassword);
-			if(xmlAttrib != null) pe.Strings.Set(PwDefs.PasswordField, new ProtectedString(
+			if (xmlAttrib != null) pe.Strings.Set(PwDefs.PasswordField, new ProtectedString(
 				pwStorage.MemoryProtection.ProtectPassword, PctDecode(xmlAttrib.Value)));
 			else { Debug.Assert(false); }
 
 			xmlAttrib = col.GetNamedItem(AttrURL);
-			if(xmlAttrib != null) pe.Strings.Set(PwDefs.UrlField, new ProtectedString(
+			if (xmlAttrib != null) pe.Strings.Set(PwDefs.UrlField, new ProtectedString(
 				pwStorage.MemoryProtection.ProtectUrl, PctDecode(xmlAttrib.Value)));
 			else { Debug.Assert(false); }
 
 			xmlAttrib = col.GetNamedItem(AttrUserFieldName);
-			if(xmlAttrib != null) pe.Strings.Set(DbUserFieldName, new ProtectedString(
+			if (xmlAttrib != null) pe.Strings.Set(DbUserFieldName, new ProtectedString(
 				false, PctDecode(xmlAttrib.Value)));
 			else { Debug.Assert(false); }
 
 			xmlAttrib = col.GetNamedItem(AttrPasswordFieldName);
-			if(xmlAttrib != null) pe.Strings.Set(DbPasswordFieldName, new ProtectedString(
+			if (xmlAttrib != null) pe.Strings.Set(DbPasswordFieldName, new ProtectedString(
 				false, PctDecode(xmlAttrib.Value)));
 			else { Debug.Assert(false); }
 		}
@@ -162,7 +162,7 @@ namespace KeePass.DataExchange.Formats
 		// For version 1.3.4
 		private static string PctDecode(string strText)
 		{
-			if(string.IsNullOrEmpty(strText)) return string.Empty;
+			if (string.IsNullOrEmpty(strText)) return string.Empty;
 
 			string str = strText;
 

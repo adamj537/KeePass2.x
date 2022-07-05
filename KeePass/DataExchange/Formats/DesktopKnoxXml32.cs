@@ -68,9 +68,9 @@ namespace KeePass.DataExchange.Formats
 			Dictionary<string, PwGroup> dictGroups = new Dictionary<string, PwGroup>();
 			dictGroups[string.Empty] = pwStorage.RootGroup;
 
-			foreach(XmlNode xmlChild in xmlRoot.ChildNodes)
+			foreach (XmlNode xmlChild in xmlRoot.ChildNodes)
 			{
-				if(xmlChild.Name == ElemEntry)
+				if (xmlChild.Name == ElemEntry)
 					ImportEntry(xmlChild, pwStorage, dictGroups);
 				else { Debug.Assert(false); }
 			}
@@ -82,23 +82,23 @@ namespace KeePass.DataExchange.Formats
 			PwEntry pe = new PwEntry(true, true);
 			string strGroup = string.Empty;
 
-			foreach(XmlNode xmlChild in xmlNode)
+			foreach (XmlNode xmlChild in xmlNode)
 			{
 				string strInner = XmlUtil.SafeInnerText(xmlChild);
 
-				if(xmlChild.Name == ElemCategory)
+				if (xmlChild.Name == ElemCategory)
 					strGroup = strInner;
-				else if(xmlChild.Name == ElemTitle)
+				else if (xmlChild.Name == ElemTitle)
 					pe.Strings.Set(PwDefs.TitleField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectTitle, strInner));
-				else if(xmlChild.Name == ElemNotes)
+				else if (xmlChild.Name == ElemNotes)
 					pe.Strings.Set(PwDefs.NotesField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectNotes, strInner));
 			}
 
 			PwGroup pg;
 			dGroups.TryGetValue(strGroup, out pg);
-			if(pg == null)
+			if (pg == null)
 			{
 				pg = new PwGroup(true, true);
 				pg.Name = strGroup;

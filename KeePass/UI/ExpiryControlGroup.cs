@@ -38,7 +38,7 @@ namespace KeePass.UI
 		{
 			get
 			{
-				if(m_cb == null) { Debug.Assert(false); return false; }
+				if (m_cb == null) { Debug.Assert(false); return false; }
 				return m_cb.Checked;
 			}
 
@@ -49,11 +49,11 @@ namespace KeePass.UI
 		{
 			get
 			{
-				if(m_dtp == null) { Debug.Assert(false); return DateTime.UtcNow; }
+				if (m_dtp == null) { Debug.Assert(false); return DateTime.UtcNow; }
 
 				// Force validation/update of incomplete edit
 				// (workaround for KPB 3505269)
-				if(m_dtp.Focused && m_dtp.Visible)
+				if (m_dtp.Focused && m_dtp.Visible)
 				{
 					m_dtp.Visible = false;
 					m_dtp.Visible = true;
@@ -64,7 +64,7 @@ namespace KeePass.UI
 
 			set
 			{
-				if(m_dtp == null) { Debug.Assert(false); return; }
+				if (m_dtp == null) { Debug.Assert(false); return; }
 				m_dtp.Value = TimeUtil.ToLocal(value, true);
 			}
 		}
@@ -82,8 +82,8 @@ namespace KeePass.UI
 
 		public void Attach(CheckBox cb, DateTimePicker dtp)
 		{
-			if(cb == null) throw new ArgumentNullException("cb");
-			if(dtp == null) throw new ArgumentNullException("dtp");
+			if (cb == null) throw new ArgumentNullException("cb");
+			if (dtp == null) throw new ArgumentNullException("dtp");
 
 			m_cb = cb;
 			m_dtp = dtp;
@@ -101,7 +101,7 @@ namespace KeePass.UI
 
 		public void Release()
 		{
-			if(m_cb == null) return;
+			if (m_cb == null) return;
 
 			m_dtp.ValueChanged -= this.OnExpiryValueChanged;
 			m_dtp.KeyPress -= this.OnExpiryKeyPress;
@@ -112,7 +112,7 @@ namespace KeePass.UI
 
 		private void UpdateUI(bool? obSetCheck)
 		{
-			if(obSetCheck.HasValue)
+			if (obSetCheck.HasValue)
 				UIUtil.SetChecked(m_cb, obSetCheck.Value);
 
 			// UIUtil.SetEnabled(m_dtp, m_cb.Enabled);
@@ -125,7 +125,7 @@ namespace KeePass.UI
 
 		private void OnExpiryKeyPress(object sender, KeyPressEventArgs e)
 		{
-			if(char.IsDigit(e.KeyChar)) UpdateUI(true);
+			if (char.IsDigit(e.KeyChar)) UpdateUI(true);
 		}
 	}
 }

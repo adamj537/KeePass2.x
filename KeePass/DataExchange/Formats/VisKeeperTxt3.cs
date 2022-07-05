@@ -65,19 +65,19 @@ namespace KeePass.DataExchange.Formats
 
 			PwGroup pgTemplates = new PwGroup(true, true, "Vorlagen",
 				PwIcon.MarkedDirectory);
-			pgRoot.AddGroup(pgTemplates, true);			
+			pgRoot.AddGroup(pgTemplates, true);
 
-			for(int i = 1; (i + 1) < lData.Count; i += 2)
+			for (int i = 1; (i + 1) < lData.Count; i += 2)
 			{
 				string strInit = lData[i];
 				string strPart = lData[i + 1];
 
-				if(strInit == strInitGroup) { }
-				else if(strInit == strInitTemplate)
+				if (strInit == strInitGroup) { }
+				else if (strInit == strInitTemplate)
 					ImportEntry(strPart, pgTemplates, pwStorage, false);
-				else if(strInit == strInitEntry)
+				else if (strInit == strInitEntry)
 					ImportEntry(strPart, pgRoot, pwStorage, false);
-				else if(strInit == strInitNote)
+				else if (strInit == strInitNote)
 					ImportEntry(strPart, pgRoot, pwStorage, true);
 				else { Debug.Assert(false); }
 			}
@@ -91,27 +91,27 @@ namespace KeePass.DataExchange.Formats
 
 			string[] v = strData.Split('\n');
 
-			if(v.Length == 0) { Debug.Assert(false); return; }
+			if (v.Length == 0) { Debug.Assert(false); return; }
 			ImportUtil.AppendToField(pe, PwDefs.TitleField, v[0].Trim(), pd);
 
 			int n = v.Length;
-			for(int j = n - 1; j >= 0; --j)
+			for (int j = n - 1; j >= 0; --j)
 			{
-				if(v[j].Length > 0) break;
+				if (v[j].Length > 0) break;
 				--n;
 			}
 
 			bool bInNotes = bForceNotes;
-			for(int i = 1; i < n; ++i)
+			for (int i = 1; i < n; ++i)
 			{
 				string str = v[i];
 
 				int iSep = str.IndexOf(':');
-				if(iSep <= 0) bInNotes = true;
+				if (iSep <= 0) bInNotes = true;
 
-				if(bInNotes)
+				if (bInNotes)
 				{
-					if(str.Length == 0)
+					if (str.Length == 0)
 						ImportUtil.AppendToField(pe, PwDefs.NotesField,
 							MessageService.NewLine, pd, string.Empty, false);
 					else
@@ -123,7 +123,7 @@ namespace KeePass.DataExchange.Formats
 					string strValue = str.Substring(iSep + 1).Trim();
 
 					string strKey = ImportUtil.MapNameToStandardField(strRawKey, false);
-					if(string.IsNullOrEmpty(strKey)) strKey = strRawKey;
+					if (string.IsNullOrEmpty(strKey)) strKey = strRawKey;
 
 					ImportUtil.AppendToField(pe, strKey, strValue, pd);
 				}

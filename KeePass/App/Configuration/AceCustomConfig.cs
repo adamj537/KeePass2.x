@@ -66,7 +66,7 @@ namespace KeePass.App.Configuration
 		{
 			List<AceKvp> v = new List<AceKvp>();
 
-			foreach(KeyValuePair<string, string> kvp in m_vItems)
+			foreach (KeyValuePair<string, string> kvp in m_vItems)
 				v.Add(new AceKvp(kvp.Key, kvp.Value));
 
 			return v.ToArray();
@@ -74,10 +74,10 @@ namespace KeePass.App.Configuration
 
 		internal void Deserialize(AceKvp[] v)
 		{
-			if(v == null) throw new ArgumentNullException("v");
+			if (v == null) throw new ArgumentNullException("v");
 
 			m_vItems.Clear();
-			foreach(AceKvp kvp in v)
+			foreach (AceKvp kvp in v)
 				m_vItems[kvp.Key] = kvp.Value;
 		}
 
@@ -92,10 +92,10 @@ namespace KeePass.App.Configuration
 		/// <param name="strValue">New value of the configuration item.</param>
 		public void SetString(string strID, string strValue)
 		{
-			if(strID == null) throw new ArgumentNullException("strID");
-			if(strID.Length == 0) throw new ArgumentException();
+			if (strID == null) throw new ArgumentNullException("strID");
+			if (strID.Length == 0) throw new ArgumentException();
 
-			if(strValue == null) m_vItems.Remove(strID);
+			if (strValue == null) m_vItems.Remove(strID);
 			else m_vItems[strID] = strValue;
 		}
 
@@ -155,11 +155,11 @@ namespace KeePass.App.Configuration
 		/// <returns>Value of the configuration item.</returns>
 		public string GetString(string strID, string strDefault)
 		{
-			if(strID == null) throw new ArgumentNullException("strID");
-			if(strID.Length == 0) throw new ArgumentException();
+			if (strID == null) throw new ArgumentNullException("strID");
+			if (strID.Length == 0) throw new ArgumentException();
 
 			string strValue;
-			if(m_vItems.TryGetValue(strID, out strValue)) return strValue;
+			if (m_vItems.TryGetValue(strID, out strValue)) return strValue;
 
 			return strDefault;
 		}
@@ -167,7 +167,7 @@ namespace KeePass.App.Configuration
 		public bool GetBool(string strID, bool bDefault)
 		{
 			string strValue = GetString(strID, null);
-			if(string.IsNullOrEmpty(strValue)) return bDefault;
+			if (string.IsNullOrEmpty(strValue)) return bDefault;
 
 			return StrUtil.StringToBool(strValue);
 		}
@@ -175,10 +175,10 @@ namespace KeePass.App.Configuration
 		public long GetLong(string strID, long lDefault)
 		{
 			string strValue = GetString(strID, null);
-			if(string.IsNullOrEmpty(strValue)) return lDefault;
+			if (string.IsNullOrEmpty(strValue)) return lDefault;
 
 			long lValue;
-			if(StrUtil.TryParseLongInvariant(strValue, out lValue))
+			if (StrUtil.TryParseLongInvariant(strValue, out lValue))
 				return lValue;
 
 			return lDefault;
@@ -187,10 +187,10 @@ namespace KeePass.App.Configuration
 		public ulong GetULong(string strID, ulong uDefault)
 		{
 			string strValue = GetString(strID, null);
-			if(string.IsNullOrEmpty(strValue)) return uDefault;
+			if (string.IsNullOrEmpty(strValue)) return uDefault;
 
 			ulong uValue;
-			if(StrUtil.TryParseULongInvariant(strValue, out uValue))
+			if (StrUtil.TryParseULongInvariant(strValue, out uValue))
 				return uValue;
 
 			return uDefault;

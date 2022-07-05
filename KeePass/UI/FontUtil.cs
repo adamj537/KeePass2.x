@@ -41,7 +41,7 @@ namespace KeePass.UI
 			GraphicsUnit gu)
 		{
 			try { return new Font(strFamily, fEmSize, fs, gu); }
-			catch(Exception) { Debug.Assert(false); } // Style unsupported?
+			catch (Exception) { Debug.Assert(false); } // Style unsupported?
 
 			return new Font(strFamily, fEmSize, gu); // Regular style
 		}
@@ -49,7 +49,7 @@ namespace KeePass.UI
 		public static Font CreateFont(FontFamily ff, float fEmSize, FontStyle fs)
 		{
 			try { return new Font(ff, fEmSize, fs); }
-			catch(Exception) { Debug.Assert(false); } // Style unsupported?
+			catch (Exception) { Debug.Assert(false); } // Style unsupported?
 
 			return new Font(ff, fEmSize);
 		}
@@ -57,24 +57,24 @@ namespace KeePass.UI
 		public static Font CreateFont(Font fBase, FontStyle fs)
 		{
 			try { return new Font(fBase, fs); }
-			catch(Exception) { Debug.Assert(false); } // Style unsupported?
+			catch (Exception) { Debug.Assert(false); } // Style unsupported?
 
 			return new Font(fBase, fBase.Style); // Clone
 		}
 
 		private static void Assign(Control c, Font f)
 		{
-			if(c == null) { Debug.Assert(false); return; }
-			if(f == null) { Debug.Assert(false); return; }
+			if (c == null) { Debug.Assert(false); return; }
+			if (f == null) { Debug.Assert(false); return; }
 
 			try
 			{
-				using(RtlAwareResizeScope r = new RtlAwareResizeScope(c))
+				using (RtlAwareResizeScope r = new RtlAwareResizeScope(c))
 				{
 					c.Font = f;
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private static Font m_fontDefault = null;
@@ -88,10 +88,10 @@ namespace KeePass.UI
 
 		public static void SetDefaultFont(Control c)
 		{
-			if(c == null) { Debug.Assert(false); return; }
+			if (c == null) { Debug.Assert(false); return; }
 
 			// Allow specifying the default font once only
-			if(m_fontDefault == null) m_fontDefault = c.Font;
+			if (m_fontDefault == null) m_fontDefault = c.Font;
 		}
 
 		public static void AssignDefault(Control c)
@@ -102,12 +102,12 @@ namespace KeePass.UI
 		private static Font m_fontBold = null;
 		public static void AssignDefaultBold(Control c)
 		{
-			if(c == null) { Debug.Assert(false); return; }
+			if (c == null) { Debug.Assert(false); return; }
 
-			if(m_fontBold == null)
+			if (m_fontBold == null)
 			{
 				try { m_fontBold = new Font(c.Font, FontStyle.Bold); }
-				catch(Exception) { Debug.Assert(false); m_fontBold = c.Font; }
+				catch (Exception) { Debug.Assert(false); m_fontBold = c.Font; }
 			}
 
 			Assign(c, m_fontBold);
@@ -116,12 +116,12 @@ namespace KeePass.UI
 		private static Font m_fontItalic = null;
 		public static void AssignDefaultItalic(Control c)
 		{
-			if(c == null) { Debug.Assert(false); return; }
+			if (c == null) { Debug.Assert(false); return; }
 
-			if(m_fontItalic == null)
+			if (m_fontItalic == null)
 			{
 				try { m_fontItalic = new Font(c.Font, FontStyle.Italic); }
-				catch(Exception) { Debug.Assert(false); m_fontItalic = c.Font; }
+				catch (Exception) { Debug.Assert(false); m_fontItalic = c.Font; }
 			}
 
 			Assign(c, m_fontItalic);
@@ -139,22 +139,22 @@ namespace KeePass.UI
 		internal static Font GetDefaultMonoFont(Control cFor)
 		{
 			Font f = m_fontMono;
-			if(f != null) return f;
+			if (f != null) return f;
 
 			try
 			{
 				float fSize;
-				if(m_fontDefault != null) fSize = m_fontDefault.SizeInPoints;
-				else if(cFor != null) fSize = cFor.Font.SizeInPoints;
+				if (m_fontDefault != null) fSize = m_fontDefault.SizeInPoints;
+				else if (cFor != null) fSize = cFor.Font.SizeInPoints;
 				else { Debug.Assert(false); fSize = 8.25f; }
 
 				f = new Font(FontFamily.GenericMonospace, fSize);
 			}
-			catch(Exception)
+			catch (Exception)
 			{
 				Debug.Assert(false);
-				if(m_fontDefault != null) f = m_fontDefault;
-				else if(cFor != null) f = cFor.Font;
+				if (m_fontDefault != null) f = m_fontDefault;
+				else if (cFor != null) f = cFor.Font;
 			}
 
 			m_fontMono = f;
@@ -163,24 +163,24 @@ namespace KeePass.UI
 
 		public static void AssignDefaultMono(Control c, bool bIsPasswordBox)
 		{
-			if(bIsPasswordBox && Program.Config.UI.PasswordFont.OverrideUIDefault)
+			if (bIsPasswordBox && Program.Config.UI.PasswordFont.OverrideUIDefault)
 				Assign(c, Program.Config.UI.PasswordFont.ToFont());
 			else Assign(c, GetDefaultMonoFont(c));
 		}
 
 		internal static bool IsInstalled(string strFamily)
 		{
-			if(string.IsNullOrEmpty(strFamily)) { Debug.Assert(false); return false; }
+			if (string.IsNullOrEmpty(strFamily)) { Debug.Assert(false); return false; }
 
 			try
 			{
-				using(Font f = new Font(strFamily, 9.0f))
+				using (Font f = new Font(strFamily, 9.0f))
 				{
-					if(!strFamily.Equals(f.Name, StrUtil.CaseIgnoreCmp))
+					if (!strFamily.Equals(f.Name, StrUtil.CaseIgnoreCmp))
 						return false;
 				}
 			}
-			catch(Exception) { Debug.Assert(false); return false; }
+			catch (Exception) { Debug.Assert(false); return false; }
 
 			return true;
 		}
@@ -231,9 +231,9 @@ namespace KeePass.UI
 		private static void AppendFontStyleFlag(StringBuilder sb, ref FontStyle fs,
 			FontStyle fsFlag, string strFlag)
 		{
-			if((fs & fsFlag) == FontStyle.Regular) return;
+			if ((fs & fsFlag) == FontStyle.Regular) return;
 
-			if(sb.Length != 0) sb.Append(", "); // Compatible with Enum.ToString
+			if (sb.Length != 0) sb.Append(", "); // Compatible with Enum.ToString
 			sb.Append(strFlag);
 
 			fs ^= fsFlag;
@@ -241,7 +241,7 @@ namespace KeePass.UI
 
 		internal static string FontStyleToString(FontStyle fs)
 		{
-			if(fs == FontStyle.Regular) return string.Empty;
+			if (fs == FontStyle.Regular) return string.Empty;
 
 			StringBuilder sb = new StringBuilder();
 
@@ -250,10 +250,10 @@ namespace KeePass.UI
 			AppendFontStyleFlag(sb, ref fs, FontStyle.Underline, KPRes.Underline);
 			AppendFontStyleFlag(sb, ref fs, FontStyle.Strikeout, KPRes.Strikeout);
 
-			if(fs != FontStyle.Regular)
+			if (fs != FontStyle.Regular)
 			{
 				Debug.Assert(false);
-				if(sb.Length != 0) sb.Append(", "); // Compatible with Enum.ToString
+				if (sb.Length != 0) sb.Append(", "); // Compatible with Enum.ToString
 				sb.Append(fs.ToString());
 			}
 

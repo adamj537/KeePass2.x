@@ -49,12 +49,12 @@ namespace KeePass.UI
 
 		public CustomTreeViewEx() : base()
 		{
-			if(Program.DesignMode) return;
+			if (Program.DesignMode) return;
 
 			// Enable default double buffering (must be combined with
 			// TVS_EX_DOUBLEBUFFER, see OnHandleCreated)
 			try { this.DoubleBuffered = true; }
-			catch(Exception) { Debug.Assert(!WinUtil.IsAtLeastWindowsVista); }
+			catch (Exception) { Debug.Assert(!WinUtil.IsAtLeastWindowsVista); }
 
 			// try
 			// {
@@ -151,11 +151,11 @@ namespace KeePass.UI
 		protected override void OnHandleCreated(EventArgs e)
 		{
 			base.OnHandleCreated(e);
-			if(Program.DesignMode) return;
+			if (Program.DesignMode) return;
 
 			try
 			{
-				if(this.DoubleBuffered && !NativeLib.IsUnix())
+				if (this.DoubleBuffered && !NativeLib.IsUnix())
 				{
 					IntPtr p = new IntPtr((int)NativeMethods.TVS_EX_DOUBLEBUFFER);
 					NativeMethods.SendMessage(this.Handle,
@@ -163,7 +163,7 @@ namespace KeePass.UI
 				}
 				else { Debug.Assert(!WinUtil.IsAtLeastWindowsVista); }
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			// Display tooltips for a longer time;
 			// https://sourceforge.net/p/keepass/feature-requests/2038/
@@ -195,14 +195,14 @@ namespace KeePass.UI
 
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
-			if(UIUtil.HandleCommonKeyEvent(e, true, this)) return;
+			if (UIUtil.HandleCommonKeyEvent(e, true, this)) return;
 
 			base.OnKeyDown(e);
 		}
 
 		protected override void OnKeyUp(KeyEventArgs e)
 		{
-			if(UIUtil.HandleCommonKeyEvent(e, false, this)) return;
+			if (UIUtil.HandleCommonKeyEvent(e, false, this)) return;
 
 			base.OnKeyUp(e);
 		}
@@ -210,9 +210,9 @@ namespace KeePass.UI
 		protected override void OnBeforeCollapse(TreeViewCancelEventArgs e)
 		{
 			TreeNode tn = ((e != null) ? e.Node : null);
-			if(tn != null)
+			if (tn != null)
 			{
-				if((tn.Parent == null) && !this.ShowRootLines)
+				if ((tn.Parent == null) && !this.ShowRootLines)
 				{
 					// This should only occur due to a user action (e.g.
 					// double-click on the node), not programmatically

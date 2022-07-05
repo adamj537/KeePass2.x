@@ -59,10 +59,10 @@ namespace KeePass.Ecas
 		public EcasContext(EcasTriggerSystem coll, EcasTrigger trigger,
 			EcasEvent e, EcasPropertyDictionary props)
 		{
-			if(coll == null) throw new ArgumentNullException("coll");
-			if(trigger == null) throw new ArgumentNullException("trigger");
-			if(e == null) throw new ArgumentNullException("e");
-			if(props == null) throw new ArgumentNullException("props");
+			if (coll == null) throw new ArgumentNullException("coll");
+			if (trigger == null) throw new ArgumentNullException("trigger");
+			if (e == null) throw new ArgumentNullException("e");
+			if (props == null) throw new ArgumentNullException("props");
 
 			m_coll = coll;
 			m_trigger = trigger;

@@ -50,7 +50,7 @@ namespace KeePass.UI
 
 		public PwListItem(PwEntry pe)
 		{
-			if(pe == null) throw new ArgumentNullException("pe");
+			if (pe == null) throw new ArgumentNullException("pe");
 
 			m_pe = pe;
 
@@ -95,7 +95,7 @@ namespace KeePass.UI
 
 		public AsyncPwListUpdate(ListView lv)
 		{
-			if(lv == null) throw new ArgumentNullException("lv");
+			if (lv == null) throw new ArgumentNullException("lv");
 
 			m_lv = lv;
 		}
@@ -103,10 +103,10 @@ namespace KeePass.UI
 		public void Queue(string strText, PwListItem li, int iIndexHint,
 			int iSubItem, PwTextUpdateDelegate f)
 		{
-			if(strText == null) { Debug.Assert(false); return; }
-			if(li == null) { Debug.Assert(false); return; }
-			if(iSubItem < 0) { Debug.Assert(false); return; }
-			if(f == null) { Debug.Assert(false); return; }
+			if (strText == null) { Debug.Assert(false); return; }
+			if (li == null) { Debug.Assert(false); return; }
+			if (iSubItem < 0) { Debug.Assert(false); return; }
+			if (f == null) { Debug.Assert(false); return; }
 
 			LviUpdInfo state = new LviUpdInfo();
 			state.ListView = m_lv;
@@ -120,7 +120,7 @@ namespace KeePass.UI
 			state.ValidIDsSyncObject = m_objValidIDsSync;
 			state.ValidIDs = m_dValidIDs;
 
-			lock(m_objValidIDsSync)
+			lock (m_objValidIDsSync)
 			{
 				Debug.Assert(!m_dValidIDs.ContainsKey(state.UpdateID));
 				m_dValidIDs[state.UpdateID] = true;
@@ -128,13 +128,13 @@ namespace KeePass.UI
 
 			try
 			{
-				if(!ThreadPool.QueueUserWorkItem(new WaitCallback(UpdateItemFn),
+				if (!ThreadPool.QueueUserWorkItem(new WaitCallback(UpdateItemFn),
 					state)) throw new InvalidOperationException();
 			}
-			catch(Exception)
+			catch (Exception)
 			{
 				Debug.Assert(false);
-				lock(m_objValidIDsSync) { m_dValidIDs.Remove(state.UpdateID); }
+				lock (m_objValidIDsSync) { m_dValidIDs.Remove(state.UpdateID); }
 			}
 		}
 
@@ -145,10 +145,10 @@ namespace KeePass.UI
 		/// </summary>
 		public void CancelPendingUpdatesAsync()
 		{
-			lock(m_objValidIDsSync)
+			lock (m_objValidIDsSync)
 			{
 				List<long> vKeys = new List<long>(m_dValidIDs.Keys);
-				foreach(long lKey in vKeys)
+				foreach (long lKey in vKeys)
 				{
 					m_dValidIDs[lKey] = false;
 				}
@@ -157,11 +157,11 @@ namespace KeePass.UI
 
 		public void WaitAll()
 		{
-			while(true)
+			while (true)
 			{
-				lock(m_objValidIDsSync)
+				lock (m_objValidIDsSync)
 				{
-					if(m_dValidIDs.Count == 0) break;
+					if (m_dValidIDs.Count == 0) break;
 				}
 
 				Thread.Sleep(4);
@@ -172,22 +172,22 @@ namespace KeePass.UI
 		private static void UpdateItemFn(object state)
 		{
 			LviUpdInfo lui = (state as LviUpdInfo);
-			if(lui == null) { Debug.Assert(false); return; }
+			if (lui == null) { Debug.Assert(false); return; }
 
 			try // Avoid cross-thread exceptions
 			{
 				bool bWork;
-				lock(lui.ValidIDsSyncObject)
+				lock (lui.ValidIDsSyncObject)
 				{
-					if(!lui.ValidIDs.TryGetValue(lui.UpdateID,
+					if (!lui.ValidIDs.TryGetValue(lui.UpdateID,
 						out bWork)) { Debug.Assert(false); return; }
 				}
 
-				if(bWork)
+				if (bWork)
 				{
 					string strNew = lui.Function(lui.Text, lui.ListItem);
-					if(strNew == null) { Debug.Assert(false); return; }
-					if(strNew == lui.Text) return;
+					if (strNew == null) { Debug.Assert(false); return; }
+					if (strNew == lui.Text) return;
 
 					// if(lui.ListView.InvokeRequired)
 					lui.ListView.Invoke(new SetItemTextDelegate(
@@ -195,17 +195,17 @@ namespace KeePass.UI
 					// else SetItemText(strNew, lui);
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 			finally
 			{
 				try // Avoid cross-thread exceptions
 				{
-					lock(lui.ValidIDsSyncObject)
+					lock (lui.ValidIDsSyncObject)
 					{
-						if(!lui.ValidIDs.Remove(lui.UpdateID)) { Debug.Assert(false); }
+						if (!lui.ValidIDs.Remove(lui.UpdateID)) { Debug.Assert(false); }
 					}
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 		}
 
@@ -218,36 +218,36 @@ namespace KeePass.UI
 				long lTargetID = lui.ListItem.ListViewItemID;
 				int iIndexHint = lui.IndexHint;
 
-				lock(lui.ListEditSyncObject)
+				lock (lui.ListEditSyncObject)
 				{
 					ListView.ListViewItemCollection lvic = lui.ListView.Items;
 					int nCount = lvic.Count;
 
 					// for(int i = 0; i < nCount; ++i)
-					for(int i = nCount; i > 0; --i)
+					for (int i = nCount; i > 0; --i)
 					{
 						int j = ((iIndexHint + i) % nCount);
 						ListViewItem lvi = lvic[j];
 
 						PwListItem li = (lvi.Tag as PwListItem);
-						if(li == null) { Debug.Assert(false); continue; }
+						if (li == null) { Debug.Assert(false); continue; }
 
-						if(li.ListViewItemID != lTargetID) continue;
+						if (li.ListViewItemID != lTargetID) continue;
 
 						lvi.SubItems[lui.SubItem].Text = strText;
 						break;
 					}
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		internal static string SprCompileFn(string strText, PwListItem li)
 		{
-			if(string.IsNullOrEmpty(strText)) return string.Empty;
+			if (string.IsNullOrEmpty(strText)) return string.Empty;
 
 			string str = null;
-			while(str == null)
+			while (str == null)
 			{
 				try
 				{
@@ -256,12 +256,12 @@ namespace KeePass.UI
 						li.Entry));
 					str = SprEngine.Compile(strText, ctx);
 				}
-				catch(InvalidOperationException) { } // Probably collection changed
-				catch(NullReferenceException) { } // Objects disposed already
-				catch(Exception) { Debug.Assert(false); }
+				catch (InvalidOperationException) { } // Probably collection changed
+				catch (NullReferenceException) { } // Objects disposed already
+				catch (Exception) { Debug.Assert(false); }
 			}
 
-			if(Program.Config.MainWindow.EntryListShowDerefDataAndRefs && (str != strText))
+			if (Program.Config.MainWindow.EntryListShowDerefDataAndRefs && (str != strText))
 				str += " - " + strText;
 
 			return StrUtil.MultiToSingleLine(str);

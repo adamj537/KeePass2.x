@@ -40,7 +40,7 @@ namespace KeePass.App.Configuration
 			get { return m_strDb; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strDb = value;
 			}
 		}
@@ -60,7 +60,7 @@ namespace KeePass.App.Configuration
 			get { return m_strKey; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strKey = value;
 			}
 		}
@@ -72,7 +72,7 @@ namespace KeePass.App.Configuration
 			get { return m_strProv; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strProv = value;
 			}
 		}
@@ -117,7 +117,7 @@ namespace KeePass.App.Configuration
 			get { return m_strTanChars; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strTanChars = value;
 			}
 		}
@@ -137,7 +137,7 @@ namespace KeePass.App.Configuration
 			get { return m_strDbSaveAsPath; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strDbSaveAsPath = value;
 			}
 		}
@@ -157,7 +157,7 @@ namespace KeePass.App.Configuration
 			get { return m_vKeySources; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_vKeySources = value;
 			}
 		}
@@ -169,7 +169,7 @@ namespace KeePass.App.Configuration
 			get { return m_strCustomColors; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strCustomColors = value;
 			}
 		}
@@ -213,7 +213,7 @@ namespace KeePass.App.Configuration
 			get { return m_strWinFavsBaseName; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strWinFavsBaseName = value;
 			}
 		}
@@ -225,7 +225,7 @@ namespace KeePass.App.Configuration
 			get { return m_strWinFavsFilePrefix; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strWinFavsFilePrefix = value;
 			}
 		}
@@ -237,7 +237,7 @@ namespace KeePass.App.Configuration
 			get { return m_strWinFavsFileSuffix; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strWinFavsFileSuffix = value;
 			}
 		}
@@ -252,10 +252,10 @@ namespace KeePass.App.Configuration
 
 		private static string GetKeyAssocID(IOConnectionInfo iocDb)
 		{
-			if(iocDb == null) throw new ArgumentNullException("iocDb");
+			if (iocDb == null) throw new ArgumentNullException("iocDb");
 
 			string strDb = iocDb.Path;
-			if((strDb.Length > 0) && iocDb.IsLocalFile() &&
+			if ((strDb.Length > 0) && iocDb.IsLocalFile() &&
 				!UrlUtil.IsAbsolutePath(strDb))
 				strDb = UrlUtil.MakeAbsolutePath(WinUtil.GetExecutable(), strDb);
 
@@ -264,9 +264,9 @@ namespace KeePass.App.Configuration
 
 		private int GetKeyAssocIndex(string strID)
 		{
-			for(int i = 0; i < m_vKeySources.Count; ++i)
+			for (int i = 0; i < m_vKeySources.Count; ++i)
 			{
-				if(strID.Equals(m_vKeySources[i].DatabasePath, StrUtil.CaseIgnoreCmp))
+				if (strID.Equals(m_vKeySources[i].DatabasePath, StrUtil.CaseIgnoreCmp))
 					return i;
 			}
 
@@ -278,9 +278,9 @@ namespace KeePass.App.Configuration
 			string strID = GetKeyAssocID(iocDb);
 			int idx = GetKeyAssocIndex(strID);
 
-			if((cmpKey == null) || !m_bRememberKeySources)
+			if ((cmpKey == null) || !m_bRememberKeySources)
 			{
-				if(idx >= 0) m_vKeySources.RemoveAt(idx);
+				if (idx >= 0) m_vKeySources.RemoveAt(idx);
 				return;
 			}
 
@@ -291,12 +291,12 @@ namespace KeePass.App.Configuration
 			a.Password = (kcpPassword != null);
 
 			IUserKey kcpFile = cmpKey.GetUserKey(typeof(KcpKeyFile));
-			if(kcpFile != null)
+			if (kcpFile != null)
 			{
 				string strKeyFile = ((KcpKeyFile)kcpFile).Path;
-				if(!string.IsNullOrEmpty(strKeyFile) && !StrUtil.IsDataUri(strKeyFile))
+				if (!string.IsNullOrEmpty(strKeyFile) && !StrUtil.IsDataUri(strKeyFile))
 				{
-					if(!UrlUtil.IsAbsolutePath(strKeyFile))
+					if (!UrlUtil.IsAbsolutePath(strKeyFile))
 						strKeyFile = UrlUtil.MakeAbsolutePath(WinUtil.GetExecutable(),
 							strKeyFile);
 
@@ -305,7 +305,7 @@ namespace KeePass.App.Configuration
 			}
 
 			IUserKey kcpCustom = cmpKey.GetUserKey(typeof(KcpCustomKey));
-			if(kcpCustom != null)
+			if (kcpCustom != null)
 				a.KeyProvider = ((KcpCustomKey)kcpCustom).Name;
 
 			IUserKey kcpUser = cmpKey.GetUserKey(typeof(KcpUserAccount));
@@ -313,12 +313,12 @@ namespace KeePass.App.Configuration
 
 			bool bAtLeastOne = (a.Password || (a.KeyFilePath.Length > 0) ||
 				(a.KeyProvider.Length > 0) || a.UserAccount);
-			if(bAtLeastOne)
+			if (bAtLeastOne)
 			{
-				if(idx >= 0) m_vKeySources[idx] = a;
+				if (idx >= 0) m_vKeySources[idx] = a;
 				else m_vKeySources.Add(a);
 			}
-			else if(idx >= 0) m_vKeySources.RemoveAt(idx);
+			else if (idx >= 0) m_vKeySources.RemoveAt(idx);
 		}
 
 		public AceKeyAssoc GetKeySources(IOConnectionInfo iocDb)
@@ -326,9 +326,9 @@ namespace KeePass.App.Configuration
 			string strID = GetKeyAssocID(iocDb);
 			int idx = GetKeyAssocIndex(strID);
 
-			if(!m_bRememberKeySources) return null;
+			if (!m_bRememberKeySources) return null;
 
-			if(idx >= 0) return m_vKeySources[idx];
+			if (idx >= 0) return m_vKeySources[idx];
 			return null;
 		}
 	}

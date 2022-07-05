@@ -48,26 +48,26 @@ namespace KeePassLib.Keys
 
 		public void Add(KeyValidator kv)
 		{
-			if(kv == null) { Debug.Assert(false); throw new ArgumentNullException("kv"); }
+			if (kv == null) { Debug.Assert(false); throw new ArgumentNullException("kv"); }
 
 			m_l.Add(kv);
 		}
 
 		public bool Remove(KeyValidator kv)
 		{
-			if(kv == null) { Debug.Assert(false); throw new ArgumentNullException("kv"); }
+			if (kv == null) { Debug.Assert(false); throw new ArgumentNullException("kv"); }
 
 			return m_l.Remove(kv);
 		}
 
 		public string Validate(string strKey, KeyValidationType t)
 		{
-			if(strKey == null) { Debug.Assert(false); throw new ArgumentNullException("strKey"); }
+			if (strKey == null) { Debug.Assert(false); throw new ArgumentNullException("strKey"); }
 
-			foreach(KeyValidator kv in m_l)
+			foreach (KeyValidator kv in m_l)
 			{
 				string strError = kv.Validate(strKey, t);
-				if(strError != null) return strError;
+				if (strError != null) return strError;
 			}
 
 			return null;
@@ -75,9 +75,9 @@ namespace KeePassLib.Keys
 
 		public string Validate(byte[] pbKeyUtf8, KeyValidationType t)
 		{
-			if(pbKeyUtf8 == null) { Debug.Assert(false); throw new ArgumentNullException("pbKeyUtf8"); }
+			if (pbKeyUtf8 == null) { Debug.Assert(false); throw new ArgumentNullException("pbKeyUtf8"); }
 
-			if(m_l.Count == 0) return null;
+			if (m_l.Count == 0) return null;
 
 			string strKey = StrUtil.Utf8.GetString(pbKeyUtf8);
 			return Validate(strKey, t);

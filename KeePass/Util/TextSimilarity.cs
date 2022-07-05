@@ -28,23 +28,23 @@ namespace KeePass.Util
 	{
 		public static int LevenshteinDistance(string s, string t)
 		{
-			if(s == null) { Debug.Assert(false); throw new ArgumentNullException("s"); }
-			if(t == null) { Debug.Assert(false); throw new ArgumentNullException("t"); }
+			if (s == null) { Debug.Assert(false); throw new ArgumentNullException("s"); }
+			if (t == null) { Debug.Assert(false); throw new ArgumentNullException("t"); }
 
 			int m = s.Length, n = t.Length;
-			if(m <= 0) return n;
-			if(n <= 0) return m;
+			if (m <= 0) return n;
+			if (n <= 0) return m;
 
 			int[,] d = new int[m + 1, n + 1];
 
-			for(int k = 0; k <= m; ++k) d[k, 0] = k;
-			for(int l = 1; l <= n; ++l) d[0, l] = l;
+			for (int k = 0; k <= m; ++k) d[k, 0] = k;
+			for (int l = 1; l <= n; ++l) d[0, l] = l;
 
-			for(int i = 1; i <= m; ++i)
+			for (int i = 1; i <= m; ++i)
 			{
 				char s_i = s[i - 1];
 
-				for(int j = 1; j <= n; ++j)
+				for (int j = 1; j <= n; ++j)
 				{
 					int dSubst = ((s_i == t[j - 1]) ? 0 : 1);
 

@@ -81,7 +81,7 @@ namespace KeePass.Util
 			get { return m_strSelXPath; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); m_strSelXPath = string.Empty; }
+				if (value == null) { Debug.Assert(false); m_strSelXPath = string.Empty; }
 				else m_strSelXPath = value;
 			}
 		}
@@ -106,7 +106,7 @@ namespace KeePass.Util
 			get { return m_strFind; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); m_strFind = string.Empty; }
+				if (value == null) { Debug.Assert(false); m_strFind = string.Empty; }
 				else m_strFind = value;
 			}
 		}
@@ -117,7 +117,7 @@ namespace KeePass.Util
 			get { return m_strReplace; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); m_strReplace = string.Empty; }
+				if (value == null) { Debug.Assert(false); m_strReplace = string.Empty; }
 				else m_strReplace = value;
 			}
 		}
@@ -136,13 +136,13 @@ namespace KeePass.Util
 	{
 		public static void Replace(PwDatabase pd, XmlReplaceOptions opt)
 		{
-			if(pd == null) { Debug.Assert(false); return; }
-			if(opt == null) { Debug.Assert(false); return; }
+			if (pd == null) { Debug.Assert(false); return; }
+			if (opt == null) { Debug.Assert(false); return; }
 
 			StatusProgressForm dlg = null;
 			try
 			{
-				if((opt.Flags & XmlReplaceFlags.StatusUI) != XmlReplaceFlags.None)
+				if ((opt.Flags & XmlReplaceFlags.StatusUI) != XmlReplaceFlags.None)
 					dlg = StatusProgressForm.ConstructEx(KPRes.XmlReplace,
 						true, false, opt.ParentForm, KPRes.XmlReplace + "...");
 
@@ -150,15 +150,15 @@ namespace KeePass.Util
 			}
 			finally
 			{
-				if(dlg != null) StatusProgressForm.DestroyEx(dlg);
+				if (dlg != null) StatusProgressForm.DestroyEx(dlg);
 			}
 		}
 
 		private static void PerformXmlReplace(PwDatabase pd, XmlReplaceOptions opt,
 			IStatusLogger sl)
 		{
-			if(opt.SelectNodesXPath.Length == 0) return;
-			if(opt.Operation == XmlReplaceOp.None) return;
+			if (opt.SelectNodesXPath.Length == 0) return;
+			if (opt.Operation == XmlReplaceOp.None) return;
 
 			bool bRemove = (opt.Operation == XmlReplaceOp.RemoveNodes);
 			bool bReplace = (opt.Operation == XmlReplaceOp.ReplaceData);
@@ -166,7 +166,7 @@ namespace KeePass.Util
 			bool bRegex = ((opt.Flags & XmlReplaceFlags.Regex) != XmlReplaceFlags.None);
 
 			Regex rxFind = null;
-			if(bReplace && bRegex)
+			if (bReplace && bRegex)
 				rxFind = new Regex(opt.FindText, (bMatchCase ? RegexOptions.None :
 					RegexOptions.IgnoreCase));
 
@@ -178,23 +178,23 @@ namespace KeePass.Util
 
 			// XPathNavigators must be cloned to make them independent
 			List<XPathNavigator> lNodes = new List<XPathNavigator>();
-			while(xpIt.MoveNext()) lNodes.Add(xpIt.Current.Clone());
+			while (xpIt.MoveNext()) lNodes.Add(xpIt.Current.Clone());
 
-			if(lNodes.Count == 0) return;
+			if (lNodes.Count == 0) return;
 
-			for(int i = lNodes.Count - 1; i >= 0; --i)
+			for (int i = lNodes.Count - 1; i >= 0; --i)
 			{
-				if((sl != null) && !sl.ContinueWork()) return;
+				if ((sl != null) && !sl.ContinueWork()) return;
 
 				XPathNavigator xpNav = lNodes[i];
 
-				if(bRemove) xpNav.DeleteSelf();
-				else if(bReplace) ApplyReplace(xpNav, opt, rxFind);
+				if (bRemove) xpNav.DeleteSelf();
+				else if (bReplace) ApplyReplace(xpNav, opt, rxFind);
 				else { Debug.Assert(false); } // Unknown action
 			}
 
 			MemoryStream msMod = new MemoryStream();
-			using(XmlWriter xw = XmlUtilEx.CreateXmlWriter(msMod))
+			using (XmlWriter xw = XmlUtilEx.CreateXmlWriter(msMod))
 			{
 				xd.Save(xw);
 			}
@@ -208,7 +208,7 @@ namespace KeePass.Util
 				KdbxFile kdbxMod = new KdbxFile(pdMod);
 				kdbxMod.Load(msMod, KdbxFormat.PlainXml, sl);
 			}
-			catch(Exception)
+			catch (Exception)
 			{
 				throw new Exception(KPRes.XmlModInvalid + MessageService.NewParagraph +
 					KPRes.OpAborted + MessageService.NewParagraph +
@@ -227,30 +227,30 @@ namespace KeePass.Util
 			Regex rxFind)
 		{
 			string strData;
-			if(opt.Data == XmlReplaceData.InnerText) strData = xpNav.Value;
-			else if(opt.Data == XmlReplaceData.InnerXml) strData = xpNav.InnerXml;
-			else if(opt.Data == XmlReplaceData.OuterXml) strData = xpNav.OuterXml;
+			if (opt.Data == XmlReplaceData.InnerText) strData = xpNav.Value;
+			else if (opt.Data == XmlReplaceData.InnerXml) strData = xpNav.InnerXml;
+			else if (opt.Data == XmlReplaceData.OuterXml) strData = xpNav.OuterXml;
 			else return;
-			if(strData == null) { Debug.Assert(false); strData = string.Empty; }
+			if (strData == null) { Debug.Assert(false); strData = string.Empty; }
 
 			string str = null;
-			if(rxFind != null) str = rxFind.Replace(strData, opt.ReplaceText);
+			if (rxFind != null) str = rxFind.Replace(strData, opt.ReplaceText);
 			else
 			{
-				if((opt.Flags & XmlReplaceFlags.CaseSensitive) != XmlReplaceFlags.None)
+				if ((opt.Flags & XmlReplaceFlags.CaseSensitive) != XmlReplaceFlags.None)
 					str = strData.Replace(opt.FindText, opt.ReplaceText);
 				else
 					str = StrUtil.ReplaceCaseInsensitive(strData, opt.FindText,
 						opt.ReplaceText);
 			}
 
-			if((str != null) && (str != strData))
+			if ((str != null) && (str != strData))
 			{
-				if(opt.Data == XmlReplaceData.InnerText)
+				if (opt.Data == XmlReplaceData.InnerText)
 					xpNav.SetValue(str);
-				else if(opt.Data == XmlReplaceData.InnerXml)
+				else if (opt.Data == XmlReplaceData.InnerXml)
 					xpNav.InnerXml = str;
-				else if(opt.Data == XmlReplaceData.OuterXml)
+				else if (opt.Data == XmlReplaceData.OuterXml)
 					xpNav.OuterXml = str;
 				else { Debug.Assert(false); }
 			}
@@ -260,43 +260,43 @@ namespace KeePass.Util
 		{
 			PwGroup pgRootOrg = pdOrg.RootGroup;
 			PwGroup pgRootNew = pd.RootGroup;
-			if(pgRootNew == null) { Debug.Assert(false); return; }
+			if (pgRootNew == null) { Debug.Assert(false); return; }
 
 			const PwCompareOptions cmpOpt = (PwCompareOptions.IgnoreParentGroup |
 				PwCompareOptions.IgnoreHistory | PwCompareOptions.NullEmptyEquivStd);
 			const MemProtCmpMode cmpMem = MemProtCmpMode.CustomOnly;
 			DateTime dtNow = DateTime.UtcNow;
 
-			GroupHandler ghOrg = delegate(PwGroup pg)
+			GroupHandler ghOrg = delegate (PwGroup pg)
 			{
 				PwGroup pgNew = pgRootNew.FindGroup(pg.Uuid, true);
-				if(pgNew == null)
+				if (pgNew == null)
 				{
 					AddDeletedObject(pd, pg.Uuid);
 					return true;
 				}
 
-				if(!pgNew.EqualsGroup(pg, (cmpOpt | PwCompareOptions.PropertiesOnly),
+				if (!pgNew.EqualsGroup(pg, (cmpOpt | PwCompareOptions.PropertiesOnly),
 					cmpMem))
 					pgNew.Touch(true, false);
 
 				PwGroup pgParentA = pg.ParentGroup;
 				PwGroup pgParentB = pgNew.ParentGroup;
-				if((pgParentA != null) && (pgParentB != null))
+				if ((pgParentA != null) && (pgParentB != null))
 				{
-					if(!pgParentA.Uuid.Equals(pgParentB.Uuid))
+					if (!pgParentA.Uuid.Equals(pgParentB.Uuid))
 						pgNew.LocationChanged = dtNow;
 				}
-				else if((pgParentA == null) && (pgParentB == null)) { }
+				else if ((pgParentA == null) && (pgParentB == null)) { }
 				else pgNew.LocationChanged = dtNow;
 
 				return true;
 			};
 
-			EntryHandler ehOrg = delegate(PwEntry pe)
+			EntryHandler ehOrg = delegate (PwEntry pe)
 			{
 				PwEntry peNew = pgRootNew.FindEntry(pe.Uuid, true);
-				if(peNew == null)
+				if (peNew == null)
 				{
 					AddDeletedObject(pd, pe.Uuid);
 					return true;
@@ -304,20 +304,20 @@ namespace KeePass.Util
 
 				// Restore history entries
 				peNew.History = pe.History.CloneDeep();
-				foreach(PwEntry peHistNew in peNew.History)
+				foreach (PwEntry peHistNew in peNew.History)
 					peHistNew.ParentGroup = peNew.ParentGroup;
 
-				if(!peNew.EqualsEntry(pe, cmpOpt, cmpMem))
+				if (!peNew.EqualsEntry(pe, cmpOpt, cmpMem))
 					peNew.Touch(true, false);
 
 				PwGroup pgParentA = pe.ParentGroup;
 				PwGroup pgParentB = peNew.ParentGroup;
-				if((pgParentA != null) && (pgParentB != null))
+				if ((pgParentA != null) && (pgParentB != null))
 				{
-					if(!pgParentA.Uuid.Equals(pgParentB.Uuid))
+					if (!pgParentA.Uuid.Equals(pgParentB.Uuid))
 						peNew.LocationChanged = dtNow;
 				}
-				else if((pgParentA == null) && (pgParentB == null)) { }
+				else if ((pgParentA == null) && (pgParentB == null)) { }
 				else peNew.LocationChanged = dtNow;
 
 				return true;
@@ -328,9 +328,9 @@ namespace KeePass.Util
 
 		private static void AddDeletedObject(PwDatabase pd, PwUuid pu)
 		{
-			foreach(PwDeletedObject pdo in pd.DeletedObjects)
+			foreach (PwDeletedObject pdo in pd.DeletedObjects)
 			{
-				if(pdo.Uuid.Equals(pu)) { Debug.Assert(false); return; }
+				if (pdo.Uuid.Equals(pu)) { Debug.Assert(false); return; }
 			}
 
 			PwDeletedObject pdoNew = new PwDeletedObject(pu, DateTime.UtcNow);
@@ -341,12 +341,12 @@ namespace KeePass.Util
 		{
 			List<string> l = PwDefs.GetStandardFields();
 
-			EntryHandler eh = delegate(PwEntry pe)
+			EntryHandler eh = delegate (PwEntry pe)
 			{
-				foreach(string strName in l)
+				foreach (string strName in l)
 				{
 					ProtectedString ps = pe.Strings.Get(strName);
-					if(ps == null)
+					if (ps == null)
 						pe.Strings.Set(strName, new ProtectedString(
 							pd.MemoryProtection.GetProtection(strName), string.Empty));
 				}

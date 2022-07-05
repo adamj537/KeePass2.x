@@ -54,13 +54,13 @@ namespace KeePass.Util.Spr
 		/// </summary>
 		private static uint HashContext(SprContext ctx)
 		{
-			if(ctx == null) { Debug.Assert(false); return 0; }
+			if (ctx == null) { Debug.Assert(false); return 0; }
 
 			uint u = 0;
 
-			if(ctx.ForcePlainTextPasswords) u |= 1;
-			if(ctx.EncodeForCommandLine) u |= 2;
-			if(ctx.EncodeAsAutoTypeSequence) u |= 4;
+			if (ctx.ForcePlainTextPasswords) u |= 1;
+			if (ctx.EncodeForCommandLine) u |= 2;
+			if (ctx.EncodeAsAutoTypeSequence) u |= 4;
 
 			return u;
 		}
@@ -72,13 +72,13 @@ namespace KeePass.Util.Spr
 
 		private string Get(string strRef, uint uCtx)
 		{
-			if(strRef == null) { Debug.Assert(false); return null; }
+			if (strRef == null) { Debug.Assert(false); return null; }
 
-			foreach(SprRefCacheItem ci in m_l)
+			foreach (SprRefCacheItem ci in m_l)
 			{
-				if(ci.Context != uCtx) continue;
+				if (ci.Context != uCtx) continue;
 
-				if(string.Equals(strRef, ci.Ref, StrUtil.CaseIgnoreCmp))
+				if (string.Equals(strRef, ci.Ref, StrUtil.CaseIgnoreCmp))
 					return ci.Value;
 			}
 
@@ -87,12 +87,12 @@ namespace KeePass.Util.Spr
 
 		public bool Add(string strRef, string strValue, SprContext ctx)
 		{
-			if(strRef == null) throw new ArgumentNullException("strRef");
-			if(strValue == null) throw new ArgumentNullException("strValue");
+			if (strRef == null) throw new ArgumentNullException("strRef");
+			if (strValue == null) throw new ArgumentNullException("strValue");
 
 			uint uCtx = HashContext(ctx);
 
-			if(Get(strRef, uCtx) != null)
+			if (Get(strRef, uCtx) != null)
 			{
 				Debug.Assert(false);
 				return false; // Exists already, do not overwrite
@@ -104,14 +104,14 @@ namespace KeePass.Util.Spr
 
 		public string Fill(string strText, SprContext ctx)
 		{
-			if(strText == null) { Debug.Assert(false); return string.Empty; }
+			if (strText == null) { Debug.Assert(false); return string.Empty; }
 
 			string str = strText;
 			uint uCtx = HashContext(ctx);
 
-			foreach(SprRefCacheItem ci in m_l)
+			foreach (SprRefCacheItem ci in m_l)
 			{
-				if(ci.Context != uCtx) continue;
+				if (ci.Context != uCtx) continue;
 
 				// str = str.Replace(ci.Ref, ci.Value);
 				str = StrUtil.ReplaceCaseInsensitive(str, ci.Ref, ci.Value);

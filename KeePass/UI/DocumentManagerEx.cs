@@ -49,11 +49,11 @@ namespace KeePass.UI
 			get { return m_dsActive; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 
-				for(int i = 0; i < m_vDocs.Count; ++i)
+				for (int i = 0; i < m_vDocs.Count; ++i)
 				{
-					if(m_vDocs[i] == value)
+					if (m_vDocs[i] == value)
 					{
 						m_dsActive = value;
 
@@ -71,11 +71,11 @@ namespace KeePass.UI
 			get { return m_dsActive.Database; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 
-				for(int i = 0; i < m_vDocs.Count; ++i)
+				for (int i = 0; i < m_vDocs.Count; ++i)
 				{
-					if(m_vDocs[i].Database == value)
+					if (m_vDocs[i].Database == value)
 					{
 						m_dsActive = m_vDocs[i];
 
@@ -102,7 +102,7 @@ namespace KeePass.UI
 		{
 			PwDocument ds = new PwDocument();
 
-			if((m_vDocs.Count == 1) && (!m_vDocs[0].Database.IsOpen) &&
+			if ((m_vDocs.Count == 1) && (!m_vDocs[0].Database.IsOpen) &&
 				(m_vDocs[0].LockedIoc.Path.Length == 0))
 			{
 				m_vDocs.RemoveAt(0);
@@ -110,7 +110,7 @@ namespace KeePass.UI
 			}
 
 			m_vDocs.Add(ds);
-			if(bMakeActive) m_dsActive = ds;
+			if (bMakeActive) m_dsActive = ds;
 
 			NotifyActiveDocumentSelected();
 			return ds;
@@ -119,23 +119,23 @@ namespace KeePass.UI
 		public void CloseDatabase(PwDatabase pwDatabase)
 		{
 			int iFoundPos = -1;
-			for(int i = 0; i < m_vDocs.Count; ++i)
+			for (int i = 0; i < m_vDocs.Count; ++i)
 			{
-				if(m_vDocs[i].Database == pwDatabase)
+				if (m_vDocs[i].Database == pwDatabase)
 				{
 					iFoundPos = i;
 					break;
 				}
 			}
-			if(iFoundPos < 0) { Debug.Assert(false); return; }
+			if (iFoundPos < 0) { Debug.Assert(false); return; }
 
 			bool bClosingActive = (m_vDocs[iFoundPos] == m_dsActive);
 
 			m_vDocs.RemoveAt(iFoundPos);
-			if(m_vDocs.Count == 0)
+			if (m_vDocs.Count == 0)
 				m_vDocs.Add(new PwDocument());
 
-			if(bClosingActive)
+			if (bClosingActive)
 			{
 				int iNewActive = Math.Min(iFoundPos, m_vDocs.Count - 1);
 				m_dsActive = m_vDocs[iNewActive];
@@ -148,9 +148,9 @@ namespace KeePass.UI
 		{
 			List<PwDatabase> list = new List<PwDatabase>();
 
-			foreach(PwDocument ds in m_vDocs)
+			foreach (PwDocument ds in m_vDocs)
 			{
-				if(ds.Database.IsOpen)
+				if (ds.Database.IsOpen)
 					list.Add(ds.Database);
 			}
 
@@ -161,14 +161,14 @@ namespace KeePass.UI
 		{
 			List<PwDocument> lDocs = new List<PwDocument>(m_vDocs);
 
-			if(iMoveActive != 0)
+			if (iMoveActive != 0)
 			{
-				for(int i = 0; i < lDocs.Count; ++i)
+				for (int i = 0; i < lDocs.Count; ++i)
 				{
-					if(lDocs[i] == m_dsActive)
+					if (lDocs[i] == m_dsActive)
 					{
 						lDocs.RemoveAt(i);
-						if(iMoveActive < 0) lDocs.Insert(0, m_dsActive);
+						if (iMoveActive < 0) lDocs.Insert(0, m_dsActive);
 						else lDocs.Add(m_dsActive);
 						break;
 					}
@@ -182,28 +182,28 @@ namespace KeePass.UI
 		{
 			RememberActiveDocument();
 
-			if(this.ActiveDocumentSelected != null)
+			if (this.ActiveDocumentSelected != null)
 				this.ActiveDocumentSelected(null, EventArgs.Empty);
 		}
 
 		internal void RememberActiveDocument()
 		{
-			if(m_dsActive == null) { Debug.Assert(false); return; }
+			if (m_dsActive == null) { Debug.Assert(false); return; }
 
-			if(m_dsActive.LockedIoc != null)
+			if (m_dsActive.LockedIoc != null)
 				SetLastUsedFile(m_dsActive.LockedIoc);
-			if(m_dsActive.Database != null)
+			if (m_dsActive.Database != null)
 				SetLastUsedFile(m_dsActive.Database.IOConnectionInfo);
 		}
 
 		private static void SetLastUsedFile(IOConnectionInfo ioc)
 		{
-			if(ioc == null) { Debug.Assert(false); return; }
+			if (ioc == null) { Debug.Assert(false); return; }
 
 			AceApplication aceApp = Program.Config.Application;
-			if(aceApp.Start.OpenLastFile)
+			if (aceApp.Start.OpenLastFile)
 			{
-				if(!string.IsNullOrEmpty(ioc.Path))
+				if (!string.IsNullOrEmpty(ioc.Path))
 					aceApp.LastUsedFile = ioc.CloneDeep();
 			}
 			else aceApp.LastUsedFile = new IOConnectionInfo();
@@ -211,11 +211,11 @@ namespace KeePass.UI
 
 		public PwDocument FindDocument(PwDatabase pwDatabase)
 		{
-			if(pwDatabase == null) throw new ArgumentNullException("pwDatabase");
+			if (pwDatabase == null) throw new ArgumentNullException("pwDatabase");
 
-			foreach(PwDocument ds in m_vDocs)
+			foreach (PwDocument ds in m_vDocs)
 			{
-				if(ds.Database == pwDatabase) return ds;
+				if (ds.Database == pwDatabase) return ds;
 			}
 
 			return null;
@@ -229,19 +229,19 @@ namespace KeePass.UI
 		/// <returns>Database containing the entry.</returns>
 		public PwDatabase FindContainerOf(PwEntry peObj)
 		{
-			if(peObj == null) return null; // No assert
+			if (peObj == null) return null; // No assert
 
 			PwGroup pg = peObj.ParentGroup;
-			if(pg != null)
+			if (pg != null)
 			{
-				while(pg.ParentGroup != null) { pg = pg.ParentGroup; }
+				while (pg.ParentGroup != null) { pg = pg.ParentGroup; }
 
-				foreach(PwDocument ds in m_vDocs)
+				foreach (PwDocument ds in m_vDocs)
 				{
 					PwDatabase pd = ds.Database;
-					if((pd == null) || !pd.IsOpen) continue;
+					if ((pd == null) || !pd.IsOpen) continue;
 
-					if(object.ReferenceEquals(pd.RootGroup, pg))
+					if (object.ReferenceEquals(pd.RootGroup, pg))
 						return pd;
 				}
 
@@ -254,14 +254,14 @@ namespace KeePass.UI
 		private PwDatabase SlowFindContainerOf(PwEntry peObj)
 		{
 			PwDatabase pdRet = null;
-			foreach(PwDocument ds in m_vDocs)
+			foreach (PwDocument ds in m_vDocs)
 			{
 				PwDatabase pd = ds.Database;
-				if((pd == null) || !pd.IsOpen) continue;
+				if ((pd == null) || !pd.IsOpen) continue;
 
-				EntryHandler eh = delegate(PwEntry pe)
+				EntryHandler eh = delegate (PwEntry pe)
 				{
-					if(object.ReferenceEquals(pe, peObj))
+					if (object.ReferenceEquals(pe, peObj))
 					{
 						pdRet = pd;
 						return false; // Stop traversal
@@ -271,7 +271,7 @@ namespace KeePass.UI
 				};
 
 				pd.RootGroup.TraverseTree(TraversalMethod.PreOrder, null, eh);
-				if(pdRet != null) return pdRet;
+				if (pdRet != null) return pdRet;
 			}
 
 			return null;
@@ -299,7 +299,7 @@ namespace KeePass.UI
 			get { return m_ioLockedIoc; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 				m_ioLockedIoc = value;
 			}
 		}

@@ -63,7 +63,7 @@ namespace KeePassLib.Collections
 		public PwObjectList<T> CloneDeep()
 		{
 			PwObjectList<T> l = new PwObjectList<T>();
-			foreach(T o in m_l) l.Add(o.CloneDeep());
+			foreach (T o in m_l) l.Add(o.CloneDeep());
 			return l;
 		}
 
@@ -81,25 +81,25 @@ namespace KeePassLib.Collections
 
 		public void Add(T o)
 		{
-			if(o == null) { Debug.Assert(false); throw new ArgumentNullException("o"); }
+			if (o == null) { Debug.Assert(false); throw new ArgumentNullException("o"); }
 
 			m_l.Add(o);
 		}
 
 		public void Add(PwObjectList<T> l)
 		{
-			if(l == null) { Debug.Assert(false); throw new ArgumentNullException("l"); }
+			if (l == null) { Debug.Assert(false); throw new ArgumentNullException("l"); }
 
 			m_l.AddRange(l.m_l);
 		}
 
 		public void Add(List<T> l)
 		{
-			if(l == null) { Debug.Assert(false); throw new ArgumentNullException("l"); }
+			if (l == null) { Debug.Assert(false); throw new ArgumentNullException("l"); }
 
-			foreach(T o in l)
+			foreach (T o in l)
 			{
-				if(o == null) { Debug.Assert(false); throw new ArgumentOutOfRangeException("l"); }
+				if (o == null) { Debug.Assert(false); throw new ArgumentOutOfRangeException("l"); }
 			}
 
 			m_l.AddRange(l);
@@ -107,37 +107,37 @@ namespace KeePassLib.Collections
 
 		public void Insert(uint uIndex, T o)
 		{
-			if(o == null) { Debug.Assert(false); throw new ArgumentNullException("o"); }
+			if (o == null) { Debug.Assert(false); throw new ArgumentNullException("o"); }
 
 			m_l.Insert((int)uIndex, o);
 		}
 
 		public T GetAt(uint uIndex)
 		{
-			if(uIndex >= m_l.Count) { Debug.Assert(false); throw new ArgumentOutOfRangeException("uIndex"); }
+			if (uIndex >= m_l.Count) { Debug.Assert(false); throw new ArgumentOutOfRangeException("uIndex"); }
 
 			return m_l[(int)uIndex];
 		}
 
 		public void SetAt(uint uIndex, T o)
 		{
-			if(uIndex >= m_l.Count) { Debug.Assert(false); throw new ArgumentOutOfRangeException("uIndex"); }
-			if(o == null) { Debug.Assert(false); throw new ArgumentNullException("o"); }
+			if (uIndex >= m_l.Count) { Debug.Assert(false); throw new ArgumentOutOfRangeException("uIndex"); }
+			if (o == null) { Debug.Assert(false); throw new ArgumentNullException("o"); }
 
 			m_l[(int)uIndex] = o;
 		}
 
 		public List<T> GetRange(uint uStartIndexIncl, uint uEndIndexIncl)
 		{
-			if(uStartIndexIncl >= (uint)m_l.Count)
+			if (uStartIndexIncl >= (uint)m_l.Count)
 				throw new ArgumentOutOfRangeException("uStartIndexIncl");
-			if(uEndIndexIncl >= (uint)m_l.Count)
+			if (uEndIndexIncl >= (uint)m_l.Count)
 				throw new ArgumentOutOfRangeException("uEndIndexIncl");
-			if(uStartIndexIncl > uEndIndexIncl)
+			if (uStartIndexIncl > uEndIndexIncl)
 				throw new ArgumentException();
 
 			List<T> l = new List<T>((int)(uEndIndexIncl - uStartIndexIncl) + 1);
-			for(uint u = uStartIndexIncl; u <= uEndIndexIncl; ++u)
+			for (uint u = uStartIndexIncl; u <= uEndIndexIncl; ++u)
 				l.Add(m_l[(int)u]);
 
 			return l;
@@ -145,14 +145,14 @@ namespace KeePassLib.Collections
 
 		public int IndexOf(T o)
 		{
-			if(o == null) { Debug.Assert(false); throw new ArgumentNullException("o"); }
+			if (o == null) { Debug.Assert(false); throw new ArgumentNullException("o"); }
 
 			return m_l.IndexOf(o);
 		}
 
 		public bool Remove(T o)
 		{
-			if(o == null) { Debug.Assert(false); throw new ArgumentNullException("o"); }
+			if (o == null) { Debug.Assert(false); throw new ArgumentNullException("o"); }
 
 			return m_l.Remove(o);
 		}
@@ -164,21 +164,21 @@ namespace KeePassLib.Collections
 
 		public void MoveOne(T o, bool bUp)
 		{
-			if(o == null) { Debug.Assert(false); throw new ArgumentNullException("o"); }
+			if (o == null) { Debug.Assert(false); throw new ArgumentNullException("o"); }
 
 			int c = m_l.Count;
-			if(c <= 1) return;
+			if (c <= 1) return;
 
 			int i = m_l.IndexOf(o);
-			if(i < 0) { Debug.Assert(false); return; }
+			if (i < 0) { Debug.Assert(false); return; }
 
-			if(bUp && (i != 0)) // No assert for top item
+			if (bUp && (i != 0)) // No assert for top item
 			{
 				T oTemp = m_l[i - 1];
 				m_l[i - 1] = m_l[i];
 				m_l[i] = oTemp;
 			}
-			else if(!bUp && (i != (c - 1))) // No assert for bottom item
+			else if (!bUp && (i != (c - 1))) // No assert for bottom item
 			{
 				T oTemp = m_l[i + 1];
 				m_l[i + 1] = m_l[i];
@@ -188,15 +188,15 @@ namespace KeePassLib.Collections
 
 		public void MoveOne(T[] v, bool bUp)
 		{
-			if(v == null) { Debug.Assert(false); throw new ArgumentNullException("v"); }
+			if (v == null) { Debug.Assert(false); throw new ArgumentNullException("v"); }
 
 			List<int> lIndices = new List<int>();
-			foreach(T o in v)
+			foreach (T o in v)
 			{
-				if(o == null) { Debug.Assert(false); continue; }
+				if (o == null) { Debug.Assert(false); continue; }
 
 				int p = m_l.IndexOf(o);
-				if(p >= 0) lIndices.Add(p);
+				if (p >= 0) lIndices.Add(p);
 				else { Debug.Assert(false); }
 			}
 
@@ -205,32 +205,32 @@ namespace KeePassLib.Collections
 
 		public void MoveOne(int[] vIndices, bool bUp)
 		{
-			if(vIndices == null) { Debug.Assert(false); throw new ArgumentNullException("vIndices"); }
+			if (vIndices == null) { Debug.Assert(false); throw new ArgumentNullException("vIndices"); }
 
 			int n = m_l.Count;
-			if(n <= 1) return; // No moving possible
+			if (n <= 1) return; // No moving possible
 
 			int m = vIndices.Length;
-			if(m == 0) return; // Nothing to move
+			if (m == 0) return; // Nothing to move
 
 			int[] v = new int[m];
 			Array.Copy(vIndices, v, m);
 			Array.Sort<int>(v);
 
-			if((v[0] < 0) || (v[m - 1] >= n)) { Debug.Assert(false); return; }
-			if((bUp && (v[0] == 0)) || (!bUp && (v[m - 1] == (n - 1))))
+			if ((v[0] < 0) || (v[m - 1] >= n)) { Debug.Assert(false); return; }
+			if ((bUp && (v[0] == 0)) || (!bUp && (v[m - 1] == (n - 1))))
 				return; // Moving as a block is not possible
 
 			int iStart = (bUp ? 0 : (m - 1));
 			int iExcl = (bUp ? m : -1);
 			int iStep = (bUp ? 1 : -1);
 
-			for(int i = iStart; i != iExcl; i += iStep)
+			for (int i = iStart; i != iExcl; i += iStep)
 			{
 				int p = v[i];
 				T o = m_l[p];
 
-				if(bUp)
+				if (bUp)
 				{
 					m_l[p] = m_l[p - 1];
 					m_l[p - 1] = o;
@@ -245,18 +245,18 @@ namespace KeePassLib.Collections
 
 		public void MoveTopBottom(T[] v, bool bTop)
 		{
-			if(v == null) { Debug.Assert(false); throw new ArgumentNullException("v"); }
-			if(v.Length == 0) return;
-			if(v.Length > m_l.Count) { Debug.Assert(false); return; }
+			if (v == null) { Debug.Assert(false); throw new ArgumentNullException("v"); }
+			if (v.Length == 0) return;
+			if (v.Length > m_l.Count) { Debug.Assert(false); return; }
 
 			List<T> lMoved = new List<T>(v.Length);
 			List<T> lOthers = new List<T>(m_l.Count - v.Length);
-			foreach(T o in m_l)
+			foreach (T o in m_l)
 			{
-				if(Array.IndexOf(v, o) >= 0) lMoved.Add(o);
+				if (Array.IndexOf(v, o) >= 0) lMoved.Add(o);
 				else lOthers.Add(o);
 			}
-			if(lMoved.Count != v.Length) { Debug.Assert(false); return; }
+			if (lMoved.Count != v.Length) { Debug.Assert(false); return; }
 
 			m_l = new List<T>(m_l.Count);
 			m_l.AddRange(bTop ? lMoved : lOthers);
@@ -265,30 +265,30 @@ namespace KeePassLib.Collections
 
 		public void Sort(IComparer<T> tComparer)
 		{
-			if(tComparer == null) throw new ArgumentNullException("tComparer");
+			if (tComparer == null) throw new ArgumentNullException("tComparer");
 
 			m_l.Sort(tComparer);
 		}
 
 		public void Sort(Comparison<T> tComparison)
 		{
-			if(tComparison == null) throw new ArgumentNullException("tComparison");
+			if (tComparison == null) throw new ArgumentNullException("tComparison");
 
 			m_l.Sort(tComparison);
 		}
 
 		public static PwObjectList<T> FromArray(T[] v)
 		{
-			if(v == null) throw new ArgumentNullException("v");
+			if (v == null) throw new ArgumentNullException("v");
 
 			PwObjectList<T> l = new PwObjectList<T>();
-			foreach(T o in v) l.Add(o);
+			foreach (T o in v) l.Add(o);
 			return l;
 		}
 
 		public static PwObjectList<T> FromList(List<T> l)
 		{
-			if(l == null) throw new ArgumentNullException("l");
+			if (l == null) throw new ArgumentNullException("l");
 
 			PwObjectList<T> lNew = new PwObjectList<T>();
 			lNew.Add(l);

@@ -39,7 +39,7 @@ namespace KeePass.Forms
 
 		public void InitEx(string strUrl, PwGroup pgDataSource)
 		{
-			if(strUrl != null) m_strInitialUrl = strUrl;
+			if (strUrl != null) m_strInitialUrl = strUrl;
 
 			// m_pgDataSource = pgDataSource; // Not used yet
 		}
@@ -56,7 +56,7 @@ namespace KeePass.Forms
 
 			this.Icon = AppIcons.Default;
 
-			if(m_strInitialUrl.Length > 0)
+			if (m_strInitialUrl.Length > 0)
 				m_webBrowser.Navigate(m_strInitialUrl);
 
 			ProcessResize();
@@ -74,7 +74,7 @@ namespace KeePass.Forms
 			m_btnForward.Enabled = m_webBrowser.CanGoForward;
 
 			string strTitle = m_webBrowser.DocumentTitle;
-			if(strTitle.Length > 0) strTitle += " - ";
+			if (strTitle.Length > 0) strTitle += " - ";
 			this.Text = strTitle + PwDefs.ShortProductName;
 		}
 
@@ -132,7 +132,7 @@ namespace KeePass.Forms
 
 		private void OnTbUrlKeyDown(object sender, KeyEventArgs e)
 		{
-			if(e.KeyCode == Keys.Return) // Return == Enter
+			if (e.KeyCode == Keys.Return) // Return == Enter
 			{
 				UIUtil.SetHandled(e, true);
 				OnBtnGo(sender, e);

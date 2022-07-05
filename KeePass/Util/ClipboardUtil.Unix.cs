@@ -64,9 +64,9 @@ namespace KeePass.Util
 
 			string str = NativeLib.RunConsoleApp("xsel",
 				"--output --clipboard", null, XSelFlags);
-			if(str != null) return str;
+			if (str != null) return str;
 
-			if(Clipboard.ContainsText())
+			if (Clipboard.ContainsText())
 				return (Clipboard.GetText() ?? string.Empty);
 
 			return string.Empty;
@@ -80,10 +80,10 @@ namespace KeePass.Util
 			//	"-in -selection clipboard", str);
 			// if(r != null) return;
 
-			if(string.IsNullOrEmpty(str))
+			if (string.IsNullOrEmpty(str))
 			{
 				// xsel with an empty input can hang, thus use --clear
-				if(NativeLib.RunConsoleApp("xsel", "--clear --primary",
+				if (NativeLib.RunConsoleApp("xsel", "--clear --primary",
 					null, XSelFlags) != null)
 				{
 					NativeLib.RunConsoleApp("xsel", "--clear --clipboard",
@@ -92,12 +92,12 @@ namespace KeePass.Util
 				}
 
 				try { Clipboard.Clear(); }
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 				return;
 			}
 
 			// xsel does not support --primary and --clipboard together
-			if(NativeLib.RunConsoleApp("xsel", "--input --primary",
+			if (NativeLib.RunConsoleApp("xsel", "--input --primary",
 				str, XSelFlags) != null)
 			{
 				NativeLib.RunConsoleApp("xsel", "--input --clipboard",
@@ -106,7 +106,7 @@ namespace KeePass.Util
 			}
 
 			try { Clipboard.SetText(str); }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		/* private static bool GtkGetClipboard(out Type t, out object o)

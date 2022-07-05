@@ -49,24 +49,24 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 
 		public void Add(CustomPwGenerator pwg)
 		{
-			if(pwg == null) throw new ArgumentNullException("pwg");
+			if (pwg == null) throw new ArgumentNullException("pwg");
 
 			PwUuid uuid = pwg.Uuid;
-			if(uuid == null) throw new ArgumentException();
+			if (uuid == null) throw new ArgumentException();
 
 			int nIndex = FindIndex(uuid);
 
-			if(nIndex >= 0) m_vGens[nIndex] = pwg; // Replace
+			if (nIndex >= 0) m_vGens[nIndex] = pwg; // Replace
 			else m_vGens.Add(pwg);
 		}
 
 		public CustomPwGenerator Find(PwUuid uuid)
 		{
-			if(uuid == null) throw new ArgumentNullException("uuid");
+			if (uuid == null) throw new ArgumentNullException("uuid");
 
-			foreach(CustomPwGenerator pwg in m_vGens)
+			foreach (CustomPwGenerator pwg in m_vGens)
 			{
-				if(uuid.Equals(pwg.Uuid)) return pwg;
+				if (uuid.Equals(pwg.Uuid)) return pwg;
 			}
 
 			return null;
@@ -74,11 +74,11 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 
 		public CustomPwGenerator Find(string strName)
 		{
-			if(strName == null) throw new ArgumentNullException("strName");
+			if (strName == null) throw new ArgumentNullException("strName");
 
-			foreach(CustomPwGenerator pwg in m_vGens)
+			foreach (CustomPwGenerator pwg in m_vGens)
 			{
-				if(pwg.Name == strName) return pwg;
+				if (pwg.Name == strName) return pwg;
 			}
 
 			return null;
@@ -86,11 +86,11 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 
 		private int FindIndex(PwUuid uuid)
 		{
-			if(uuid == null) throw new ArgumentNullException("uuid");
+			if (uuid == null) throw new ArgumentNullException("uuid");
 
-			for(int i = 0; i < m_vGens.Count; ++i)
+			for (int i = 0; i < m_vGens.Count; ++i)
 			{
-				if(uuid.Equals(m_vGens[i].Uuid)) return i;
+				if (uuid.Equals(m_vGens[i].Uuid)) return i;
 			}
 
 			return -1;
@@ -98,10 +98,10 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 
 		public bool Remove(PwUuid uuid)
 		{
-			if(uuid == null) throw new ArgumentNullException("uuid");
+			if (uuid == null) throw new ArgumentNullException("uuid");
 
 			int nIndex = FindIndex(uuid);
-			if(nIndex < 0) return false;
+			if (nIndex < 0) return false;
 
 			m_vGens.RemoveAt(nIndex);
 			return true;

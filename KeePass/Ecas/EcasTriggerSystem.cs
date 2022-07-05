@@ -52,7 +52,7 @@ namespace KeePass.Ecas
 			get { return m_vTriggers; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_vTriggers = value;
 			}
 		}
@@ -77,7 +77,7 @@ namespace KeePass.Ecas
 
 			c.m_bEnabled = m_bEnabled;
 
-			for(uint i = 0; i < m_vTriggers.UCount; ++i)
+			for (uint i = 0; i < m_vTriggers.UCount; ++i)
 				c.m_vTriggers.Add(m_vTriggers.GetAt(i).CloneDeep());
 
 			return c;
@@ -85,31 +85,31 @@ namespace KeePass.Ecas
 
 		internal void SetToInitialState()
 		{
-			for(uint i = 0; i < m_vTriggers.UCount; ++i)
+			for (uint i = 0; i < m_vTriggers.UCount; ++i)
 				m_vTriggers.GetAt(i).SetToInitialState();
 		}
 
 		public object FindObjectByUuid(PwUuid pwUuid)
 		{
-			if(pwUuid == null) throw new ArgumentNullException("pwUuid");
+			if (pwUuid == null) throw new ArgumentNullException("pwUuid");
 
-			foreach(EcasTrigger t in m_vTriggers)
+			foreach (EcasTrigger t in m_vTriggers)
 			{
-				if(t.Uuid.Equals(pwUuid)) return t;
+				if (t.Uuid.Equals(pwUuid)) return t;
 
-				foreach(EcasEvent e in t.EventCollection)
+				foreach (EcasEvent e in t.EventCollection)
 				{
-					if(e.Type.Equals(pwUuid)) return e;
+					if (e.Type.Equals(pwUuid)) return e;
 				}
 
-				foreach(EcasCondition c in t.ConditionCollection)
+				foreach (EcasCondition c in t.ConditionCollection)
 				{
-					if(c.Type.Equals(pwUuid)) return c;
+					if (c.Type.Equals(pwUuid)) return c;
 				}
 
-				foreach(EcasAction a in t.ActionCollection)
+				foreach (EcasAction a in t.ActionCollection)
 				{
-					if(a.Type.Equals(pwUuid)) return a;
+					if (a.Type.Equals(pwUuid)) return a;
 				}
 			}
 
@@ -132,10 +132,10 @@ namespace KeePass.Ecas
 
 		public void RaiseEvent(PwUuid eventType, EcasPropertyDictionary props)
 		{
-			if(eventType == null) throw new ArgumentNullException("eventType");
+			if (eventType == null) throw new ArgumentNullException("eventType");
 			// if(props == null) throw new ArgumentNullException("props");
 
-			if(!m_bEnabled) return;
+			if (!m_bEnabled) return;
 
 			EcasEvent e = new EcasEvent();
 			e.Type = eventType;
@@ -148,21 +148,21 @@ namespace KeePass.Ecas
 			// if(e == null) throw new ArgumentNullException("e");
 			// if(!m_bEnabled) return;
 
-			if(this.RaisingEvent != null)
+			if (this.RaisingEvent != null)
 			{
 				EcasRaisingEventArgs args = new EcasRaisingEventArgs(e, props);
 				this.RaisingEvent(this, args);
-				if(args.Cancel) return;
+				if (args.Cancel) return;
 			}
 
 			try
 			{
-				foreach(EcasTrigger t in m_vTriggers)
+				foreach (EcasTrigger t in m_vTriggers)
 					t.RunIfMatching(e, props);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
-				if(!VistaTaskDialog.ShowMessageBox(ex.Message, KPRes.TriggerExecutionFailed,
+				if (!VistaTaskDialog.ShowMessageBox(ex.Message, KPRes.TriggerExecutionFailed,
 					PwDefs.ShortProductName, VtdIcon.Warning, null))
 				{
 					MessageService.ShowWarning(KPRes.TriggerExecutionFailed + ".", ex);
@@ -174,13 +174,13 @@ namespace KeePass.Ecas
 		{
 			// if(!m_bEnabled) return;
 
-			foreach(EcasTrigger t in m_vTriggers)
+			foreach (EcasTrigger t in m_vTriggers)
 			{
-				foreach(EcasEvent e in t.EventCollection)
+				foreach (EcasEvent e in t.EventCollection)
 				{
-					if(!e.Type.Equals(EcasEventIDs.TimePeriodic)) continue;
+					if (!e.Type.Equals(EcasEventIDs.TimePeriodic)) continue;
 
-					if(EcasUtil.GetParamBool(e.Parameters, 1))
+					if (EcasUtil.GetParamBool(e.Parameters, 1))
 						e.RestartTimer();
 				}
 			}
@@ -190,15 +190,15 @@ namespace KeePass.Ecas
 		{
 			bool bUIStateUpd = false;
 
-			foreach(EcasTrigger t in m_vTriggers)
+			foreach (EcasTrigger t in m_vTriggers)
 			{
-				foreach(EcasEvent e in t.EventCollection)
+				foreach (EcasEvent e in t.EventCollection)
 				{
-					if(e.Type.Equals(EcasEventIDs.UpdatedUIState)) bUIStateUpd = true;
+					if (e.Type.Equals(EcasEventIDs.UpdatedUIState)) bUIStateUpd = true;
 				}
 			}
 
-			if(bUIStateUpd)
+			if (bUIStateUpd)
 			{
 				string str = KPRes.Event + ": '" + KPRes.UpdatedUIState + "'." +
 					MessageService.NewParagraph + KPRes.TriggerEventTypeUnknown +
@@ -216,7 +216,7 @@ namespace KeePass.Ecas
 				vtd.SetIcon(VtdIcon.Warning);
 				vtd.WindowTitle = PwDefs.ShortProductName;
 
-				if(!vtd.ShowDialog())
+				if (!vtd.ShowDialog())
 					MessageService.ShowWarning(str + strUrl);
 			}
 		}
@@ -232,7 +232,7 @@ namespace KeePass.Ecas
 			get { return m_vTriggers; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_vTriggers = value;
 			}
 		}

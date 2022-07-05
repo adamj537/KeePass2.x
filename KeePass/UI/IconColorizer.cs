@@ -47,7 +47,7 @@ namespace KeePass.UI
 
 		public static Icon Recolor(Icon ico, Color clr)
 		{
-			if(ico == null) { Debug.Assert(false); return null; }
+			if (ico == null) { Debug.Assert(false); return null; }
 
 			try
 			{
@@ -56,15 +56,15 @@ namespace KeePass.UI
 
 				List<IcImage> l = GetImages(ico);
 
-				for(int i = l.Count - 1; i >= 0; --i)
+				for (int i = l.Count - 1; i >= 0; --i)
 				{
-					if(!RecolorImage(l[i], fHue)) l.RemoveAt(i);
+					if (!RecolorImage(l[i], fHue)) l.RemoveAt(i);
 				}
 
 				Icon icoNew = CreateIcon(l);
-				if(icoNew != null) return icoNew;
+				if (icoNew != null) return icoNew;
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return (ico.Clone() as Icon);
 		}
@@ -74,26 +74,26 @@ namespace KeePass.UI
 			List<IcImage> l = new List<IcImage>();
 
 			byte[] pb;
-			using(MemoryStream ms = new MemoryStream())
+			using (MemoryStream ms = new MemoryStream())
 			{
 				ico.Save(ms);
 				pb = ms.ToArray();
 			}
 
 			const int cbDir = NativeMethods.ICONDIRSize;
-			if(Marshal.SizeOf(typeof(ICONDIR)) != cbDir) { Debug.Assert(false); return l; }
+			if (Marshal.SizeOf(typeof(ICONDIR)) != cbDir) { Debug.Assert(false); return l; }
 			const int cbEntry = NativeMethods.ICONDIRENTRYSize;
-			if(Marshal.SizeOf(typeof(ICONDIRENTRY)) != cbEntry) { Debug.Assert(false); return l; }
+			if (Marshal.SizeOf(typeof(ICONDIRENTRY)) != cbEntry) { Debug.Assert(false); return l; }
 
 			int iPos = 0;
 
 			ICONDIR d = MemUtil.BytesToStruct<ICONDIR>(pb, iPos);
 			iPos += cbDir;
 
-			if(d.idReserved != 0) { Debug.Assert(false); return l; }
-			if(d.idType != 1) { Debug.Assert(false); return l; }
+			if (d.idReserved != 0) { Debug.Assert(false); return l; }
+			if (d.idType != 1) { Debug.Assert(false); return l; }
 
-			for(uint u = 0; u < d.idCount; ++u)
+			for (uint u = 0; u < d.idCount; ++u)
 			{
 				IcImage img = new IcImage();
 
@@ -108,7 +108,7 @@ namespace KeePass.UI
 
 #if DEBUG
 			int cbSum = cbDir + (l.Count * cbEntry);
-			foreach(IcImage img in l) cbSum += img.Data.Length;
+			foreach (IcImage img in l) cbSum += img.Data.Length;
 			Debug.Assert(cbSum == pb.Length); // No extra data
 #endif
 
@@ -118,15 +118,15 @@ namespace KeePass.UI
 		private static Icon CreateIcon(List<IcImage> l)
 		{
 			int n = l.Count;
-			if((n <= 0) || (n > ushort.MaxValue)) { Debug.Assert(false); return null; }
+			if ((n <= 0) || (n > ushort.MaxValue)) { Debug.Assert(false); return null; }
 
 			const int cbDir = NativeMethods.ICONDIRSize;
-			if(Marshal.SizeOf(typeof(ICONDIR)) != cbDir) { Debug.Assert(false); return null; }
+			if (Marshal.SizeOf(typeof(ICONDIR)) != cbDir) { Debug.Assert(false); return null; }
 			const int cbEntry = NativeMethods.ICONDIRENTRYSize;
-			if(Marshal.SizeOf(typeof(ICONDIRENTRY)) != cbEntry) { Debug.Assert(false); return null; }
+			if (Marshal.SizeOf(typeof(ICONDIRENTRY)) != cbEntry) { Debug.Assert(false); return null; }
 
 			int iData = cbDir + (n * cbEntry);
-			for(int i = 0; i < n; ++i)
+			for (int i = 0; i < n; ++i)
 			{
 				int cb = l[i].Data.Length;
 
@@ -137,7 +137,7 @@ namespace KeePass.UI
 			}
 
 			byte[] pbIco;
-			using(MemoryStream ms = new MemoryStream(iData))
+			using (MemoryStream ms = new MemoryStream(iData))
 			{
 				ICONDIR d = new ICONDIR();
 				d.idType = 1;
@@ -147,7 +147,7 @@ namespace KeePass.UI
 				Debug.Assert(pb.Length == cbDir);
 				MemUtil.Write(ms, pb);
 
-				for(int i = 0; i < n; ++i)
+				for (int i = 0; i < n; ++i)
 				{
 					ICONDIRENTRY e = l[i].Entry;
 					pb = MemUtil.StructToBytes<ICONDIRENTRY>(ref e);
@@ -155,7 +155,7 @@ namespace KeePass.UI
 					MemUtil.Write(ms, pb);
 				}
 
-				for(int i = 0; i < n; ++i)
+				for (int i = 0; i < n; ++i)
 					MemUtil.Write(ms, l[i].Data);
 
 				pbIco = ms.ToArray();
@@ -163,7 +163,7 @@ namespace KeePass.UI
 			Debug.Assert(pbIco.Length == iData);
 
 			Icon ico;
-			using(MemoryStream msRead = new MemoryStream(pbIco, false))
+			using (MemoryStream msRead = new MemoryStream(pbIco, false))
 			{
 				ico = new Icon(msRead);
 			}
@@ -173,36 +173,36 @@ namespace KeePass.UI
 		private static bool RecolorImage(IcImage img, float fHue)
 		{
 			const int cbHeader = NativeMethods.BITMAPINFOHEADERSize;
-			if(Marshal.SizeOf(typeof(BITMAPINFOHEADER)) != cbHeader)
+			if (Marshal.SizeOf(typeof(BITMAPINFOHEADER)) != cbHeader)
 			{
 				Debug.Assert(false);
 				return false;
 			}
 
 			byte[] pb = img.Data;
-			if(pb.Length < cbHeader) { Debug.Assert(false); return false; }
+			if (pb.Length < cbHeader) { Debug.Assert(false); return false; }
 
 			BITMAPINFOHEADER h = MemUtil.BytesToStruct<BITMAPINFOHEADER>(pb, 0);
-			if(h.biSize != cbHeader)
+			if (h.biSize != cbHeader)
 			{
 				Debug.Assert(h.biSize == 0x474E5089); // PNG
 				return false;
 			}
 			Debug.Assert(h.biPlanes == 1);
 			Debug.Assert((h.biClrUsed == 0) && (h.biClrImportant == 0));
-			if(h.biCompression != 0) { Debug.Assert(false); return false; }
+			if (h.biCompression != 0) { Debug.Assert(false); return false; }
 
 			int w = h.biWidth;
-			if(w <= 0) { Debug.Assert(false); return false; }
+			if (w <= 0) { Debug.Assert(false); return false; }
 			int hAbs = Math.Abs(h.biHeight);
-			if((hAbs != w) && (hAbs != (w << 1))) { Debug.Assert(false); return false; }
+			if ((hAbs != w) && (hAbs != (w << 1))) { Debug.Assert(false); return false; }
 
 			ushort uBpp = h.biBitCount;
-			if((uBpp == 1) || (uBpp == 4) || (uBpp == 8))
+			if ((uBpp == 1) || (uBpp == 4) || (uBpp == 8))
 				RecolorPalette(pb, cbHeader, 1 << uBpp, fHue);
-			else if((uBpp == 24) || (uBpp == 32))
+			else if ((uBpp == 24) || (uBpp == 32))
 			{
-				if(!RecolorPixelData(pb, cbHeader, w, w, uBpp, fHue)) return false;
+				if (!RecolorPixelData(pb, cbHeader, w, w, uBpp, fHue)) return false;
 			}
 			else { Debug.Assert(false); return false; }
 
@@ -223,7 +223,7 @@ namespace KeePass.UI
 			int cColors, float fHue)
 		{
 			int iMax = iOffset + (cColors * 4);
-			for(int i = iOffset; i < iMax; i += 4)
+			for (int i = iOffset; i < iMax; i += 4)
 			{
 				RecolorColorBgr(pb, i, fHue);
 				Debug.Assert(pb[i + 3] == 0); // rgbReserved of RGBQUAD must be 0
@@ -234,19 +234,19 @@ namespace KeePass.UI
 			int w, int h, ushort uBpp, float fHue)
 		{
 			int cbPixel;
-			if(uBpp == 24)
+			if (uBpp == 24)
 			{
 				// The code below does not support row padding to a
 				// multiple of 4
-				if((w & 3) != 0) { Debug.Assert(false); return false; }
+				if ((w & 3) != 0) { Debug.Assert(false); return false; }
 
 				cbPixel = 3;
 			}
-			else if(uBpp == 32) cbPixel = 4;
+			else if (uBpp == 32) cbPixel = 4;
 			else { Debug.Assert(false); return false; }
 
 			int iMax = iOffset + (w * h * cbPixel);
-			for(int i = iOffset; i < iMax; i += cbPixel)
+			for (int i = iOffset; i < iMax; i += cbPixel)
 				RecolorColorBgr(pb, i, fHue);
 
 			return true;

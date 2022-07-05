@@ -145,7 +145,7 @@ namespace KeePass.UI.ToolStripRendering
 		{
 			ToolStripItem tsi = ((e != null) ? e.Item : null);
 
-			if((tsi != null) && ((tsi.Owner is ContextMenuStrip) ||
+			if ((tsi != null) && ((tsi.Owner is ContextMenuStrip) ||
 				(tsi.OwnerItem != null)) && tsi.Selected)
 			{
 				Rectangle rect = tsi.ContentRectangle;
@@ -156,7 +156,7 @@ namespace KeePass.UI.ToolStripRendering
 				Color clrEnd = KeePassTsrColorTable.EndGradient(this.ColorTable.MenuItemSelected);
 				Color clrBorder = this.ColorTable.MenuItemBorder;
 
-				if(!tsi.Enabled)
+				if (!tsi.Enabled)
 				{
 					Color clrBase = this.ColorTable.MenuStripGradientEnd;
 					clrStart = UIUtil.ColorTowardsGrayscale(clrStart, clrBase, 0.5);
@@ -165,7 +165,7 @@ namespace KeePass.UI.ToolStripRendering
 				}
 
 				Graphics g = e.Graphics;
-				if(g != null)
+				if (g != null)
 				{
 					LinearGradientBrush br = new LinearGradientBrush(rect,
 						clrStart, clrEnd, LinearGradientMode.Vertical);
@@ -176,7 +176,7 @@ namespace KeePass.UI.ToolStripRendering
 
 					GraphicsPath gp = UIUtil.CreateRoundedRectangle(rect.X, rect.Y,
 						rect.Width, rect.Height, DpiUtil.ScaleIntY(2));
-					if(gp != null)
+					if (gp != null)
 					{
 						g.FillPath(br, gp);
 						g.DrawPath(p, gp);

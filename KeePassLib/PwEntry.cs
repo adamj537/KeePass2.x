@@ -77,7 +77,7 @@ namespace KeePassLib
 			get { return m_uuid; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 				m_uuid = value;
 			}
 		}
@@ -107,7 +107,7 @@ namespace KeePassLib
 			get { return m_puPrevParentGroup; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 				m_puPrevParentGroup = value;
 			}
 		}
@@ -120,7 +120,7 @@ namespace KeePassLib
 			get { return m_dStrings; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 				m_dStrings = value;
 			}
 		}
@@ -133,7 +133,7 @@ namespace KeePassLib
 			get { return m_dBinaries; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 				m_dBinaries = value;
 			}
 		}
@@ -146,7 +146,7 @@ namespace KeePassLib
 			get { return m_cfgAutoType; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 				m_cfgAutoType = value;
 			}
 		}
@@ -159,7 +159,7 @@ namespace KeePassLib
 			get { return m_lHistory; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 				m_lHistory = value;
 			}
 		}
@@ -183,7 +183,7 @@ namespace KeePassLib
 			get { return m_puCustomIcon; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 				m_puCustomIcon = value;
 			}
 		}
@@ -270,7 +270,7 @@ namespace KeePassLib
 			get { return m_strOverrideUrl; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 				m_strOverrideUrl = value;
 			}
 		}
@@ -289,7 +289,7 @@ namespace KeePassLib
 			get { StrUtil.NormalizeTags(m_lTags); return m_lTags; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 				m_lTags = value;
 			}
 		}
@@ -306,7 +306,7 @@ namespace KeePassLib
 			get { return m_dCustomData; }
 			internal set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 				m_dCustomData = value;
 			}
 		}
@@ -325,9 +325,9 @@ namespace KeePassLib
 		/// and last access times will be set to the current system time.</param>
 		public PwEntry(bool bCreateNewUuid, bool bSetTimes)
 		{
-			if(bCreateNewUuid) m_uuid = new PwUuid(true);
+			if (bCreateNewUuid) m_uuid = new PwUuid(true);
 
-			if(bSetTimes)
+			if (bSetTimes)
 			{
 				DateTime dtNow = DateTime.UtcNow;
 				m_tCreation = dtNow;
@@ -411,11 +411,11 @@ namespace KeePassLib
 			bool bIgnoreThisLastBackup)
 		{
 			PwCompareOptions pwOpt = PwCompareOptions.None;
-			if(bIgnoreParentGroup) pwOpt |= PwCompareOptions.IgnoreParentGroup;
-			if(bIgnoreLastMod) pwOpt |= PwCompareOptions.IgnoreLastMod;
-			if(bIgnoreLastAccess) pwOpt |= PwCompareOptions.IgnoreLastAccess;
-			if(bIgnoreHistory) pwOpt |= PwCompareOptions.IgnoreHistory;
-			if(bIgnoreThisLastBackup) pwOpt |= PwCompareOptions.IgnoreLastBackup;
+			if (bIgnoreParentGroup) pwOpt |= PwCompareOptions.IgnoreParentGroup;
+			if (bIgnoreLastMod) pwOpt |= PwCompareOptions.IgnoreLastMod;
+			if (bIgnoreLastAccess) pwOpt |= PwCompareOptions.IgnoreLastAccess;
+			if (bIgnoreHistory) pwOpt |= PwCompareOptions.IgnoreHistory;
+			if (bIgnoreThisLastBackup) pwOpt |= PwCompareOptions.IgnoreLastBackup;
 			return pwOpt;
 		}
 
@@ -440,7 +440,7 @@ namespace KeePassLib
 		public bool EqualsEntry(PwEntry pe, PwCompareOptions pwOpt,
 			MemProtCmpMode mpCmpStr)
 		{
-			if(pe == null) { Debug.Assert(false); return false; }
+			if (pe == null) { Debug.Assert(false); return false; }
 
 			bool bNeEqStd = ((pwOpt & PwCompareOptions.NullEmptyEquivStd) !=
 				PwCompareOptions.None);
@@ -449,71 +449,71 @@ namespace KeePassLib
 			bool bIgnoreLastMod = ((pwOpt & PwCompareOptions.IgnoreLastMod) !=
 				PwCompareOptions.None);
 
-			if(!m_uuid.Equals(pe.m_uuid)) return false;
-			if((pwOpt & PwCompareOptions.IgnoreParentGroup) == PwCompareOptions.None)
+			if (!m_uuid.Equals(pe.m_uuid)) return false;
+			if ((pwOpt & PwCompareOptions.IgnoreParentGroup) == PwCompareOptions.None)
 			{
-				if(m_pParentGroup != pe.m_pParentGroup) return false;
-				if(!bIgnoreLastMod && !TimeUtil.EqualsFloor(m_tParentGroupLastMod,
+				if (m_pParentGroup != pe.m_pParentGroup) return false;
+				if (!bIgnoreLastMod && !TimeUtil.EqualsFloor(m_tParentGroupLastMod,
 					pe.m_tParentGroupLastMod))
 					return false;
-				if(!m_puPrevParentGroup.Equals(pe.m_puPrevParentGroup))
+				if (!m_puPrevParentGroup.Equals(pe.m_puPrevParentGroup))
 					return false;
 			}
 
-			if(!m_dStrings.EqualsDictionary(pe.m_dStrings, pwOpt, mpCmpStr))
+			if (!m_dStrings.EqualsDictionary(pe.m_dStrings, pwOpt, mpCmpStr))
 				return false;
-			if(!m_dBinaries.EqualsDictionary(pe.m_dBinaries)) return false;
+			if (!m_dBinaries.EqualsDictionary(pe.m_dBinaries)) return false;
 
-			if(!m_cfgAutoType.Equals(pe.m_cfgAutoType)) return false;
+			if (!m_cfgAutoType.Equals(pe.m_cfgAutoType)) return false;
 
-			if((pwOpt & PwCompareOptions.IgnoreHistory) == PwCompareOptions.None)
+			if ((pwOpt & PwCompareOptions.IgnoreHistory) == PwCompareOptions.None)
 			{
 				bool bIgnoreLastBackup = ((pwOpt & PwCompareOptions.IgnoreLastBackup) !=
 					PwCompareOptions.None);
 
-				if(!bIgnoreLastBackup && (m_lHistory.UCount != pe.m_lHistory.UCount))
+				if (!bIgnoreLastBackup && (m_lHistory.UCount != pe.m_lHistory.UCount))
 					return false;
-				if(bIgnoreLastBackup && (m_lHistory.UCount == 0))
+				if (bIgnoreLastBackup && (m_lHistory.UCount == 0))
 				{
 					Debug.Assert(false);
 					return false;
 				}
-				if(bIgnoreLastBackup && ((m_lHistory.UCount - 1) != pe.m_lHistory.UCount))
+				if (bIgnoreLastBackup && ((m_lHistory.UCount - 1) != pe.m_lHistory.UCount))
 					return false;
 
 				PwCompareOptions cmpSub = PwCompareOptions.IgnoreParentGroup;
-				if(bNeEqStd) cmpSub |= PwCompareOptions.NullEmptyEquivStd;
-				if(bIgnoreLastMod) cmpSub |= PwCompareOptions.IgnoreLastMod;
-				if(bIgnoreLastAccess) cmpSub |= PwCompareOptions.IgnoreLastAccess;
+				if (bNeEqStd) cmpSub |= PwCompareOptions.NullEmptyEquivStd;
+				if (bIgnoreLastMod) cmpSub |= PwCompareOptions.IgnoreLastMod;
+				if (bIgnoreLastAccess) cmpSub |= PwCompareOptions.IgnoreLastAccess;
 
-				for(uint uHist = 0; uHist < pe.m_lHistory.UCount; ++uHist)
+				for (uint uHist = 0; uHist < pe.m_lHistory.UCount; ++uHist)
 				{
-					if(!m_lHistory.GetAt(uHist).EqualsEntry(pe.m_lHistory.GetAt(
+					if (!m_lHistory.GetAt(uHist).EqualsEntry(pe.m_lHistory.GetAt(
 						uHist), cmpSub, MemProtCmpMode.None))
 						return false;
 				}
 			}
 
-			if(m_pwIcon != pe.m_pwIcon) return false;
-			if(!m_puCustomIcon.Equals(pe.m_puCustomIcon)) return false;
+			if (m_pwIcon != pe.m_pwIcon) return false;
+			if (!m_puCustomIcon.Equals(pe.m_puCustomIcon)) return false;
 
-			if(m_clrForeground != pe.m_clrForeground) return false;
-			if(m_clrBackground != pe.m_clrBackground) return false;
+			if (m_clrForeground != pe.m_clrForeground) return false;
+			if (m_clrBackground != pe.m_clrBackground) return false;
 
-			if(!TimeUtil.EqualsFloor(m_tCreation, pe.m_tCreation)) return false;
-			if(!bIgnoreLastMod && !TimeUtil.EqualsFloor(m_tLastMod, pe.m_tLastMod)) return false;
-			if(!bIgnoreLastAccess && !TimeUtil.EqualsFloor(m_tLastAccess, pe.m_tLastAccess)) return false;
-			if(!TimeUtil.EqualsFloor(m_tExpire, pe.m_tExpire)) return false;
-			if(m_bExpires != pe.m_bExpires) return false;
-			if(!bIgnoreLastAccess && (m_uUsageCount != pe.m_uUsageCount)) return false;
+			if (!TimeUtil.EqualsFloor(m_tCreation, pe.m_tCreation)) return false;
+			if (!bIgnoreLastMod && !TimeUtil.EqualsFloor(m_tLastMod, pe.m_tLastMod)) return false;
+			if (!bIgnoreLastAccess && !TimeUtil.EqualsFloor(m_tLastAccess, pe.m_tLastAccess)) return false;
+			if (!TimeUtil.EqualsFloor(m_tExpire, pe.m_tExpire)) return false;
+			if (m_bExpires != pe.m_bExpires) return false;
+			if (!bIgnoreLastAccess && (m_uUsageCount != pe.m_uUsageCount)) return false;
 
-			if(m_strOverrideUrl != pe.m_strOverrideUrl) return false;
-			if(m_bQualityCheck != pe.m_bQualityCheck) return false;
+			if (m_strOverrideUrl != pe.m_strOverrideUrl) return false;
+			if (m_bQualityCheck != pe.m_bQualityCheck) return false;
 
 			// The Tags property normalizes
-			if(!MemUtil.ListsEqual<string>(this.Tags, pe.Tags)) return false;
+			if (!MemUtil.ListsEqual<string>(this.Tags, pe.Tags)) return false;
 
-			if(!m_dCustomData.Equals(pe.m_dCustomData)) return false;
+			if (!m_dCustomData.Equals(pe.m_dCustomData)) return false;
 
 			return true;
 		}
@@ -531,9 +531,9 @@ namespace KeePassLib
 		public void AssignProperties(PwEntry peTemplate, bool bOnlyIfNewer,
 			bool bIncludeHistory, bool bAssignLocationChanged)
 		{
-			if(peTemplate == null) { Debug.Assert(false); throw new ArgumentNullException("peTemplate"); }
+			if (peTemplate == null) { Debug.Assert(false); throw new ArgumentNullException("peTemplate"); }
 
-			if(bOnlyIfNewer && (TimeUtil.Compare(peTemplate.m_tLastMod,
+			if (bOnlyIfNewer && (TimeUtil.Compare(peTemplate.m_tLastMod,
 				m_tLastMod, true) < 0))
 				return;
 
@@ -541,7 +541,7 @@ namespace KeePassLib
 			Debug.Assert(m_uuid.Equals(peTemplate.m_uuid));
 			m_uuid = peTemplate.m_uuid;
 
-			if(bAssignLocationChanged)
+			if (bAssignLocationChanged)
 			{
 				m_tParentGroupLastMod = peTemplate.m_tParentGroupLastMod;
 				m_puPrevParentGroup = peTemplate.m_puPrevParentGroup;
@@ -550,7 +550,7 @@ namespace KeePassLib
 			m_dStrings = peTemplate.m_dStrings.CloneDeep();
 			m_dBinaries = peTemplate.m_dBinaries.CloneDeep();
 			m_cfgAutoType = peTemplate.m_cfgAutoType.CloneDeep();
-			if(bIncludeHistory)
+			if (bIncludeHistory)
 				m_lHistory = peTemplate.m_lHistory.CloneDeep();
 
 			m_pwIcon = peTemplate.m_pwIcon;
@@ -598,16 +598,16 @@ namespace KeePassLib
 			m_tLastAccess = DateTime.UtcNow;
 			++m_uUsageCount;
 
-			if(bModified) m_tLastMod = m_tLastAccess;
+			if (bModified) m_tLastMod = m_tLastAccess;
 
-			if(this.Touched != null)
+			if (this.Touched != null)
 				this.Touched(this, new ObjectTouchedEventArgs(this,
 					bModified, bTouchParents));
-			if(PwEntry.EntryTouched != null)
+			if (PwEntry.EntryTouched != null)
 				PwEntry.EntryTouched(this, new ObjectTouchedEventArgs(this,
 					bModified, bTouchParents));
 
-			if(bTouchParents && (m_pParentGroup != null))
+			if (bTouchParents && (m_pParentGroup != null))
 				m_pParentGroup.Touch(bModified, true);
 		}
 
@@ -636,7 +636,7 @@ namespace KeePassLib
 
 			m_lHistory.Add(peCopy); // Must be added at end, see EqualsEntry
 
-			if(pwHistMntcSettings != null) MaintainBackups(pwHistMntcSettings);
+			if (pwHistMntcSettings != null) MaintainBackups(pwHistMntcSettings);
 		}
 
 		/// <summary>
@@ -661,14 +661,14 @@ namespace KeePassLib
 		/// This parameter may be <c>null</c> (no maintenance then).</param>
 		public void RestoreFromBackup(uint uBackupIndex, PwDatabase pwHistMntcSettings)
 		{
-			if(uBackupIndex >= m_lHistory.UCount)
+			if (uBackupIndex >= m_lHistory.UCount)
 			{
 				Debug.Assert(false);
 				throw new ArgumentOutOfRangeException("uBackupIndex");
 			}
 
 			PwEntry pe = m_lHistory.GetAt(uBackupIndex);
-			if(pe == null) { Debug.Assert(false); throw new InvalidOperationException(); }
+			if (pe == null) { Debug.Assert(false); throw new InvalidOperationException(); }
 
 			CreateBackup(pwHistMntcSettings); // Backup current data before restoring
 			AssignProperties(pe, false, false, false);
@@ -677,16 +677,16 @@ namespace KeePassLib
 		public bool HasBackupOfData(PwEntry peData, bool bIgnoreLastMod,
 			bool bIgnoreLastAccess)
 		{
-			if(peData == null) { Debug.Assert(false); return false; }
+			if (peData == null) { Debug.Assert(false); return false; }
 
 			PwCompareOptions cmpOpt = (PwCompareOptions.IgnoreParentGroup |
 				PwCompareOptions.IgnoreHistory | PwCompareOptions.NullEmptyEquivStd);
-			if(bIgnoreLastMod) cmpOpt |= PwCompareOptions.IgnoreLastMod;
-			if(bIgnoreLastAccess) cmpOpt |= PwCompareOptions.IgnoreLastAccess;
+			if (bIgnoreLastMod) cmpOpt |= PwCompareOptions.IgnoreLastMod;
+			if (bIgnoreLastAccess) cmpOpt |= PwCompareOptions.IgnoreLastAccess;
 
-			foreach(PwEntry pe in m_lHistory)
+			foreach (PwEntry pe in m_lHistory)
 			{
-				if(pe.EqualsEntry(peData, cmpOpt, MemProtCmpMode.None)) return true;
+				if (pe.EqualsEntry(peData, cmpOpt, MemProtCmpMode.None)) return true;
 			}
 
 			return false;
@@ -700,21 +700,21 @@ namespace KeePassLib
 		/// </summary>
 		public bool MaintainBackups(PwDatabase pwSettings)
 		{
-			if(pwSettings == null) { Debug.Assert(false); return false; }
+			if (pwSettings == null) { Debug.Assert(false); return false; }
 
 			// Fix UUIDs of history entries; should not be necessary
 			PwUuid pu = m_uuid;
-			foreach(PwEntry pe in m_lHistory)
+			foreach (PwEntry pe in m_lHistory)
 			{
-				if(!pe.Uuid.Equals(pu)) { Debug.Assert(false); pe.Uuid = pu; }
+				if (!pe.Uuid.Equals(pu)) { Debug.Assert(false); pe.Uuid = pu; }
 			}
 
 			bool bDeleted = false;
 
 			int nMaxItems = pwSettings.HistoryMaxItems;
-			if(nMaxItems >= 0)
+			if (nMaxItems >= 0)
 			{
-				while(m_lHistory.UCount > (uint)nMaxItems)
+				while (m_lHistory.UCount > (uint)nMaxItems)
 				{
 					RemoveOldestBackup();
 					bDeleted = true;
@@ -722,14 +722,14 @@ namespace KeePassLib
 			}
 
 			long lMaxSize = pwSettings.HistoryMaxSize;
-			if(lMaxSize >= 0)
+			if (lMaxSize >= 0)
 			{
-				while(true)
+				while (true)
 				{
 					ulong uHistSize = 0;
-					foreach(PwEntry pe in m_lHistory) { uHistSize += pe.GetSize(); }
+					foreach (PwEntry pe in m_lHistory) { uHistSize += pe.GetSize(); }
 
-					if(uHistSize > (ulong)lMaxSize)
+					if (uHistSize > (ulong)lMaxSize)
 					{
 						RemoveOldestBackup();
 						bDeleted = true;
@@ -746,25 +746,25 @@ namespace KeePassLib
 			DateTime dtMin = TimeUtil.SafeMaxValueUtc;
 			uint idxRemove = uint.MaxValue;
 
-			for(uint u = 0; u < m_lHistory.UCount; ++u)
+			for (uint u = 0; u < m_lHistory.UCount; ++u)
 			{
 				PwEntry pe = m_lHistory.GetAt(u);
-				if(TimeUtil.Compare(pe.LastModificationTime, dtMin, true) < 0)
+				if (TimeUtil.Compare(pe.LastModificationTime, dtMin, true) < 0)
 				{
 					idxRemove = u;
 					dtMin = pe.LastModificationTime;
 				}
 			}
 
-			if(idxRemove != uint.MaxValue) m_lHistory.RemoveAt(idxRemove);
+			if (idxRemove != uint.MaxValue) m_lHistory.RemoveAt(idxRemove);
 		}
 
 		// Cf. AutoType.GetEnabledText
 		public bool GetAutoTypeEnabled()
 		{
-			if(!m_cfgAutoType.Enabled) return false;
+			if (!m_cfgAutoType.Enabled) return false;
 
-			if(m_pParentGroup != null)
+			if (m_pParentGroup != null)
 				return m_pParentGroup.GetAutoTypeEnabledInherited();
 
 			return PwGroup.DefaultAutoTypeEnabled;
@@ -775,23 +775,23 @@ namespace KeePassLib
 			string strSeq = m_cfgAutoType.DefaultSequence;
 
 			PwGroup pg = m_pParentGroup;
-			while(pg != null)
+			while (pg != null)
 			{
-				if(strSeq.Length != 0) break;
+				if (strSeq.Length != 0) break;
 
 				strSeq = pg.DefaultAutoTypeSequence;
 				pg = pg.ParentGroup;
 			}
 
-			if(strSeq.Length != 0) return strSeq;
+			if (strSeq.Length != 0) return strSeq;
 
-			if(PwDefs.IsTanEntry(this)) return PwDefs.DefaultAutoTypeSequenceTan;
+			if (PwDefs.IsTanEntry(this)) return PwDefs.DefaultAutoTypeSequenceTan;
 			return PwDefs.DefaultAutoTypeSequence;
 		}
 
 		public bool GetSearchingEnabled()
 		{
-			if(m_pParentGroup != null)
+			if (m_pParentGroup != null)
 				return m_pParentGroup.GetSearchingEnabledInherited();
 
 			return PwGroup.DefaultSearchingEnabled;
@@ -811,11 +811,11 @@ namespace KeePassLib
 			ulong cc = 0; // Number of characters
 
 			cb += (ulong)m_dStrings.UCount * 40;
-			foreach(KeyValuePair<string, ProtectedString> kvpStr in m_dStrings)
+			foreach (KeyValuePair<string, ProtectedString> kvpStr in m_dStrings)
 				cc += (ulong)kvpStr.Key.Length + (ulong)kvpStr.Value.Length;
 
 			cb += (ulong)m_dBinaries.UCount * 65;
-			foreach(KeyValuePair<string, ProtectedBinary> kvpBin in m_dBinaries)
+			foreach (KeyValuePair<string, ProtectedBinary> kvpBin in m_dBinaries)
 			{
 				cc += (ulong)kvpBin.Key.Length;
 				cb += (ulong)kvpBin.Value.Length;
@@ -823,21 +823,21 @@ namespace KeePassLib
 
 			cc += (ulong)m_cfgAutoType.DefaultSequence.Length;
 			cb += (ulong)m_cfgAutoType.AssociationsCount * 24;
-			foreach(AutoTypeAssociation a in m_cfgAutoType.Associations)
+			foreach (AutoTypeAssociation a in m_cfgAutoType.Associations)
 				cc += (ulong)a.WindowName.Length + (ulong)a.Sequence.Length;
 
 			cb += (ulong)m_lHistory.UCount * 8;
-			foreach(PwEntry peHistory in m_lHistory)
+			foreach (PwEntry peHistory in m_lHistory)
 				cb += peHistory.GetSize();
 
 			cc += (ulong)m_strOverrideUrl.Length;
 
 			cb += (ulong)m_lTags.Count * 8;
-			foreach(string strTag in m_lTags)
+			foreach (string strTag in m_lTags)
 				cc += (ulong)strTag.Length;
 
 			cb += (ulong)m_dCustomData.Count * 16;
-			foreach(KeyValuePair<string, string> kvp in m_dCustomData)
+			foreach (KeyValuePair<string, string> kvp in m_dCustomData)
 				cc += (ulong)kvp.Key.Length + (ulong)kvp.Value.Length;
 
 			return (cb + (cc << 1));
@@ -845,7 +845,7 @@ namespace KeePassLib
 
 		public bool HasTag(string strTag)
 		{
-			if(string.IsNullOrEmpty(strTag)) { Debug.Assert(false); return false; }
+			if (string.IsNullOrEmpty(strTag)) { Debug.Assert(false); return false; }
 
 			// this.Tags normalizes
 			return this.Tags.Contains(StrUtil.NormalizeTag(strTag));
@@ -853,10 +853,10 @@ namespace KeePassLib
 
 		public bool AddTag(string strTag)
 		{
-			if(string.IsNullOrEmpty(strTag)) { Debug.Assert(false); return false; }
+			if (string.IsNullOrEmpty(strTag)) { Debug.Assert(false); return false; }
 
 			strTag = StrUtil.NormalizeTag(strTag);
-			if(this.Tags.Contains(strTag)) return false; // this.Tags normalizes
+			if (this.Tags.Contains(strTag)) return false; // this.Tags normalizes
 
 			m_lTags.Add(strTag);
 			return true;
@@ -864,7 +864,7 @@ namespace KeePassLib
 
 		public bool RemoveTag(string strTag)
 		{
-			if(string.IsNullOrEmpty(strTag)) { Debug.Assert(false); return false; }
+			if (string.IsNullOrEmpty(strTag)) { Debug.Assert(false); return false; }
 
 			// this.Tags normalizes
 			return this.Tags.Remove(StrUtil.NormalizeTag(strTag));
@@ -882,9 +882,9 @@ namespace KeePassLib
 		public bool IsContainedIn(PwGroup pgContainer)
 		{
 			PwGroup pgCur = m_pParentGroup;
-			while(pgCur != null)
+			while (pgCur != null)
 			{
-				if(pgCur == pgContainer) return true;
+				if (pgCur == pgContainer) return true;
 
 				pgCur = pgCur.ParentGroup;
 			}
@@ -896,9 +896,9 @@ namespace KeePassLib
 		{
 			this.Uuid = pwNewUuid;
 
-			if(bAlsoChangeHistoryUuids)
+			if (bAlsoChangeHistoryUuids)
 			{
-				foreach(PwEntry peHist in m_lHistory)
+				foreach (PwEntry peHist in m_lHistory)
 					peHist.Uuid = pwNewUuid;
 			}
 		}
@@ -927,7 +927,7 @@ namespace KeePassLib
 			PwEntry pe = new PwEntry(true, true);
 
 			pe.ParentGroup = pgParent; // Do not add to group
-			if(dStrings != null) pe.Strings = dStrings; // No clone
+			if (dStrings != null) pe.Strings = dStrings; // No clone
 
 			return pe;
 		}
@@ -942,7 +942,7 @@ namespace KeePassLib
 		public PwEntryComparer(string strFieldName, bool bCaseInsensitive,
 			bool bCompareNaturally)
 		{
-			if(strFieldName == null) throw new ArgumentNullException("strFieldName");
+			if (strFieldName == null) throw new ArgumentNullException("strFieldName");
 
 			m_strFieldName = strFieldName;
 			m_bCaseInsensitive = bCaseInsensitive;
@@ -954,7 +954,7 @@ namespace KeePassLib
 			string strA = a.Strings.ReadSafe(m_strFieldName);
 			string strB = b.Strings.ReadSafe(m_strFieldName);
 
-			if(m_bCompareNaturally) return StrUtil.CompareNaturally(strA, strB);
+			if (m_bCompareNaturally) return StrUtil.CompareNaturally(strA, strB);
 
 			return string.Compare(strA, strB, m_bCaseInsensitive);
 		}

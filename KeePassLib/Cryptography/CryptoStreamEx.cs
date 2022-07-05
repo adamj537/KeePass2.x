@@ -46,19 +46,19 @@ namespace KeePassLib.Cryptography
 			// Unnecessary exception from CryptoStream with
 			// RijndaelManagedTransform when a stream hasn't been
 			// read completely (e.g. incorrect master key)
-			catch(CryptographicException) { }
+			catch (CryptographicException) { }
 			// Similar to above, at the beginning of the stream
-			catch(IndexOutOfRangeException) { }
-			catch(Exception) { Debug.Assert(false); }
+			catch (IndexOutOfRangeException) { }
+			catch (Exception) { Debug.Assert(false); }
 
-			if(disposing)
+			if (disposing)
 			{
-				try { if(m_t != null) { m_t.Dispose(); m_t = null; } }
-				catch(Exception) { Debug.Assert(false); }
+				try { if (m_t != null) { m_t.Dispose(); m_t = null; } }
+				catch (Exception) { Debug.Assert(false); }
 
 				// In .NET 2.0, SymmetricAlgorithm.Dispose() is not public
-				try { if(m_a != null) { m_a.Clear(); m_a = null; } }
-				catch(Exception) { Debug.Assert(false); }
+				try { if (m_a != null) { m_a.Clear(); m_a = null; } }
+				catch (Exception) { Debug.Assert(false); }
 			}
 		}
 	}

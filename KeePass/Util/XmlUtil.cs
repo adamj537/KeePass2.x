@@ -36,14 +36,14 @@ namespace KeePass.Util
 	{
 		public static string SafeInnerText(XmlNode xmlNode)
 		{
-			if(xmlNode == null) { Debug.Assert(false); return string.Empty; }
+			if (xmlNode == null) { Debug.Assert(false); return string.Empty; }
 
 			return (xmlNode.InnerText ?? string.Empty);
 		}
 
 		public static string SafeInnerText(XmlNode xmlNode, string strNewLineCode)
 		{
-			if(string.IsNullOrEmpty(strNewLineCode))
+			if (string.IsNullOrEmpty(strNewLineCode))
 				return SafeInnerText(xmlNode);
 
 			string strInner = SafeInnerText(xmlNode);
@@ -52,15 +52,15 @@ namespace KeePass.Util
 
 		public static string SafeInnerXml(XmlNode xmlNode)
 		{
-			if(xmlNode == null) { Debug.Assert(false); return string.Empty; }
+			if (xmlNode == null) { Debug.Assert(false); return string.Empty; }
 
 			return (xmlNode.InnerXml ?? string.Empty);
 		}
 
 		internal static string SafeInnerXml(XmlNode xmlNode, string strXPath)
 		{
-			if(xmlNode == null) { Debug.Assert(false); return string.Empty; }
-			if(string.IsNullOrEmpty(strXPath)) return SafeInnerXml(xmlNode);
+			if (xmlNode == null) { Debug.Assert(false); return string.Empty; }
+			if (string.IsNullOrEmpty(strXPath)) return SafeInnerXml(xmlNode);
 
 			XmlNode xnSub = xmlNode.SelectSingleNode(strXPath);
 			return ((xnSub != null) ? SafeInnerXml(xnSub) : string.Empty);
@@ -68,20 +68,20 @@ namespace KeePass.Util
 
 		public static string SafeInnerText(HtmlElement htmlNode)
 		{
-			if(htmlNode == null) { Debug.Assert(false); return string.Empty; }
+			if (htmlNode == null) { Debug.Assert(false); return string.Empty; }
 
 			return (htmlNode.InnerText ?? string.Empty);
 		}
 
 		public static string SafeAttribute(HtmlElement htmlNode, string strName)
 		{
-			if(htmlNode == null) { Debug.Assert(false); return string.Empty; }
-			if(string.IsNullOrEmpty(strName)) { Debug.Assert(false); return string.Empty; }
+			if (htmlNode == null) { Debug.Assert(false); return string.Empty; }
+			if (string.IsNullOrEmpty(strName)) { Debug.Assert(false); return string.Empty; }
 
 			string strValue = (htmlNode.GetAttribute(strName) ?? string.Empty);
 
 			// https://msdn.microsoft.com/en-us/library/ie/ms536429.aspx
-			if((strValue.Length == 0) && strName.Equals("class", StrUtil.CaseIgnoreCmp))
+			if ((strValue.Length == 0) && strName.Equals("class", StrUtil.CaseIgnoreCmp))
 				strValue = (htmlNode.GetAttribute("className") ?? string.Empty);
 
 			return strValue;
@@ -95,9 +95,9 @@ namespace KeePass.Util
 		/// <returns>String without non-standard entities.</returns>
 		public static string DecodeHtmlEntities(string strXml)
 		{
-			if(strXml == null) { Debug.Assert(false); return string.Empty; }
+			if (strXml == null) { Debug.Assert(false); return string.Empty; }
 
-			if(m_dHtmlEntities == null)
+			if (m_dHtmlEntities == null)
 			{
 				Dictionary<string, char> d = new Dictionary<string, char>();
 
@@ -158,7 +158,7 @@ namespace KeePass.Util
 
 #if DEBUG
 				Dictionary<char, bool> dChars = new Dictionary<char, bool>();
-				foreach(KeyValuePair<string, char> kvp in d)
+				foreach (KeyValuePair<string, char> kvp in d)
 				{
 					Debug.Assert((kvp.Key.IndexOf('&') < 0) &&
 						(kvp.Key.IndexOf(';') < 0));
@@ -178,30 +178,30 @@ namespace KeePass.Util
 			StringBuilder sb = new StringBuilder();
 			List<string> lParts = SplitByCData(strXml);
 
-			foreach(string str in lParts)
+			foreach (string str in lParts)
 			{
-				if(str.StartsWith(@"<![CDATA["))
+				if (str.StartsWith(@"<![CDATA["))
 				{
 					sb.Append(str);
 					continue;
 				}
 
 				int iOffset = 0;
-				while(iOffset < str.Length)
+				while (iOffset < str.Length)
 				{
 					int pAmp = str.IndexOf('&', iOffset);
 
-					if(pAmp < 0)
+					if (pAmp < 0)
 					{
 						sb.Append(str, iOffset, str.Length - iOffset);
 						break;
 					}
 
-					if(pAmp > iOffset)
+					if (pAmp > iOffset)
 						sb.Append(str, iOffset, pAmp - iOffset);
 
 					int pTerm = str.IndexOf(';', pAmp);
-					if(pTerm < 0)
+					if (pTerm < 0)
 					{
 						Debug.Assert(false); // At least one entity not terminated
 						sb.Append(str, pAmp, str.Length - pAmp);
@@ -210,7 +210,7 @@ namespace KeePass.Util
 
 					string strEntity = str.Substring(pAmp + 1, pTerm - pAmp - 1);
 					char ch;
-					if(m_dHtmlEntities.TryGetValue(strEntity, out ch))
+					if (m_dHtmlEntities.TryGetValue(strEntity, out ch))
 						sb.Append(ch);
 					else sb.Append(str, pAmp, pTerm - pAmp + 1);
 
@@ -224,25 +224,25 @@ namespace KeePass.Util
 		public static List<string> SplitByCData(string str)
 		{
 			List<string> l = new List<string>();
-			if(str == null) { Debug.Assert(false); return l; }
+			if (str == null) { Debug.Assert(false); return l; }
 
 			int iOffset = 0;
-			while(iOffset < str.Length)
+			while (iOffset < str.Length)
 			{
 				int pStart = str.IndexOf(@"<![CDATA[", iOffset);
 
-				if(pStart < 0)
+				if (pStart < 0)
 				{
 					l.Add(str.Substring(iOffset, str.Length - iOffset));
 					break;
 				}
 
-				if(pStart > iOffset)
+				if (pStart > iOffset)
 					l.Add(str.Substring(iOffset, pStart - iOffset));
 
 				const string strTerm = @"]]>";
 				int pTerm = str.IndexOf(strTerm, pStart);
-				if(pTerm < 0)
+				if (pTerm < 0)
 				{
 					Debug.Assert(false); // At least one CDATA not terminated
 					l.Add(str.Substring(pStart, str.Length - pStart));
@@ -260,15 +260,15 @@ namespace KeePass.Util
 
 		public static int GetMultiChildIndex(XmlNodeList xlList, XmlNode xnFind)
 		{
-			if(xlList == null) throw new ArgumentNullException("xlList");
-			if(xnFind == null) throw new ArgumentNullException("xnFind");
+			if (xlList == null) throw new ArgumentNullException("xlList");
+			if (xnFind == null) throw new ArgumentNullException("xnFind");
 
 			string strChildName = xnFind.Name;
 			int iChild = 0;
-			for(int i = 0; i < xlList.Count; ++i)
+			for (int i = 0; i < xlList.Count; ++i)
 			{
-				if(xlList[i] == xnFind) return iChild;
-				if(xlList[i].Name == strChildName) ++iChild;
+				if (xlList[i] == xnFind) return iChild;
+				if (xlList[i].Name == strChildName) ++iChild;
 			}
 
 			return -1;
@@ -277,15 +277,15 @@ namespace KeePass.Util
 		public static XmlNode FindMultiChild(XmlNodeList xlList, string strChildName,
 			int iMultiChild)
 		{
-			if(xlList == null) throw new ArgumentNullException("xlList");
-			if(strChildName == null) throw new ArgumentNullException("strChildName");
+			if (xlList == null) throw new ArgumentNullException("xlList");
+			if (strChildName == null) throw new ArgumentNullException("strChildName");
 
 			int iChild = 0;
-			for(int i = 0; i < xlList.Count; ++i)
+			for (int i = 0; i < xlList.Count; ++i)
 			{
-				if(xlList[i].Name == strChildName)
+				if (xlList[i].Name == strChildName)
 				{
-					if(iChild == iMultiChild) return xlList[i];
+					if (iChild == iMultiChild) return xlList[i];
 					++iChild;
 				}
 			}
@@ -307,14 +307,14 @@ namespace KeePass.Util
 		private const string GoxpSep = "/";
 		public static string GetObjectXmlPath(object oContainer, object oNeedle)
 		{
-			if(oContainer == null) { Debug.Assert(false); return null; }
+			if (oContainer == null) { Debug.Assert(false); return null; }
 
 			XuopContainer c = new XuopContainer(oContainer);
 			string strXPath = GetObjectXmlPathRec(c, typeof(XuopContainer),
 				oNeedle, string.Empty);
-			if(string.IsNullOrEmpty(strXPath)) return strXPath;
+			if (string.IsNullOrEmpty(strXPath)) return strXPath;
 
-			if(!strXPath.StartsWith("/Object")) { Debug.Assert(false); return null; }
+			if (!strXPath.StartsWith("/Object")) { Debug.Assert(false); return null; }
 			strXPath = strXPath.Substring(7);
 
 			Type tRoot = oContainer.GetType();
@@ -326,39 +326,39 @@ namespace KeePass.Util
 		private static string GetObjectXmlPathRec(object oContainer, Type tContainer,
 			object oNeedle, string strCurPath)
 		{
-			if(oContainer == null) { Debug.Assert(false); return null; }
-			if(oNeedle == null) { Debug.Assert(false); return null; }
+			if (oContainer == null) { Debug.Assert(false); return null; }
+			if (oNeedle == null) { Debug.Assert(false); return null; }
 			Debug.Assert(oContainer.GetType() == tContainer);
 
 			PropertyInfo[] vProps = tContainer.GetProperties();
-			foreach(PropertyInfo pi in vProps)
+			foreach (PropertyInfo pi in vProps)
 			{
-				if((pi == null) || !pi.CanRead) continue;
+				if ((pi == null) || !pi.CanRead) continue;
 
 				object[] vPropAttribs = pi.GetCustomAttributes(true);
-				if(XmlSerializerEx.GetAttribute<XmlIgnoreAttribute>(
+				if (XmlSerializerEx.GetAttribute<XmlIgnoreAttribute>(
 					vPropAttribs) != null) continue;
 
 				object oSub = pi.GetValue(oContainer, null);
-				if(oSub == null) continue;
+				if (oSub == null) continue;
 
 				string strPropName = XmlSerializerEx.GetXmlName(pi);
 				string strSubPath = strCurPath + GoxpSep + strPropName;
 
-				if(oSub == oNeedle) return strSubPath;
+				if (oSub == oNeedle) return strSubPath;
 
 				Type tSub = oSub.GetType();
 				string strPrimarySubType;
 				string strPropTypeCS = XmlSerializerEx.GetFullTypeNameCS(tSub,
 					out strPrimarySubType);
-				if(XmlSerializerEx.TypeIsArray(strPropTypeCS) ||
+				if (XmlSerializerEx.TypeIsArray(strPropTypeCS) ||
 					XmlSerializerEx.TypeIsList(strPropTypeCS))
 					continue;
-				if(strPropTypeCS.StartsWith("System.")) continue;
+				if (strPropTypeCS.StartsWith("System.")) continue;
 
 				string strSubFound = GetObjectXmlPathRec(oSub, tSub, oNeedle,
 					strSubPath);
-				if(strSubFound != null) return strSubFound;
+				if (strSubFound != null) return strSubFound;
 			}
 
 			return null;

@@ -58,17 +58,17 @@ namespace KeePass.Util.MultipleValues
 		private static void UpdateCues()
 		{
 			string strBase = (KPRes.MultipleValues ?? string.Empty);
-			if(strBase == g_strCueBase) return;
+			if (strBase == g_strCueBase) return;
 
 			g_strCue = "(" + strBase + ")";
 
 			// Ensure compatibility with tags
 			List<string> l = StrUtil.StringToTags(g_strCue);
-			if(l.Count >= 2)
+			if (l.Count >= 2)
 			{
 				Debug.Assert(false); // The cue should be one tag
 				StringBuilder sb = new StringBuilder();
-				foreach(string str in l) sb.Append(str);
+				foreach (string str in l) sb.Append(str);
 				g_strCue = sb.ToString();
 			}
 
@@ -86,11 +86,11 @@ namespace KeePass.Util.MultipleValues
 			Color clrGray = Color.FromArgb(255, 128, 128, 128);
 			Image img = UIUtil.CreateColorBitmap24(w, h, clrGray);
 
-			if((w < 8) || (h < 8)) return img;
+			if ((w < 8) || (h < 8)) return img;
 
 			try
 			{
-				using(Graphics g = Graphics.FromImage(img))
+				using (Graphics g = Graphics.FromImage(img))
 				{
 					Color clrBg = (UIUtil.IsDarkColor(SystemColors.ControlText) ?
 						Color.White : Color.Black);
@@ -106,12 +106,12 @@ namespace KeePass.Util.MultipleValues
 					//		h - (d << 2));
 					// }
 
-					using(Pen pen = new Pen(clrBg))
+					using (Pen pen = new Pen(clrBg))
 					{
 						g.SmoothingMode = SmoothingMode.None;
 
 						Point[] v = new Point[5];
-						for(int i = 0; i < d; ++i)
+						for (int i = 0; i < d; ++i)
 						{
 							int pTL = d + i;
 							int xR = w - 1 - pTL, yB = h - 1 - pTL;
@@ -127,23 +127,23 @@ namespace KeePass.Util.MultipleValues
 					}
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return img;
 		}
 
 		internal static void ConfigureText(Control c, bool bHandleTextChange)
 		{
-			if(c == null) { Debug.Assert(false); return; }
+			if (c == null) { Debug.Assert(false); return; }
 
 			Color clrNormal = c.ForeColor;
 			Color clrMulti = UIUtil.ColorTowards(clrNormal, (UIUtil.IsDarkColor(
 				clrNormal) ? Color.White : Color.Black), 0.5);
 
-			EventHandler eh = delegate(object sender, EventArgs e)
+			EventHandler eh = delegate (object sender, EventArgs e)
 			{
 				Control cEv = (sender as Control);
-				if(cEv == null) { Debug.Assert(false); return; }
+				if (cEv == null) { Debug.Assert(false); return; }
 				Debug.Assert(cEv == c);
 
 				bool bCue = (cEv.Text == MultipleValuesEx.CueString);
@@ -152,16 +152,16 @@ namespace KeePass.Util.MultipleValues
 
 			eh(c, EventArgs.Empty);
 
-			if(bHandleTextChange) c.TextChanged += eh;
+			if (bHandleTextChange) c.TextChanged += eh;
 		}
 
 		internal static void ConfigureText(ListViewItem lvi, int iSubItem)
 		{
-			if(lvi == null) { Debug.Assert(false); return; }
-			if((iSubItem < 0) || (iSubItem >= lvi.SubItems.Count)) { Debug.Assert(false); return; }
+			if (lvi == null) { Debug.Assert(false); return; }
+			if ((iSubItem < 0) || (iSubItem >= lvi.SubItems.Count)) { Debug.Assert(false); return; }
 
 			ListViewItem.ListViewSubItem lvsi = lvi.SubItems[iSubItem];
-			if(lvsi.Text == MultipleValuesEx.CueString)
+			if (lvsi.Text == MultipleValuesEx.CueString)
 			{
 				Color clrNormal = lvi.ForeColor;
 				Color clrMulti = UIUtil.ColorTowards(clrNormal, (UIUtil.IsDarkColor(
@@ -176,7 +176,7 @@ namespace KeePass.Util.MultipleValues
 
 		internal static void ConfigureState(CheckBox cb, bool bSetIndeterminate)
 		{
-			if(cb == null) { Debug.Assert(false); return; }
+			if (cb == null) { Debug.Assert(false); return; }
 
 			// If the indeterminate state is used to represent multiple
 			// values, the caller should not use it for other things
@@ -184,7 +184,7 @@ namespace KeePass.Util.MultipleValues
 
 			cb.ThreeState = true;
 
-			if(bSetIndeterminate) cb.CheckState = CheckState.Indeterminate;
+			if (bSetIndeterminate) cb.CheckState = CheckState.Indeterminate;
 		}
 	}
 }

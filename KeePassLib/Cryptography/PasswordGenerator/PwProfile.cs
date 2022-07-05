@@ -93,7 +93,7 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 			get { return m_pwCharSet; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_pwCharSet = value;
 			}
 		}
@@ -105,7 +105,7 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 			get { this.UpdateCharSet(true); return m_strCharSetRanges; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strCharSetRanges = value;
 				this.UpdateCharSet(false);
 			}
@@ -118,7 +118,7 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 			get { this.UpdateCharSet(true); return m_strCharSetAdditional; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strCharSetAdditional = value;
 				this.UpdateCharSet(false);
 			}
@@ -163,7 +163,7 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 			get { return m_strExclude; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strExclude = value;
 			}
 		}
@@ -175,7 +175,7 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 			get { return m_strCustomID; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strCustomID = value;
 			}
 		}
@@ -187,7 +187,7 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 			get { return m_strCustomOpt; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strCustomOpt = value;
 			}
 		}
@@ -220,7 +220,7 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 
 		private void UpdateCharSet(bool bSetXml)
 		{
-			if(bSetXml)
+			if (bSetXml)
 			{
 				PwCharSet pcs = new PwCharSet(m_pwCharSet.ToString());
 				m_strCharSetRanges = pcs.PackAndRemoveCharRanges();
@@ -237,7 +237,7 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 		public static PwProfile DeriveFromPassword(ProtectedString psPassword)
 		{
 			PwProfile pp = new PwProfile();
-			if(psPassword == null) { Debug.Assert(false); return pp; }
+			if (psPassword == null) { Debug.Assert(false); return pp; }
 
 			char[] vChars = psPassword.ReadChars();
 
@@ -247,19 +247,19 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 			PwCharSet pcs = pp.CharSet;
 			pcs.Clear();
 
-			foreach(char ch in vChars)
+			foreach (char ch in vChars)
 			{
-				if((ch >= 'A') && (ch <= 'Z')) pcs.Add(PwCharSet.UpperCase);
-				else if((ch >= 'a') && (ch <= 'z')) pcs.Add(PwCharSet.LowerCase);
-				else if((ch >= '0') && (ch <= '9')) pcs.Add(PwCharSet.Digits);
-				else if(PwCharSet.Special.IndexOf(ch) >= 0)
+				if ((ch >= 'A') && (ch <= 'Z')) pcs.Add(PwCharSet.UpperCase);
+				else if ((ch >= 'a') && (ch <= 'z')) pcs.Add(PwCharSet.LowerCase);
+				else if ((ch >= '0') && (ch <= '9')) pcs.Add(PwCharSet.Digits);
+				else if (PwCharSet.Special.IndexOf(ch) >= 0)
 					pcs.Add(PwCharSet.Special);
-				else if(ch == ' ') pcs.Add(' ');
-				else if(ch == '-') pcs.Add('-');
-				else if(ch == '_') pcs.Add('_');
-				else if(PwCharSet.Brackets.IndexOf(ch) >= 0)
+				else if (ch == ' ') pcs.Add(' ');
+				else if (ch == '-') pcs.Add('-');
+				else if (ch == '_') pcs.Add('_');
+				else if (PwCharSet.Brackets.IndexOf(ch) >= 0)
 					pcs.Add(PwCharSet.Brackets);
-				else if(PwCharSet.Latin1S.IndexOf(ch) >= 0)
+				else if (PwCharSet.Latin1S.IndexOf(ch) >= 0)
 					pcs.Add(PwCharSet.Latin1S);
 				else pcs.Add(ch);
 			}

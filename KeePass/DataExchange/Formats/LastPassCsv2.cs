@@ -70,7 +70,7 @@ namespace KeePass.DataExchange.Formats
 
 			const string strColUrl = "url";
 
-			Predicate<string[]> fIsSecNote = delegate(string[] vRow)
+			Predicate<string[]> fIsSecNote = delegate (string[] vRow)
 			{
 				string str = ctr.GetData(vRow, strColUrl, string.Empty);
 				return str.Equals("http://sn", StrUtil.CaseIgnoreCmp);
@@ -80,17 +80,17 @@ namespace KeePass.DataExchange.Formats
 			ctr.SetDataAppend("username", PwDefs.UserNameField);
 			ctr.SetDataAppend("password", PwDefs.PasswordField);
 
-			ctr.SetDataHandler(strColUrl, delegate(string str, PwEntry pe,
+			ctr.SetDataHandler(strColUrl, delegate (string str, PwEntry pe,
 				string[] vContextRow)
 			{
-				if(!fIsSecNote(vContextRow))
+				if (!fIsSecNote(vContextRow))
 					ImportUtil.AppendToField(pe, PwDefs.UrlField, str, pd);
 			});
 
-			ctr.SetDataHandler("extra", delegate(string str, PwEntry pe,
+			ctr.SetDataHandler("extra", delegate (string str, PwEntry pe,
 				string[] vContextRow)
 			{
-				if(fIsSecNote(vContextRow) && str.StartsWith("NoteType:",
+				if (fIsSecNote(vContextRow) && str.StartsWith("NoteType:",
 					StrUtil.CaseIgnoreCmp))
 				{
 					AddNoteFields(pe, str, pd);
@@ -100,20 +100,20 @@ namespace KeePass.DataExchange.Formats
 				ImportUtil.AppendToField(pe, PwDefs.NotesField, str, pd);
 			});
 
-			ctr.SetDataHandler("grouping", delegate(string str, PwEntry pe,
+			ctr.SetDataHandler("grouping", delegate (string str, PwEntry pe,
 				string[] vContextRow)
 			{
-				if(str.Length == 0) return;
+				if (str.Length == 0) return;
 
 				PwGroup pg = pd.RootGroup.FindCreateSubTree(str,
 					new string[1] { "\\" }, true);
 				pg.AddEntry(pe, true);
 			});
 
-			ctr.SetDataHandler("fav", delegate(string str, PwEntry pe,
+			ctr.SetDataHandler("fav", delegate (string str, PwEntry pe,
 				string[] vContextRow)
 			{
-				if(StrUtil.StringToBool(str)) pe.AddTag(PwDefs.FavoriteTag);
+				if (StrUtil.StringToBool(str)) pe.AddTag(PwDefs.FavoriteTag);
 			});
 
 			ctr.Read(csr);
@@ -127,17 +127,17 @@ namespace KeePass.DataExchange.Formats
 
 			string strFieldName = PwDefs.NotesField;
 			bool bNotesFound = false;
-			foreach(string strLine in vLines)
+			foreach (string strLine in vLines)
 			{
 				int iFieldLen = strLine.IndexOf(':');
 				int iDataOffset = 0;
-				if((iFieldLen > 0) && !bNotesFound)
+				if ((iFieldLen > 0) && !bNotesFound)
 				{
 					string strRaw = strLine.Substring(0, iFieldLen).Trim();
 					string strField = ImportUtil.MapNameToStandardField(strRaw, false);
-					if(string.IsNullOrEmpty(strField)) strField = strRaw;
+					if (string.IsNullOrEmpty(strField)) strField = strRaw;
 
-					if(strField.Length != 0)
+					if (strField.Length != 0)
 					{
 						strFieldName = strField;
 						iDataOffset = iFieldLen + 1;

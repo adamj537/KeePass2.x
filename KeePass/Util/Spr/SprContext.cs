@@ -199,7 +199,7 @@ namespace KeePass.Util.Spr
 			get { return m_str; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_str = value;
 			}
 		}
@@ -214,7 +214,7 @@ namespace KeePass.Util.Spr
 
 		public SprEventArgs(string strText, SprContext ctx)
 		{
-			if(strText == null) throw new ArgumentNullException("strText");
+			if (strText == null) throw new ArgumentNullException("strText");
 			// ctx == null is allowed
 
 			m_str = strText;

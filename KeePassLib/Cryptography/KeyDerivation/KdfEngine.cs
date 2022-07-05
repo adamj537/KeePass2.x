@@ -60,20 +60,20 @@ namespace KeePassLib.Cryptography.KeyDerivation
 		protected void MaximizeParamUInt64(KdfParameters p, string strName,
 			ulong uMin, ulong uMax, uint uMilliseconds, bool bInterpSearch)
 		{
-			if(p == null) { Debug.Assert(false); return; }
-			if(string.IsNullOrEmpty(strName)) { Debug.Assert(false); return; }
-			if(uMin > uMax) { Debug.Assert(false); return; }
+			if (p == null) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strName)) { Debug.Assert(false); return; }
+			if (uMin > uMax) { Debug.Assert(false); return; }
 
-			if(uMax > (ulong.MaxValue >> 1))
+			if (uMax > (ulong.MaxValue >> 1))
 			{
 				Debug.Assert(false);
 				uMax = ulong.MaxValue >> 1;
 
-				if(uMin > uMax) { p.SetUInt64(strName, uMin); return; }
+				if (uMin > uMax) { p.SetUInt64(strName, uMin); return; }
 			}
 
 			byte[] pbMsg = new byte[32];
-			for(int i = 0; i < pbMsg.Length; ++i) pbMsg[i] = (byte)i;
+			for (int i = 0; i < pbMsg.Length; ++i) pbMsg[i] = (byte)i;
 
 			ulong uLow = uMin;
 			ulong uHigh = uMin + 1UL;
@@ -82,7 +82,7 @@ namespace KeePassLib.Cryptography.KeyDerivation
 			long tTarget = (long)uMilliseconds;
 
 			// Determine range
-			while(uHigh <= uMax)
+			while (uHigh <= uMax)
 			{
 				p.SetUInt64(strName, uHigh);
 
@@ -92,26 +92,26 @@ namespace KeePassLib.Cryptography.KeyDerivation
 				sw.Stop();
 
 				tHigh = sw.ElapsedMilliseconds;
-				if(tHigh > tTarget) break;
+				if (tHigh > tTarget) break;
 
 				uLow = uHigh;
 				tLow = tHigh;
 				uHigh <<= 1;
 			}
-			if(uHigh > uMax) { uHigh = uMax; tHigh = 0; }
-			if(uLow > uHigh) uLow = uHigh; // Skips to end
+			if (uHigh > uMax) { uHigh = uMax; tHigh = 0; }
+			if (uLow > uHigh) uLow = uHigh; // Skips to end
 
 			// Find optimal number of iterations
-			while((uHigh - uLow) >= 2UL)
+			while ((uHigh - uLow) >= 2UL)
 			{
 				ulong u = (uHigh + uLow) >> 1; // Binary search
-				// Interpolation search, if possible
-				if(bInterpSearch && (tLow > 0) && (tHigh > tTarget) &&
+											   // Interpolation search, if possible
+				if (bInterpSearch && (tLow > 0) && (tHigh > tTarget) &&
 					(tLow <= tTarget))
 				{
 					u = uLow + (((uHigh - uLow) * (ulong)(tTarget - tLow)) /
 						(ulong)(tHigh - tLow));
-					if((u >= uLow) && (u <= uHigh))
+					if ((u >= uLow) && (u <= uHigh))
 					{
 						u = Math.Max(u, uLow + 1UL);
 						u = Math.Min(u, uHigh - 1UL);
@@ -131,8 +131,8 @@ namespace KeePassLib.Cryptography.KeyDerivation
 				sw.Stop();
 
 				long t = sw.ElapsedMilliseconds;
-				if(t == tTarget) { uLow = u; break; }
-				else if(t > tTarget) { uHigh = u; tHigh = t; }
+				if (t == tTarget) { uLow = u; break; }
+				else if (t > tTarget) { uHigh = u; tHigh = t; }
 				else { uLow = u; tLow = t; }
 			}
 

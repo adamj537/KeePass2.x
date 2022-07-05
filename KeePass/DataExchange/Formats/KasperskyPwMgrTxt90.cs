@@ -45,7 +45,7 @@ namespace KeePass.DataExchange.Formats
 			IStatusLogger slLogger)
 		{
 			string strAll;
-			using(StreamReader sr = new StreamReader(sInput, Encoding.UTF8, true))
+			using (StreamReader sr = new StreamReader(sInput, Encoding.UTF8, true))
 			{
 				strAll = sr.ReadToEnd();
 			}
@@ -58,43 +58,43 @@ namespace KeePass.DataExchange.Formats
 				StringSplitOptions.None);
 			PwGroup pg = pwStorage.RootGroup;
 
-			foreach(string strBlock in vBlocks)
+			foreach (string strBlock in vBlocks)
 				ImportBlock(pwStorage, ref pg, strBlock);
 		}
 
 		private static void ImportBlock(PwDatabase pd, ref PwGroup pg, string strBlock)
 		{
-			if(strBlock == null) { Debug.Assert(false); return; }
+			if (strBlock == null) { Debug.Assert(false); return; }
 			strBlock = strBlock.Trim();
-			if(strBlock.Length == 0) return;
+			if (strBlock.Length == 0) return;
 
 			string strFirstLine = strBlock;
 			int iNL = strBlock.IndexOf('\n');
-			if(iNL >= 0) strFirstLine = strBlock.Substring(0, iNL).Trim();
+			if (iNL >= 0) strFirstLine = strBlock.Substring(0, iNL).Trim();
 
-			if(strFirstLine.IndexOf(':') < 0)
+			if (strFirstLine.IndexOf(':') < 0)
 			{
-				if(strFirstLine.Length == 0) { Debug.Assert(false); pg = pd.RootGroup; }
+				if (strFirstLine.Length == 0) { Debug.Assert(false); pg = pd.RootGroup; }
 				else
 				{
 					pg = new PwGroup(true, true);
 					pg.Name = strFirstLine;
 
-					if(strFirstLine.Equals("Websites", StrUtil.CaseIgnoreCmp))
+					if (strFirstLine.Equals("Websites", StrUtil.CaseIgnoreCmp))
 						pg.IconId = PwIcon.World;
-					else if(strFirstLine.Equals("Applications", StrUtil.CaseIgnoreCmp))
+					else if (strFirstLine.Equals("Applications", StrUtil.CaseIgnoreCmp))
 						pg.IconId = PwIcon.Run;
-					else if(strFirstLine.Equals("Notes", StrUtil.CaseIgnoreCmp))
+					else if (strFirstLine.Equals("Notes", StrUtil.CaseIgnoreCmp))
 						pg.IconId = PwIcon.Note;
 
 					pd.RootGroup.AddGroup(pg, true);
 				}
 
-				if(iNL < 0) return; // Group without entry
+				if (iNL < 0) return; // Group without entry
 				strBlock = strBlock.Substring(iNL + 1).Trim();
 			}
 
-			if(strBlock.Length != 0)
+			if (strBlock.Length != 0)
 			{
 				string[] vLines = strBlock.Split('\n');
 				ImportEntry(pd, pg, vLines);
@@ -109,21 +109,21 @@ namespace KeePass.DataExchange.Formats
 			StringBuilder sbNotes = new StringBuilder();
 			bool bInNotes = false;
 
-			foreach(string strLine in vLines)
+			foreach (string strLine in vLines)
 			{
-				if(bInNotes) { sbNotes.AppendLine(strLine); continue; }
+				if (bInNotes) { sbNotes.AppendLine(strLine); continue; }
 
 				int iSep = strLine.IndexOf(':');
-				if(iSep < 0)
+				if (iSep < 0)
 				{
 					Debug.Assert(false);
 					string str = strLine.Trim();
-					if(str.Length != 0) sbNotes.AppendLine(str);
+					if (str.Length != 0) sbNotes.AppendLine(str);
 					continue;
 				}
 
 				string strKey = strLine.Substring(0, iSep).Trim();
-				if(strKey.Length == 0)
+				if (strKey.Length == 0)
 				{
 					Debug.Assert(false);
 					strKey = PwDefs.NotesField;
@@ -134,7 +134,7 @@ namespace KeePass.DataExchange.Formats
 				bFoundData |= (strValue.Length != 0);
 
 				string strKeyL = strKey.ToLowerInvariant();
-				switch(strKeyL)
+				switch (strKeyL)
 				{
 					case "website name":
 					case "login name": // Name of a user/password pair
@@ -164,12 +164,12 @@ namespace KeePass.DataExchange.Formats
 						Debug.Assert(false);
 						string strMapped = ImportUtil.MapNameToStandardField(
 							strKey, true);
-						if(!string.IsNullOrEmpty(strMapped))
+						if (!string.IsNullOrEmpty(strMapped))
 							strKey = strMapped;
 						break;
 				}
 
-				if(strKey == PwDefs.NotesField)
+				if (strKey == PwDefs.NotesField)
 				{
 					sbNotes.AppendLine(strValue);
 					bInNotes = true;
@@ -180,7 +180,7 @@ namespace KeePass.DataExchange.Formats
 			string strNotes = sbNotes.ToString().Trim();
 			ImportUtil.AppendToField(pe, PwDefs.NotesField, strNotes, pd);
 
-			if(bFoundData) pg.AddEntry(pe, true);
+			if (bFoundData) pg.AddEntry(pe, true);
 		}
 	}
 }

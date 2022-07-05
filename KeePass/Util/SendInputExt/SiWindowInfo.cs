@@ -90,7 +90,7 @@ namespace KeePass.Util.SendInputExt
 
 		private void Init()
 		{
-			if(m_hWnd == IntPtr.Zero) return; // No assert
+			if (m_hWnd == IntPtr.Zero) return; // No assert
 
 			Process p = null;
 			try
@@ -125,17 +125,17 @@ namespace KeePass.Util.SendInputExt
 					m_bCharsRAltAsCtrlAlt.ToString() + "'.");
 #endif
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 			finally
 			{
-				try { if(p != null) p.Dispose(); }
-				catch(Exception) { Debug.Assert(false); }
+				try { if (p != null) p.Dispose(); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 		}
 
 		private void InitByProcessName(string strName)
 		{
-			if(g_vProcessNamesUni == null)
+			if (g_vProcessNamesUni == null)
 				g_vProcessNamesUni = new string[] {
 					"PuTTY",
 					"KiTTY", "KiTTY_Portable", "KiTTY_NoTrans",
@@ -152,16 +152,16 @@ namespace KeePass.Util.SendInputExt
 
 					"MinTTY" // Cygwin window "~"
 				};
-			foreach(string str in g_vProcessNamesUni)
+			foreach (string str in g_vProcessNamesUni)
 			{
-				if(ProcessNameMatches(strName, str))
+				if (ProcessNameMatches(strName, str))
 				{
 					m_sm = SiSendMethod.UnicodePacket;
 					return;
 				}
 			}
 
-			if(g_vProcessNamesVMs == null)
+			if (g_vProcessNamesVMs == null)
 				g_vProcessNamesVMs = new string[] {
 					"MSTSC", // Remote Desktop Connection client
 					"VirtualBox", // Oracle VirtualBox <= 5
@@ -192,9 +192,9 @@ namespace KeePass.Util.SendInputExt
 					// https://sourceforge.net/p/keepass/discussion/329220/thread/85c109edb6/
 					"KaseyaLiveConnect"
 				};
-			foreach(string str in g_vProcessNamesVMs)
+			foreach (string str in g_vProcessNamesVMs)
 			{
-				if(ProcessNameMatches(strName, str))
+				if (ProcessNameMatches(strName, str))
 				{
 					m_sm = SiSendMethod.KeyEvent;
 					m_bCharsRAltAsCtrlAlt = true;
@@ -210,17 +210,17 @@ namespace KeePass.Util.SendInputExt
 
 		internal static string GetProcessName(Process p)
 		{
-			if(p == null) { Debug.Assert(false); return string.Empty; }
+			if (p == null) { Debug.Assert(false); return string.Empty; }
 
 			try { return (p.ProcessName ?? string.Empty).Trim(); }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 			return string.Empty;
 		}
 
 		internal static bool ProcessNameMatches(string strUnk, string strPattern)
 		{
-			if(strUnk == null) { Debug.Assert(false); return false; }
-			if(strPattern == null) { Debug.Assert(false); return false; }
+			if (strUnk == null) { Debug.Assert(false); return false; }
+			if (strPattern == null) { Debug.Assert(false); return false; }
 			Debug.Assert(strUnk.Trim() == strUnk);
 			Debug.Assert(strPattern.Trim() == strPattern);
 			Debug.Assert(!strPattern.EndsWith(".exe", StrUtil.CaseIgnoreCmp));

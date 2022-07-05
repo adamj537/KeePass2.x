@@ -136,9 +136,9 @@ namespace KeePass.DataExchange
 			IStatusLogger slLogger)
 		{
 			GxiProfile p = this.XmlProfile;
-			if(p != null)
+			if (p != null)
 			{
-				if(pwStorage == null) throw new ArgumentNullException("pwStorage");
+				if (pwStorage == null) throw new ArgumentNullException("pwStorage");
 
 				GxiImporter.Import(pwStorage.RootGroup, sInput, p, pwStorage, slLogger);
 				return;

@@ -46,25 +46,25 @@ namespace KeePassLib.Keys
 
 		public void Add(KeyProvider kp)
 		{
-			if(kp == null) { Debug.Assert(false); throw new ArgumentNullException("kp"); }
+			if (kp == null) { Debug.Assert(false); throw new ArgumentNullException("kp"); }
 
 			m_l.Add(kp);
 		}
 
 		public bool Remove(KeyProvider kp)
 		{
-			if(kp == null) { Debug.Assert(false); throw new ArgumentNullException("kp"); }
+			if (kp == null) { Debug.Assert(false); throw new ArgumentNullException("kp"); }
 
 			return m_l.Remove(kp);
 		}
 
 		public KeyProvider Get(string strName)
 		{
-			if(strName == null) { Debug.Assert(false); throw new ArgumentNullException("strName"); }
+			if (strName == null) { Debug.Assert(false); throw new ArgumentNullException("strName"); }
 
-			foreach(KeyProvider kp in m_l)
+			foreach (KeyProvider kp in m_l)
 			{
-				if(kp.Name == strName) return kp;
+				if (kp.Name == strName) return kp;
 			}
 
 			return null; // No assert

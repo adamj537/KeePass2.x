@@ -45,7 +45,7 @@ namespace KeePass.UI
 			this.ShowShortcut = false;
 			this.OwnerDraw = true;
 
-			if(AccessibilityEx.Enabled)
+			if (AccessibilityEx.Enabled)
 				this.Text = UIUtil.ColorToString(clr);
 		}
 
@@ -63,13 +63,13 @@ namespace KeePass.UI
 
 			// e.DrawBackground();
 			// e.DrawFocusRectangle();
-			using(SolidBrush sbBack = new SolidBrush(bFocused ?
+			using (SolidBrush sbBack = new SolidBrush(bFocused ?
 				SystemColors.Highlight : SystemColors.Menu))
 			{
 				g.FillRectangle(sbBack, rectBounds);
 			}
 
-			using(SolidBrush sb = new SolidBrush(m_clr))
+			using (SolidBrush sb = new SolidBrush(m_clr))
 			{
 				g.FillRectangle(sb, rectFill);
 			}

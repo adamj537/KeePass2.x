@@ -46,7 +46,7 @@ namespace KeePass.UI.ToolStripRendering
 
 		private static void EnsureFactories()
 		{
-			if(g_lFacs != null) return;
+			if (g_lFacs != null) return;
 
 			TsrFactory fKP = new KeePassTsrFactory();
 			TsrFactory f81 = new Win81TsrFactory();
@@ -57,11 +57,11 @@ namespace KeePass.UI.ToolStripRendering
 			// https://sourceforge.net/p/keepass/discussion/329220/thread/fab85f1d/
 			// https://keepass.info/help/kb/tsrstyles_survey.html
 			TsrFactory[] vPref;
-			if(WinUtil.IsAtLeastWindows10)
+			if (WinUtil.IsAtLeastWindows10)
 				vPref = new TsrFactory[] { f10, f81, fKP, fP, fS };
-			else if(WinUtil.IsAtLeastWindows8)
+			else if (WinUtil.IsAtLeastWindows8)
 				vPref = new TsrFactory[] { f81, f10, fKP, fP, fS };
-			else if(NativeLib.IsUnix())
+			else if (NativeLib.IsUnix())
 				vPref = new TsrFactory[] { f81, f10, fKP, fP, fS };
 			else // Older Windows systems
 				vPref = new TsrFactory[] { fKP, f10, f81, fP, fS };
@@ -69,17 +69,17 @@ namespace KeePass.UI.ToolStripRendering
 			List<TsrFactory> l = new List<TsrFactory>(vPref);
 
 #if DEBUG
-			for(int i = 0; i < l.Count; ++i)
+			for (int i = 0; i < l.Count; ++i)
 			{
 				TsrFactory f1 = l[i];
-				if(f1 == null) { Debug.Assert(false); continue; }
-				if(f1.Uuid == null) { Debug.Assert(false); continue; }
+				if (f1 == null) { Debug.Assert(false); continue; }
+				if (f1.Uuid == null) { Debug.Assert(false); continue; }
 
-				for(int j = i + 1; j < l.Count; ++j)
+				for (int j = i + 1; j < l.Count; ++j)
 				{
 					TsrFactory f2 = l[j];
-					if(f2 == null) { Debug.Assert(false); continue; }
-					if(f2.Uuid == null) { Debug.Assert(false); continue; }
+					if (f2 == null) { Debug.Assert(false); continue; }
+					if (f2.Uuid == null) { Debug.Assert(false); continue; }
 
 					Debug.Assert(!f1.Uuid.Equals(f2.Uuid));
 				}
@@ -92,11 +92,11 @@ namespace KeePass.UI.ToolStripRendering
 
 		private static TsrFactory GetFactory(PwUuid u)
 		{
-			if(u == null) { Debug.Assert(false); return null; }
+			if (u == null) { Debug.Assert(false); return null; }
 
-			foreach(TsrFactory f in TsrPool.Factories)
+			foreach (TsrFactory f in TsrPool.Factories)
 			{
-				if(u.Equals(f.Uuid)) return f;
+				if (u.Equals(f.Uuid)) return f;
 			}
 
 			return null;
@@ -104,10 +104,10 @@ namespace KeePass.UI.ToolStripRendering
 
 		public static bool AddFactory(TsrFactory f)
 		{
-			if(f == null) { Debug.Assert(false); return false; }
+			if (f == null) { Debug.Assert(false); return false; }
 
 			TsrFactory fEx = GetFactory(f.Uuid);
-			if(fEx != null) return false; // Exists already
+			if (fEx != null) return false; // Exists already
 
 			TsrPool.Factories.Add(f);
 			return true;
@@ -115,14 +115,14 @@ namespace KeePass.UI.ToolStripRendering
 
 		public static bool RemoveFactory(PwUuid u)
 		{
-			if(u == null) { Debug.Assert(false); return false; }
+			if (u == null) { Debug.Assert(false); return false; }
 
 			List<TsrFactory> l = TsrPool.Factories;
 			int cInitial = l.Count;
 
-			for(int i = l.Count - 1; i >= g_nStdFac; --i)
+			for (int i = l.Count - 1; i >= g_nStdFac; --i)
 			{
-				if(u.Equals(l[i].Uuid)) l.RemoveAt(i);
+				if (u.Equals(l[i].Uuid)) l.RemoveAt(i);
 			}
 
 			return (l.Count != cInitial);
@@ -133,10 +133,10 @@ namespace KeePass.UI.ToolStripRendering
 			PwUuid u = PwUuid.Zero;
 			try
 			{
-				if(!string.IsNullOrEmpty(strUuid))
+				if (!string.IsNullOrEmpty(strUuid))
 					u = new PwUuid(Convert.FromBase64String(strUuid));
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return GetBestRenderer(u);
 		}
@@ -144,23 +144,23 @@ namespace KeePass.UI.ToolStripRendering
 		internal static ToolStripRenderer GetBestRenderer(PwUuid u)
 		{
 			TsrFactory fPref = null;
-			if((u == null) || PwUuid.Zero.Equals(u)) { }
+			if ((u == null) || PwUuid.Zero.Equals(u)) { }
 			else fPref = GetFactory(u);
 
 			List<TsrFactory> lPref = new List<TsrFactory>();
-			if(fPref != null) lPref.Add(fPref);
+			if (fPref != null) lPref.Add(fPref);
 			lPref.AddRange(TsrPool.Factories);
 
-			foreach(TsrFactory fCand in lPref)
+			foreach (TsrFactory fCand in lPref)
 			{
-				if((fCand != null) && fCand.IsSupported())
+				if ((fCand != null) && fCand.IsSupported())
 				{
 					try
 					{
 						ToolStripRenderer tsr = fCand.CreateInstance();
-						if(tsr != null) return tsr;
+						if (tsr != null) return tsr;
 					}
-					catch(Exception) { Debug.Assert(false); }
+					catch (Exception) { Debug.Assert(false); }
 				}
 			}
 

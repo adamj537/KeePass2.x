@@ -35,7 +35,7 @@ namespace KeePass.Util.SendInputExt
 
 		public SiCode(string strCode, int iVKey, string strXKeySym)
 		{
-			if(string.IsNullOrEmpty(strCode)) { Debug.Assert(false); strCode = " "; }
+			if (string.IsNullOrEmpty(strCode)) { Debug.Assert(false); strCode = " "; }
 
 			this.Code = strCode;
 			this.VKey = iVKey;
@@ -44,7 +44,7 @@ namespace KeePass.Util.SendInputExt
 
 		public SiCode(string strCode, Keys k, string strXKeySym)
 		{
-			if(string.IsNullOrEmpty(strCode)) { Debug.Assert(false); strCode = " "; }
+			if (string.IsNullOrEmpty(strCode)) { Debug.Assert(false); strCode = " "; }
 
 			this.Code = strCode;
 			this.VKey = (int)k;
@@ -77,7 +77,7 @@ namespace KeePass.Util.SendInputExt
 		{
 			get
 			{
-				if(m_l != null) return m_l;
+				if (m_l != null) return m_l;
 
 				List<SiCode> l = new List<SiCode>();
 
@@ -112,7 +112,7 @@ namespace KeePass.Util.SendInputExt
 				l.Add(new SiCode("LEFT", Keys.Left, "Left"));
 				l.Add(new SiCode("RIGHT", Keys.Right, "Right"));
 
-				for(int i = 1; i <= 24; ++i)
+				for (int i = 1; i <= 24; ++i)
 				{
 					string strF = "F" + i.ToString(NumberFormatInfo.InvariantInfo);
 					l.Add(new SiCode(strF, (int)Keys.F1 + i - 1, strF));
@@ -126,7 +126,7 @@ namespace KeePass.Util.SendInputExt
 				l.Add(new SiCode("MULTIPLY", Keys.Multiply, "KP_Multiply"));
 				l.Add(new SiCode("DIVIDE", Keys.Divide, "KP_Divide"));
 
-				for(int i = 0; i < 10; ++i)
+				for (int i = 0; i < 10; ++i)
 				{
 					string strI = i.ToString(NumberFormatInfo.InvariantInfo);
 					l.Add(new SiCode("NUMPAD" + strI, (int)Keys.NumPad0 + i,
@@ -141,7 +141,7 @@ namespace KeePass.Util.SendInputExt
 				l.Add(new SiCode("APPS", Keys.Apps, "Menu"));
 
 #if DEBUG
-				foreach(SiCode si in l)
+				foreach (SiCode si in l)
 				{
 					// All key codes must be upper-case (for 'Get' method)
 					Debug.Assert(si.Code == si.Code.ToUpperInvariant());
@@ -156,12 +156,12 @@ namespace KeePass.Util.SendInputExt
 		private static Dictionary<string, SiCode> m_dictS = null;
 		public static SiCode Get(string strCode)
 		{
-			if(strCode == null) { Debug.Assert(false); return null; }
+			if (strCode == null) { Debug.Assert(false); return null; }
 
-			if(m_dictS == null)
+			if (m_dictS == null)
 			{
 				Dictionary<string, SiCode> d = new Dictionary<string, SiCode>();
-				foreach(SiCode siCp in SiCodes.KeyCodes)
+				foreach (SiCode siCp in SiCodes.KeyCodes)
 				{
 					d[siCp.Code] = siCp;
 				}
@@ -172,18 +172,18 @@ namespace KeePass.Util.SendInputExt
 
 			string strUp = strCode.ToUpperInvariant();
 			SiCode si;
-			if(m_dictS.TryGetValue(strUp, out si)) return si;
+			if (m_dictS.TryGetValue(strUp, out si)) return si;
 			return null;
 		}
 
 		public static SiCode Get(int iVKey, bool? obExtKey)
 		{
-			foreach(SiCode si in SiCodes.KeyCodes)
+			foreach (SiCode si in SiCodes.KeyCodes)
 			{
-				if(si.VKey == iVKey)
+				if (si.VKey == iVKey)
 				{
-					if(!si.ExtKey.HasValue || !obExtKey.HasValue) return si;
-					if(si.ExtKey.Value == obExtKey.Value) return si;
+					if (!si.ExtKey.HasValue || !obExtKey.HasValue) return si;
+					if (si.ExtKey.Value == obExtKey.Value) return si;
 				}
 			}
 
@@ -200,7 +200,7 @@ namespace KeePass.Util.SendInputExt
 
 		private static void EnsureChToVkDicts()
 		{
-			if(m_dChToVk != null) return;
+			if (m_dChToVk != null) return;
 
 			Dictionary<char, int> d = new Dictionary<char, int>();
 
@@ -216,7 +216,7 @@ namespace KeePass.Util.SendInputExt
 			m_dChToVkAlways = new Dictionary<char, int>(d);
 
 			Debug.Assert((int)Keys.D0 == (int)'0');
-			for(char ch = '0'; ch <= '9'; ++ch)
+			for (char ch = '0'; ch <= '9'; ++ch)
 				d[ch] = (int)ch - (int)'0' + (int)Keys.D0;
 			Debug.Assert(d['9'] == (int)Keys.D9);
 
@@ -227,7 +227,7 @@ namespace KeePass.Util.SendInputExt
 			// https://sourceforge.net/p/keepass/discussion/329220/thread/bce61102/
 			// for(char ch = 'A'; ch <= 'Z'; ++ch)
 			//	d[ch] = (int)ch - (int)'A' + (int)Keys.A;
-			for(char ch = 'a'; ch <= 'z'; ++ch)
+			for (char ch = 'a'; ch <= 'z'; ++ch)
 				d[ch] = (int)ch - (int)'a' + (int)Keys.A;
 			Debug.Assert(d['z'] == (int)Keys.Z);
 
@@ -242,7 +242,7 @@ namespace KeePass.Util.SendInputExt
 			Dictionary<char, int> d = (bLightConv ? m_dChToVkAlways : m_dChToVk);
 
 			int iVKey;
-			if(d.TryGetValue(ch, out iVKey)) return iVKey;
+			if (d.TryGetValue(ch, out iVKey)) return iVKey;
 			return 0;
 		}
 
@@ -250,9 +250,9 @@ namespace KeePass.Util.SendInputExt
 		{
 			EnsureChToVkDicts();
 
-			foreach(KeyValuePair<char, int> kvp in m_dChToVk)
+			foreach (KeyValuePair<char, int> kvp in m_dChToVk)
 			{
-				if(kvp.Value == iVKey) return kvp.Key;
+				if (kvp.Value == iVKey) return kvp.Key;
 			}
 
 			return char.MinValue;
@@ -261,7 +261,7 @@ namespace KeePass.Util.SendInputExt
 		private static Dictionary<char, string> m_dChToXKeySym = null;
 		public static string CharToXKeySym(char ch)
 		{
-			if(m_dChToXKeySym == null)
+			if (m_dChToXKeySym == null)
 			{
 				Dictionary<char, string> d = new Dictionary<char, string>();
 
@@ -383,7 +383,7 @@ namespace KeePass.Util.SendInputExt
 			}
 
 			string str;
-			if(m_dChToXKeySym.TryGetValue(ch, out str)) return str;
+			if (m_dChToXKeySym.TryGetValue(ch, out str)) return str;
 
 			// Unicode is supported; codes are 'UHHHH' with 'HHHH' being
 			// the Unicode value; see header of 'keysymdef.h'
@@ -393,10 +393,10 @@ namespace KeePass.Util.SendInputExt
 		private static void AddDiacritic(Dictionary<char, string> d,
 			char chBase, char chDiaU, char chDiaL, SiDiacritic dc)
 		{
-			if(d == null) { Debug.Assert(false); return; }
+			if (d == null) { Debug.Assert(false); return; }
 
 			string strPrefix = string.Empty;
-			switch(dc)
+			switch (dc)
 			{
 				case SiDiacritic.Grave:
 					strPrefix = "dead_grave ";
@@ -443,12 +443,12 @@ namespace KeePass.Util.SendInputExt
 			}
 			Debug.Assert((strPrefix.Length == 0) || strPrefix.EndsWith(" "));
 
-			if(chDiaU != '\0')
+			if (chDiaU != '\0')
 			{
 				Debug.Assert(!d.ContainsKey(chDiaU));
 				d[chDiaU] = (strPrefix + char.ToUpperInvariant(chBase));
 			}
-			if(chDiaL != '\0')
+			if (chDiaL != '\0')
 			{
 				Debug.Assert(!d.ContainsKey(chDiaL));
 				d[chDiaL] = (strPrefix + char.ToLowerInvariant(chBase));

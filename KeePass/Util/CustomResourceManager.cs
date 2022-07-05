@@ -58,7 +58,7 @@ namespace KeePass.Util
 
 		public CrmEventArgs(string strName, CultureInfo ci, object o)
 		{
-			if(strName == null) throw new ArgumentNullException("strName");
+			if (strName == null) throw new ArgumentNullException("strName");
 
 			m_strName = strName;
 			m_ci = ci;
@@ -90,15 +90,15 @@ namespace KeePass.Util
 
 		public CustomResourceManager(ResourceManager rmBase)
 		{
-			if(rmBase == null) throw new ArgumentNullException("rmBase");
+			if (rmBase == null) throw new ArgumentNullException("rmBase");
 
 			m_rm = rmBase;
 
-			if(m_lInsts.Count < 1000) m_lInsts.Add(this);
+			if (m_lInsts.Count < 1000) m_lInsts.Add(this);
 			else { Debug.Assert(false); }
 
 			try { m_iaAppHighRes.Load(Properties.Resources.Images_App_HighRes); }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		public override object GetObject(string name)
@@ -108,30 +108,30 @@ namespace KeePass.Util
 
 		public override object GetObject(string name, CultureInfo culture)
 		{
-			if(name == null) throw new ArgumentNullException("name");
+			if (name == null) throw new ArgumentNullException("name");
 
-			if(this.GetObjectPre != null)
+			if (this.GetObjectPre != null)
 			{
 				CrmEventArgs e = new CrmEventArgs(name, culture, null);
 				this.GetObjectPre(this, e);
-				if(e.Object != null) return e.Object;
+				if (e.Object != null) return e.Object;
 			}
 
 			object oOvr;
-			if(m_dOverrides.TryGetValue(name, out oOvr)) return oOvr;
+			if (m_dOverrides.TryGetValue(name, out oOvr)) return oOvr;
 
 			object o = m_rm.GetObject(name, culture);
-			if(o == null) { Debug.Assert(false); return null; }
+			if (o == null) { Debug.Assert(false); return null; }
 
 			try
 			{
 				Image img = (o as Image);
-				if(img != null)
+				if (img != null)
 				{
 					Debug.Assert(!(o is Icon));
 
 					Image imgOvr = m_iaAppHighRes.GetForObject(name);
-					if(imgOvr != null)
+					if (imgOvr != null)
 					{
 						int wOvr = imgOvr.Width;
 						int hOvr = imgOvr.Height;
@@ -140,7 +140,7 @@ namespace KeePass.Util
 						int wReq = DpiUtil.ScaleIntX(wBase);
 						int hReq = DpiUtil.ScaleIntY(hBase);
 
-						if((wBase > wOvr) || (hBase > hOvr))
+						if ((wBase > wOvr) || (hBase > hOvr))
 						{
 							Debug.Assert(false); // Base has higher resolution
 							imgOvr = img;
@@ -148,7 +148,7 @@ namespace KeePass.Util
 							hOvr = hBase;
 						}
 
-						if((wReq != wOvr) || (hReq != hOvr))
+						if ((wReq != wOvr) || (hReq != hOvr))
 							imgOvr = GfxUtil.ScaleImage(imgOvr, wReq, hReq,
 								ScaleTransformFlags.UIIcon);
 					}
@@ -158,7 +158,7 @@ namespace KeePass.Util
 					return imgOvr;
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return o;
 		}
@@ -176,27 +176,27 @@ namespace KeePass.Util
 		public static void Override(Type tResClass)
 		{
 			try { OverridePriv(tResClass); }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private static void OverridePriv(Type tResClass)
 		{
-			if(tResClass == null) { Debug.Assert(false); return; }
-			if(Program.DesignMode) return;
-			if(!DpiUtil.ScalingRequired) return;
+			if (tResClass == null) { Debug.Assert(false); return; }
+			if (Program.DesignMode) return;
+			if (!DpiUtil.ScalingRequired) return;
 
 			// Ensure ResourceManager instance
 			PropertyInfo pi = tResClass.GetProperty("ResourceManager",
 				(BindingFlags.NonPublic | BindingFlags.Static));
-			if(pi == null) { Debug.Assert(false); return; }
+			if (pi == null) { Debug.Assert(false); return; }
 			pi.GetValue(null, null);
 
 			FieldInfo fi = tResClass.GetField("resourceMan",
 				(BindingFlags.NonPublic | BindingFlags.Static));
-			if(fi == null) { Debug.Assert(false); return; }
+			if (fi == null) { Debug.Assert(false); return; }
 
 			ResourceManager rm = (fi.GetValue(null) as ResourceManager);
-			if(rm == null) { Debug.Assert(false); return; }
+			if (rm == null) { Debug.Assert(false); return; }
 			Debug.Assert(!(rm is CustomResourceManager)); // Override only once
 
 			CustomResourceManager crm = new CustomResourceManager(rm);

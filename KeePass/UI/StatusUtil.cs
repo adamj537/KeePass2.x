@@ -47,20 +47,20 @@ namespace KeePass.UI
 				m_dlg = new StatusProgressForm();
 				m_dlg.InitEx(strTitle, bCanCancel, bMarqueeProgress, fParent);
 
-				if(fParent != null) m_dlg.Show(fParent);
+				if (fParent != null) m_dlg.Show(fParent);
 				else m_dlg.Show();
 			}
 
 			public void StartLogging(string strOperation, bool bWriteOperationToLog)
 			{
-				if(m_dlg == null) { Debug.Assert(false); return; }
+				if (m_dlg == null) { Debug.Assert(false); return; }
 
 				m_dlg.StartLogging(strOperation, false);
 			}
 
 			public void EndLogging()
 			{
-				if(m_dlg == null) { Debug.Assert(false); return; }
+				if (m_dlg == null) { Debug.Assert(false); return; }
 
 				m_dlg.EndLogging();
 				m_dlg.CloseEx();
@@ -70,21 +70,21 @@ namespace KeePass.UI
 
 			public bool SetProgress(uint uPercent)
 			{
-				if(m_dlg == null) { Debug.Assert(false); return true; }
+				if (m_dlg == null) { Debug.Assert(false); return true; }
 
 				return m_dlg.SetProgress(uPercent);
 			}
 
 			public bool SetText(string strNewText, LogStatusType lsType)
 			{
-				if(m_dlg == null) { Debug.Assert(false); return true; }
+				if (m_dlg == null) { Debug.Assert(false); return true; }
 
 				return m_dlg.SetText(strNewText, lsType);
 			}
 
 			public bool ContinueWork()
 			{
-				if(m_dlg == null) { Debug.Assert(false); return true; }
+				if (m_dlg == null) { Debug.Assert(false); return true; }
 
 				return m_dlg.ContinueWork();
 			}
@@ -93,8 +93,8 @@ namespace KeePass.UI
 		public static IStatusLogger CreateStatusDialog(Form fParent, out Form fOptDialog,
 			string strTitle, string strOp, bool bCanCancel, bool bMarqueeProgress)
 		{
-			if(string.IsNullOrEmpty(strTitle)) strTitle = PwDefs.ShortProductName;
-			if(strOp == null) strOp = string.Empty;
+			if (string.IsNullOrEmpty(strTitle)) strTitle = PwDefs.ShortProductName;
+			if (strOp == null) strOp = string.Empty;
 
 			IStatusLogger sl;
 			// if(NativeProgressDialog.IsSupported)
@@ -108,10 +108,10 @@ namespace KeePass.UI
 			// }
 			// else
 			// {
-				StatusProgressFormWrapper w = new StatusProgressFormWrapper(fParent,
-					strTitle, bCanCancel, bMarqueeProgress);
-				sl = w;
-				fOptDialog = w.Form;
+			StatusProgressFormWrapper w = new StatusProgressFormWrapper(fParent,
+				strTitle, bCanCancel, bMarqueeProgress);
+			sl = w;
+			fOptDialog = w.Form;
 			// }
 
 			sl.StartLogging(strOp, false);

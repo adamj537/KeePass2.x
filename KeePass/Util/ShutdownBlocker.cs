@@ -45,20 +45,20 @@ namespace KeePass.Util
 			Debug.Assert(hWnd != IntPtr.Zero);
 			m_hWnd = hWnd;
 
-			if(g_sdbPrimary != null) return; // We're not the first
-			if(!WinUtil.IsAtLeastWindowsVista) return;
-			if(NativeLib.IsUnix()) return;
+			if (g_sdbPrimary != null) return; // We're not the first
+			if (!WinUtil.IsAtLeastWindowsVista) return;
+			if (NativeLib.IsUnix()) return;
 
 			string str = strReason;
-			if(string.IsNullOrEmpty(str)) { Debug.Assert(false); str = "..."; }
+			if (string.IsNullOrEmpty(str)) { Debug.Assert(false); str = "..."; }
 
 			try
 			{
-				if(NativeMethods.ShutdownBlockReasonCreate(hWnd, str))
+				if (NativeMethods.ShutdownBlockReasonCreate(hWnd, str))
 					g_sdbPrimary = this;
 				else { Debug.Assert(false); }
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		~ShutdownBlocker()
@@ -74,16 +74,16 @@ namespace KeePass.Util
 
 		private void Dispose(bool bDisposing)
 		{
-			if(object.ReferenceEquals(this, g_sdbPrimary))
+			if (object.ReferenceEquals(this, g_sdbPrimary))
 			{
 				try
 				{
-					if(!NativeMethods.ShutdownBlockReasonDestroy(m_hWnd))
+					if (!NativeMethods.ShutdownBlockReasonDestroy(m_hWnd))
 					{
 						Debug.Assert(false);
 					}
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 
 				g_sdbPrimary = null;
 			}

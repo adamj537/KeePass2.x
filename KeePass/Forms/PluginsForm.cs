@@ -60,7 +60,7 @@ namespace KeePass.Forms
 
 		private void OnFormLoad(object sender, EventArgs e)
 		{
-			if(m_mgr == null) { Debug.Assert(false); throw new InvalidOperationException(); }
+			if (m_mgr == null) { Debug.Assert(false); throw new InvalidOperationException(); }
 
 			GlobalWindowManager.AddWindow(this, this);
 
@@ -83,7 +83,7 @@ namespace KeePass.Forms
 			m_lvPlugins.SmallImageList = m_ilIcons;
 
 			UpdatePluginsList();
-			if(m_lvPlugins.Items.Count > 0)
+			if (m_lvPlugins.Items.Count > 0)
 				m_lvPlugins.Items[0].Selected = true;
 
 			UpdatePluginDescription();
@@ -95,13 +95,13 @@ namespace KeePass.Forms
 			AceStartUp aceStart = Program.Config.Application.Start;
 
 			m_cbCacheDeleteOld.Checked = aceStart.PluginCacheDeleteOld;
-			if(AppConfigEx.IsOptionEnforced(aceStart, "PluginCacheDeleteOld"))
+			if (AppConfigEx.IsOptionEnforced(aceStart, "PluginCacheDeleteOld"))
 				m_cbCacheDeleteOld.Enabled = false;
 
-			if(AppConfigEx.IsOptionEnforced(aceStart, "PluginCacheClearOnce"))
+			if (AppConfigEx.IsOptionEnforced(aceStart, "PluginCacheClearOnce"))
 				m_btnClearCache.Enabled = false;
 
-			if(string.IsNullOrEmpty(PluginManager.UserDirectory))
+			if (string.IsNullOrEmpty(PluginManager.UserDirectory))
 			{
 				Debug.Assert(false);
 				m_btnOpenFolder.Enabled = false;
@@ -113,7 +113,7 @@ namespace KeePass.Forms
 			Program.Config.Application.Start.PluginCacheDeleteOld =
 				m_cbCacheDeleteOld.Checked;
 
-			if(m_ilIcons != null)
+			if (m_ilIcons != null)
 			{
 				m_lvPlugins.SmallImageList = null; // Detach event handlers
 				m_ilIcons.Dispose();
@@ -125,7 +125,7 @@ namespace KeePass.Forms
 
 		private void UpdatePluginsList()
 		{
-			if(m_bBlockListUpdate) return;
+			if (m_bBlockListUpdate) return;
 			m_bBlockListUpdate = true;
 
 			m_lvPlugins.Items.Clear();
@@ -136,7 +136,7 @@ namespace KeePass.Forms
 			List<PluginInfo> lInfos = new List<PluginInfo>(m_mgr);
 			lInfos.Sort(PluginsForm.ComparePluginInfos);
 
-			foreach(PluginInfo pi in lInfos)
+			foreach (PluginInfo pi in lInfos)
 			{
 				ListViewItem lvi = m_lvPlugins.Items.Add(pi.Name);
 
@@ -150,7 +150,7 @@ namespace KeePass.Forms
 
 				int nImageIndex = 0;
 				Image img = ((p != null) ? p.SmallIcon : null);
-				if(img != null)
+				if (img != null)
 				{
 					nImageIndex = m_ilIcons.Images.Count;
 					m_ilIcons.Images.Add(img);
@@ -172,7 +172,7 @@ namespace KeePass.Forms
 			Debug.Assert(!m_lblSelectedPluginDesc.AutoSize); // For RTL support
 
 			ListView.SelectedListViewItemCollection lvsic = m_lvPlugins.SelectedItems;
-			if(lvsic.Count == 0)
+			if (lvsic.Count == 0)
 			{
 				m_grpPluginDesc.Text = string.Empty;
 				m_lblSelectedPluginDesc.Text = string.Empty;
@@ -210,13 +210,13 @@ namespace KeePass.Forms
 			try
 			{
 				string str = PluginManager.UserDirectory;
-				if(string.IsNullOrEmpty(str)) { Debug.Assert(false); return; }
+				if (string.IsNullOrEmpty(str)) { Debug.Assert(false); return; }
 
-				if(!Directory.Exists(str)) Directory.CreateDirectory(str);
+				if (!Directory.Exists(str)) Directory.CreateDirectory(str);
 
 				WinUtil.OpenUrlDirectly(str);
 			}
-			catch(Exception ex) { MessageService.ShowWarning(ex); }
+			catch (Exception ex) { MessageService.ShowWarning(ex); }
 		}
 	}
 }

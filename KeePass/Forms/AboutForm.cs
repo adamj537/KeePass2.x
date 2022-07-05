@@ -69,7 +69,7 @@ namespace KeePass.Forms
 			m_lblCopyright.Text = PwDefs.Copyright + ".";
 
 			try { BuildComponentsList(strVersion); }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			UIUtil.SetExplorerTheme(m_lvComponents, false);
 			UIUtil.ResizeColumns(m_lvComponents, true);
@@ -81,7 +81,7 @@ namespace KeePass.Forms
 		private void OnFormClosed(object sender, FormClosedEventArgs e)
 		{
 			m_lvComponents.ContextMenuStrip = null;
-			if(m_ctxComponents != null)
+			if (m_ctxComponents != null)
 			{
 				m_ctxComponents.Dispose();
 				m_ctxComponents = null;
@@ -95,7 +95,7 @@ namespace KeePass.Forms
 			StringBuilder sb = new StringBuilder();
 			sb.Append(PwDefs.VersionString);
 
-			if(Program.IsDevelopmentSnapshot())
+			if (Program.IsDevelopmentSnapshot())
 			{
 				sb.Append(" - Dev.");
 
@@ -107,12 +107,12 @@ namespace KeePass.Forms
 					sb.Append(' ');
 					sb.Append(strDate);
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 
 			const string strParamPlh = @"{PARAM}";
 			string strBits = KPRes.BitsA;
-			if(strBits.IndexOf(strParamPlh) >= 0)
+			if (strBits.IndexOf(strParamPlh) >= 0)
 			{
 				sb.Append(" (");
 				sb.Append(strBits.Replace(strParamPlh, (IntPtr.Size * 8).ToString()));
@@ -126,7 +126,7 @@ namespace KeePass.Forms
 		private void BuildComponentsList(string strMainVersion)
 		{
 			string strValueColumn = KPRes.Version + "/" + KPRes.Status;
-			if(Regex.IsMatch(strValueColumn, "\\s"))
+			if (Regex.IsMatch(strValueColumn, "\\s"))
 				strValueColumn = KPRes.Version + " / " + KPRes.Status;
 
 			m_lvComponents.Columns.Add(KPRes.Component, 100);
@@ -149,11 +149,11 @@ namespace KeePass.Forms
 			string strVer = (b ? (KdbManager.KeePassVersionString + " - 0x" +
 				KdbManager.LibraryBuild.ToString("X4")) : KPRes.NotInstalled);
 			string strPath = null;
-			if(b)
+			if (b)
 			{
 				string str = strDir + ((IntPtr.Size == 4) ? KdbManager.DllFile32 :
 					KdbManager.DllFile64);
-				if(File.Exists(str)) strPath = str;
+				if (File.Exists(str)) strPath = str;
 				else { Debug.Assert(false); } // Somewhere else?
 			}
 			AddComponentItem(KPRes.KeePassLibCLong, strVer, strPath);
@@ -161,13 +161,13 @@ namespace KeePass.Forms
 
 		private void AddComponentItem(string strName, string strVersion, string strPath)
 		{
-			if(string.IsNullOrEmpty(strName)) { Debug.Assert(false); return; }
-			if(strVersion == null) { Debug.Assert(false); strVersion = string.Empty; }
+			if (string.IsNullOrEmpty(strName)) { Debug.Assert(false); return; }
+			if (strVersion == null) { Debug.Assert(false); strVersion = string.Empty; }
 
 			ListViewItem lvi = new ListViewItem(strName);
 			lvi.SubItems.Add(strVersion);
 
-			if(!string.IsNullOrEmpty(strPath))
+			if (!string.IsNullOrEmpty(strPath))
 			{
 				lvi.ToolTipText = strName + MessageService.NewLine + strPath;
 				lvi.Tag = strPath;
@@ -200,7 +200,7 @@ namespace KeePass.Forms
 			tsmiCopyPath.Click += this.OnComponentCopyTag;
 			m_ctxComponents.Items.Add(tsmiCopyPath);
 
-			m_ctxComponents.Opening += delegate(object sender, CancelEventArgs e)
+			m_ctxComponents.Opening += delegate (object sender, CancelEventArgs e)
 			{
 				ListViewItem lviSel = GetSelectedComponent();
 				bool bSel = (lviSel != null);
@@ -248,19 +248,19 @@ namespace KeePass.Forms
 		private ListViewItem GetSelectedComponent()
 		{
 			ListView.SelectedListViewItemCollection lvsic = m_lvComponents.SelectedItems;
-			if((lvsic == null) || (lvsic.Count != 1)) return null;
+			if ((lvsic == null) || (lvsic.Count != 1)) return null;
 			return lvsic[0];
 		}
 
 		private void OnComponentShow(object sender, EventArgs e)
 		{
 			ListViewItem lvi = GetSelectedComponent();
-			if(lvi == null) { Debug.Assert(false); return; }
+			if (lvi == null) { Debug.Assert(false); return; }
 
 			string strPath = (lvi.Tag as string);
-			if(string.IsNullOrEmpty(strPath)) return;
+			if (string.IsNullOrEmpty(strPath)) return;
 
-			if(File.Exists(strPath))
+			if (File.Exists(strPath))
 				WinUtil.ShowFileInFileManager(strPath, true);
 			else WinUtil.OpenUrlDirectly(strPath);
 		}
@@ -268,7 +268,7 @@ namespace KeePass.Forms
 		private void OnComponentCopyVersion(object sender, EventArgs e)
 		{
 			ListViewItem lvi = GetSelectedComponent();
-			if(lvi == null) { Debug.Assert(false); return; }
+			if (lvi == null) { Debug.Assert(false); return; }
 
 			string str = (lvi.SubItems[1].Text ?? string.Empty);
 			ClipboardUtil.Copy(str, false, false, null, null, this.Handle);
@@ -277,7 +277,7 @@ namespace KeePass.Forms
 		private void OnComponentCopyTag(object sender, EventArgs e)
 		{
 			ListViewItem lvi = GetSelectedComponent();
-			if(lvi == null) { Debug.Assert(false); return; }
+			if (lvi == null) { Debug.Assert(false); return; }
 
 			string str = ((lvi.Tag as string) ?? string.Empty);
 			ClipboardUtil.Copy(str, false, false, null, null, this.Handle);

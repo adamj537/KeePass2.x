@@ -43,8 +43,8 @@ namespace KeePass.UI
 
 		public ListViewGroupingMenu(ToolStripMenuItem tsmiContainer, MainForm mf)
 		{
-			if(tsmiContainer == null) throw new ArgumentNullException("tsmiContainer");
-			if(mf == null) throw new ArgumentNullException("mf");
+			if (tsmiContainer == null) throw new ArgumentNullException("tsmiContainer");
+			if (mf == null) throw new ArgumentNullException("mf");
 
 			m_tsmiMenu = tsmiContainer;
 			m_mf = mf;
@@ -76,7 +76,7 @@ namespace KeePass.UI
 
 		public void Release()
 		{
-			if(m_tsmiMenu != null)
+			if (m_tsmiMenu != null)
 			{
 				m_dItems[AceListGrouping.On].Click -= this.OnGroupOn;
 				m_dItems[AceListGrouping.Auto].Click -= this.OnGroupAuto;
@@ -93,7 +93,7 @@ namespace KeePass.UI
 		private void UpdateUI()
 		{
 			int lgp = (Program.Config.MainWindow.ListGrouping & (int)AceListGrouping.Primary);
-			foreach(KeyValuePair<AceListGrouping, ToolStripMenuItem> kvp in m_dItems)
+			foreach (KeyValuePair<AceListGrouping, ToolStripMenuItem> kvp in m_dItems)
 			{
 				Debug.Assert(((int)kvp.Key & ~(int)AceListGrouping.Primary) == 0);
 				UIUtil.SetRadioChecked(kvp.Value, ((int)kvp.Key == lgp));
@@ -103,7 +103,7 @@ namespace KeePass.UI
 		private void SetGrouping(AceListGrouping lgPrimary)
 		{
 			Debug.Assert(((int)lgPrimary & ~(int)AceListGrouping.Primary) == 0);
-			if((int)lgPrimary == (Program.Config.MainWindow.ListGrouping &
+			if ((int)lgPrimary == (Program.Config.MainWindow.ListGrouping &
 				(int)AceListGrouping.Primary))
 				return;
 
@@ -113,14 +113,14 @@ namespace KeePass.UI
 				(int)AceListGrouping.Primary) == (int)lgPrimary);
 			UpdateUI();
 
-			if(m_mf == null) { Debug.Assert(false); return; }
+			if (m_mf == null) { Debug.Assert(false); return; }
 
 			PwDatabase pd = m_mf.ActiveDatabase;
 			PwGroup pg = m_mf.GetCurrentEntries();
-			if((pd == null) || !pd.IsOpen || (pg == null)) return; // No assert
+			if ((pd == null) || !pd.IsOpen || (pg == null)) return; // No assert
 
 			PwObjectList<PwEntry> pwl = pg.GetEntries(true);
-			if((pwl.UCount > 0) && EntryUtil.EntriesHaveSameParent(pwl))
+			if ((pwl.UCount > 0) && EntryUtil.EntriesHaveSameParent(pwl))
 				m_mf.UpdateUI(false, null, true, pwl.GetAt(0).ParentGroup,
 					true, null, false);
 			else
@@ -129,7 +129,7 @@ namespace KeePass.UI
 
 				pg = new PwGroup(true, true);
 				pg.IsVirtual = true;
-				foreach(PwEntry pe in pwl) pg.AddEntry(pe, false);
+				foreach (PwEntry pe in pwl) pg.AddEntry(pe, false);
 
 				m_mf.UpdateUI(false, null, false, null, true, pg, false);
 			}

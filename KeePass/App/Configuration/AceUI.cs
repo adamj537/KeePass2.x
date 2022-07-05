@@ -104,7 +104,7 @@ namespace KeePass.App.Configuration
 			get { return m_tray; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_tray = value;
 			}
 		}
@@ -115,7 +115,7 @@ namespace KeePass.App.Configuration
 			get { return m_uiHiding; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_uiHiding = value;
 			}
 		}
@@ -134,7 +134,7 @@ namespace KeePass.App.Configuration
 			get { return m_font; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_font = value;
 			}
 		}
@@ -145,7 +145,7 @@ namespace KeePass.App.Configuration
 			get { return m_fontPasswords; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_fontPasswords = value;
 			}
 		}
@@ -220,7 +220,7 @@ namespace KeePass.App.Configuration
 			get { return m_strToolStripRenderer; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strToolStripRenderer = value;
 			}
 		}
@@ -248,7 +248,7 @@ namespace KeePass.App.Configuration
 			get { return m_strDataViewerRect; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strDataViewerRect = value;
 			}
 		}
@@ -260,7 +260,7 @@ namespace KeePass.App.Configuration
 			get { return m_strDataEditorRect; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strDataEditorRect = value;
 			}
 		}
@@ -271,7 +271,7 @@ namespace KeePass.App.Configuration
 			get { return m_deFont; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_deFont = value;
 			}
 		}
@@ -291,7 +291,7 @@ namespace KeePass.App.Configuration
 			get { return m_strCharPickerRect; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strCharPickerRect = value;
 			}
 		}
@@ -303,7 +303,7 @@ namespace KeePass.App.Configuration
 			get { return m_strAutoTypeCtxRect; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strAutoTypeCtxRect = value;
 			}
 		}
@@ -323,7 +323,7 @@ namespace KeePass.App.Configuration
 			get { return m_strAutoTypeCtxColWidths; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strAutoTypeCtxColWidths = value;
 			}
 		}
@@ -423,7 +423,7 @@ namespace KeePass.App.Configuration
 			get { return m_strFamily; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strFamily = value;
 				m_bCacheValid = false;
 			}
@@ -468,7 +468,7 @@ namespace KeePass.App.Configuration
 
 		internal AceFont(Font f, bool bOverrideUIDefault)
 		{
-			if(f == null) throw new ArgumentNullException("f");
+			if (f == null) throw new ArgumentNullException("f");
 
 			this.Family = f.FontFamily.Name;
 			m_fSize = f.Size;
@@ -480,7 +480,7 @@ namespace KeePass.App.Configuration
 
 		public AceFont(bool bMonospace)
 		{
-			if(bMonospace) m_strFamily = "Courier New";
+			if (bMonospace) m_strFamily = "Courier New";
 		}
 
 		internal AceFont CloneDeep()
@@ -492,7 +492,7 @@ namespace KeePass.App.Configuration
 		{
 			StringBuilder sb = new StringBuilder();
 
-			if(string.IsNullOrEmpty(m_strFamily))
+			if (string.IsNullOrEmpty(m_strFamily))
 			{
 				sb.Append('(');
 				sb.Append(KPRes.None);
@@ -506,7 +506,7 @@ namespace KeePass.App.Configuration
 			sb.Append(GfxUtil.GraphicsUnitToString(m_gu));
 
 			string strStyle = FontUtil.FontStyleToString(m_fs);
-			if(!string.IsNullOrEmpty(strStyle))
+			if (!string.IsNullOrEmpty(strStyle))
 			{
 				sb.Append(", ");
 				sb.Append(strStyle);
@@ -517,7 +517,7 @@ namespace KeePass.App.Configuration
 
 		public Font ToFont()
 		{
-			if(m_bCacheValid) return m_fCached;
+			if (m_bCacheValid) return m_fCached;
 
 			m_fCached = FontUtil.CreateFont(m_strFamily, m_fSize, m_fs, m_gu);
 			m_bCacheValid = true;
@@ -531,7 +531,7 @@ namespace KeePass.App.Configuration
 			sb.Append(strProperty);
 			sb.Append(": ");
 
-			for(int i = 0; i < vValueParts.Length; ++i)
+			for (int i = 0; i < vValueParts.Length; ++i)
 				sb.Append(vValueParts[i]); // Without separator space
 
 			sb.AppendLine(";");
@@ -540,42 +540,42 @@ namespace KeePass.App.Configuration
 		internal string ToCss(string strIndent, string strFamilyFallback,
 			bool bWithDefaults)
 		{
-			if(strIndent == null) { Debug.Assert(false); strIndent = string.Empty; }
+			if (strIndent == null) { Debug.Assert(false); strIndent = string.Empty; }
 
 			StringBuilder sb = new StringBuilder();
 			NumberFormatInfo nfi = NumberFormatInfo.InvariantInfo;
 
 			string strFamily = string.Empty;
-			if(!string.IsNullOrEmpty(m_strFamily))
+			if (!string.IsNullOrEmpty(m_strFamily))
 				strFamily = "\"" + StrUtil.CssEscapeString(m_strFamily) + "\"";
 			else { Debug.Assert(false); }
-			if(!string.IsNullOrEmpty(strFamilyFallback))
+			if (!string.IsNullOrEmpty(strFamilyFallback))
 				strFamily += ((strFamily.Length != 0) ? ", " : string.Empty) +
 					strFamilyFallback;
-			if(strFamily.Length != 0)
+			if (strFamily.Length != 0)
 				AppendCss(sb, strIndent, "font-family", strFamily);
 
 			AppendCss(sb, strIndent, "font-size", m_fSize.ToString(nfi),
 				GfxUtil.GraphicsUnitToString(m_gu));
 
-			if((m_fs & FontStyle.Bold) != FontStyle.Regular)
+			if ((m_fs & FontStyle.Bold) != FontStyle.Regular)
 				AppendCss(sb, strIndent, "font-weight", "bold");
-			else if(bWithDefaults)
+			else if (bWithDefaults)
 				AppendCss(sb, strIndent, "font-weight", "normal");
 
-			if((m_fs & FontStyle.Italic) != FontStyle.Regular)
+			if ((m_fs & FontStyle.Italic) != FontStyle.Regular)
 				AppendCss(sb, strIndent, "font-style", "italic");
-			else if(bWithDefaults)
+			else if (bWithDefaults)
 				AppendCss(sb, strIndent, "font-style", "normal");
 
 			const FontStyle fsUS = FontStyle.Underline | FontStyle.Strikeout;
-			if((m_fs & fsUS) == fsUS)
+			if ((m_fs & fsUS) == fsUS)
 				AppendCss(sb, strIndent, "text-decoration", "underline line-through");
-			else if((m_fs & FontStyle.Underline) != FontStyle.Regular)
+			else if ((m_fs & FontStyle.Underline) != FontStyle.Regular)
 				AppendCss(sb, strIndent, "text-decoration", "underline");
-			else if((m_fs & FontStyle.Strikeout) != FontStyle.Regular)
+			else if ((m_fs & FontStyle.Strikeout) != FontStyle.Regular)
 				AppendCss(sb, strIndent, "text-decoration", "line-through");
-			else if(bWithDefaults)
+			else if (bWithDefaults)
 				AppendCss(sb, strIndent, "text-decoration", "none");
 
 			return sb.ToString();

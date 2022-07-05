@@ -60,10 +60,10 @@ namespace KeePass.DataExchange.Formats
 			CsvStreamReaderEx csr = new CsvStreamReaderEx(str, opt);
 			Dictionary<string, PwGroup> dGroups = new Dictionary<string, PwGroup>();
 
-			while(true)
+			while (true)
 			{
 				string[] vLine = csr.ReadLine();
-				if(vLine == null) break;
+				if (vLine == null) break;
 
 				AddEntry(vLine, pwStorage, dGroups);
 			}
@@ -72,15 +72,15 @@ namespace KeePass.DataExchange.Formats
 		private static void AddEntry(string[] vLine, PwDatabase pd,
 			Dictionary<string, PwGroup> dGroups)
 		{
-			if(vLine.Length < 2) return;
+			if (vLine.Length < 2) return;
 
 			string strGroup = vLine[0];
 			PwGroup pg;
-			if(string.IsNullOrEmpty(strGroup))
+			if (string.IsNullOrEmpty(strGroup))
 				pg = pd.RootGroup;
 			else
 			{
-				if(!dGroups.TryGetValue(strGroup, out pg))
+				if (!dGroups.TryGetValue(strGroup, out pg))
 				{
 					pg = new PwGroup(true, true);
 					pg.Name = strGroup;
@@ -100,7 +100,7 @@ namespace KeePass.DataExchange.Formats
 			int i = 3;
 			DateTime dt;
 
-			switch(strType)
+			switch (strType)
 			{
 				case "Bank Accounts":
 					MsAppend(pe, PwDefs.UserNameField, vLine, ++i, pd);
@@ -142,7 +142,7 @@ namespace KeePass.DataExchange.Formats
 					MsAppend(pe, PwDefs.UserNameField, vLine, ++i, pd);
 
 					++i;
-					if((vLine.Length > i) && StrUtil.TryParseDateTime(
+					if ((vLine.Length > i) && StrUtil.TryParseDateTime(
 						vLine[i], out dt))
 					{
 						pe.Expires = true;
@@ -232,7 +232,7 @@ namespace KeePass.DataExchange.Formats
 					MsAppend(pe, "Nationality", vLine, ++i, pd);
 
 					++i;
-					if((vLine.Length > i) && StrUtil.TryParseDateTime(
+					if ((vLine.Length > i) && StrUtil.TryParseDateTime(
 						vLine[i], out dt))
 					{
 						pe.Expires = true;
@@ -292,18 +292,18 @@ namespace KeePass.DataExchange.Formats
 		private static void MsAppend(PwEntry pe, string strFieldName,
 			string[] vLine, int iIndex, PwDatabase pdContext)
 		{
-			if(iIndex >= vLine.Length) { Debug.Assert(false); return; }
+			if (iIndex >= vLine.Length) { Debug.Assert(false); return; }
 
 			string strValue = vLine[iIndex];
-			if(string.IsNullOrEmpty(strValue)) return;
+			if (string.IsNullOrEmpty(strValue)) return;
 
 			strValue = strValue.Replace("\\r\\n", "\\n");
 			strValue = strValue.Replace("\\r", "\\n");
 
-			if(PwDefs.IsStandardField(strFieldName) &&
+			if (PwDefs.IsStandardField(strFieldName) &&
 				(strFieldName != PwDefs.NotesField))
 			{
-				while(strValue.EndsWith("\\n"))
+				while (strValue.EndsWith("\\n"))
 				{
 					strValue = strValue.Substring(0, strValue.Length - 2);
 				}

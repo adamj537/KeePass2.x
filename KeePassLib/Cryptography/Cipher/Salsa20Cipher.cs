@@ -44,10 +44,10 @@ namespace KeePassLib.Cryptography.Cipher
 
 		public Salsa20Cipher(byte[] pbKey32, byte[] pbIV8) : base()
 		{
-			if(pbKey32 == null) throw new ArgumentNullException("pbKey32");
-			if(pbKey32.Length != 32) throw new ArgumentOutOfRangeException("pbKey32");
-			if(pbIV8 == null) throw new ArgumentNullException("pbIV8");
-			if(pbIV8.Length != 8) throw new ArgumentOutOfRangeException("pbIV8");
+			if (pbKey32 == null) throw new ArgumentNullException("pbKey32");
+			if (pbKey32.Length != 32) throw new ArgumentOutOfRangeException("pbKey32");
+			if (pbIV8 == null) throw new ArgumentNullException("pbIV8");
+			if (pbIV8.Length != 8) throw new ArgumentOutOfRangeException("pbIV8");
 
 			// Key setup
 			m_s[1] = MemUtil.BytesToUInt32(pbKey32, 0);
@@ -72,7 +72,7 @@ namespace KeePassLib.Cryptography.Cipher
 
 		protected override void Dispose(bool bDisposing)
 		{
-			if(bDisposing)
+			if (bDisposing)
 			{
 				MemUtil.ZeroArray<uint>(m_s);
 				MemUtil.ZeroArray<uint>(m_x);
@@ -83,70 +83,70 @@ namespace KeePassLib.Cryptography.Cipher
 
 		protected override void NextBlock(byte[] pBlock)
 		{
-			if(pBlock == null) throw new ArgumentNullException("pBlock");
-			if(pBlock.Length != 64) throw new ArgumentOutOfRangeException("pBlock");
+			if (pBlock == null) throw new ArgumentNullException("pBlock");
+			if (pBlock.Length != 64) throw new ArgumentOutOfRangeException("pBlock");
 
 			// x is a local alias for the working buffer; with this,
 			// the compiler/runtime might remove some checks
 			uint[] x = m_x;
-			if(x == null) throw new InvalidOperationException();
-			if(x.Length < 16) throw new InvalidOperationException();
+			if (x == null) throw new InvalidOperationException();
+			if (x.Length < 16) throw new InvalidOperationException();
 
 			uint[] s = m_s;
-			if(s == null) throw new InvalidOperationException();
-			if(s.Length < 16) throw new InvalidOperationException();
+			if (s == null) throw new InvalidOperationException();
+			if (s.Length < 16) throw new InvalidOperationException();
 
 			Array.Copy(s, x, 16);
 
 			unchecked
 			{
 				// 10 * 8 quarter rounds = 20 rounds
-				for(int i = 0; i < 10; ++i)
+				for (int i = 0; i < 10; ++i)
 				{
-					x[ 4] ^= MemUtil.RotateLeft32(x[ 0] + x[12],  7);
-					x[ 8] ^= MemUtil.RotateLeft32(x[ 4] + x[ 0],  9);
-					x[12] ^= MemUtil.RotateLeft32(x[ 8] + x[ 4], 13);
-					x[ 0] ^= MemUtil.RotateLeft32(x[12] + x[ 8], 18);
+					x[4] ^= MemUtil.RotateLeft32(x[0] + x[12], 7);
+					x[8] ^= MemUtil.RotateLeft32(x[4] + x[0], 9);
+					x[12] ^= MemUtil.RotateLeft32(x[8] + x[4], 13);
+					x[0] ^= MemUtil.RotateLeft32(x[12] + x[8], 18);
 
-					x[ 9] ^= MemUtil.RotateLeft32(x[ 5] + x[ 1],  7);
-					x[13] ^= MemUtil.RotateLeft32(x[ 9] + x[ 5],  9);
-					x[ 1] ^= MemUtil.RotateLeft32(x[13] + x[ 9], 13);
-					x[ 5] ^= MemUtil.RotateLeft32(x[ 1] + x[13], 18);
+					x[9] ^= MemUtil.RotateLeft32(x[5] + x[1], 7);
+					x[13] ^= MemUtil.RotateLeft32(x[9] + x[5], 9);
+					x[1] ^= MemUtil.RotateLeft32(x[13] + x[9], 13);
+					x[5] ^= MemUtil.RotateLeft32(x[1] + x[13], 18);
 
-					x[14] ^= MemUtil.RotateLeft32(x[10] + x[ 6],  7);
-					x[ 2] ^= MemUtil.RotateLeft32(x[14] + x[10],  9);
-					x[ 6] ^= MemUtil.RotateLeft32(x[ 2] + x[14], 13);
-					x[10] ^= MemUtil.RotateLeft32(x[ 6] + x[ 2], 18);
+					x[14] ^= MemUtil.RotateLeft32(x[10] + x[6], 7);
+					x[2] ^= MemUtil.RotateLeft32(x[14] + x[10], 9);
+					x[6] ^= MemUtil.RotateLeft32(x[2] + x[14], 13);
+					x[10] ^= MemUtil.RotateLeft32(x[6] + x[2], 18);
 
-					x[ 3] ^= MemUtil.RotateLeft32(x[15] + x[11],  7);
-					x[ 7] ^= MemUtil.RotateLeft32(x[ 3] + x[15],  9);
-					x[11] ^= MemUtil.RotateLeft32(x[ 7] + x[ 3], 13);
-					x[15] ^= MemUtil.RotateLeft32(x[11] + x[ 7], 18);
+					x[3] ^= MemUtil.RotateLeft32(x[15] + x[11], 7);
+					x[7] ^= MemUtil.RotateLeft32(x[3] + x[15], 9);
+					x[11] ^= MemUtil.RotateLeft32(x[7] + x[3], 13);
+					x[15] ^= MemUtil.RotateLeft32(x[11] + x[7], 18);
 
-					x[ 1] ^= MemUtil.RotateLeft32(x[ 0] + x[ 3],  7);
-					x[ 2] ^= MemUtil.RotateLeft32(x[ 1] + x[ 0],  9);
-					x[ 3] ^= MemUtil.RotateLeft32(x[ 2] + x[ 1], 13);
-					x[ 0] ^= MemUtil.RotateLeft32(x[ 3] + x[ 2], 18);
+					x[1] ^= MemUtil.RotateLeft32(x[0] + x[3], 7);
+					x[2] ^= MemUtil.RotateLeft32(x[1] + x[0], 9);
+					x[3] ^= MemUtil.RotateLeft32(x[2] + x[1], 13);
+					x[0] ^= MemUtil.RotateLeft32(x[3] + x[2], 18);
 
-					x[ 6] ^= MemUtil.RotateLeft32(x[ 5] + x[ 4],  7);
-					x[ 7] ^= MemUtil.RotateLeft32(x[ 6] + x[ 5],  9);
-					x[ 4] ^= MemUtil.RotateLeft32(x[ 7] + x[ 6], 13);
-					x[ 5] ^= MemUtil.RotateLeft32(x[ 4] + x[ 7], 18);
+					x[6] ^= MemUtil.RotateLeft32(x[5] + x[4], 7);
+					x[7] ^= MemUtil.RotateLeft32(x[6] + x[5], 9);
+					x[4] ^= MemUtil.RotateLeft32(x[7] + x[6], 13);
+					x[5] ^= MemUtil.RotateLeft32(x[4] + x[7], 18);
 
-					x[11] ^= MemUtil.RotateLeft32(x[10] + x[ 9],  7);
-					x[ 8] ^= MemUtil.RotateLeft32(x[11] + x[10],  9);
-					x[ 9] ^= MemUtil.RotateLeft32(x[ 8] + x[11], 13);
-					x[10] ^= MemUtil.RotateLeft32(x[ 9] + x[ 8], 18);
+					x[11] ^= MemUtil.RotateLeft32(x[10] + x[9], 7);
+					x[8] ^= MemUtil.RotateLeft32(x[11] + x[10], 9);
+					x[9] ^= MemUtil.RotateLeft32(x[8] + x[11], 13);
+					x[10] ^= MemUtil.RotateLeft32(x[9] + x[8], 18);
 
-					x[12] ^= MemUtil.RotateLeft32(x[15] + x[14],  7);
-					x[13] ^= MemUtil.RotateLeft32(x[12] + x[15],  9);
+					x[12] ^= MemUtil.RotateLeft32(x[15] + x[14], 7);
+					x[13] ^= MemUtil.RotateLeft32(x[12] + x[15], 9);
 					x[14] ^= MemUtil.RotateLeft32(x[13] + x[12], 13);
 					x[15] ^= MemUtil.RotateLeft32(x[14] + x[13], 18);
 				}
 
-				for(int i = 0; i < 16; ++i) x[i] += s[i];
+				for (int i = 0; i < 16; ++i) x[i] += s[i];
 
-				for(int i = 0; i < 16; ++i)
+				for (int i = 0; i < 16; ++i)
 				{
 					int i4 = i << 2;
 					uint xi = x[i];
@@ -158,7 +158,7 @@ namespace KeePassLib.Cryptography.Cipher
 				}
 
 				++s[8];
-				if(s[8] == 0) ++s[9];
+				if (s[8] == 0) ++s[9];
 			}
 		}
 	}

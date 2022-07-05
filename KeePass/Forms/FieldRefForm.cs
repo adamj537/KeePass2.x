@@ -66,8 +66,8 @@ namespace KeePass.Forms
 
 		private void OnFormLoad(object sender, EventArgs e)
 		{
-			if(m_pgEntrySource == null) { Debug.Assert(false); return; }
-			if(m_ilIcons == null) { Debug.Assert(false); return; }
+			if (m_pgEntrySource == null) { Debug.Assert(false); return; }
+			if (m_ilIcons == null) { Debug.Assert(false); return; }
 
 			GlobalWindowManager.AddWindow(this);
 
@@ -85,15 +85,15 @@ namespace KeePass.Forms
 
 			m_radioIdUuid.Checked = true;
 
-			if(m_strDefaultRef == PwDefs.TitleField)
+			if (m_strDefaultRef == PwDefs.TitleField)
 				m_radioRefTitle.Checked = true;
-			else if(m_strDefaultRef == PwDefs.UserNameField)
+			else if (m_strDefaultRef == PwDefs.UserNameField)
 				m_radioRefUserName.Checked = true;
 			// else if(m_strDefaultRef == PwDefs.PasswordField)
 			//	m_radioRefPassword.Checked = true;
-			else if(m_strDefaultRef == PwDefs.UrlField)
+			else if (m_strDefaultRef == PwDefs.UrlField)
 				m_radioRefUrl.Checked = true;
-			else if(m_strDefaultRef == PwDefs.NotesField)
+			else if (m_strDefaultRef == PwDefs.NotesField)
 				m_radioRefNotes.Checked = true;
 			else m_radioRefPassword.Checked = true;
 		}
@@ -108,7 +108,7 @@ namespace KeePass.Forms
 		private PwEntry GetSelectedEntry()
 		{
 			ListView.SelectedListViewItemCollection lvsic = m_lvEntries.SelectedItems;
-			if((lvsic == null) || (lvsic.Count != 1)) return null;
+			if ((lvsic == null) || (lvsic.Count != 1)) return null;
 
 			return (lvsic[0].Tag as PwEntry);
 		}
@@ -116,42 +116,42 @@ namespace KeePass.Forms
 		private bool CreateResultRef()
 		{
 			PwEntry pe = this.GetSelectedEntry();
-			if(pe == null) return false;
+			if (pe == null) return false;
 
 			string str = @"{REF:";
-			if(m_radioRefTitle.Checked) str += "T";
-			else if(m_radioRefUserName.Checked) str += "U";
-			else if(m_radioRefPassword.Checked) str += "P";
-			else if(m_radioRefUrl.Checked) str += "A";
-			else if(m_radioRefNotes.Checked) str += "N";
+			if (m_radioRefTitle.Checked) str += "T";
+			else if (m_radioRefUserName.Checked) str += "U";
+			else if (m_radioRefPassword.Checked) str += "P";
+			else if (m_radioRefUrl.Checked) str += "A";
+			else if (m_radioRefNotes.Checked) str += "N";
 			else { Debug.Assert(false); return false; }
 
 			str += @"@";
 
 			string strId;
-			if(m_radioIdTitle.Checked)
+			if (m_radioIdTitle.Checked)
 				strId = @"T:" + pe.Strings.ReadSafe(PwDefs.TitleField);
-			else if(m_radioIdUserName.Checked)
+			else if (m_radioIdUserName.Checked)
 				strId = @"U:" + pe.Strings.ReadSafe(PwDefs.UserNameField);
-			else if(m_radioIdPassword.Checked)
+			else if (m_radioIdPassword.Checked)
 				strId = @"P:" + pe.Strings.ReadSafe(PwDefs.PasswordField);
-			else if(m_radioIdUrl.Checked)
+			else if (m_radioIdUrl.Checked)
 				strId = @"A:" + pe.Strings.ReadSafe(PwDefs.UrlField);
-			else if(m_radioIdNotes.Checked)
+			else if (m_radioIdNotes.Checked)
 				strId = @"N:" + pe.Strings.ReadSafe(PwDefs.NotesField);
-			else if(m_radioIdUuid.Checked)
+			else if (m_radioIdUuid.Checked)
 				strId = @"I:" + pe.Uuid.ToHexString();
 			else { Debug.Assert(false); return false; }
 
 			char[] vInvalidChars = new char[] { '{', '}', '\r', '\n' };
-			if(strId.IndexOfAny(vInvalidChars) >= 0)
+			if (strId.IndexOfAny(vInvalidChars) >= 0)
 			{
 				MessageService.ShowWarning(KPRes.FieldRefInvalidChars);
 				return false;
 			}
 
 			string strIdData = strId.Substring(2, strId.Length - 2);
-			if(IdMatchesMultipleTimes(strIdData, strId[0]))
+			if (IdMatchesMultipleTimes(strIdData, strId[0]))
 			{
 				MessageService.ShowWarning(KPRes.FieldRefMultiMatch,
 					KPRes.FieldRefMultiMatchHint);
@@ -166,32 +166,32 @@ namespace KeePass.Forms
 
 		private bool IdMatchesMultipleTimes(string strSearch, char tchField)
 		{
-			if(m_pgEntrySource == null) { Debug.Assert(false); return false; }
+			if (m_pgEntrySource == null) { Debug.Assert(false); return false; }
 
 			SearchParameters sp = SearchParameters.None;
 			sp.SearchString = strSearch;
 			sp.RespectEntrySearchingDisabled = false;
 
-			if(tchField == 'T') sp.SearchInTitles = true;
-			else if(tchField == 'U') sp.SearchInUserNames = true;
-			else if(tchField == 'P') sp.SearchInPasswords = true;
-			else if(tchField == 'A') sp.SearchInUrls = true;
-			else if(tchField == 'N') sp.SearchInNotes = true;
-			else if(tchField == 'I') sp.SearchInUuids = true;
+			if (tchField == 'T') sp.SearchInTitles = true;
+			else if (tchField == 'U') sp.SearchInUserNames = true;
+			else if (tchField == 'P') sp.SearchInPasswords = true;
+			else if (tchField == 'A') sp.SearchInUrls = true;
+			else if (tchField == 'N') sp.SearchInNotes = true;
+			else if (tchField == 'I') sp.SearchInUuids = true;
 			else { Debug.Assert(false); return true; }
 
 			PwObjectList<PwEntry> l = new PwObjectList<PwEntry>();
 			m_pgEntrySource.SearchEntries(sp, l);
 
-			if(l.UCount == 0) { Debug.Assert(false); return false; }
-			if(l.UCount == 1) return false;
+			if (l.UCount == 0) { Debug.Assert(false); return false; }
+			if (l.UCount == 1) return false;
 
 			return true;
 		}
 
 		private void OnBtnOK(object sender, EventArgs e)
 		{
-			if(!CreateResultRef()) this.DialogResult = DialogResult.None;
+			if (!CreateResultRef()) this.DialogResult = DialogResult.None;
 		}
 
 		private void OnBtnCancel(object sender, EventArgs e)
@@ -217,7 +217,7 @@ namespace KeePass.Forms
 		{
 			Keys k = (keyData & Keys.KeyCode);
 
-			if((k == Keys.Return) && ((keyData & (Keys.Control | Keys.Alt)) ==
+			if ((k == Keys.Return) && ((keyData & (Keys.Control | Keys.Alt)) ==
 				Keys.None) && m_tbFilter.Focused) // Return == Enter
 				return false; // Forward to TextBox
 
@@ -226,7 +226,7 @@ namespace KeePass.Forms
 
 		private void OnFilterKeyDown(object sender, KeyEventArgs e)
 		{
-			if(e.KeyCode == Keys.Return) // Return == Enter
+			if (e.KeyCode == Keys.Return) // Return == Enter
 			{
 				UIUtil.SetHandled(e, true);
 
@@ -243,7 +243,7 @@ namespace KeePass.Forms
 
 		private void OnFilterKeyUp(object sender, KeyEventArgs e)
 		{
-			if(e.KeyCode == Keys.Return) // Return == Enter
+			if (e.KeyCode == Keys.Return) // Return == Enter
 				UIUtil.SetHandled(e, true);
 		}
 	}

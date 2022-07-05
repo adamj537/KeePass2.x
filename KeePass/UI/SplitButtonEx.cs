@@ -61,7 +61,7 @@ namespace KeePass.UI
 			{
 				CreateParams cp = base.CreateParams;
 
-				if(m_bSupported)
+				if (m_bSupported)
 				{
 					int fAdd = BS_SPLITBUTTON;
 					// if(this.RightToLeft == RightToLeft.Yes)
@@ -79,20 +79,20 @@ namespace KeePass.UI
 			m_bSupported = (WinUtil.IsAtLeastWindowsVista &&
 				!NativeLib.IsUnix() && !Program.DesignMode);
 
-			if(m_bSupported) this.FlatStyle = FlatStyle.System;
+			if (m_bSupported) this.FlatStyle = FlatStyle.System;
 		}
 
 		protected override void WndProc(ref Message m)
 		{
-			if((m.Msg == NativeMethods.WM_NOTIFY_REFLECT) && m_bSupported)
+			if ((m.Msg == NativeMethods.WM_NOTIFY_REFLECT) && m_bSupported)
 			{
 				try
 				{
 					NativeMethods.NMHDR nm = (NativeMethods.NMHDR)m.GetLParam(
 						typeof(NativeMethods.NMHDR));
-					if(nm.code == BCN_DROPDOWN)
+					if (nm.code == BCN_DROPDOWN)
 					{
-						if(m_ctx != null)
+						if (m_ctx != null)
 						{
 							m_ctx.ShowEx(this);
 							return; // We handled it
@@ -100,7 +100,7 @@ namespace KeePass.UI
 						else { Debug.Assert(false); }
 					}
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 
 			base.WndProc(ref m);

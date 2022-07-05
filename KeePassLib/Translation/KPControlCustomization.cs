@@ -56,7 +56,7 @@ namespace KeePassLib.Translation
 			get { return m_strPosX; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strPosX = value;
 			}
 		}
@@ -69,7 +69,7 @@ namespace KeePassLib.Translation
 			get { return m_strPosY; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strPosY = value;
 			}
 		}
@@ -82,7 +82,7 @@ namespace KeePassLib.Translation
 			get { return m_strSizeW; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strSizeW = value;
 			}
 		}
@@ -95,7 +95,7 @@ namespace KeePassLib.Translation
 			get { return m_strSizeH; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strSizeH = value;
 			}
 		}
@@ -103,37 +103,37 @@ namespace KeePassLib.Translation
 		public void SetControlRelativeValue(LayoutParameterEx lp, string strValue)
 		{
 			Debug.Assert(strValue != null);
-			if(strValue == null) throw new ArgumentNullException("strValue");
+			if (strValue == null) throw new ArgumentNullException("strValue");
 
-			if(strValue.Length > 0) strValue += m_strControlRelative;
+			if (strValue.Length > 0) strValue += m_strControlRelative;
 
-			if(lp == LayoutParameterEx.X) m_strPosX = strValue;
-			else if(lp == LayoutParameterEx.Y) m_strPosY = strValue;
-			else if(lp == LayoutParameterEx.Width) m_strSizeW = strValue;
-			else if(lp == LayoutParameterEx.Height) m_strSizeH = strValue;
+			if (lp == LayoutParameterEx.X) m_strPosX = strValue;
+			else if (lp == LayoutParameterEx.Y) m_strPosY = strValue;
+			else if (lp == LayoutParameterEx.Width) m_strSizeW = strValue;
+			else if (lp == LayoutParameterEx.Height) m_strSizeH = strValue;
 			else { Debug.Assert(false); }
 		}
 
 #if (!KeePassLibSD && !KeePassUAP)
 		internal void ApplyTo(Control c)
 		{
-			Debug.Assert(c != null); if(c == null) return;
+			Debug.Assert(c != null); if (c == null) return;
 
 			int? v;
 			v = GetModControlParameter(c, LayoutParameterEx.X, m_strPosX);
-			if(v.HasValue) c.Left = v.Value;
+			if (v.HasValue) c.Left = v.Value;
 			v = GetModControlParameter(c, LayoutParameterEx.Y, m_strPosY);
-			if(v.HasValue) c.Top = v.Value;
+			if (v.HasValue) c.Top = v.Value;
 			v = GetModControlParameter(c, LayoutParameterEx.Width, m_strSizeW);
-			if(v.HasValue) c.Width = v.Value;
+			if (v.HasValue) c.Width = v.Value;
 			v = GetModControlParameter(c, LayoutParameterEx.Height, m_strSizeH);
-			if(v.HasValue) c.Height = v.Value;
+			if (v.HasValue) c.Height = v.Value;
 		}
 
 		private static int? GetModControlParameter(Control c, LayoutParameterEx p,
 			string strModParam)
 		{
-			if(strModParam.Length == 0) return null;
+			if (strModParam.Length == 0) return null;
 
 			Debug.Assert(c.Left == c.Location.X);
 			Debug.Assert(c.Top == c.Location.Y);
@@ -141,16 +141,16 @@ namespace KeePassLib.Translation
 			Debug.Assert(c.Height == c.Size.Height);
 
 			int iPrev;
-			if(p == LayoutParameterEx.X) iPrev = c.Left;
-			else if(p == LayoutParameterEx.Y) iPrev = c.Top;
-			else if(p == LayoutParameterEx.Width) iPrev = c.Width;
-			else if(p == LayoutParameterEx.Height) iPrev = c.Height;
+			if (p == LayoutParameterEx.X) iPrev = c.Left;
+			else if (p == LayoutParameterEx.Y) iPrev = c.Top;
+			else if (p == LayoutParameterEx.Width) iPrev = c.Width;
+			else if (p == LayoutParameterEx.Height) iPrev = c.Height;
 			else { Debug.Assert(false); return null; }
 
 			double? dRel = ToControlRelativePercent(strModParam);
-			if(dRel.HasValue)
+			if (dRel.HasValue)
 				return (iPrev + (int)((dRel.Value * (double)iPrev) / 100.0));
-			
+
 			Debug.Assert(false);
 			return null;
 		}
@@ -158,19 +158,19 @@ namespace KeePassLib.Translation
 		public static double? ToControlRelativePercent(string strEncoded)
 		{
 			Debug.Assert(strEncoded != null);
-			if(strEncoded == null) throw new ArgumentNullException("strEncoded");
+			if (strEncoded == null) throw new ArgumentNullException("strEncoded");
 
-			if(strEncoded.Length == 0) return null;
+			if (strEncoded.Length == 0) return null;
 
-			if(strEncoded.EndsWith(m_strControlRelative))
+			if (strEncoded.EndsWith(m_strControlRelative))
 			{
 				string strValue = strEncoded.Substring(0, strEncoded.Length -
 					m_strControlRelative.Length);
-				if((strValue.Length == 1) && (strValue == "-"))
+				if ((strValue.Length == 1) && (strValue == "-"))
 					strValue = "0";
 
 				double dRel;
-				if(double.TryParse(strValue, m_nsParser, m_lclInv, out dRel))
+				if (double.TryParse(strValue, m_nsParser, m_lclInv, out dRel))
 				{
 					return dRel;
 				}
@@ -180,7 +180,7 @@ namespace KeePassLib.Translation
 					return null;
 				}
 			}
-			
+
 			Debug.Assert(false);
 			return null;
 		}
@@ -189,11 +189,11 @@ namespace KeePassLib.Translation
 		public static string ToControlRelativeString(string strEncoded)
 		{
 			Debug.Assert(strEncoded != null);
-			if(strEncoded == null) throw new ArgumentNullException("strEncoded");
+			if (strEncoded == null) throw new ArgumentNullException("strEncoded");
 
-			if(strEncoded.Length == 0) return string.Empty;
+			if (strEncoded.Length == 0) return string.Empty;
 
-			if(strEncoded.EndsWith(m_strControlRelative))
+			if (strEncoded.EndsWith(m_strControlRelative))
 				return strEncoded.Substring(0, strEncoded.Length -
 					m_strControlRelative.Length);
 
@@ -214,7 +214,7 @@ namespace KeePassLib.Translation
 			get { return m_strMemberName; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strMemberName = value;
 			}
 		}
@@ -226,7 +226,7 @@ namespace KeePassLib.Translation
 			get { return m_strHash; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strHash = value;
 			}
 		}
@@ -238,7 +238,7 @@ namespace KeePassLib.Translation
 			get { return m_strText; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strText = value;
 			}
 		}
@@ -257,14 +257,14 @@ namespace KeePassLib.Translation
 			get { return m_layout; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_layout = value;
 			}
 		}
 
 		public int CompareTo(KPControlCustomization kpOther)
 		{
-			if(kpOther == null) { Debug.Assert(false); return 1; }
+			if (kpOther == null) { Debug.Assert(false); return 1; }
 
 			return m_strMemberName.CompareTo(kpOther.Name);
 		}
@@ -279,12 +279,12 @@ namespace KeePassLib.Translation
 
 		public static bool ControlSupportsText(object oControl)
 		{
-			if(oControl == null) return false;
+			if (oControl == null) return false;
 
 			Type t = oControl.GetType();
-			for(int i = 0; i < m_vTextControls.Length; ++i)
+			for (int i = 0; i < m_vTextControls.Length; ++i)
 			{
-				if(t == m_vTextControls[i]) return false;
+				if (t == m_vTextControls[i]) return false;
 			}
 
 			return true;
@@ -293,7 +293,7 @@ namespace KeePassLib.Translation
 		// Name-unchecked (!) property application method
 		internal void ApplyTo(Control c)
 		{
-			if((m_strText.Length > 0) && ControlSupportsText(c) &&
+			if ((m_strText.Length > 0) && ControlSupportsText(c) &&
 				(c.Text.Length > 0))
 			{
 				c.Text = m_strText;
@@ -304,12 +304,12 @@ namespace KeePassLib.Translation
 
 		public static string HashControl(Control c)
 		{
-			if(c == null) { Debug.Assert(false); return string.Empty; }
+			if (c == null) { Debug.Assert(false); return string.Empty; }
 
 			StringBuilder sb = new StringBuilder();
 			WriteCpiParam(sb, c.Text);
 
-			if(c is Form)
+			if (c is Form)
 			{
 				WriteCpiParam(sb, c.ClientSize.Width.ToString(KpccLayout.m_lclInv));
 				WriteCpiParam(sb, c.ClientSize.Height.ToString(KpccLayout.m_lclInv));
@@ -347,7 +347,7 @@ namespace KeePassLib.Translation
 			Label l = (c as Label);
 			LinkLabel ll = (c as LinkLabel);
 
-			if(cb != null)
+			if (cb != null)
 			{
 				WriteCpiParam(sb, cb.AutoSize ? "A" : "F");
 				WriteCpiParam(sb, cb.TextAlign.ToString());
@@ -355,7 +355,7 @@ namespace KeePassLib.Translation
 				WriteCpiParam(sb, cb.Appearance.ToString());
 				WriteCpiParam(sb, cb.CheckAlign.ToString());
 			}
-			else if(rb != null)
+			else if (rb != null)
 			{
 				WriteCpiParam(sb, rb.AutoSize ? "A" : "F");
 				WriteCpiParam(sb, rb.TextAlign.ToString());
@@ -363,18 +363,18 @@ namespace KeePassLib.Translation
 				WriteCpiParam(sb, rb.Appearance.ToString());
 				WriteCpiParam(sb, rb.CheckAlign.ToString());
 			}
-			else if(btn != null)
+			else if (btn != null)
 			{
 				WriteCpiParam(sb, btn.AutoSize ? "A" : "F");
 				WriteCpiParam(sb, btn.TextAlign.ToString());
 				WriteCpiParam(sb, btn.TextImageRelation.ToString());
 			}
-			else if(l != null)
+			else if (l != null)
 			{
 				WriteCpiParam(sb, l.AutoSize ? "A" : "F");
 				WriteCpiParam(sb, l.TextAlign.ToString());
 			}
-			else if(ll != null)
+			else if (ll != null)
 			{
 				WriteCpiParam(sb, ll.AutoSize ? "A" : "F");
 				WriteCpiParam(sb, ll.TextAlign.ToString());
@@ -389,7 +389,7 @@ namespace KeePassLib.Translation
 
 		public bool MatchHash(string strHash)
 		{
-			if(strHash == null) throw new ArgumentNullException("strHash");
+			if (strHash == null) throw new ArgumentNullException("strHash");
 
 			// Currently only v1: is supported, see HashControl
 			return (m_strHash == strHash);

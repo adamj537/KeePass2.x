@@ -61,7 +61,7 @@ namespace KeePassLib.Cryptography.KeyDerivation
 		internal const ulong MaxIterations = uint.MaxValue;
 
 		internal const ulong MinMemory = 1024 * 8; // For parallelism = 1
-		// internal const ulong MaxMemory = (ulong)uint.MaxValue * 1024UL; // Spec.
+												   // internal const ulong MaxMemory = (ulong)uint.MaxValue * 1024UL; // Spec.
 		internal const ulong MaxMemory = int.MaxValue; // .NET limit
 
 		internal const uint MinParallelism = 1;
@@ -89,7 +89,7 @@ namespace KeePassLib.Cryptography.KeyDerivation
 
 		public Argon2Kdf(Argon2Type t)
 		{
-			if((t != Argon2Type.D) && (t != Argon2Type.ID))
+			if ((t != Argon2Type.D) && (t != Argon2Type.ID))
 				throw new NotSupportedException();
 
 			m_t = t;
@@ -110,7 +110,7 @@ namespace KeePassLib.Cryptography.KeyDerivation
 
 		public override void Randomize(KdfParameters p)
 		{
-			if(p == null) { Debug.Assert(false); return; }
+			if (p == null) { Debug.Assert(false); return; }
 			Debug.Assert(p.KdfUuid.Equals(this.Uuid));
 
 			byte[] pb = CryptoRandom.Instance.GetRandomBytes(32);
@@ -119,29 +119,29 @@ namespace KeePassLib.Cryptography.KeyDerivation
 
 		public override byte[] Transform(byte[] pbMsg, KdfParameters p)
 		{
-			if(pbMsg == null) throw new ArgumentNullException("pbMsg");
-			if(p == null) throw new ArgumentNullException("p");
+			if (pbMsg == null) throw new ArgumentNullException("pbMsg");
+			if (p == null) throw new ArgumentNullException("p");
 
 			byte[] pbSalt = p.GetByteArray(ParamSalt);
-			if(pbSalt == null)
+			if (pbSalt == null)
 				throw new ArgumentNullException("p.Salt");
-			if((pbSalt.Length < MinSalt) || (pbSalt.Length > MaxSalt))
+			if ((pbSalt.Length < MinSalt) || (pbSalt.Length > MaxSalt))
 				throw new ArgumentOutOfRangeException("p.Salt");
 
 			uint uPar = p.GetUInt32(ParamParallelism, 0);
-			if((uPar < MinParallelism) || (uPar > MaxParallelism))
+			if ((uPar < MinParallelism) || (uPar > MaxParallelism))
 				throw new ArgumentOutOfRangeException("p.Parallelism");
 
 			ulong uMem = p.GetUInt64(ParamMemory, 0);
-			if((uMem < MinMemory) || (uMem > MaxMemory))
+			if ((uMem < MinMemory) || (uMem > MaxMemory))
 				throw new ArgumentOutOfRangeException("p.Memory");
 
 			ulong uIt = p.GetUInt64(ParamIterations, 0);
-			if((uIt < MinIterations) || (uIt > MaxIterations))
+			if ((uIt < MinIterations) || (uIt > MaxIterations))
 				throw new ArgumentOutOfRangeException("p.Iterations");
 
 			uint v = p.GetUInt32(ParamVersion, 0);
-			if((v < MinVersion) || (v > MaxVersion))
+			if ((v < MinVersion) || (v > MaxVersion))
 				throw new ArgumentOutOfRangeException("p.Version");
 
 			byte[] pbSecretKey = p.GetByteArray(ParamSecretKey);
@@ -152,12 +152,12 @@ namespace KeePassLib.Cryptography.KeyDerivation
 			byte[] pbRet = Argon2Native(pbMsg, pbSalt, uPar, uMem,
 				uIt, cbOut, v, pbSecretKey, pbAssocData);
 
-			if(pbRet == null)
+			if (pbRet == null)
 			{
 				pbRet = Argon2Transform(pbMsg, pbSalt, uPar, uMem,
 					uIt, cbOut, v, pbSecretKey, pbAssocData);
 
-				if(uMem > (100UL * 1024UL * 1024UL)) GC.Collect();
+				if (uMem > (100UL * 1024UL * 1024UL)) GC.Collect();
 			}
 
 			return pbRet;
@@ -181,12 +181,12 @@ namespace KeePassLib.Cryptography.KeyDerivation
 			try
 			{
 				// Secret key and assoc. data are unsupported by 'argon2_hash'
-				if((pbSecretKey != null) && (pbSecretKey.Length != 0)) return null;
-				if((pbAssocData != null) && (pbAssocData.Length != 0)) return null;
+				if ((pbSecretKey != null) && (pbSecretKey.Length != 0)) return null;
+				if ((pbAssocData != null) && (pbAssocData.Length != 0)) return null;
 
 				int iType;
-				if(m_t == Argon2Type.D) iType = 0;
-				else if(m_t == Argon2Type.ID) iType = 2;
+				if (m_t == Argon2Type.D) iType = 0;
+				else if (m_t == Argon2Type.ID) iType = 2;
 				else { Debug.Assert(false); return null; }
 
 				nbMsg = new NativeBufferEx(pbMsg, true, true, 1);
@@ -199,9 +199,9 @@ namespace KeePassLib.Cryptography.KeyDerivation
 				IntPtr cbHash = new IntPtr(cbOut);
 
 				bool b = false;
-				if(NativeLib.IsUnix())
+				if (NativeLib.IsUnix())
 				{
-					if(!MonoWorkarounds.IsRequired(100004)) return null;
+					if (!MonoWorkarounds.IsRequired(100004)) return null;
 
 					try
 					{
@@ -210,10 +210,10 @@ namespace KeePassLib.Cryptography.KeyDerivation
 							nbHash.Data, cbHash, IntPtr.Zero, IntPtr.Zero,
 							iType, uVersion) == 0);
 					}
-					catch(DllNotFoundException) { }
-					catch(Exception) { Debug.Assert(false); }
+					catch (DllNotFoundException) { }
+					catch (Exception) { Debug.Assert(false); }
 
-					if(!b)
+					if (!b)
 						b = (NativeMethods.argon2_hash_u1(t, m, uParallel,
 							nbMsg.Data, cbMsg, nbSalt.Data, cbSalt,
 							nbHash.Data, cbHash, IntPtr.Zero, IntPtr.Zero,
@@ -221,7 +221,7 @@ namespace KeePassLib.Cryptography.KeyDerivation
 				}
 				else // Windows
 				{
-					if(IntPtr.Size == 4)
+					if (IntPtr.Size == 4)
 						b = (NativeMethods.argon2_hash_w32(t, m, uParallel,
 							nbMsg.Data, cbMsg, nbSalt.Data, cbSalt,
 							nbHash.Data, cbHash, IntPtr.Zero, IntPtr.Zero,
@@ -233,20 +233,20 @@ namespace KeePassLib.Cryptography.KeyDerivation
 							iType, uVersion) == 0);
 				}
 
-				if(b)
+				if (b)
 				{
 					byte[] pbHash = new byte[cbOut];
 					nbHash.CopyTo(pbHash);
 					return pbHash;
 				}
 			}
-			catch(DllNotFoundException) { }
-			catch(Exception) { Debug.Assert(false); }
+			catch (DllNotFoundException) { }
+			catch (Exception) { Debug.Assert(false); }
 			finally
 			{
-				if(nbMsg != null) nbMsg.Dispose();
-				if(nbSalt != null) nbSalt.Dispose();
-				if(nbHash != null) nbHash.Dispose();
+				if (nbMsg != null) nbMsg.Dispose();
+				if (nbSalt != null) nbSalt.Dispose();
+				if (nbHash != null) nbHash.Dispose();
 			}
 
 			return null;

@@ -96,7 +96,7 @@ namespace KeePass.Forms
 
 		private void OnFormLoad(object sender, EventArgs e)
 		{
-			if((m_pd == null) && (m_pg == null))
+			if ((m_pd == null) && (m_pg == null))
 			{
 				Debug.Assert(false);
 				throw new InvalidOperationException();
@@ -126,19 +126,19 @@ namespace KeePass.Forms
 			Dictionary<string, FormatGroupEx> dictGroups =
 				new Dictionary<string, FormatGroupEx>();
 
-			foreach(FileFormatProvider f in Program.FileFormatPool)
+			foreach (FileFormatProvider f in Program.FileFormatPool)
 			{
-				if(m_bExport && !f.SupportsExport) continue;
-				if(!m_bExport && !f.SupportsImport) continue;
+				if (m_bExport && !f.SupportsExport) continue;
+				if (!m_bExport && !f.SupportsImport) continue;
 
 				string strDisplayName = f.DisplayName;
-				if(string.IsNullOrEmpty(strDisplayName)) { Debug.Assert(false); continue; }
+				if (string.IsNullOrEmpty(strDisplayName)) { Debug.Assert(false); continue; }
 
 				string strAppGroup = f.ApplicationGroup;
-				if(string.IsNullOrEmpty(strAppGroup)) strAppGroup = KPRes.General;
+				if (string.IsNullOrEmpty(strAppGroup)) strAppGroup = KPRes.General;
 
 				FormatGroupEx grp;
-				if(!dictGroups.TryGetValue(strAppGroup, out grp))
+				if (!dictGroups.TryGetValue(strAppGroup, out grp))
 				{
 					grp = new FormatGroupEx(strAppGroup);
 					dictGroups[strAppGroup] = grp;
@@ -149,28 +149,28 @@ namespace KeePass.Forms
 				lvi.Tag = f;
 
 				img = f.SmallIcon;
-				if(img == null)
+				if (img == null)
 				{
 					string strExt = f.DefaultExtension;
-					if(!string.IsNullOrEmpty(strExt))
+					if (!string.IsNullOrEmpty(strExt))
 						strExt = UIUtil.GetPrimaryFileTypeExt(strExt);
-					if(!string.IsNullOrEmpty(strExt))
+					if (!string.IsNullOrEmpty(strExt))
 						img = FileIcons.GetImageForExtension(strExt, null);
 				}
-				if(img == null)
+				if (img == null)
 					img = Properties.Resources.B16x16_Folder_Inbox;
 
 				int iImage = lImages.IndexOf(img);
-				if(iImage < 0) { iImage = lImages.Count; lImages.Add(img); }
+				if (iImage < 0) { iImage = lImages.Count; lImages.Add(img); }
 				lvi.ImageIndex = iImage;
 
 				grp.Items.Add(lvi);
 			}
 
-			foreach(FormatGroupEx formatGroup in dictGroups.Values)
+			foreach (FormatGroupEx formatGroup in dictGroups.Values)
 			{
 				m_lvFormats.Groups.Add(formatGroup.Group);
-				foreach(ListViewItem lvi in formatGroup.Items)
+				foreach (ListViewItem lvi in formatGroup.Items)
 					m_lvFormats.Items.Add(lvi);
 			}
 
@@ -178,7 +178,7 @@ namespace KeePass.Forms
 				DpiUtil.ScaleIntX(16), DpiUtil.ScaleIntY(16));
 			m_lvFormats.SmallImageList = m_ilFormats;
 
-			if(m_bExport)
+			if (m_bExport)
 			{
 				m_grpFiles.Text = KPRes.Destination;
 				UIUtil.SetText(m_lblFiles, KPRes.File + ":");
@@ -213,7 +213,7 @@ namespace KeePass.Forms
 			Program.Config.Defaults.ExportPostOpen = m_cbExportPostOpen.Checked;
 			Program.Config.Defaults.ExportPostShow = m_cbExportPostShow.Checked;
 
-			if(m_ilFormats != null)
+			if (m_ilFormats != null)
 			{
 				m_lvFormats.SmallImageList = null; // Detach event handlers
 				m_ilFormats.Dispose();
@@ -230,9 +230,9 @@ namespace KeePass.Forms
 
 		private static bool CheckFilePath(string strPath)
 		{
-			if(string.IsNullOrEmpty(strPath)) { Debug.Assert(false); return false; }
+			if (string.IsNullOrEmpty(strPath)) { Debug.Assert(false); return false; }
 
-			if(strPath.IndexOf(';') >= 0)
+			if (strPath.IndexOf(';') >= 0)
 			{
 				MessageService.ShowWarning(strPath, KPRes.FileNameContainsSemicolonError);
 				return false;
@@ -244,38 +244,38 @@ namespace KeePass.Forms
 		private void OnBtnSelFile(object sender, EventArgs e)
 		{
 			UpdateUIState();
-			if(m_fmtCur == null) { Debug.Assert(false); return; }
-			if(!m_fmtCur.RequiresFile) return; // Break on double-click
+			if (m_fmtCur == null) { Debug.Assert(false); return; }
+			if (!m_fmtCur.RequiresFile) return; // Break on double-click
 
 			string strFormat = m_fmtCur.FormatName;
-			if(string.IsNullOrEmpty(strFormat)) strFormat = KPRes.Data;
+			if (string.IsNullOrEmpty(strFormat)) strFormat = KPRes.Data;
 
 			string strExts = m_fmtCur.DefaultExtension;
-			if(string.IsNullOrEmpty(strExts)) strExts = "export";
+			if (string.IsNullOrEmpty(strExts)) strExts = "export";
 			string strPriExt = UIUtil.GetPrimaryFileTypeExt(strExts);
-			if(strPriExt.Length == 0) strPriExt = "export"; // In case of "|"
+			if (strPriExt.Length == 0) strPriExt = "export"; // In case of "|"
 
 			string strFilter = UIUtil.CreateFileTypeFilter(strExts, strFormat, true);
 
-			if(!m_bExport) // Import
+			if (!m_bExport) // Import
 			{
 				OpenFileDialogEx ofd = UIUtil.CreateOpenFileDialog(KPRes.Import +
 					": " + strFormat, strFilter, 1, strPriExt, true,
 					AppDefs.FileDialogContext.Import);
 
-				if(ofd.ShowDialog() != DialogResult.OK) return;
+				if (ofd.ShowDialog() != DialogResult.OK) return;
 
 				StringBuilder sb = new StringBuilder();
-				foreach(string str in ofd.FileNames)
+				foreach (string str in ofd.FileNames)
 				{
-					if(!CheckFilePath(str)) continue;
+					if (!CheckFilePath(str)) continue;
 
-					if(sb.Length != 0) sb.Append(';');
+					if (sb.Length != 0) sb.Append(';');
 					sb.Append(str);
 				}
 
 				string strFiles = sb.ToString();
-				if(strFiles.Length >= m_tbFile.MaxLength)
+				if (strFiles.Length >= m_tbFile.MaxLength)
 				{
 					MessageService.ShowWarning(KPRes.TooManyFilesError);
 					return;
@@ -290,15 +290,15 @@ namespace KeePass.Forms
 					AppDefs.FileDialogContext.Export);
 
 				string strSuggestion = KPRes.Database;
-				if((m_pd != null) && (m_pd.IOConnectionInfo.Path.Length > 0))
+				if ((m_pd != null) && (m_pd.IOConnectionInfo.Path.Length > 0))
 					strSuggestion = UrlUtil.StripExtension(UrlUtil.GetFileName(
 						m_pd.IOConnectionInfo.Path));
 				sfd.FileName = strSuggestion + "." + strPriExt;
 
-				if(sfd.ShowDialog() != DialogResult.OK) return;
+				if (sfd.ShowDialog() != DialogResult.OK) return;
 
 				string strFile = sfd.FileName;
-				if(!CheckFilePath(strFile)) return;
+				if (!CheckFilePath(strFile)) return;
 				m_tbFile.Text = strFile;
 			}
 
@@ -333,20 +333,20 @@ namespace KeePass.Forms
 		private bool PrepareExchangeEx()
 		{
 			UpdateUIState();
-			if(m_fmtCur == null) return false;
+			if (m_fmtCur == null) return false;
 
 			string strFiles = m_tbFile.Text;
 			string[] vFiles = strFiles.Split(new char[] { ';' },
 				StringSplitOptions.RemoveEmptyEntries);
 
-			if(m_fmtCur.RequiresFile)
+			if (m_fmtCur.RequiresFile)
 			{
-				if(vFiles.Length == 0) return false;
+				if (vFiles.Length == 0) return false;
 
-				foreach(string strFile in vFiles)
+				foreach (string strFile in vFiles)
 				{
 					IOConnectionInfo ioc = IOConnectionInfo.FromPath(strFile);
-					if(ioc.IsLocalFile() && !UrlUtil.IsAbsolutePath(strFile))
+					if (ioc.IsLocalFile() && !UrlUtil.IsAbsolutePath(strFile))
 					{
 						MessageService.ShowWarning(strFile, KPRes.FilePathFullReq);
 						return false;
@@ -354,11 +354,11 @@ namespace KeePass.Forms
 				}
 
 				// Allow only one file when exporting
-				if(m_bExport && !CheckFilePath(strFiles)) return false;
+				if (m_bExport && !CheckFilePath(strFiles)) return false;
 			}
 			else vFiles = new string[0];
 
-			if(m_piExport != null)
+			if (m_piExport != null)
 			{
 				m_piExport.ExportMasterKeySpec = m_cbExportMasterKeySpec.Checked;
 				m_piExport.ExportParentGroups = m_cbExportParentGroups.Checked;
@@ -373,7 +373,7 @@ namespace KeePass.Forms
 
 		private void OnBtnOK(object sender, EventArgs e)
 		{
-			if(!PrepareExchangeEx()) this.DialogResult = DialogResult.None;
+			if (!PrepareExchangeEx()) this.DialogResult = DialogResult.None;
 		}
 
 		private void OnBtnCancel(object sender, EventArgs e)

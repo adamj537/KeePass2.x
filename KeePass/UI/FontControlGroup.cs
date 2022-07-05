@@ -47,14 +47,14 @@ namespace KeePass.UI
 		{
 			get
 			{
-				if(m_cb != null) return m_cb.Enabled;
+				if (m_cb != null) return m_cb.Enabled;
 				Debug.Assert(false);
 				return true;
 			}
 
 			set
 			{
-				if(m_cb != null) { m_cb.Enabled = value; UpdateUI(); }
+				if (m_cb != null) { m_cb.Enabled = value; UpdateUI(); }
 				else { Debug.Assert(false); }
 			}
 		}
@@ -62,19 +62,19 @@ namespace KeePass.UI
 		public FontControlGroup(CheckBox cb, Button btn, AceFont afCurrent,
 			AceFont afDefault)
 		{
-			if(cb == null) throw new ArgumentNullException("cb");
-			if(btn == null) throw new ArgumentNullException("btn");
+			if (cb == null) throw new ArgumentNullException("cb");
+			if (btn == null) throw new ArgumentNullException("btn");
 
 			m_cb = cb;
 			m_btn = btn;
 
-			if((afCurrent != null) && afCurrent.OverrideUIDefault)
+			if ((afCurrent != null) && afCurrent.OverrideUIDefault)
 				m_af = afCurrent.CloneDeep();
 			else
 			{
 				AceFont af;
-				if(afDefault != null) af = afDefault;
-				else if(afCurrent != null) af = afCurrent;
+				if (afDefault != null) af = afDefault;
+				else if (afCurrent != null) af = afCurrent;
 				else
 				{
 					FontUtil.SetDefaultFont(cb);
@@ -104,7 +104,7 @@ namespace KeePass.UI
 
 		public void Dispose()
 		{
-			if(m_cb == null) { Debug.Assert(false); return; }
+			if (m_cb == null) { Debug.Assert(false); return; }
 
 			m_cb.CheckedChanged -= this.OnCheckedChanged;
 			m_btn.Click -= this.OnSelectFont;
@@ -120,12 +120,12 @@ namespace KeePass.UI
 
 		private void UpdateUI()
 		{
-			if(m_cb == null) { Debug.Assert(false); return; }
+			if (m_cb == null) { Debug.Assert(false); return; }
 
 			bool b = m_af.OverrideUIDefault;
 			string strFont = (b ? m_af.ToString() : ("(" + KPRes.Default + ")"));
 
-			if(m_cb.Checked != b)
+			if (m_cb.Checked != b)
 			{
 				Debug.Assert(false);
 				UIUtil.SetChecked(m_cb, b);
@@ -150,18 +150,18 @@ namespace KeePass.UI
 		{
 			try
 			{
-				using(FontDialog dlg = UIUtil.CreateFontDialog(false))
+				using (FontDialog dlg = UIUtil.CreateFontDialog(false))
 				{
 					dlg.Font = m_af.ToFont();
 
-					if(dlg.ShowDialog() == DialogResult.OK)
+					if (dlg.ShowDialog() == DialogResult.OK)
 					{
 						m_af = new AceFont(dlg.Font, true);
 						UpdateUI();
 					}
 				}
 			}
-			catch(Exception ex) { MessageService.ShowWarning(ex); }
+			catch (Exception ex) { MessageService.ShowWarning(ex); }
 		}
 	}
 }

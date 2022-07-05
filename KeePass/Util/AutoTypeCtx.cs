@@ -39,7 +39,7 @@ namespace KeePass.Util
 			get { return m_strSeq; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strSeq = value;
 			}
 		}
@@ -62,7 +62,7 @@ namespace KeePass.Util
 
 		public AutoTypeCtx(string strSequence, PwEntry pe, PwDatabase pd)
 		{
-			if(strSequence == null) throw new ArgumentNullException("strSequence");
+			if (strSequence == null) throw new ArgumentNullException("strSequence");
 
 			m_strSeq = strSequence;
 			m_pe = pe;
@@ -154,7 +154,7 @@ namespace KeePass.Util
 
 		public void AddSequence(string strSeq)
 		{
-			if(strSeq == null) { Debug.Assert(false); return; }
+			if (strSeq == null) { Debug.Assert(false); return; }
 
 			m_lSeqs.Add(strSeq);
 		}

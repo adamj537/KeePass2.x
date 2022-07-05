@@ -46,7 +46,7 @@ namespace KeePassLib.Serialization
 			get { return m_strDisplayName; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strDisplayName = value;
 			}
 		}
@@ -60,9 +60,9 @@ namespace KeePassLib.Serialization
 		public IocPropertyInfo(string strName, Type t, string strDisplayName,
 			string[] vProtocols)
 		{
-			if(strName == null) throw new ArgumentNullException("strName");
-			if(t == null) throw new ArgumentNullException("t");
-			if(strDisplayName == null) throw new ArgumentNullException("strDisplayName");
+			if (strName == null) throw new ArgumentNullException("strName");
+			if (t == null) throw new ArgumentNullException("t");
+			if (strDisplayName == null) throw new ArgumentNullException("strDisplayName");
 
 			m_strName = strName;
 			m_t = t;
@@ -73,26 +73,26 @@ namespace KeePassLib.Serialization
 
 		public void AddProtocols(string[] v)
 		{
-			if(v == null) { Debug.Assert(false); return; }
+			if (v == null) { Debug.Assert(false); return; }
 
-			foreach(string strProtocol in v)
+			foreach (string strProtocol in v)
 			{
-				if(strProtocol == null) continue;
+				if (strProtocol == null) continue;
 
 				string str = strProtocol.Trim();
-				if(str.Length == 0) continue;
+				if (str.Length == 0) continue;
 
 				bool bFound = false;
-				foreach(string strEx in m_lProtocols)
+				foreach (string strEx in m_lProtocols)
 				{
-					if(strEx.Equals(str, StrUtil.CaseIgnoreCmp))
+					if (strEx.Equals(str, StrUtil.CaseIgnoreCmp))
 					{
 						bFound = true;
 						break;
 					}
 				}
 
-				if(!bFound) m_lProtocols.Add(str);
+				if (!bFound) m_lProtocols.Add(str);
 			}
 		}
 	}

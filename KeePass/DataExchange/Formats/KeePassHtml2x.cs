@@ -47,7 +47,7 @@ namespace KeePass.DataExchange.Formats
 		{
 			ImageList il = null;
 			MainForm mf = Program.MainForm;
-			if((mf != null) && (mf.ActiveDatabase == pwExportInfo.ContextDatabase))
+			if ((mf != null) && (mf.ActiveDatabase == pwExportInfo.ContextDatabase))
 				il = mf.ClientIcons;
 
 			PrintForm dlg = new PrintForm();
@@ -57,7 +57,7 @@ namespace KeePass.DataExchange.Formats
 			bool bResult = false;
 			try
 			{
-				if(dlg.ShowDialog() == DialogResult.OK)
+				if (dlg.ShowDialog() == DialogResult.OK)
 				{
 					byte[] pb = StrUtil.Utf8.GetBytes(dlg.GeneratedHtml);
 					sOutput.Write(pb, 0, pb.Length);

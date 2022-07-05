@@ -56,7 +56,7 @@ namespace KeePass.Forms
 			FontUtil.AssignDefaultBold(m_radioOnline);
 
 			Debug.Assert(!m_lblLocal.AutoSize); // For RTL support
-			if(!AppHelp.LocalHelpAvailable)
+			if (!AppHelp.LocalHelpAvailable)
 			{
 				UIUtil.SetEnabledFast(false, m_radioLocal, m_lblLocal);
 				m_lblLocal.Text = KPRes.HelpSourceNoLocalOption;
@@ -68,15 +68,15 @@ namespace KeePass.Forms
 			bool bEnforced = AppConfigEx.IsOptionEnforced(Program.Config.Application,
 				"HelpUseLocal");
 
-			if(!bOverride)
+			if (!bOverride)
 			{
-				if(AppHelp.PreferredHelpSource == AppHelpSource.Local)
+				if (AppHelp.PreferredHelpSource == AppHelpSource.Local)
 					m_radioLocal.Checked = true;
 				else
 					m_radioOnline.Checked = true;
 			}
 
-			if(bOverride || bEnforced)
+			if (bOverride || bEnforced)
 			{
 				UIUtil.SetEnabledFast(false, m_radioLocal, m_lblLocal,
 					m_radioOnline, m_lblOnline, m_btnOK);
@@ -86,7 +86,7 @@ namespace KeePass.Forms
 
 		private void OnBtnOK(object sender, EventArgs e)
 		{
-			if(m_radioLocal.Checked)
+			if (m_radioLocal.Checked)
 				AppHelp.PreferredHelpSource = AppHelpSource.Local;
 			else
 				AppHelp.PreferredHelpSource = AppHelpSource.Online;

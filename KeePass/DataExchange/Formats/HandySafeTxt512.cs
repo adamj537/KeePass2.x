@@ -63,9 +63,9 @@ namespace KeePass.DataExchange.Formats
 			Dictionary<string, string> dItems = new Dictionary<string, string>();
 			bool bInNotes = false;
 
-			foreach(string strLine in vLines)
+			foreach (string strLine in vLines)
 			{
-				if(strLine.StartsWith(StrGroupStart) && strLine.EndsWith(StrGroupEnd))
+				if (strLine.StartsWith(StrGroupStart) && strLine.EndsWith(StrGroupEnd))
 				{
 					AddEntry(pg, dItems, ref bInNotes);
 					dItems.Clear();
@@ -76,22 +76,22 @@ namespace KeePass.DataExchange.Formats
 
 					pwStorage.RootGroup.AddGroup(pg, true);
 				}
-				else if(strLine.StartsWith(StrEntryStart) && strLine.EndsWith(StrEntryEnd))
+				else if (strLine.StartsWith(StrEntryStart) && strLine.EndsWith(StrEntryEnd))
 				{
 					AddEntry(pg, dItems, ref bInNotes);
 					dItems.Clear();
 				}
-				else if(strLine == StrNotesBegin) bInNotes = true;
-				else if(bInNotes)
+				else if (strLine == StrNotesBegin) bInNotes = true;
+				else if (bInNotes)
 				{
-					if(dItems.ContainsKey(PwDefs.NotesField))
+					if (dItems.ContainsKey(PwDefs.NotesField))
 						dItems[PwDefs.NotesField] += MessageService.NewLine + strLine;
 					else dItems[PwDefs.NotesField] = strLine;
 				}
 				else
 				{
 					int nSplitPos = strLine.IndexOf(StrFieldSplit);
-					if(nSplitPos < 0) { Debug.Assert(false); }
+					if (nSplitPos < 0) { Debug.Assert(false); }
 					else
 					{
 						AddField(dItems, strLine.Substring(0, nSplitPos),
@@ -107,16 +107,16 @@ namespace KeePass.DataExchange.Formats
 			string strKey, string strValue)
 		{
 			string strKeyTrl = ImportUtil.MapNameToStandardField(strKey, true);
-			if(string.IsNullOrEmpty(strKeyTrl)) strKeyTrl = strKey;
+			if (string.IsNullOrEmpty(strKeyTrl)) strKeyTrl = strKey;
 
-			if(!dItems.ContainsKey(strKeyTrl))
+			if (!dItems.ContainsKey(strKeyTrl))
 			{
 				dItems[strKeyTrl] = strValue;
 				return;
 			}
 
 			string strPreValue = dItems[strKeyTrl];
-			if((strPreValue.Length > 0) && (strValue.Length > 0))
+			if ((strPreValue.Length > 0) && (strValue.Length > 0))
 				strPreValue += ", ";
 
 			dItems[strKeyTrl] = strPreValue + strValue;
@@ -125,12 +125,12 @@ namespace KeePass.DataExchange.Formats
 		private static void AddEntry(PwGroup pg, Dictionary<string, string> dItems,
 			ref bool bInNotes)
 		{
-			if(dItems.Count == 0) return;
+			if (dItems.Count == 0) return;
 
 			PwEntry pe = new PwEntry(true, true);
 			pg.AddEntry(pe, true);
 
-			foreach(KeyValuePair<string, string> kvp in dItems)
+			foreach (KeyValuePair<string, string> kvp in dItems)
 				pe.Strings.Set(kvp.Key, new ProtectedString(false, kvp.Value));
 
 			bInNotes = false;

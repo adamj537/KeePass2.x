@@ -59,7 +59,7 @@ namespace KeePass.Util.Archive
 
 				CreateFilePriv(strFile, strDir);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				MessageService.ShowWarningExcp(ex);
 			}
@@ -77,20 +77,20 @@ namespace KeePass.Util.Archive
 
 				string[] vFiles = Directory.GetFiles(strSourceDir, "*.*",
 					SearchOption.AllDirectories);
-				foreach(string str in vFiles)
+				foreach (string str in vFiles)
 				{
-					if(string.IsNullOrEmpty(str)) { Debug.Assert(false); continue; }
-					if(str.EndsWith("\"")) { Debug.Assert(false); continue; }
-					if(str.EndsWith(".")) { Debug.Assert(false); continue; }
+					if (string.IsNullOrEmpty(str)) { Debug.Assert(false); continue; }
+					if (str.EndsWith("\"")) { Debug.Assert(false); continue; }
+					if (str.EndsWith(".")) { Debug.Assert(false); continue; }
 
 					byte[] pbData = File.ReadAllBytes(str);
-					if(pbData.LongLength > int.MaxValue)
+					if (pbData.LongLength > int.MaxValue)
 						throw new OutOfMemoryException();
 					int cbData = pbData.Length;
 
 					string strName = UrlUtil.GetFileName(str);
 					byte[] pbName = StrUtil.Utf8.GetBytes(strName);
-					if(pbName.LongLength > int.MaxValue)
+					if (pbName.LongLength > int.MaxValue)
 						throw new OutOfMemoryException();
 					int cbName = pbName.Length;
 
@@ -109,22 +109,22 @@ namespace KeePass.Util.Archive
 
 		public void Load(byte[] pbFile)
 		{
-			if(pbFile == null) throw new ArgumentNullException("pbFile");
+			if (pbFile == null) throw new ArgumentNullException("pbFile");
 
 			MemoryStream ms = new MemoryStream(pbFile, false);
 			BinaryReader br = new BinaryReader(ms);
 			try
 			{
 				ulong uSig = br.ReadUInt64();
-				if(uSig != g_uSig) throw new FormatException();
+				if (uSig != g_uSig) throw new FormatException();
 
 				ushort uVer = br.ReadUInt16();
-				if(uVer > g_uVer) throw new FormatException();
+				if (uVer > g_uVer) throw new FormatException();
 
-				while(true)
+				while (true)
 				{
 					int cbName = br.ReadInt32();
-					if(cbName == 0) break;
+					if (cbName == 0) break;
 
 					byte[] pbName = br.ReadBytes(cbName);
 					string strName = StrUtil.Utf8.GetString(pbName);

@@ -49,25 +49,25 @@ namespace KeePass.DataExchange.Formats
 			string str = Preprocess(sInput);
 
 			PwMemory2008XmlFile_Priv f = null;
-			using(MemoryStream ms = new MemoryStream(StrUtil.Utf8.GetBytes(str), false))
+			using (MemoryStream ms = new MemoryStream(StrUtil.Utf8.GetBytes(str), false))
 			{
 				f = XmlUtilEx.Deserialize<PwMemory2008XmlFile_Priv>(ms);
 			}
-			if((f == null) || (f.Cells == null)) return;
+			if ((f == null) || (f.Cells == null)) return;
 
 			Dictionary<string, PwGroup> vGroups = new Dictionary<string, PwGroup>();
 
-			for(int iLine = 2; iLine < f.Cells.Length; ++iLine)
+			for (int iLine = 2; iLine < f.Cells.Length; ++iLine)
 			{
 				string[] vCells = f.Cells[iLine];
-				if((vCells == null) || (vCells.Length != 6)) continue;
-				if((vCells[1] == null) || (vCells[2] == null) ||
+				if ((vCells == null) || (vCells.Length != 6)) continue;
+				if ((vCells[1] == null) || (vCells[2] == null) ||
 					(vCells[3] == null) || (vCells[4] == null)) continue;
 
 				string strGroup = vCells[4];
 				PwGroup pg;
-				if(strGroup == ".") pg = pwStorage.RootGroup;
-				else if(vGroups.ContainsKey(strGroup)) pg = vGroups[strGroup];
+				if (strGroup == ".") pg = pwStorage.RootGroup;
+				else if (vGroups.ContainsKey(strGroup)) pg = vGroups[strGroup];
 				else
 				{
 					pg = new PwGroup(true, true);
@@ -80,13 +80,13 @@ namespace KeePass.DataExchange.Formats
 				PwEntry pe = new PwEntry(true, true);
 				pg.AddEntry(pe, true);
 
-				if(vCells[1] != ".")
+				if (vCells[1] != ".")
 					pe.Strings.Set(PwDefs.TitleField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectTitle, vCells[1]));
-				if(vCells[2] != ".")
+				if (vCells[2] != ".")
 					pe.Strings.Set(PwDefs.UserNameField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectUserName, vCells[2]));
-				if(vCells[3] != ".")
+				if (vCells[3] != ".")
 					pe.Strings.Set(PwDefs.PasswordField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectPassword, vCells[3]));
 			}
@@ -101,12 +101,12 @@ namespace KeePass.DataExchange.Formats
 			const string strStartTag = "<IMAGE";
 			const string strEndTag = "</IMAGE>";
 
-			while(true)
+			while (true)
 			{
 				int nStart = str.IndexOf(strStartTag);
 				int nEnd = str.IndexOf(strEndTag);
 
-				if((nStart < 0) || (nEnd < 0)) break;
+				if ((nStart < 0) || (nEnd < 0)) break;
 
 				str = str.Remove(nStart, nEnd - nStart + strEndTag.Length);
 			}

@@ -32,7 +32,7 @@ namespace KeePass.Util
 
 		public ClipboardContents(bool bGetFromCurrent, bool bSimpleOnly)
 		{
-			if(bGetFromCurrent) GetData(bSimpleOnly);
+			if (bGetFromCurrent) GetData(bSimpleOnly);
 		}
 
 		/// <summary>
@@ -45,14 +45,14 @@ namespace KeePass.Util
 		public void GetData(bool bSimpleOnly)
 		{
 			try { GetDataPriv(bSimpleOnly); }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private void GetDataPriv(bool bSimpleOnly)
 		{
-			if(bSimpleOnly)
+			if (bSimpleOnly)
 			{
-				if(ClipboardUtil.ContainsText())
+				if (ClipboardUtil.ContainsText())
 					m_strText = ClipboardUtil.GetText();
 			}
 			else // Advanced backup
@@ -60,7 +60,7 @@ namespace KeePass.Util
 				m_vContents = new List<KeyValuePair<string, object>>();
 
 				IDataObject idoClip = Clipboard.GetDataObject();
-				foreach(string strFormat in idoClip.GetFormats())
+				foreach (string strFormat in idoClip.GetFormats())
 				{
 					KeyValuePair<string, object> kvp =
 						new KeyValuePair<string, object>(strFormat,
@@ -74,17 +74,17 @@ namespace KeePass.Util
 		public void SetData()
 		{
 			try { SetDataPriv(); }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private void SetDataPriv()
 		{
-			if(m_strText != null)
+			if (m_strText != null)
 				ClipboardUtil.Copy(m_strText, false, false, null, null, IntPtr.Zero);
-			else if(m_vContents != null)
+			else if (m_vContents != null)
 			{
 				DataObject dObj = new DataObject();
-				foreach(KeyValuePair<string, object> kvp in m_vContents)
+				foreach (KeyValuePair<string, object> kvp in m_vContents)
 					dObj.SetData(kvp.Key, kvp.Value);
 
 				ClipboardUtil.Clear();

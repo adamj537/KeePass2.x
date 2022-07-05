@@ -106,13 +106,13 @@ namespace KeePass.DataExchange
 		private void ConstructEx(PwGroup pgDataSource, PwDatabase pwContextInfo,
 			bool? bExportDeleted)
 		{
-			if(pgDataSource == null) throw new ArgumentNullException("pgDataSource");
+			if (pgDataSource == null) throw new ArgumentNullException("pgDataSource");
 			// pwContextInfo may be null
 
 			m_pg = pgDataSource;
 			m_pd = pwContextInfo;
 
-			if(bExportDeleted.HasValue) m_bExpDel = bExportDeleted.Value;
+			if (bExportDeleted.HasValue) m_bExpDel = bExportDeleted.Value;
 		}
 	}
 }

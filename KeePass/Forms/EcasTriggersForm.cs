@@ -74,7 +74,7 @@ namespace KeePass.Forms
 
 		private void OnFormLoad(object sender, EventArgs e)
 		{
-			if(m_triggers == null) { Debug.Assert(false); return; }
+			if (m_triggers == null) { Debug.Assert(false); return; }
 
 			GlobalWindowManager.AddWindow(this);
 
@@ -94,7 +94,7 @@ namespace KeePass.Forms
 
 			EcasTriggerSystem ts = Program.TriggerSystem;
 			EcasTriggerSystem tsCfg = Program.Config.Application.TriggerSystem;
-			if(object.ReferenceEquals(m_triggersInOut, ts) &&
+			if (object.ReferenceEquals(m_triggersInOut, ts) &&
 				AppConfigEx.IsOptionEnforced(tsCfg, "Enabled"))
 				m_cbEnableTriggers.Enabled = false;
 
@@ -148,7 +148,7 @@ namespace KeePass.Forms
 
 			m_lvTriggers.BeginUpdate();
 			m_lvTriggers.Items.Clear();
-			foreach(EcasTrigger t in m_triggers.TriggerCollection)
+			foreach (EcasTrigger t in m_triggers.TriggerCollection)
 			{
 				ListViewItem lvi = m_lvTriggers.Items.Add(t.Name);
 				lvi.SubItems.Add(t.Comments);
@@ -156,7 +156,7 @@ namespace KeePass.Forms
 				lvi.ImageIndex = (t.Enabled ? (int)PwIcon.Run : (int)PwIcon.Expired);
 			}
 
-			if(vSelected != null) UIUtil.SelectItems(m_lvTriggers, vSelected);
+			if (vSelected != null) UIUtil.SelectItems(m_lvTriggers, vSelected);
 			UIUtil.Scroll(m_lvTriggers, s, true);
 			m_lvTriggers.EndUpdate();
 
@@ -168,7 +168,7 @@ namespace KeePass.Forms
 			EcasTrigger tNew = new EcasTrigger(true);
 			EcasTriggerForm f = new EcasTriggerForm();
 			f.InitEx(tNew, false, m_ilIcons);
-			if(UIUtil.ShowDialogAndDestroy(f) == DialogResult.OK)
+			if (UIUtil.ShowDialogAndDestroy(f) == DialogResult.OK)
 			{
 				m_triggers.TriggerCollection.Add(tNew);
 				UpdateTriggerListEx(false);
@@ -178,11 +178,11 @@ namespace KeePass.Forms
 		private void OnBtnEdit(object sender, EventArgs e)
 		{
 			ListView.SelectedListViewItemCollection lvsic = m_lvTriggers.SelectedItems;
-			if((lvsic == null) || (lvsic.Count == 0)) return;
+			if ((lvsic == null) || (lvsic.Count == 0)) return;
 
 			EcasTriggerForm dlg = new EcasTriggerForm();
 			dlg.InitEx(lvsic[0].Tag as EcasTrigger, true, m_ilIcons);
-			if(UIUtil.ShowDialogAndDestroy(dlg) == DialogResult.OK)
+			if (UIUtil.ShowDialogAndDestroy(dlg) == DialogResult.OK)
 				UpdateTriggerListEx(true);
 		}
 
@@ -215,18 +215,18 @@ namespace KeePass.Forms
 
 		private void DoCopyTriggers(ListViewItem[] vTriggers)
 		{
-			if(vTriggers == null) return;
+			if (vTriggers == null) return;
 
 			try
 			{
 				ClipboardUtil.Clear();
-				if(vTriggers.Length == 0) return;
+				if (vTriggers.Length == 0) return;
 
 				EcasTriggerContainer v = new EcasTriggerContainer();
-				for(int iTrigger = 0; iTrigger < vTriggers.Length; ++iTrigger)
+				for (int iTrigger = 0; iTrigger < vTriggers.Length; ++iTrigger)
 					v.Triggers.Add(vTriggers[iTrigger].Tag as EcasTrigger);
 
-				using(MemoryStream ms = new MemoryStream())
+				using (MemoryStream ms = new MemoryStream())
 				{
 					XmlUtilEx.Serialize<EcasTriggerContainer>(ms, v);
 
@@ -234,7 +234,7 @@ namespace KeePass.Forms
 						false, false, null, null, this.Handle);
 				}
 			}
-			catch(Exception ex) { MessageService.ShowWarning(ex); }
+			catch (Exception ex) { MessageService.ShowWarning(ex); }
 		}
 
 		private void OnCtxToolsCopyTriggers(object sender, EventArgs e)
@@ -258,20 +258,20 @@ namespace KeePass.Forms
 				string strData = (ClipboardUtil.GetText() ?? string.Empty);
 				byte[] pbData = StrUtil.Utf8.GetBytes(strData);
 
-				using(MemoryStream ms = new MemoryStream(pbData, false))
+				using (MemoryStream ms = new MemoryStream(pbData, false))
 				{
 					EcasTriggerContainer c = XmlUtilEx.Deserialize<EcasTriggerContainer>(ms);
 
-					foreach(EcasTrigger t in c.Triggers)
+					foreach (EcasTrigger t in c.Triggers)
 					{
-						if(m_triggers.FindObjectByUuid(t.Uuid) != null)
+						if (m_triggers.FindObjectByUuid(t.Uuid) != null)
 							t.Uuid = new PwUuid(true);
 
 						m_triggers.TriggerCollection.Add(t);
 					}
 				}
 			}
-			catch(Exception ex) { MessageService.ShowWarning(ex); }
+			catch (Exception ex) { MessageService.ShowWarning(ex); }
 
 			UpdateTriggerListEx(true);
 		}

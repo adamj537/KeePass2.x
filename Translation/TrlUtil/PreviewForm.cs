@@ -45,18 +45,18 @@ namespace TrlUtil
 		public PreviewForm()
 		{
 			try { this.DoubleBuffered = true; }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
-			if(e.KeyCode == Keys.Escape) UIUtil.SetHandled(e, true);
+			if (e.KeyCode == Keys.Escape) UIUtil.SetHandled(e, true);
 			else base.OnKeyDown(e);
 		}
 
 		protected override void OnKeyUp(KeyEventArgs e)
 		{
-			if(e.KeyCode == Keys.Escape) UIUtil.SetHandled(e, true);
+			if (e.KeyCode == Keys.Escape) UIUtil.SetHandled(e, true);
 			else base.OnKeyUp(e);
 		}
 
@@ -78,7 +78,7 @@ namespace TrlUtil
 
 				CopyChildControls(this, f, fCustomizeCopy);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			ResumeLayout();
 		}
@@ -86,54 +86,54 @@ namespace TrlUtil
 		private void CopyChildControls(Control cDest, Control cSource,
 			Action<Control> fCustomizeCopy)
 		{
-			if((cDest == null) || (cSource == null)) return;
+			if ((cDest == null) || (cSource == null)) return;
 
-			foreach(Control c in cSource.Controls)
+			foreach (Control c in cSource.Controls)
 			{
-				if(c == null) { Debug.Assert(false); continue; }
+				if (c == null) { Debug.Assert(false); continue; }
 
 				bool bSetText = true;
 
 				Control cCopy;
-				if(c is Button) cCopy = new Button();
-				else if(c is CheckBox)
+				if (c is Button) cCopy = new Button();
+				else if (c is CheckBox)
 				{
 					cCopy = new CheckBox();
 					(cCopy as CheckBox).Appearance = (c as CheckBox).Appearance;
 				}
-				else if(c is ComboBox)
+				else if (c is ComboBox)
 				{
 					cCopy = new ComboBox();
 					(cCopy as ComboBox).DropDownStyle = (c as ComboBox).DropDownStyle;
 				}
-				else if(c is GroupBox) cCopy = new GroupBox();
-				else if(c is HotKeyControlEx)
+				else if (c is GroupBox) cCopy = new GroupBox();
+				else if (c is HotKeyControlEx)
 				{
 					cCopy = new TextBox();
 					bSetText = false;
 				}
-				else if(c is Label) cCopy = new Label();
-				else if(c is NumericUpDown)
+				else if (c is Label) cCopy = new Label();
+				else if (c is NumericUpDown)
 				{
 					cCopy = new TextBox(); // NumericUpDown leads to GDI objects leak
 					bSetText = false;
 				}
-				else if(c is RadioButton) cCopy = new RadioButton();
-				else if(c is RichTextBox)
+				else if (c is RadioButton) cCopy = new RadioButton();
+				else if (c is RichTextBox)
 				{
 					cCopy = new TextBox(); // RTB leads to GDI objects leak
 					(cCopy as TextBox).Multiline = true;
 				}
-				else if(c is TabControl) cCopy = new TabControl();
-				else if(c is TabPage) cCopy = new TabPage();
+				else if (c is TabControl) cCopy = new TabControl();
+				else if (c is TabPage) cCopy = new TabPage();
 				// HotKeyControlEx is a TextBox, so HotKeyControlEx must be first
-				else if(c is TextBox)
+				else if (c is TextBox)
 				{
 					cCopy = new TextBox();
 					(cCopy as TextBox).Multiline = (c as TextBox).Multiline;
 				}
 				// TabPage is a Panel, so TabPage must be first
-				else if(c is Panel) cCopy = new Panel();
+				else if (c is Panel) cCopy = new Panel();
 				else cCopy = new Label();
 
 				Color clr = Color.FromArgb(128 + g_rand.Next(0, 128),
@@ -142,7 +142,7 @@ namespace TrlUtil
 				cCopy.Name = c.Name;
 				cCopy.Font = c.Font;
 				cCopy.BackColor = clr;
-				if(bSetText) cCopy.Text = c.Text;
+				if (bSetText) cCopy.Text = c.Text;
 
 				cCopy.Location = c.Location;
 				cCopy.Size = c.Size;
@@ -165,42 +165,42 @@ namespace TrlUtil
 				cCopy.TabStop = c.TabStop;
 
 				ButtonBase bbCopy = (cCopy as ButtonBase);
-				if((bbCopy != null) && (c is ButtonBase))
+				if ((bbCopy != null) && (c is ButtonBase))
 					bbCopy.TextAlign = (c as ButtonBase).TextAlign;
 
 				Label lCopy = (cCopy as Label);
-				if((lCopy != null) && (c is Label))
+				if ((lCopy != null) && (c is Label))
 					lCopy.TextAlign = (c as Label).TextAlign;
 
 				try
 				{
-					if(fCustomizeCopy != null) fCustomizeCopy(cCopy);
+					if (fCustomizeCopy != null) fCustomizeCopy(cCopy);
 
 					cDest.Controls.Add(cCopy);
 
-					if((c is GroupBox) || (c is Panel) ||
+					if ((c is GroupBox) || (c is Panel) ||
 						(c is SplitContainer) || (c is TabControl))
 						CopyChildControls(cCopy, c, fCustomizeCopy);
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 		}
 
 		internal void EnsureControlPageVisible(string strName)
 		{
-			if(string.IsNullOrEmpty(strName)) return; // No assert
+			if (string.IsNullOrEmpty(strName)) return; // No assert
 
 			Control[] v = this.Controls.Find(strName, true);
-			if((v == null) || (v.Length == 0)) return; // No assert
+			if ((v == null) || (v.Length == 0)) return; // No assert
 
 			Control c = v[0];
-			while((c != null) && !(c is Form))
+			while ((c != null) && !(c is Form))
 			{
 				TabPage tp = (c as TabPage);
-				if(tp != null)
+				if (tp != null)
 				{
 					TabControl tc = (tp.Parent as TabControl);
-					if(tc != null) tc.SelectedTab = tp;
+					if (tc != null) tc.SelectedTab = tp;
 					else { Debug.Assert(false); }
 				}
 
@@ -222,30 +222,30 @@ namespace TrlUtil
 			try
 			{
 				IntPtr hWnd = this.Handle;
-				if(hWnd == IntPtr.Zero) { Debug.Assert(false); return; }
+				if (hWnd == IntPtr.Zero) { Debug.Assert(false); return; }
 
 				NativeMethods.SendMessage(hWnd, NativeMethods.WM_UPDATEUISTATE,
 					new IntPtr(NativeMethods.MakeLong(NativeMethods.UIS_CLEAR,
 					NativeMethods.UISF_HIDEACCEL)), IntPtr.Zero);
 			}
-			catch(Exception) { Debug.Assert(NativeLib.IsUnix()); }
+			catch (Exception) { Debug.Assert(NativeLib.IsUnix()); }
 		}
 
 		private void ShowAcceleratorsAsync(int msDelay)
 		{
 			try
 			{
-				ThreadPool.QueueUserWorkItem(delegate(object state)
+				ThreadPool.QueueUserWorkItem(delegate (object state)
 				{
 					try
 					{
 						Thread.Sleep(msDelay);
 						Invoke(new VoidDelegate(this.ShowAccelerators));
 					}
-					catch(Exception) { Debug.Assert(false); }
+					catch (Exception) { Debug.Assert(false); }
 				});
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 	}
 }

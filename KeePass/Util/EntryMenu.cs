@@ -50,7 +50,7 @@ namespace KeePass.Util
 
 		public static void Destroy()
 		{
-			if(m_ctx != null)
+			if (m_ctx != null)
 			{
 				m_ctx.Close();
 				m_ctx.Dispose();
@@ -67,14 +67,14 @@ namespace KeePass.Util
 			ctx.ImageList = UIUtil.CloneImageList(Program.MainForm.ClientIcons, true);
 
 			bool bAppendSeparator = false;
-			foreach(PwDocument ds in Program.MainForm.DocumentManager.Documents)
+			foreach (PwDocument ds in Program.MainForm.DocumentManager.Documents)
 			{
-				if(ds.Database.IsOpen)
+				if (ds.Database.IsOpen)
 				{
-					if(bAppendSeparator)
+					if (bAppendSeparator)
 						ctx.Items.Add(new ToolStripSeparator());
 
-					foreach(PwGroup pg in ds.Database.RootGroup.Groups)
+					foreach (PwGroup pg in ds.Database.RootGroup.Groups)
 					{
 						ToolStripMenuItem tsmi = MenuCreateGroup(ds, pg);
 						ctx.Items.Add(tsmi);
@@ -100,7 +100,7 @@ namespace KeePass.Util
 		private static int MenuGetImageIndex(PwDocument ds, PwIcon pwID,
 			PwUuid pwCustomID)
 		{
-			if(!pwCustomID.Equals(PwUuid.Zero) && (ds ==
+			if (!pwCustomID.Equals(PwUuid.Zero) && (ds ==
 				Program.MainForm.DocumentManager.ActiveDocument))
 			{
 				return (int)PwIcon.Count +
@@ -108,7 +108,7 @@ namespace KeePass.Util
 					pwCustomID);
 			}
 
-			if((int)pwID < (int)PwIcon.Count) return (int)pwID;
+			if ((int)pwID < (int)PwIcon.Count) return (int)pwID;
 
 			return (int)PwIcon.Key;
 		}
@@ -120,10 +120,10 @@ namespace KeePass.Util
 			string strTitle = pe.Strings.ReadSafe(PwDefs.TitleField);
 			string strUser = pe.Strings.ReadSafe(PwDefs.UserNameField);
 			string strText = string.Empty;
-			if((strTitle.Length > 0) && (strUser.Length > 0))
+			if ((strTitle.Length > 0) && (strUser.Length > 0))
 				strText = strTitle + ": " + strUser;
-			else if(strTitle.Length > 0) strText = strTitle;
-			else if(strUser.Length > 0) strText = strUser;
+			else if (strTitle.Length > 0) strText = strTitle;
+			else if (strUser.Length > 0) strText = strUser;
 			tsmiEntry.Text = strText;
 			tsmiEntry.ImageIndex = MenuGetImageIndex(ds, pe.IconId, pe.CustomIconUuid);
 			tsmiContainer.DropDownItems.Add(tsmiEntry);
@@ -155,33 +155,33 @@ namespace KeePass.Util
 		private static void MenuProcessGroup(PwDocument ds,
 			ToolStripMenuItem tsmiContainer, PwGroup pgSource)
 		{
-			if((pgSource.Groups.UCount == 0) && (pgSource.Entries.UCount == 0))
+			if ((pgSource.Groups.UCount == 0) && (pgSource.Entries.UCount == 0))
 				return;
 
-			foreach(PwGroup pg in pgSource.Groups)
+			foreach (PwGroup pg in pgSource.Groups)
 			{
 				ToolStripMenuItem tsmi = MenuCreateGroup(ds, pg);
 				tsmiContainer.DropDownItems.Add(tsmi);
 				MenuProcessGroup(ds, tsmi, pg);
 			}
 
-			foreach(PwEntry pe in pgSource.Entries)
+			foreach (PwEntry pe in pgSource.Entries)
 				MenuAddEntry(ds, tsmiContainer, pe);
 		}
 
 		private static void OnAutoType(object sender, EventArgs e)
 		{
 			ToolStripMenuItem tsmi = (sender as ToolStripMenuItem);
-			if(tsmi == null) { Debug.Assert(false); return; }
+			if (tsmi == null) { Debug.Assert(false); return; }
 			PwEntry pe = (tsmi.Tag as PwEntry);
-			if(pe == null) { Debug.Assert(false); return; }
+			if (pe == null) { Debug.Assert(false); return; }
 
 			try
 			{
 				AutoType.PerformIntoCurrentWindow(pe,
 					Program.MainForm.DocumentManager.SafeFindContainerOf(pe));
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				MessageService.ShowWarning(ex);
 			}
@@ -190,9 +190,9 @@ namespace KeePass.Util
 		private static void OnCopyField(object sender, string strField)
 		{
 			ToolStripMenuItem tsmi = (sender as ToolStripMenuItem);
-			if(tsmi == null) { Debug.Assert(false); return; }
+			if (tsmi == null) { Debug.Assert(false); return; }
 			PwEntry pe = (tsmi.Tag as PwEntry);
-			if(pe == null) { Debug.Assert(false); return; }
+			if (pe == null) { Debug.Assert(false); return; }
 
 			ClipboardUtil.Copy(pe.Strings.ReadSafe(strField), true, true,
 				pe, Program.MainForm.DocumentManager.SafeFindContainerOf(pe),

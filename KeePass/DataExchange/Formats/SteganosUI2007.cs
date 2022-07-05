@@ -55,7 +55,7 @@ namespace KeePass.DataExchange.Formats
 		public override void Import(PwDatabase pwStorage, Stream sInput,
 			IStatusLogger slLogger)
 		{
-			if(!MessageService.AskYesNo(KPRes.ImportMustRead + MessageService.NewParagraph +
+			if (!MessageService.AskYesNo(KPRes.ImportMustRead + MessageService.NewParagraph +
 				KPRes.ImportMustReadQuestion))
 			{
 				AppHelp.ShowHelp(AppDefs.HelpTopics.ImportExport,
@@ -65,7 +65,7 @@ namespace KeePass.DataExchange.Formats
 
 			PwEntry pePrev = new PwEntry(true, true);
 
-			for(int i = 0; i < 20; ++i)
+			for (int i = 0; i < 20; ++i)
 			{
 				Thread.Sleep(500);
 				Application.DoEvents();
@@ -73,13 +73,13 @@ namespace KeePass.DataExchange.Formats
 
 			try
 			{
-				while(true)
+				while (true)
 				{
 					PwEntry pe = ImportEntry(pwStorage);
 
-					if(ImportUtil.EntryEquals(pe, pePrev))
+					if (ImportUtil.EntryEquals(pe, pePrev))
 					{
-						if(pe.ParentGroup != null) // Remove duplicate
+						if (pe.ParentGroup != null) // Remove duplicate
 							pe.ParentGroup.Entries.Remove(pe);
 						break;
 					}
@@ -90,7 +90,7 @@ namespace KeePass.DataExchange.Formats
 
 				MessageService.ShowInfo(KPRes.ImportFinished);
 			}
-			catch(Exception exImp) { MessageService.ShowWarning(exImp); }
+			catch (Exception exImp) { MessageService.ShowWarning(exImp); }
 		}
 
 		private static PwEntry ImportEntry(PwDatabase pwDb)
@@ -114,7 +114,7 @@ namespace KeePass.DataExchange.Formats
 
 			ImportUtil.GuiSendWaitWindowChange(@"{ESC}");
 
-			if(strGroup.Length == 0) strGroup = "Steganos";
+			if (strGroup.Length == 0) strGroup = "Steganos";
 
 			PwGroup pg = pwDb.RootGroup.FindCreateGroup(strGroup, true);
 			PwEntry pe = new PwEntry(true, true);
@@ -129,7 +129,7 @@ namespace KeePass.DataExchange.Formats
 			pe.Strings.Set(PwDefs.NotesField, new ProtectedString(
 				pwDb.MemoryProtection.ProtectNotes, strNotes));
 
-			if(strUrl.Length > 0)
+			if (strUrl.Length > 0)
 				pe.Strings.Set(PwDefs.UrlField, new ProtectedString(
 					pwDb.MemoryProtection.ProtectUrl, strUrl));
 			else

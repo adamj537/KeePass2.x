@@ -40,14 +40,14 @@ namespace KeePass.DataExchange.Formats
 		public override string FormatName { get { return "DataVault CSV"; } }
 		public override string DefaultExtension { get { return "csv"; } }
 		public override string ApplicationGroup { get { return KPRes.PasswordManagers; } }
-		
+
 		public override bool ImportAppendsToRootGroupOnly { get { return true; } }
 
 		public override void Import(PwDatabase pwStorage, Stream sInput,
 			IStatusLogger slLogger)
 		{
 			string strData;
-			using(StreamReader sr = new StreamReader(sInput, Encoding.Default))
+			using (StreamReader sr = new StreamReader(sInput, Encoding.Default))
 			{
 				strData = sr.ReadToEnd();
 			}
@@ -56,11 +56,11 @@ namespace KeePass.DataExchange.Formats
 			strData = strData.Replace("\r\r\n", "\r\n");
 
 			CsvStreamReader csv = new CsvStreamReader(strData, false);
-			while(true)
+			while (true)
 			{
 				string[] v = csv.ReadLine();
-				if(v == null) break;
-				if(v.Length == 0) continue;
+				if (v == null) break;
+				if (v.Length == 0) continue;
 
 				PwEntry pe = new PwEntry(true, true);
 				pwStorage.RootGroup.AddEntry(pe, true);
@@ -68,7 +68,7 @@ namespace KeePass.DataExchange.Formats
 				ImportUtil.AppendToField(pe, PwDefs.TitleField, v[0], pwStorage);
 
 				int p = 1;
-				while((p + 1) < v.Length)
+				while ((p + 1) < v.Length)
 				{
 					string strMapped = ImportUtil.MapNameToStandardField(v[p], true);
 					string strKey = (string.IsNullOrEmpty(strMapped) ? v[p] : strMapped);
@@ -76,9 +76,9 @@ namespace KeePass.DataExchange.Formats
 
 					p += 2;
 
-					if(strKey.Length == 0)
+					if (strKey.Length == 0)
 					{
-						if(strValue.Length == 0) continue;
+						if (strValue.Length == 0) continue;
 
 						Debug.Assert(false);
 						strKey = PwDefs.NotesField;
@@ -87,7 +87,7 @@ namespace KeePass.DataExchange.Formats
 					ImportUtil.AppendToField(pe, strKey, strValue, pwStorage);
 				}
 
-				if((p < v.Length) && !string.IsNullOrEmpty(v[p]))
+				if ((p < v.Length) && !string.IsNullOrEmpty(v[p]))
 					ImportUtil.AppendToField(pe, PwDefs.NotesField, v[p], pwStorage);
 			}
 		}

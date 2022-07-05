@@ -61,10 +61,10 @@ namespace KeePass.UI
 
 		public void EndLogging()
 		{
-			lock(m_objSync) { m_bTerminate = true; }
+			lock (m_objSync) { m_bTerminate = true; }
 			m_th = null;
 
-			if(m_dlgModal != null)
+			if (m_dlgModal != null)
 			{
 				DestroyStatusDialog(m_dlgModal);
 				m_dlgModal = null;
@@ -73,26 +73,26 @@ namespace KeePass.UI
 
 		public bool SetProgress(uint uPercent)
 		{
-			lock(m_objSync) { m_uProgress = uPercent; }
+			lock (m_objSync) { m_uProgress = uPercent; }
 
 			return ((m_dlgModal != null) ? m_dlgModal.SetProgress(uPercent) : true);
 		}
 
 		public bool SetText(string strNewText, LogStatusType lsType)
 		{
-			if(strNewText == null) return true;
-			if(lsType != LogStatusType.Info) return true;
+			if (strNewText == null) return true;
+			if (lsType != LogStatusType.Info) return true;
 
-			if(m_bUseThread && (m_th == null))
+			if (m_bUseThread && (m_th == null))
 			{
 				ThreadStart ts = new ThreadStart(this.GuiThread);
 				m_th = new Thread(ts);
 				m_th.Start();
 			}
-			if(!m_bUseThread && (m_dlgModal == null))
+			if (!m_bUseThread && (m_dlgModal == null))
 				m_dlgModal = ConstructStatusDialog();
 
-			lock(m_objSync) { m_strProgress = strNewText; }
+			lock (m_objSync) { m_strProgress = strNewText; }
 			return ((m_dlgModal != null) ? m_dlgModal.SetText(strNewText, lsType) : true);
 		}
 
@@ -107,23 +107,23 @@ namespace KeePass.UI
 			string strProgress = InitialStatus;
 
 			StatusProgressForm dlg = null;
-			while(true)
+			while (true)
 			{
-				lock(m_objSync)
+				lock (m_objSync)
 				{
-					if(m_bTerminate) break;
+					if (m_bTerminate) break;
 
-					if(m_uProgress != uProgress)
+					if (m_uProgress != uProgress)
 					{
 						uProgress = m_uProgress;
-						if(dlg != null) dlg.SetProgress(uProgress);
+						if (dlg != null) dlg.SetProgress(uProgress);
 					}
 
-					if(m_strProgress != strProgress)
+					if (m_strProgress != strProgress)
 					{
 						strProgress = m_strProgress;
 
-						if(dlg == null) dlg = ConstructStatusDialog();
+						if (dlg == null) dlg = ConstructStatusDialog();
 
 						dlg.SetText(strProgress, LogStatusType.Info);
 					}
@@ -142,7 +142,7 @@ namespace KeePass.UI
 			dlg.SetProgress(m_uProgress);
 
 			MainForm mfOwner = ((m_fOwner != null) ? (m_fOwner as MainForm) : null);
-			if(!m_bUseThread && (mfOwner != null))
+			if (!m_bUseThread && (mfOwner != null))
 			{
 				// mfOwner.RedirectActivationPush(dlg);
 				mfOwner.UIBlockInteraction(true);
@@ -153,10 +153,10 @@ namespace KeePass.UI
 
 		private void DestroyStatusDialog(StatusProgressForm dlg)
 		{
-			if(dlg != null)
+			if (dlg != null)
 			{
 				MainForm mfOwner = ((m_fOwner != null) ? (m_fOwner as MainForm) : null);
-				if(!m_bUseThread && (mfOwner != null))
+				if (!m_bUseThread && (mfOwner != null))
 				{
 					// mfOwner.RedirectActivationPop();
 					mfOwner.UIBlockInteraction(false);
@@ -185,7 +185,7 @@ namespace KeePass.UI
 
 		public void StartLogging(string strOperation, bool bWriteOperationToLog)
 		{
-			if(m_mf != null)
+			if (m_mf != null)
 			{
 				TaskbarList.SetProgressState(m_mf, TbpFlag.Indeterminate);
 				m_mf.UIBlockInteraction(true);
@@ -194,7 +194,7 @@ namespace KeePass.UI
 
 		public void EndLogging()
 		{
-			if(m_mf != null)
+			if (m_mf != null)
 			{
 				m_mf.UIBlockInteraction(false);
 				TaskbarList.SetProgressState(m_mf, TbpFlag.NoProgress);
@@ -209,7 +209,7 @@ namespace KeePass.UI
 
 		public bool SetText(string strNewText, LogStatusType lsType)
 		{
-			if((m_mf != null) && !string.IsNullOrEmpty(strNewText))
+			if ((m_mf != null) && !string.IsNullOrEmpty(strNewText))
 			{
 				m_strText = strNewText;
 				m_mf.SetStatusEx(strNewText);
@@ -232,11 +232,11 @@ namespace KeePass.UI
 			int t = Environment.TickCount, tLast = m_tLastAnim;
 			int d = t - tLast;
 
-			if(d >= 1000)
+			if (d >= 1000)
 			{
 				m_tLastAnim = t;
 
-				if(m_mf != null)
+				if (m_mf != null)
 				{
 					string strDots = new string('.', m_cDots);
 					m_mf.SetStatusEx(StrUtil.TrimDots(m_strText, false) + strDots);

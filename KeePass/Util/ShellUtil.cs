@@ -44,38 +44,38 @@ namespace KeePass.Util
 				RegistryKey kClassesRoot = Registry.ClassesRoot;
 
 				try { kClassesRoot.CreateSubKey("." + strFileExt); }
-				catch(Exception) { }
+				catch (Exception) { }
 				RegistryKey kFileExt = kClassesRoot.OpenSubKey("." + strFileExt, true);
 				kFileExt.SetValue(string.Empty, strExtId, RegistryValueKind.String);
 				kFileExt.Close();
 
 				try { kClassesRoot.CreateSubKey(strExtId); }
-				catch(Exception) { }
+				catch (Exception) { }
 				RegistryKey kExtInfo = kClassesRoot.OpenSubKey(strExtId, true);
 
 				kExtInfo.SetValue(string.Empty, strFullExtName, RegistryValueKind.String);
 
 				try { kExtInfo.CreateSubKey("DefaultIcon"); }
-				catch(Exception) { }
+				catch (Exception) { }
 				RegistryKey kIcon = kExtInfo.OpenSubKey("DefaultIcon", true);
-				if(strAppPath.IndexOfAny(new char[] { ' ', '\t' }) < 0)
+				if (strAppPath.IndexOfAny(new char[] { ' ', '\t' }) < 0)
 					kIcon.SetValue(string.Empty, strAppPath + ",0", RegistryValueKind.String);
 				else
 					kIcon.SetValue(string.Empty, "\"" + strAppPath + "\",0", RegistryValueKind.String);
 				kIcon.Close();
 
 				try { kExtInfo.CreateSubKey("shell"); }
-				catch(Exception) { }
+				catch (Exception) { }
 				RegistryKey kShell = kExtInfo.OpenSubKey("shell", true);
 
 				try { kShell.CreateSubKey("open"); }
-				catch(Exception) { }
+				catch (Exception) { }
 				RegistryKey kShellOpen = kShell.OpenSubKey("open", true);
 
 				kShellOpen.SetValue(string.Empty, @"&Open with " + strAppName, RegistryValueKind.String);
 
 				try { kShellOpen.CreateSubKey("command"); }
-				catch(Exception) { }
+				catch (Exception) { }
 				RegistryKey kShellCommand = kShellOpen.OpenSubKey("command", true);
 				kShellCommand.SetValue(string.Empty, "\"" + strAppPath + "\" \"%1\"", RegistryValueKind.String);
 				kShellCommand.Close();
@@ -86,10 +86,10 @@ namespace KeePass.Util
 
 				ShChangeNotify();
 
-				if(bShowSuccessMessage)
+				if (bShowSuccessMessage)
 					MessageService.ShowInfo(KPRes.FileExtInstallSuccess);
 			}
-			catch(Exception)
+			catch (Exception)
 			{
 				MessageService.ShowWarning(KPRes.FileExtInstallFailed);
 			}
@@ -106,7 +106,7 @@ namespace KeePass.Util
 
 				ShChangeNotify();
 			}
-			catch(Exception) { }
+			catch (Exception) { }
 		}
 
 		private static void ShChangeNotify()
@@ -116,7 +116,7 @@ namespace KeePass.Util
 				NativeMethods.SHChangeNotify(NativeMethods.SHCNE_ASSOCCHANGED,
 					NativeMethods.SHCNF_IDLIST, IntPtr.Zero, IntPtr.Zero);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private const string AutoRunKey = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
@@ -127,19 +127,19 @@ namespace KeePass.Util
 
 			try
 			{
-				if(bAutoStart)
+				if (bAutoStart)
 					Registry.SetValue(strKey, strAppName, strAppPath,
 						RegistryValueKind.String);
 				else
 				{
-					using(RegistryKey kRun = Registry.CurrentUser.OpenSubKey(
+					using (RegistryKey kRun = Registry.CurrentUser.OpenSubKey(
 						AutoRunKey, true))
 					{
 						kRun.DeleteValue(strAppName);
 					}
 				}
 			}
-			catch(Exception ex) { MessageService.ShowWarning(strKey, ex); }
+			catch (Exception ex) { MessageService.ShowWarning(strKey, ex); }
 		}
 
 		public static bool GetStartWithWindows(string strAppName)
@@ -152,7 +152,7 @@ namespace KeePass.Util
 
 				return (!string.IsNullOrEmpty(str) && (str != strNotFound));
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return false;
 		}

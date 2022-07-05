@@ -38,9 +38,9 @@ namespace KeePassLib.Cryptography
 				Debug.Assert(m_dicts.Count > 0); // Should be initialized
 
 				int iMaxLen = 0;
-				foreach(int iLen in m_dicts.Keys)
+				foreach (int iLen in m_dicts.Keys)
 				{
-					if(iLen > iMaxLen) iMaxLen = iLen;
+					if (iLen > iMaxLen) iMaxLen = iLen;
 				}
 
 				return iMaxLen;
@@ -61,15 +61,15 @@ namespace KeePassLib.Cryptography
 
 		public static bool IsPopularPassword(char[] vPassword, out ulong uDictSize)
 		{
-			if(vPassword == null) throw new ArgumentNullException("vPassword");
-			if(vPassword.Length == 0) { uDictSize = 0; return false; }
+			if (vPassword == null) throw new ArgumentNullException("vPassword");
+			if (vPassword.Length == 0) { uDictSize = 0; return false; }
 
 #if DEBUG
 			Array.ForEach(vPassword, ch => Debug.Assert(ch == char.ToLower(ch)));
 #endif
 
 			try { return IsPopularPasswordPriv(vPassword, out uDictSize); }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			uDictSize = 0;
 			return false;
@@ -80,7 +80,7 @@ namespace KeePassLib.Cryptography
 			Debug.Assert(m_dicts.Count > 0); // Should be initialized with data
 
 			Dictionary<char[], bool> d;
-			if(!m_dicts.TryGetValue(vPassword.Length, out d))
+			if (!m_dicts.TryGetValue(vPassword.Length, out d))
 			{
 				uDictSize = 0;
 				return false;
@@ -94,27 +94,27 @@ namespace KeePassLib.Cryptography
 		{
 			try
 			{
-				if(bGZipped)
+				if (bGZipped)
 					pbData = MemUtil.Decompress(pbData);
 
 				string strData = StrUtil.Utf8.GetString(pbData, 0, pbData.Length);
-				if(string.IsNullOrEmpty(strData)) { Debug.Assert(false); return; }
+				if (string.IsNullOrEmpty(strData)) { Debug.Assert(false); return; }
 
 				StringBuilder sb = new StringBuilder();
-				for(int i = 0; i <= strData.Length; ++i)
+				for (int i = 0; i <= strData.Length; ++i)
 				{
 					char ch = ((i == strData.Length) ? ' ' : strData[i]);
 
-					if(char.IsWhiteSpace(ch))
+					if (char.IsWhiteSpace(ch))
 					{
 						int cc = sb.Length;
-						if(cc > 0)
+						if (cc > 0)
 						{
 							char[] vWord = new char[cc];
 							sb.CopyTo(0, vWord, 0, cc);
 
 							Dictionary<char[], bool> d;
-							if(!m_dicts.TryGetValue(cc, out d))
+							if (!m_dicts.TryGetValue(cc, out d))
 							{
 								d = new Dictionary<char[], bool>(MemUtil.ArrayHelperExOfChar);
 								m_dicts[cc] = d;
@@ -127,7 +127,7 @@ namespace KeePassLib.Cryptography
 					else sb.Append(char.ToLower(ch));
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 	}
 }

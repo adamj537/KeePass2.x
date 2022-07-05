@@ -59,7 +59,7 @@ namespace KeePassLib.Native
 		internal static bool TransformKey(IntPtr pbBuf256, IntPtr pbKey256,
 			UInt64 uRounds)
 		{
-			if(IntPtr.Size == 4)
+			if (IntPtr.Size == 4)
 				return TransformKey32(pbBuf256, pbKey256, uRounds);
 			return TransformKey64(pbBuf256, pbKey256, uRounds);
 		}
@@ -72,7 +72,7 @@ namespace KeePassLib.Native
 
 		internal static UInt64 TransformKeyBenchmark(UInt32 uTimeMs)
 		{
-			if(IntPtr.Size == 4)
+			if (IntPtr.Size == 4)
 				return TransformKeyBenchmark32(uTimeMs);
 			return TransformKeyBenchmark64(uTimeMs);
 		}
@@ -117,12 +117,12 @@ namespace KeePassLib.Native
 		{
 			try
 			{
-				if(NativeLib.IsUnix()) return;
+				if (NativeLib.IsUnix()) return;
 
-				if(IntPtr.Size == 4) ProtectProcessWithDacl32();
+				if (IntPtr.Size == 4) ProtectProcessWithDacl32();
 				else ProtectProcessWithDacl64();
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		[DllImport("Kernel32.dll", SetLastError = true)]
@@ -183,7 +183,7 @@ namespace KeePassLib.Native
 				StrCmpLogicalW("0", "0"); // Throws exception if unsupported
 				m_obSupportsLogicalCmp = true;
 			}
-			catch(Exception) { m_obSupportsLogicalCmp = false; }
+			catch (Exception) { m_obSupportsLogicalCmp = false; }
 		}
 #endif
 
@@ -192,7 +192,7 @@ namespace KeePassLib.Native
 			get
 			{
 #if (!KeePassLibSD && !KeePassUAP)
-				if(!m_obSupportsLogicalCmp.HasValue)
+				if (!m_obSupportsLogicalCmp.HasValue)
 					TestNaturalComparisonsSupport();
 
 				return m_obSupportsLogicalCmp.Value;
@@ -205,7 +205,7 @@ namespace KeePassLib.Native
 		internal static int StrCmpNaturally(string x, string y)
 		{
 #if (!KeePassLibSD && !KeePassUAP)
-			if(!NativeMethods.SupportsStrCmpNaturally)
+			if (!NativeMethods.SupportsStrCmpNaturally)
 			{
 				Debug.Assert(false);
 				return string.Compare(x, y, true);
@@ -227,9 +227,9 @@ namespace KeePassLib.Native
 			string strRtDir = EnvironmentExt.AppDataLocalFolderPath;
 #else
 			string strRtDir = Environment.GetEnvironmentVariable("XDG_RUNTIME_DIR");
-			if(string.IsNullOrEmpty(strRtDir))
+			if (string.IsNullOrEmpty(strRtDir))
 				strRtDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-			if(string.IsNullOrEmpty(strRtDir))
+			if (string.IsNullOrEmpty(strRtDir))
 			{
 				Debug.Assert(false);
 				return Path.GetTempPath(); // Not UrlUtil (otherwise cyclic)
@@ -245,23 +245,23 @@ namespace KeePassLib.Native
 
 		internal static string GetKnownFolderPath(Guid g)
 		{
-			if(Marshal.SystemDefaultCharSize != 2) { Debug.Assert(false); return string.Empty; }
+			if (Marshal.SystemDefaultCharSize != 2) { Debug.Assert(false); return string.Empty; }
 
 			IntPtr pszPath = IntPtr.Zero;
 			try
 			{
-				if(SHGetKnownFolderPath(ref g, 0, IntPtr.Zero, out pszPath) == 0)
+				if (SHGetKnownFolderPath(ref g, 0, IntPtr.Zero, out pszPath) == 0)
 				{
-					if(pszPath != IntPtr.Zero)
+					if (pszPath != IntPtr.Zero)
 						return Marshal.PtrToStringUni(pszPath);
 					Debug.Assert(false);
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 			finally
 			{
-				try { if(pszPath != IntPtr.Zero) Marshal.FreeCoTaskMem(pszPath); }
-				catch(Exception) { Debug.Assert(false); }
+				try { if (pszPath != IntPtr.Zero) Marshal.FreeCoTaskMem(pszPath); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 
 			return string.Empty;

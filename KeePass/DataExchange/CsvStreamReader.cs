@@ -51,21 +51,21 @@ namespace KeePass.DataExchange
 
 		private string[] ReadLineQuoted()
 		{
-			if(m_sChars.PeekChar() == char.MinValue) return null;
+			if (m_sChars.PeekChar() == char.MinValue) return null;
 
 			List<string> v = new List<string>();
 			StringBuilder sb = new StringBuilder();
 			bool bInField = false;
 
-			while(true)
+			while (true)
 			{
 				char ch = m_sChars.ReadChar();
-				if(ch == char.MinValue) break;
+				if (ch == char.MinValue) break;
 
-				if((ch == '\"') && !bInField) bInField = true;
-				else if((ch == '\"') && bInField)
+				if ((ch == '\"') && !bInField) bInField = true;
+				else if ((ch == '\"') && bInField)
 				{
-					if(m_sChars.PeekChar() == '\"')
+					if (m_sChars.PeekChar() == '\"')
 					{
 						m_sChars.ReadChar();
 						sb.Append('\"');
@@ -73,17 +73,17 @@ namespace KeePass.DataExchange
 					else
 					{
 						v.Add(sb.ToString());
-						if(sb.Length > 0) sb.Remove(0, sb.Length);
+						if (sb.Length > 0) sb.Remove(0, sb.Length);
 
 						bInField = false;
 					}
 				}
-				else if(((ch == '\r') || (ch == '\n')) && !bInField) break;
-				else if(bInField) sb.Append(ch);
+				else if (((ch == '\r') || (ch == '\n')) && !bInField) break;
+				else if (bInField) sb.Append(ch);
 			}
 			Debug.Assert(!bInField);
 			Debug.Assert(sb.Length == 0);
-			if(sb.Length > 0) v.Add(sb.ToString());
+			if (sb.Length > 0) v.Add(sb.ToString());
 
 			return v.ToArray();
 		}
@@ -91,8 +91,8 @@ namespace KeePass.DataExchange
 		private string[] ReadLineUnquoted()
 		{
 			char chFirst = m_sChars.PeekChar();
-			if(chFirst == char.MinValue) return null;
-			if((chFirst == '\r') || (chFirst == '\n'))
+			if (chFirst == char.MinValue) return null;
+			if ((chFirst == '\r') || (chFirst == '\n'))
 			{
 				m_sChars.ReadChar(); // Advance
 				return new string[0];
@@ -102,27 +102,27 @@ namespace KeePass.DataExchange
 			StringBuilder sb = new StringBuilder();
 			bool bInField = false;
 
-			while(true)
+			while (true)
 			{
 				char ch = m_sChars.ReadChar();
-				if(ch == char.MinValue) break;
+				if (ch == char.MinValue) break;
 
-				if((ch == '\"') && !bInField) bInField = true;
-				else if((ch == '\"') && bInField)
+				if ((ch == '\"') && !bInField) bInField = true;
+				else if ((ch == '\"') && bInField)
 				{
-					if(m_sChars.PeekChar() == '\"')
+					if (m_sChars.PeekChar() == '\"')
 					{
 						m_sChars.ReadChar();
 						sb.Append('\"');
 					}
 					else bInField = false;
 				}
-				else if(((ch == '\r') || (ch == '\n')) && !bInField) break;
-				else if(bInField) sb.Append(ch);
-				else if(ch == ',')
+				else if (((ch == '\r') || (ch == '\n')) && !bInField) break;
+				else if (bInField) sb.Append(ch);
+				else if (ch == ',')
 				{
 					v.Add(sb.ToString());
-					if(sb.Length > 0) sb.Remove(0, sb.Length);
+					if (sb.Length > 0) sb.Remove(0, sb.Length);
 				}
 				else sb.Append(ch);
 			}

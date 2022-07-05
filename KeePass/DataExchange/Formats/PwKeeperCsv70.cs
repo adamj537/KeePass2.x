@@ -53,9 +53,9 @@ namespace KeePass.DataExchange.Formats
 
 			string[] vLines = strData.Split(new char[] { '\r', '\n' });
 
-			foreach(string strLine in vLines)
+			foreach (string strLine in vLines)
 			{
-				if(strLine.Length > 5) ProcessCsvLine(strLine, pwStorage);
+				if (strLine.Length > 5) ProcessCsvLine(strLine, pwStorage);
 			}
 		}
 
@@ -67,7 +67,7 @@ namespace KeePass.DataExchange.Formats
 			PwEntry pe = new PwEntry(true, true);
 			pwStorage.RootGroup.AddEntry(pe, true);
 
-			if(list.Count == 5)
+			if (list.Count == 5)
 			{
 				pe.Strings.Set(PwDefs.TitleField, new ProtectedString(
 					pwStorage.MemoryProtection.ProtectTitle,
@@ -90,10 +90,10 @@ namespace KeePass.DataExchange.Formats
 
 		private static string ProcessCsvWord(string strWord)
 		{
-			if(strWord == null) return string.Empty;
-			if(strWord.Length < 2) return strWord;
+			if (strWord == null) return string.Empty;
+			if (strWord.Length < 2) return strWord;
 
-			if(strWord.StartsWith("\"") && strWord.EndsWith("\""))
+			if (strWord.StartsWith("\"") && strWord.EndsWith("\""))
 				return strWord.Substring(1, strWord.Length - 2);
 
 			return strWord;

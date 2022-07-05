@@ -84,8 +84,8 @@ namespace KeePass.Forms
 
 		private void OnFormLoad(object sender, EventArgs e)
 		{
-			if(m_pwGroup == null) { Debug.Assert(false); throw new InvalidOperationException(); }
-			if(m_pwDatabase == null) { Debug.Assert(false); throw new InvalidOperationException(); }
+			if (m_pwGroup == null) { Debug.Assert(false); throw new InvalidOperationException(); }
+			if (m_pwDatabase == null) { Debug.Assert(false); throw new InvalidOperationException(); }
 
 			GlobalWindowManager.AddWindow(this);
 
@@ -107,7 +107,7 @@ namespace KeePass.Forms
 			m_pwIconIndex = m_pwGroup.IconId;
 			m_pwCustomIconID = m_pwGroup.CustomIconUuid;
 
-			if(!m_pwCustomIconID.Equals(PwUuid.Zero))
+			if (!m_pwCustomIconID.Equals(PwUuid.Zero))
 				UIUtil.SetButtonImage(m_btnIcon, DpiUtil.GetIcon(
 					m_pwDatabase, m_pwCustomIconID), true);
 			else
@@ -116,7 +116,7 @@ namespace KeePass.Forms
 
 			UIUtil.SetMultilineText(m_tbNotes, m_pwGroup.Notes);
 
-			if(m_pwGroup.Expires)
+			if (m_pwGroup.Expires)
 			{
 				m_dtExpires.Value = TimeUtil.ToLocal(m_pwGroup.ExpiryTime, true);
 				m_cbExpires.Checked = true;
@@ -152,7 +152,7 @@ namespace KeePass.Forms
 
 			m_tbDefaultAutoTypeSeq.Text = m_pwGroup.GetAutoTypeSequenceInherited();
 
-			if(m_pwGroup.DefaultAutoTypeSequence.Length == 0)
+			if (m_pwGroup.DefaultAutoTypeSequence.Length == 0)
 				m_rbAutoTypeInherit.Checked = true;
 			else m_rbAutoTypeOverride.Checked = true;
 
@@ -165,7 +165,7 @@ namespace KeePass.Forms
 
 			EnableControlsEx();
 
-			ThreadPool.QueueUserWorkItem(delegate(object state)
+			ThreadPool.QueueUserWorkItem(delegate (object state)
 			{
 				try
 				{
@@ -174,12 +174,12 @@ namespace KeePass.Forms
 					UIUtil.EnableAutoCompletion(m_tbDefaultAutoTypeSeq,
 						false, vSeq); // Invokes
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			});
 
 			UIUtil.SetFocus(m_tbName, this);
 
-			switch(m_gftInit)
+			switch (m_gftInit)
 			{
 				case GroupFormTab.Properties:
 					m_tabMain.SelectedTab = m_tabProperties; break;
@@ -223,7 +223,7 @@ namespace KeePass.Forms
 			m_pwGroup.EnableSearching = UIUtil.GetInheritableBoolComboBoxValue(m_cmbEnableSearching);
 			m_pwGroup.EnableAutoType = UIUtil.GetInheritableBoolComboBoxValue(m_cmbEnableAutoType);
 
-			if(m_rbAutoTypeInherit.Checked)
+			if (m_rbAutoTypeInherit.Checked)
 				m_pwGroup.DefaultAutoTypeSequence = string.Empty;
 			else m_pwGroup.DefaultAutoTypeSequence = m_tbDefaultAutoTypeSeq.Text;
 
@@ -240,12 +240,12 @@ namespace KeePass.Forms
 			ipf.InitEx(m_ilClientIcons, (uint)PwIcon.Count, m_pwDatabase,
 				(uint)m_pwIconIndex, m_pwCustomIconID);
 
-			if(ipf.ShowDialog() == DialogResult.OK)
+			if (ipf.ShowDialog() == DialogResult.OK)
 			{
 				m_pwIconIndex = (PwIcon)ipf.ChosenIconId;
 				m_pwCustomIconID = ipf.ChosenCustomIconUuid;
 
-				if(!m_pwCustomIconID.Equals(PwUuid.Zero))
+				if (!m_pwCustomIconID.Equals(PwUuid.Zero))
 					UIUtil.SetButtonImage(m_btnIcon, DpiUtil.GetIcon(
 						m_pwDatabase, m_pwCustomIconID), true);
 				else
@@ -271,7 +271,7 @@ namespace KeePass.Forms
 			EditAutoTypeItemForm dlg = new EditAutoTypeItemForm();
 			dlg.InitEx(atConfig, -1, true, atConfig.DefaultSequence, null);
 
-			if(dlg.ShowDialog() == DialogResult.OK)
+			if (dlg.ShowDialog() == DialogResult.OK)
 				m_tbDefaultAutoTypeSeq.Text = atConfig.DefaultSequence;
 
 			UIUtil.DestroyForm(dlg);

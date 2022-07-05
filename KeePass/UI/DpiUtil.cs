@@ -72,7 +72,7 @@ namespace KeePass.UI
 		{
 			get
 			{
-				if(Program.DesignMode) return false;
+				if (Program.DesignMode) return false;
 
 				EnsureInitialized();
 				return ((m_nDpiX != StdDpi) || (m_nDpiY != StdDpi));
@@ -81,33 +81,33 @@ namespace KeePass.UI
 
 		private static void EnsureInitialized()
 		{
-			if(m_bInitialized) return;
-			if(NativeLib.IsUnix()) { m_bInitialized = true; return; }
+			if (m_bInitialized) return;
+			if (NativeLib.IsUnix()) { m_bInitialized = true; return; }
 
 			try
 			{
 				IntPtr hDC = NativeMethods.GetDC(IntPtr.Zero);
-				if(hDC != IntPtr.Zero)
+				if (hDC != IntPtr.Zero)
 				{
 					m_nDpiX = NativeMethods.GetDeviceCaps(hDC,
 						NativeMethods.LOGPIXELSX);
 					m_nDpiY = NativeMethods.GetDeviceCaps(hDC,
 						NativeMethods.LOGPIXELSY);
-					if((m_nDpiX <= 0) || (m_nDpiY <= 0))
+					if ((m_nDpiX <= 0) || (m_nDpiY <= 0))
 					{
 						Debug.Assert(false);
 						m_nDpiX = StdDpi;
 						m_nDpiY = StdDpi;
 					}
 
-					if(NativeMethods.ReleaseDC(IntPtr.Zero, hDC) != 1)
+					if (NativeMethods.ReleaseDC(IntPtr.Zero, hDC) != 1)
 					{
 						Debug.Assert(false);
 					}
 				}
 				else { Debug.Assert(false); }
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			m_dScaleX = (double)m_nDpiX / (double)StdDpi;
 			m_dScaleY = (double)m_nDpiY / (double)StdDpi;
@@ -118,7 +118,7 @@ namespace KeePass.UI
 		public static void ConfigureProcess()
 		{
 			Debug.Assert(!m_bInitialized); // Configure process before use
-			if(NativeLib.IsUnix()) return;
+			if (NativeLib.IsUnix()) return;
 
 			// try
 			// {
@@ -129,7 +129,7 @@ namespace KeePass.UI
 #if DEBUG
 			// Ensure that the .config file enables high DPI features
 			string strExeConfig = WinUtil.GetExecutable() + ".config";
-			if(File.Exists(strExeConfig))
+			if (File.Exists(strExeConfig))
 			{
 				string strCM = "System.Configuration.ConfigurationManager, ";
 				strCM += "System.Configuration, Version=";
@@ -137,15 +137,15 @@ namespace KeePass.UI
 				strCM += "Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
 
 				Type tCM = Type.GetType(strCM, false);
-				if(tCM != null)
+				if (tCM != null)
 				{
 					PropertyInfo pi = tCM.GetProperty("AppSettings",
 						(BindingFlags.Public | BindingFlags.Static));
-					if(pi != null)
+					if (pi != null)
 					{
 						NameValueCollection nvc = (pi.GetValue(null, null) as
 							NameValueCollection);
-						if(nvc != null)
+						if (nvc != null)
 						{
 							Debug.Assert(string.Equals(nvc.Get(
 								"EnableWindowsFormsHighDpiAutoResizing"),
@@ -163,29 +163,29 @@ namespace KeePass.UI
 			{
 				// SetProcessDPIAware is obsolete; use
 				// SetProcessDpiAwareness on Windows 10 and higher
-				if(WinUtil.IsAtLeastWindows10) // 8.1 partially
+				if (WinUtil.IsAtLeastWindows10) // 8.1 partially
 				{
-					if(NativeMethods.SetProcessDpiAwareness(
+					if (NativeMethods.SetProcessDpiAwareness(
 						NativeMethods.ProcessDpiAwareness.SystemAware) < 0)
 					{
 						Debug.Assert(false);
 					}
 				}
-				else if(WinUtil.IsAtLeastWindowsVista)
+				else if (WinUtil.IsAtLeastWindowsVista)
 				{
-					if(!NativeMethods.SetProcessDPIAware()) { Debug.Assert(false); }
+					if (!NativeMethods.SetProcessDPIAware()) { Debug.Assert(false); }
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		internal static void Configure(ToolStrip ts)
 		{
-			if(ts == null) { Debug.Assert(false); return; }
-			if(!DpiUtil.ScalingRequired) return;
+			if (ts == null) { Debug.Assert(false); return; }
+			if (!DpiUtil.ScalingRequired) return;
 
 			Size sz = ts.ImageScalingSize;
-			if((sz.Width == 16) && (sz.Height == 16))
+			if ((sz.Width == 16) && (sz.Height == 16))
 			{
 				sz.Width = ScaleIntX(16);
 				sz.Height = ScaleIntY(16);
@@ -213,7 +213,7 @@ namespace KeePass.UI
 
 		public static Image ScaleImage(Image img, bool bForceNewObject)
 		{
-			if(img == null) { Debug.Assert(false); return null; }
+			if (img == null) { Debug.Assert(false); return null; }
 
 			// EnsureInitialized(); // Done by ScaleIntX
 
@@ -222,7 +222,7 @@ namespace KeePass.UI
 			int sw = ScaleIntX(w);
 			int sh = ScaleIntY(h);
 
-			if((w == sw) && (h == sh) && !bForceNewObject)
+			if ((w == sw) && (h == sh) && !bForceNewObject)
 				return img;
 
 			return GfxUtil.ScaleImage(img, sw, sh, ScaleTransformFlags.UIIcon);
@@ -231,20 +231,20 @@ namespace KeePass.UI
 		internal static void ScaleToolStripItems(ToolStripItem[] vItems,
 			int[] vWidths)
 		{
-			if(vItems == null) { Debug.Assert(false); return; }
-			if(vWidths == null) { Debug.Assert(false); return; }
-			if(vItems.Length != vWidths.Length) { Debug.Assert(false); return; }
+			if (vItems == null) { Debug.Assert(false); return; }
+			if (vWidths == null) { Debug.Assert(false); return; }
+			if (vItems.Length != vWidths.Length) { Debug.Assert(false); return; }
 
-			for(int i = 0; i < vItems.Length; ++i)
+			for (int i = 0; i < vItems.Length; ++i)
 			{
 				ToolStripItem tsi = vItems[i];
-				if(tsi == null) { Debug.Assert(false); continue; }
+				if (tsi == null) { Debug.Assert(false); continue; }
 
 				int nWidth = vWidths[i];
 				int nWidthScaled = ScaleIntX(nWidth);
 				Debug.Assert(nWidth >= 0);
 
-				if(nWidth == nWidthScaled)
+				if (nWidth == nWidthScaled)
 				{
 					Debug.Assert(tsi.Width == nWidth);
 					continue;
@@ -258,17 +258,17 @@ namespace KeePass.UI
 					Debug.Assert(((w == nWidth) || (w == nWidthScaled)),
 						tsi.Name + ": w = " + w.ToString());
 
-					if(Math.Abs(w - nWidth) < Math.Abs(w - nWidthScaled))
+					if (Math.Abs(w - nWidth) < Math.Abs(w - nWidthScaled))
 						tsi.Width = nWidthScaled;
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 		}
 
 		internal static Image GetIcon(PwDatabase pd, PwUuid pwUuid)
 		{
-			if(pd == null) { Debug.Assert(false); return null; }
-			if(pwUuid == null) { Debug.Assert(false); return null; }
+			if (pd == null) { Debug.Assert(false); return null; }
+			if (pwUuid == null) { Debug.Assert(false); return null; }
 
 			int w = ScaleIntX(16);
 			int h = ScaleIntY(16);
@@ -280,7 +280,7 @@ namespace KeePass.UI
 		internal static void AssertUIImage(Image img)
 		{
 #if DEBUG
-			if(img == null) { Debug.Assert(false); return; }
+			if (img == null) { Debug.Assert(false); return; }
 
 			EnsureInitialized();
 
@@ -297,7 +297,7 @@ namespace KeePass.UI
 				d = (int)Math.Round(img.VerticalResolution);
 				Debug.Assert((d == 0) || (d == m_nDpiY));
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 #endif
 		}
 	}

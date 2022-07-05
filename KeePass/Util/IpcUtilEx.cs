@@ -77,7 +77,7 @@ namespace KeePass.Util
 
 		public IpcEventArgs(string strName, CommandLineArgs clArgs)
 		{
-			if(strName == null) throw new ArgumentNullException("strName");
+			if (strName == null) throw new ArgumentNullException("strName");
 
 			m_strName = strName;
 			m_args = clArgs;
@@ -111,12 +111,12 @@ namespace KeePass.Util
 
 		public static void SendGlobalMessage(IpcParamEx ipcMsg, bool bOneInstance)
 		{
-			if(ipcMsg == null) throw new ArgumentNullException("ipcMsg");
+			if (ipcMsg == null) throw new ArgumentNullException("ipcMsg");
 
 			int nId = (int)(MemUtil.BytesToUInt32(CryptoRandom.Instance.GetRandomBytes(
 				4)) & 0x7FFFFFFF);
 
-			if(!WriteIpcInfoFile(nId, ipcMsg)) return;
+			if (!WriteIpcInfoFile(nId, ipcMsg)) return;
 
 			try
 			{
@@ -132,15 +132,15 @@ namespace KeePass.Util
 				IpcBroadcast.Send(bOneInstance ? Program.AppMessage.IpcByFile1 :
 					Program.AppMessage.IpcByFile, nId, true);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
-			if(bOneInstance)
+			if (bOneInstance)
 			{
 				string strIpcFile = GetIpcFilePath(nId);
-				for(int r = 0; r < 50; ++r)
+				for (int r = 0; r < 50; ++r)
 				{
-					try { if(!File.Exists(strIpcFile)) break; }
-					catch(Exception) { Debug.Assert(false); }
+					try { if (!File.Exists(strIpcFile)) break; }
+					catch (Exception) { Debug.Assert(false); }
 					Thread.Sleep(20);
 				}
 			}
@@ -155,10 +155,10 @@ namespace KeePass.Util
 			{
 				string str = UrlUtil.GetTempPath();
 				str = UrlUtil.EnsureTerminatingSeparator(str, false);
-				
+
 				return (str + IpcMsgFilePreID + nId.ToString() + ".tmp");
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return null;
 		}
@@ -166,11 +166,11 @@ namespace KeePass.Util
 		private static bool WriteIpcInfoFile(int nId, IpcParamEx ipcMsg)
 		{
 			string strPath = GetIpcFilePath(nId);
-			if(string.IsNullOrEmpty(strPath)) return false;
+			if (string.IsNullOrEmpty(strPath)) return false;
 
 			try
 			{
-				using(MemoryStream ms = new MemoryStream())
+				using (MemoryStream ms = new MemoryStream())
 				{
 					XmlUtilEx.Serialize<IpcParamEx>(ms, ipcMsg);
 
@@ -184,7 +184,7 @@ namespace KeePass.Util
 
 				return true;
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return false;
 		}
@@ -192,22 +192,22 @@ namespace KeePass.Util
 		private static void RemoveIpcInfoFile(int nId)
 		{
 			string strPath = GetIpcFilePath(nId);
-			if(string.IsNullOrEmpty(strPath)) return;
+			if (string.IsNullOrEmpty(strPath)) return;
 
-			try { if(File.Exists(strPath)) File.Delete(strPath); }
-			catch(Exception) { Debug.Assert(false); }
+			try { if (File.Exists(strPath)) File.Delete(strPath); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private static IpcParamEx LoadIpcInfoFile(int nId, bool bOneInstance)
 		{
 			string strPath = GetIpcFilePath(nId);
-			if(string.IsNullOrEmpty(strPath)) return null;
+			if (string.IsNullOrEmpty(strPath)) return null;
 
 			string strMtxName = null;
-			if(bOneInstance)
+			if (bOneInstance)
 			{
 				strMtxName = IpcMsgFilePreID + nId.ToString();
-				if(!GlobalMutexPool.CreateMutex(strMtxName, true)) return null;
+				if (!GlobalMutexPool.CreateMutex(strMtxName, true)) return null;
 			}
 
 			IpcParamEx ipcParam = null;
@@ -218,17 +218,17 @@ namespace KeePass.Util
 					DataProtectionScope.CurrentUser);
 				byte[] pb = MemUtil.Decompress(pbCmp);
 
-				using(MemoryStream ms = new MemoryStream(pb, false))
+				using (MemoryStream ms = new MemoryStream(pb, false))
 				{
 					ipcParam = XmlUtilEx.Deserialize<IpcParamEx>(ms);
 				}
 			}
-			catch(Exception) { Debug.Assert(!File.Exists(strPath)); }
+			catch (Exception) { Debug.Assert(!File.Exists(strPath)); }
 
-			if(bOneInstance)
+			if (bOneInstance)
 			{
 				RemoveIpcInfoFile(nId);
-				if(!GlobalMutexPool.ReleaseMutex(strMtxName)) { Debug.Assert(false); }
+				if (!GlobalMutexPool.ReleaseMutex(strMtxName)) { Debug.Assert(false); }
 			}
 
 			return ipcParam;
@@ -241,19 +241,19 @@ namespace KeePass.Util
 
 		public static void ProcessGlobalMessage(int nId, MainForm mf, bool bOneInstance)
 		{
-			if(mf == null) throw new ArgumentNullException("mf");
+			if (mf == null) throw new ArgumentNullException("mf");
 
 			IpcParamEx ipcMsg = LoadIpcInfoFile(nId, bOneInstance);
-			if(ipcMsg == null) return;
+			if (ipcMsg == null) return;
 
-			if(ipcMsg.Message == CmdOpenDatabase)
+			if (ipcMsg.Message == CmdOpenDatabase)
 			{
 				mf.UIBlockAutoUnlock(true);
 				mf.EnsureVisibleForegroundWindow(true, true);
 				mf.UIBlockAutoUnlock(false);
 
 				string[] vArgs = CommandLineArgs.SafeDeserialize(ipcMsg.Param0);
-				if(vArgs == null) { Debug.Assert(false); return; }
+				if (vArgs == null) { Debug.Assert(false); return; }
 
 				CommandLineArgs args = new CommandLineArgs(vArgs);
 				Program.CommandLineArgs.CopyFrom(args);
@@ -261,25 +261,25 @@ namespace KeePass.Util
 				mf.OpenDatabase(mf.IocFromCommandLine(), KeyUtil.KeyFromCommandLine(
 					Program.CommandLineArgs), true);
 			}
-			else if(ipcMsg.Message == CmdOpenEntryUrl) OpenEntryUrl(ipcMsg, mf);
-			else if(ipcMsg.Message == CmdIpcEvent)
+			else if (ipcMsg.Message == CmdOpenEntryUrl) OpenEntryUrl(ipcMsg, mf);
+			else if (ipcMsg.Message == CmdIpcEvent)
 			{
 				try
 				{
-					if(IpcUtilEx.IpcEvent == null) return;
+					if (IpcUtilEx.IpcEvent == null) return;
 
 					string strName = ipcMsg.Param0;
-					if(string.IsNullOrEmpty(strName)) { Debug.Assert(false); return; }
+					if (string.IsNullOrEmpty(strName)) { Debug.Assert(false); return; }
 
 					string[] vArgs = CommandLineArgs.SafeDeserialize(ipcMsg.Param1);
-					if(vArgs == null) { Debug.Assert(false); return; }
+					if (vArgs == null) { Debug.Assert(false); return; }
 
 					CommandLineArgs clArgs = new CommandLineArgs(vArgs);
 
 					IpcEventArgs e = new IpcEventArgs(strName, clArgs);
 					IpcUtilEx.IpcEvent(null, e);
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 			else { Debug.Assert(false); }
 		}
@@ -287,22 +287,22 @@ namespace KeePass.Util
 		private static void OpenEntryUrl(IpcParamEx ip, MainForm mf)
 		{
 			string strUuid = ip.Param0;
-			if(string.IsNullOrEmpty(strUuid)) return; // No assert (user data)
+			if (string.IsNullOrEmpty(strUuid)) return; // No assert (user data)
 
 			byte[] pbUuid = MemUtil.HexStringToByteArray(strUuid);
-			if((pbUuid == null) || (pbUuid.Length != PwUuid.UuidSize)) return;
+			if ((pbUuid == null) || (pbUuid.Length != PwUuid.UuidSize)) return;
 			PwUuid pwUuid = new PwUuid(pbUuid);
 
 			List<PwDocument> lDocs = mf.DocumentManager.GetDocuments(int.MinValue);
-			foreach(PwDocument pwDoc in lDocs)
+			foreach (PwDocument pwDoc in lDocs)
 			{
-				if(pwDoc == null) { Debug.Assert(false); continue; }
+				if (pwDoc == null) { Debug.Assert(false); continue; }
 
 				PwDatabase pdb = pwDoc.Database;
-				if((pdb == null) || !pdb.IsOpen) continue;
+				if ((pdb == null) || !pdb.IsOpen) continue;
 
 				PwEntry pe = pdb.RootGroup.FindEntry(pwUuid, true);
-				if(pe == null) continue;
+				if (pe == null) continue;
 
 				mf.PerformDefaultUrlAction(new PwEntry[] { pe }, true);
 				break;

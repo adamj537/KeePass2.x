@@ -62,7 +62,7 @@ namespace KeePass.Util
 		public static string WebPageLogin(Uri url, string strPostData,
 			out List<KeyValuePair<string, string>> vCookies)
 		{
-			if(url == null) throw new ArgumentNullException("url");
+			if (url == null) throw new ArgumentNullException("url");
 
 			HttpWebRequest hwr = (HttpWebRequest)HttpWebRequest.Create(url);
 
@@ -85,16 +85,16 @@ namespace KeePass.Util
 			wr.Close();
 
 			vCookies = new List<KeyValuePair<string, string>>();
-			foreach(string strHeader in wr.Headers.AllKeys)
+			foreach (string strHeader in wr.Headers.AllKeys)
 			{
-				if(strHeader == "Set-Cookie")
+				if (strHeader == "Set-Cookie")
 				{
 					string strCookie = wr.Headers.Get(strHeader);
 					string[] vParts = strCookie.Split(new char[] { ';' });
-					if(vParts.Length < 1) continue;
+					if (vParts.Length < 1) continue;
 
 					string[] vInfo = vParts[0].Split(new char[] { '=' });
-					if(vInfo.Length != 2) continue;
+					if (vInfo.Length != 2) continue;
 
 					vCookies.Add(new KeyValuePair<string, string>(
 						vInfo[0], vInfo[1]));
@@ -107,18 +107,18 @@ namespace KeePass.Util
 		public static string WebPageGetWithCookies(Uri url,
 			List<KeyValuePair<string, string>> vCookies, string strDomain)
 		{
-			if(url == null) throw new ArgumentNullException("url");
+			if (url == null) throw new ArgumentNullException("url");
 
 			HttpWebRequest hwr = (HttpWebRequest)HttpWebRequest.Create(url);
 
 			hwr.Method = "GET";
 			hwr.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)";
 
-			if(vCookies != null)
+			if (vCookies != null)
 			{
 				hwr.CookieContainer = new CookieContainer();
 
-				foreach(KeyValuePair<string, string> kvpCookie in vCookies)
+				foreach (KeyValuePair<string, string> kvpCookie in vCookies)
 				{
 					Cookie ck = new Cookie(kvpCookie.Key, kvpCookie.Value,
 						"/", strDomain);

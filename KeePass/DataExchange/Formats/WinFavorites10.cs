@@ -80,16 +80,16 @@ namespace KeePass.DataExchange.Formats
 			string strBaseName = UrlUtil.FilterFileName(string.IsNullOrEmpty(
 				Program.Config.Defaults.WinFavsBaseFolderName) ? PwDefs.ShortProductName :
 				Program.Config.Defaults.WinFavsBaseFolderName);
-			if(bForceRoot || (pwExportInfo == null) || (pg == null))
+			if (bForceRoot || (pwExportInfo == null) || (pg == null))
 				return strBaseName;
 
 			string strGroup = UrlUtil.FilterFileName(pg.Name);
 			string strRootName = strBaseName;
-			if(strGroup.Length > 0) strRootName += (" - " + strGroup);
+			if (strGroup.Length > 0) strRootName += (" - " + strGroup);
 
-			if(pwExportInfo.ContextDatabase != null)
+			if (pwExportInfo.ContextDatabase != null)
 			{
-				if(pg == pwExportInfo.ContextDatabase.RootGroup)
+				if (pg == pwExportInfo.ContextDatabase.RootGroup)
 					strRootName = strBaseName;
 			}
 
@@ -100,22 +100,22 @@ namespace KeePass.DataExchange.Formats
 			IStatusLogger slLogger)
 		{
 			PwGroup pg = pwExportInfo.DataGroup;
-			if(pg == null) { Debug.Assert(false); return true; }
+			if (pg == null) { Debug.Assert(false); return true; }
 
 			string strFavsRoot = Environment.GetFolderPath(
 				Environment.SpecialFolder.Favorites);
-			if(string.IsNullOrEmpty(strFavsRoot)) return false;
+			if (string.IsNullOrEmpty(strFavsRoot)) return false;
 
 			uint uTotalGroups, uTotalEntries, uEntriesProcessed = 0;
 			pwExportInfo.DataGroup.GetCounts(true, out uTotalGroups, out uTotalEntries);
 
-			if(!m_bInRoot) // In folder
+			if (!m_bInRoot) // In folder
 			{
 				string strRootName = GetFolderName(false, pwExportInfo, pg);
 
 				string strFavsSub = UrlUtil.EnsureTerminatingSeparator(
 					strFavsRoot, false) + strRootName;
-				if(Directory.Exists(strFavsSub))
+				if (Directory.Exists(strFavsSub))
 				{
 					Directory.Delete(strFavsSub, true);
 					WaitForDirCommit(strFavsSub, false);
@@ -138,17 +138,17 @@ namespace KeePass.DataExchange.Formats
 		private static void ExportGroup(PwGroup pg, string strDir, IStatusLogger slLogger,
 			uint uTotalEntries, ref uint uEntriesProcessed, PwExportInfo pxi)
 		{
-			foreach(PwEntry pe in pg.Entries)
+			foreach (PwEntry pe in pg.Entries)
 			{
 				ExportEntry(pe, strDir, pxi);
 
 				++uEntriesProcessed;
-				if(slLogger != null)
+				if (slLogger != null)
 					slLogger.SetProgress(((uEntriesProcessed * 50U) /
 						uTotalEntries) + 50U);
 			}
 
-			foreach(PwGroup pgSub in pg.Groups)
+			foreach (PwGroup pgSub in pg.Groups)
 			{
 				string strGroup = UrlUtil.FilterFileName(pgSub.Name);
 				string strSub = (UrlUtil.EnsureTerminatingSeparator(strDir, false) +
@@ -167,24 +167,24 @@ namespace KeePass.DataExchange.Formats
 
 			KeyValuePair<string, string>? okvpCmd = null;
 			string strUrl = SprEngine.Compile(pe.Strings.ReadSafe(PwDefs.UrlField), ctxUrl);
-			if(WinUtil.IsCommandLineUrl(strUrl))
+			if (WinUtil.IsCommandLineUrl(strUrl))
 			{
 				strUrl = WinUtil.GetCommandLineFromUrl(strUrl);
 
-				if(!NativeLib.IsUnix()) // LNKs only supported on Windows
+				if (!NativeLib.IsUnix()) // LNKs only supported on Windows
 				{
 					string strApp, strArgs;
 					StrUtil.SplitCommandLine(strUrl, out strApp, out strArgs);
 
-					if(!string.IsNullOrEmpty(strApp))
+					if (!string.IsNullOrEmpty(strApp))
 						okvpCmd = new KeyValuePair<string, string>(strApp, strArgs);
 				}
 			}
-			if(string.IsNullOrEmpty(strUrl)) return;
+			if (string.IsNullOrEmpty(strUrl)) return;
 			bool bLnk = okvpCmd.HasValue;
 
 			string strTitleCmp = SprEngine.Compile(pe.Strings.ReadSafe(PwDefs.TitleField), ctx);
-			if(string.IsNullOrEmpty(strTitleCmp)) strTitleCmp = KPRes.Entry;
+			if (string.IsNullOrEmpty(strTitleCmp)) strTitleCmp = KPRes.Entry;
 			string strTitle = Program.Config.Defaults.WinFavsFileNamePrefix + strTitleCmp;
 
 			string strSuffix = Program.Config.Defaults.WinFavsFileNameSuffix +
@@ -195,16 +195,16 @@ namespace KeePass.DataExchange.Formats
 				false) + UrlUtil.FilterFileName(strTitle));
 			string strFile = strFileBase + strSuffix;
 			int iFind = 2;
-			while(File.Exists(strFile))
+			while (File.Exists(strFile))
 			{
 				strFile = strFileBase + " (" + iFind.ToString() + ")" + strSuffix;
 				++iFind;
 			}
 
-			if(!Directory.Exists(strDir))
+			if (!Directory.Exists(strDir))
 			{
 				try { Directory.CreateDirectory(strDir); }
-				catch(Exception exDir)
+				catch (Exception exDir)
 				{
 					throw new Exception(strDir + MessageService.NewParagraph + exDir.Message);
 				}
@@ -214,7 +214,7 @@ namespace KeePass.DataExchange.Formats
 
 			try
 			{
-				if(bLnk)
+				if (bLnk)
 				{
 					int ccMaxDesc = NativeMethods.INFOTIPSIZE - 1 - LnkDescSuffix.Length;
 					string strDesc = StrUtil.CompactString3Dots(strUrl, ccMaxDesc) +
@@ -236,7 +236,7 @@ namespace KeePass.DataExchange.Formats
 					File.WriteAllText(strFile, sb.ToString(), Encoding.Default);
 				}
 			}
-			catch(Exception exWrite)
+			catch (Exception exWrite)
 			{
 				throw new Exception(strFile + MessageService.NewParagraph + exWrite.Message);
 			}
@@ -244,11 +244,11 @@ namespace KeePass.DataExchange.Formats
 
 		private static void WaitForDirCommit(string strDir, bool bRequireExists)
 		{
-			for(int i = 0; i < 20; ++i)
+			for (int i = 0; i < 20; ++i)
 			{
 				bool bExists = Directory.Exists(strDir);
-				if(bExists && bRequireExists) return;
-				if(!bExists && !bRequireExists) return;
+				if (bExists && bRequireExists) return;
+				if (!bExists && !bRequireExists) return;
 
 				Thread.Sleep(50);
 			}
@@ -269,49 +269,49 @@ namespace KeePass.DataExchange.Formats
 				lFiles.AddRange(lUrlFiles);
 				lFiles.AddRange(lLnkFiles);
 
-				for(int iFile = 0; iFile < lFiles.Count; ++iFile)
+				for (int iFile = 0; iFile < lFiles.Count; ++iFile)
 				{
 					string strFile = lFiles[iFile];
 					try
 					{
 						bool bDelete = false;
 
-						if(strFile.EndsWith(".url", StrUtil.CaseIgnoreCmp))
+						if (strFile.EndsWith(".url", StrUtil.CaseIgnoreCmp))
 						{
 							IniFile ini = IniFile.Read(strFile, Encoding.Default);
 							string strType = ini.Get(PwDefs.ShortProductName, IniTypeKey);
 							bDelete = ((strType != null) && (strType == IniTypeValue));
 						}
-						else if(strFile.EndsWith(".lnk", StrUtil.CaseIgnoreCmp))
+						else if (strFile.EndsWith(".lnk", StrUtil.CaseIgnoreCmp))
 						{
 							ShellLinkEx sl = ShellLinkEx.Load(strFile);
-							if(sl != null)
+							if (sl != null)
 								bDelete = ((sl.Description != null) &&
 									sl.Description.EndsWith(LnkDescSuffix));
 						}
 						else { Debug.Assert(false); }
 
-						if(bDelete)
+						if (bDelete)
 						{
 							File.Delete(strFile);
 
 							string strCont = UrlUtil.GetFileDirectory(strFile, false, true);
-							if(vDirsToDelete.IndexOf(strCont) < 0)
+							if (vDirsToDelete.IndexOf(strCont) < 0)
 								vDirsToDelete.Add(strCont);
 						}
 					}
-					catch(Exception) { Debug.Assert(false); }
+					catch (Exception) { Debug.Assert(false); }
 
-					if(slLogger != null)
+					if (slLogger != null)
 						slLogger.SetProgress(((uint)iFile * 50U) / (uint)lFiles.Count);
 				}
 
 				bool bDeleted = true;
-				while(bDeleted)
+				while (bDeleted)
 				{
 					bDeleted = false;
 
-					for(int i = (vDirsToDelete.Count - 1); i >= 0; --i)
+					for (int i = (vDirsToDelete.Count - 1); i >= 0; --i)
 					{
 						try
 						{
@@ -321,11 +321,11 @@ namespace KeePass.DataExchange.Formats
 							vDirsToDelete.RemoveAt(i);
 							bDeleted = true;
 						}
-						catch(Exception) { } // E.g. not empty
+						catch (Exception) { } // E.g. not empty
 					}
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 	}
 }

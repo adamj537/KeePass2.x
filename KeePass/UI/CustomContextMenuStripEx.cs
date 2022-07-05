@@ -45,11 +45,11 @@ namespace KeePass.UI
 
 		public void ShowEx(Control cParent)
 		{
-			if(cParent == null) Show(Cursor.Position);
+			if (cParent == null) Show(Cursor.Position);
 			else
 			{
 				int dx = 0;
-				if(cParent.RightToLeft == RightToLeft.Yes)
+				if (cParent.RightToLeft == RightToLeft.Yes)
 				{
 					this.RightToLeft = RightToLeft.Yes;
 					dx = cParent.Width;

@@ -51,7 +51,7 @@ namespace KeePass.Forms
 		// {
 		//	get { return m_bFieldRefs; }
 		// }
-		
+
 		private bool m_bCopyHistory = true;
 		// public bool CopyHistory
 		// {
@@ -60,14 +60,14 @@ namespace KeePass.Forms
 
 		public void ApplyTo(PwEntry peNew, PwEntry pe, PwDatabase pd)
 		{
-			if((peNew == null) || (pe == null)) { Debug.Assert(false); return; }
+			if ((peNew == null) || (pe == null)) { Debug.Assert(false); return; }
 
 			Debug.Assert(peNew.Strings.ReadSafe(PwDefs.UserNameField) ==
 				pe.Strings.ReadSafe(PwDefs.UserNameField));
 			Debug.Assert(peNew.Strings.ReadSafe(PwDefs.PasswordField) ==
 				pe.Strings.ReadSafe(PwDefs.PasswordField));
 
-			if(m_bAppendCopy && (pd != null))
+			if (m_bAppendCopy && (pd != null))
 			{
 				string strTitle = peNew.Strings.ReadSafe(PwDefs.TitleField);
 				peNew.Strings.Set(PwDefs.TitleField, new ProtectedString(
@@ -75,7 +75,7 @@ namespace KeePass.Forms
 					KPRes.CopyOfItem));
 			}
 
-			if(m_bFieldRefs && (pd != null))
+			if (m_bFieldRefs && (pd != null))
 			{
 				string strUser = @"{REF:U@I:" + pe.Uuid.ToHexString() + @"}";
 				peNew.Strings.Set(PwDefs.UserNameField, new ProtectedString(
@@ -86,7 +86,7 @@ namespace KeePass.Forms
 					pd.MemoryProtection.ProtectPassword, strPw));
 			}
 
-			if(!m_bCopyHistory)
+			if (!m_bCopyHistory)
 				peNew.History = new PwObjectList<PwEntry>();
 		}
 

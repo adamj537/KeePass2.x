@@ -77,7 +77,7 @@ namespace KeePass.Forms
 
 		public void InitEx(string strDataDesc, byte[] pbData)
 		{
-			if(strDataDesc != null) m_strDataDesc = strDataDesc;
+			if (strDataDesc != null) m_strDataDesc = strDataDesc;
 
 			m_pbData = pbData;
 		}
@@ -93,7 +93,7 @@ namespace KeePass.Forms
 		private void OnFormLoad(object sender, EventArgs e)
 		{
 			Debug.Assert(m_pbData != null);
-			if(m_pbData == null) throw new InvalidOperationException();
+			if (m_pbData == null) throw new InvalidOperationException();
 
 			GlobalWindowManager.AddWindow(this);
 
@@ -114,7 +114,7 @@ namespace KeePass.Forms
 					m_pbData.Length - (int)uStartOffset) ?? string.Empty);
 				strData = StrUtil.ReplaceNulls(strData);
 			}
-			catch(Exception) { Debug.Assert(false); strData = string.Empty; }
+			catch (Exception) { Debug.Assert(false); strData = string.Empty; }
 
 			++m_uBlockEvents;
 
@@ -171,11 +171,11 @@ namespace KeePass.Forms
 			InitFormattingToolBar();
 
 			bool bSimpleText = true, bDefaultFont = true;
-			if(m_bdc == BinaryDataClass.RichText)
+			if (m_bdc == BinaryDataClass.RichText)
 			{
 				try
 				{
-					if(strData.Length > 0)
+					if (strData.Length > 0)
 					{
 						m_rtbText.Rtf = StrUtil.RtfFix(strData);
 						bDefaultFont = false;
@@ -184,10 +184,10 @@ namespace KeePass.Forms
 
 					bSimpleText = false;
 				}
-				catch(Exception) { } // Show as simple text
+				catch (Exception) { } // Show as simple text
 			}
 
-			if(bSimpleText)
+			if (bSimpleText)
 			{
 				m_rtbText.Text = strData;
 				m_rtbText.SimpleTextOnly = true;
@@ -197,7 +197,7 @@ namespace KeePass.Forms
 			}
 			else m_menuViewFont.Text = KPRes.FontDefault + "...";
 
-			if(bDefaultFont && Program.Config.UI.DataEditorFont.OverrideUIDefault)
+			if (bDefaultFont && Program.Config.UI.DataEditorFont.OverrideUIDefault)
 			{
 				m_rtbText.SelectAll();
 				m_rtbText.SelectionFont = Program.Config.UI.DataEditorFont.ToFont();
@@ -210,28 +210,28 @@ namespace KeePass.Forms
 
 		private void InitFormattingToolBar()
 		{
-			if(m_bdc != BinaryDataClass.RichText)
+			if (m_bdc != BinaryDataClass.RichText)
 			{
 				m_toolFormat.Visible = false;
 				return;
 			}
 
-			using(InstalledFontCollection c = new InstalledFontCollection())
+			using (InstalledFontCollection c = new InstalledFontCollection())
 			{
-				foreach(FontFamily ff in c.Families)
+				foreach (FontFamily ff in c.Families)
 					m_tbFontCombo.Items.Add(ff.Name);
 			}
 
 			int[] vSizes = new int[] { 8, 9, 10, 11, 12, 14, 16, 18, 20,
 				22, 24, 26, 28, 36, 48, 72 };
-			foreach(int nSize in vSizes)
+			foreach (int nSize in vSizes)
 				m_tbFontSizeCombo.Items.Add(nSize.ToString());
 		}
 
 		private void UpdateUIState(bool bSetModified, bool bFocusText)
 		{
 			++m_uBlockEvents;
-			if(bSetModified) m_bModified = true;
+			if (bSetModified) m_bModified = true;
 
 			this.Text = (((m_strDataDesc.Length > 0) ? (m_strDataDesc +
 				(m_bModified ? "*" : string.Empty) + " - ") : string.Empty) +
@@ -251,7 +251,7 @@ namespace KeePass.Forms
 				m_menuEditCopy, m_tbEditCopy, m_menuEditDelete);
 
 			Font fSel = m_rtbText.SelectionFont;
-			if(fSel != null)
+			if (fSel != null)
 			{
 				m_tbFormatBold.Checked = fSel.Bold;
 				m_tbFormatItalic.Checked = fSel.Italic;
@@ -259,12 +259,12 @@ namespace KeePass.Forms
 				m_tbFormatStrikeout.Checked = fSel.Strikeout;
 
 				string strFontName = fSel.Name;
-				if(m_tbFontCombo.Items.IndexOf(strFontName) >= 0)
+				if (m_tbFontCombo.Items.IndexOf(strFontName) >= 0)
 					m_tbFontCombo.SelectedItem = strFontName;
 				else m_tbFontCombo.Text = strFontName;
 
 				string strFontSize = fSel.SizeInPoints.ToString();
-				if(m_tbFontSizeCombo.Items.IndexOf(strFontSize) >= 0)
+				if (m_tbFontSizeCombo.Items.IndexOf(strFontSize) >= 0)
 					m_tbFontSizeCombo.SelectedItem = strFontSize;
 				else m_tbFontSizeCombo.Text = strFontSize;
 			}
@@ -275,12 +275,12 @@ namespace KeePass.Forms
 			m_tbAlignRight.Checked = (ha == HorizontalAlignment.Right);
 
 			--m_uBlockEvents;
-			if(bFocusText) UIUtil.SetFocus(m_rtbText, this);
+			if (bFocusText) UIUtil.SetFocus(m_rtbText, this);
 		}
 
 		private void UISelectAllText(bool bSelect)
 		{
-			if(bSelect)
+			if (bSelect)
 			{
 				m_lSelections.Push(new KeyValuePair<int, int>(m_rtbText.SelectionStart,
 					m_rtbText.SelectionLength));
@@ -295,11 +295,11 @@ namespace KeePass.Forms
 
 		private void OnFileSave(object sender, EventArgs e)
 		{
-			if(m_bdc == BinaryDataClass.RichText)
+			if (m_bdc == BinaryDataClass.RichText)
 			{
 				string strRtf = m_rtbText.Rtf;
 
-				if(StrUtil.RtfIsURtf(strRtf))
+				if (StrUtil.RtfIsURtf(strRtf))
 					m_bURtfWithHighChar = StrUtil.ContainsHighChar(m_rtbText.Text);
 				else m_bURtfWithHighChar = false;
 
@@ -318,14 +318,14 @@ namespace KeePass.Forms
 
 		private void OnFormClosing(object sender, FormClosingEventArgs e)
 		{
-			if(m_bModified)
+			if (m_bModified)
 			{
 				DialogResult dr = MessageService.Ask(KPRes.SaveBeforeCloseQuestion,
 					PwDefs.ShortProductName, MessageBoxButtons.YesNoCancel);
 
-				if(dr == DialogResult.Yes)
+				if (dr == DialogResult.Yes)
 					OnFileSave(sender, EventArgs.Empty);
-				else if(dr == DialogResult.No) { }
+				else if (dr == DialogResult.No) { }
 				else
 				{
 					e.Cancel = true;
@@ -333,7 +333,7 @@ namespace KeePass.Forms
 				}
 			}
 
-			if(m_bURtfWithHighChar && (m_pbEditedData != null) &&
+			if (m_bURtfWithHighChar && (m_pbEditedData != null) &&
 				!MemUtil.ArraysEqual(m_pbEditedData, m_pbData))
 			{
 				string strUrl = AppHelp.GetOnlineUrl(AppDefs.HelpTopics.KbFaq,
@@ -353,14 +353,14 @@ namespace KeePass.Forms
 				dlg.SetIcon(VtdIcon.Warning);
 				dlg.WindowTitle = PwDefs.ShortProductName;
 
-				if(!dlg.ShowDialog())
+				if (!dlg.ShowDialog())
 					MessageService.ShowWarning(strMsg + strUrl);
 			}
 
 			Debug.Assert(m_uBlockEvents == 0);
 
 			string strRect = UIUtil.GetWindowScreenRect(this);
-			if(strRect != m_strInitialFormRect) // Don't overwrite ""
+			if (strRect != m_strInitialFormRect) // Don't overwrite ""
 				Program.Config.UI.DataEditorRect = strRect;
 		}
 
@@ -372,7 +372,7 @@ namespace KeePass.Forms
 
 		private void ToggleSelectionFormat(FontStyle fs)
 		{
-			if((m_uBlockEvents > 0) || (m_bdc != BinaryDataClass.RichText)) return;
+			if ((m_uBlockEvents > 0) || (m_bdc != BinaryDataClass.RichText)) return;
 
 			UIUtil.RtfToggleSelectionFormat(m_rtbText, fs);
 			UpdateUIState(true, true);
@@ -400,17 +400,17 @@ namespace KeePass.Forms
 
 		private void OnTextSelectionChanged(object sender, EventArgs e)
 		{
-			if(m_uBlockEvents > 0) return;
+			if (m_uBlockEvents > 0) return;
 
 			UpdateUIState(false, false);
 		}
 
 		private void OnColorForegroundClicked(object sender, EventArgs e)
 		{
-			if((m_uBlockEvents > 0) || (m_bdc != BinaryDataClass.RichText)) return;
+			if ((m_uBlockEvents > 0) || (m_bdc != BinaryDataClass.RichText)) return;
 
 			Color? oclr = UIUtil.ShowColorDialog(m_rtbText.SelectionColor);
-			if(oclr.HasValue)
+			if (oclr.HasValue)
 			{
 				m_rtbText.SelectionColor = oclr.Value;
 				UpdateUIState(true, true);
@@ -419,10 +419,10 @@ namespace KeePass.Forms
 
 		private void OnColorBackgroundClicked(object sender, EventArgs e)
 		{
-			if((m_uBlockEvents > 0) || (m_bdc != BinaryDataClass.RichText)) return;
+			if ((m_uBlockEvents > 0) || (m_bdc != BinaryDataClass.RichText)) return;
 
 			Color? oclr = UIUtil.ShowColorDialog(m_rtbText.SelectionBackColor);
-			if(oclr.HasValue)
+			if (oclr.HasValue)
 			{
 				m_rtbText.SelectionBackColor = oclr.Value;
 				UpdateUIState(true, true);
@@ -436,14 +436,14 @@ namespace KeePass.Forms
 
 		private void OnTextTextChanged(object sender, EventArgs e)
 		{
-			if(m_uBlockEvents > 0) return;
+			if (m_uBlockEvents > 0) return;
 
 			UpdateUIState(true, false);
 		}
 
 		private void OnAlignLeftClicked(object sender, EventArgs e)
 		{
-			if((m_uBlockEvents > 0) || (m_bdc != BinaryDataClass.RichText)) return;
+			if ((m_uBlockEvents > 0) || (m_bdc != BinaryDataClass.RichText)) return;
 
 			m_rtbText.SelectionAlignment = HorizontalAlignment.Left;
 
@@ -452,7 +452,7 @@ namespace KeePass.Forms
 
 		private void OnAlignCenterClicked(object sender, EventArgs e)
 		{
-			if((m_uBlockEvents > 0) || (m_bdc != BinaryDataClass.RichText)) return;
+			if ((m_uBlockEvents > 0) || (m_bdc != BinaryDataClass.RichText)) return;
 
 			m_rtbText.SelectionAlignment = HorizontalAlignment.Center;
 
@@ -461,7 +461,7 @@ namespace KeePass.Forms
 
 		private void OnAlignRightClicked(object sender, EventArgs e)
 		{
-			if((m_uBlockEvents > 0) || (m_bdc != BinaryDataClass.RichText)) return;
+			if ((m_uBlockEvents > 0) || (m_bdc != BinaryDataClass.RichText)) return;
 
 			m_rtbText.SelectionAlignment = HorizontalAlignment.Right;
 
@@ -470,61 +470,61 @@ namespace KeePass.Forms
 
 		private void OnFontComboSelectedIndexChanged(object sender, EventArgs e)
 		{
-			if((m_uBlockEvents > 0) || (m_bdc != BinaryDataClass.RichText)) return;
+			if ((m_uBlockEvents > 0) || (m_bdc != BinaryDataClass.RichText)) return;
 
 			try
 			{
 				string strName = m_tbFontCombo.Text;
 
 				Font f = m_rtbText.SelectionFont;
-				if(f != null)
+				if (f != null)
 					m_rtbText.SelectionFont = new Font(strName, f.Size,
 						f.Style, f.Unit, f.GdiCharSet, f.GdiVerticalFont);
-				else if(FontUtil.DefaultFont != null)
+				else if (FontUtil.DefaultFont != null)
 					m_rtbText.SelectionFont = FontUtil.CreateFont(strName,
 						FontUtil.DefaultFont.SizeInPoints, FontStyle.Regular);
 				else
 					m_rtbText.SelectionFont = FontUtil.CreateFont(strName,
 						12.0f, FontStyle.Regular);
 			}
-			catch(Exception ex) { MessageService.ShowWarning(ex); }
+			catch (Exception ex) { MessageService.ShowWarning(ex); }
 
 			UpdateUIState(true, true);
 		}
 
 		private void OnFontSizeComboSelectedIndexChanged(object sender, EventArgs e)
 		{
-			if((m_uBlockEvents > 0) || (m_bdc != BinaryDataClass.RichText)) return;
+			if ((m_uBlockEvents > 0) || (m_bdc != BinaryDataClass.RichText)) return;
 
 			try
 			{
 				Font f = m_rtbText.SelectionFont;
 				float fSize;
-				if(!float.TryParse(m_tbFontSizeCombo.Text, out fSize))
+				if (!float.TryParse(m_tbFontSizeCombo.Text, out fSize))
 				{
-					if(f != null) fSize = f.SizeInPoints;
-					else if(FontUtil.DefaultFont != null)
+					if (f != null) fSize = f.SizeInPoints;
+					else if (FontUtil.DefaultFont != null)
 						fSize = FontUtil.DefaultFont.SizeInPoints;
 					else fSize = 12.0f;
 				}
 
-				if(f != null)
+				if (f != null)
 					m_rtbText.SelectionFont = new Font(f.Name, fSize, f.Style,
 						GraphicsUnit.Point, f.GdiCharSet, f.GdiVerticalFont);
-				else if(!NativeLib.IsUnix())
+				else if (!NativeLib.IsUnix())
 					UIUtil.RtfSetFontSize(m_rtbText, fSize);
 				else // Unix
 					m_rtbText.SelectionFont = FontUtil.CreateFont(
 						FontFamily.GenericSansSerif, fSize, FontStyle.Regular);
 			}
-			catch(Exception ex) { MessageService.ShowWarning(ex); }
+			catch (Exception ex) { MessageService.ShowWarning(ex); }
 
 			UpdateUIState(true, true);
 		}
 
 		private void OnFontComboKeyDown(object sender, KeyEventArgs e)
 		{
-			if(e.KeyCode == Keys.Return) // Return == Enter
+			if (e.KeyCode == Keys.Return) // Return == Enter
 			{
 				UIUtil.SetHandled(e, true);
 				OnFontComboSelectedIndexChanged(sender, e);
@@ -533,7 +533,7 @@ namespace KeePass.Forms
 
 		private void OnFontSizeComboKeyDown(object sender, KeyEventArgs e)
 		{
-			if(e.KeyCode == Keys.Return) // Return == Enter
+			if (e.KeyCode == Keys.Return) // Return == Enter
 			{
 				UIUtil.SetHandled(e, true);
 				OnFontSizeComboSelectedIndexChanged(sender, e);
@@ -576,11 +576,11 @@ namespace KeePass.Forms
 			dlg.Font = Program.Config.UI.DataEditorFont.ToFont();
 			dlg.ShowColor = false;
 
-			if(dlg.ShowDialog() == DialogResult.OK)
+			if (dlg.ShowDialog() == DialogResult.OK)
 			{
 				Program.Config.UI.DataEditorFont = new AceFont(dlg.Font, true);
 
-				if(m_bdc == BinaryDataClass.Text)
+				if (m_bdc == BinaryDataClass.Text)
 				{
 					bool bModified = m_bModified; // Save modified state
 
@@ -605,12 +605,12 @@ namespace KeePass.Forms
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
 			bool bDown;
-			if(!NativeMethods.GetKeyMessageState(ref msg, out bDown))
+			if (!NativeMethods.GetKeyMessageState(ref msg, out bDown))
 				return base.ProcessCmdKey(ref msg, keyData);
 
-			if(keyData == Keys.Escape) // No modifiers
+			if (keyData == Keys.Escape) // No modifiers
 			{
-				if(bDown) Close();
+				if (bDown) Close();
 				return true;
 			}
 
@@ -620,19 +620,19 @@ namespace KeePass.Forms
 		internal static byte[] ConvertAttachment(string strDesc, byte[] pbData)
 		{
 			BinaryDataClass bdc = BinaryDataClassifier.Classify(strDesc, pbData);
-			if(bdc == BinaryDataClass.Text)
+			if (bdc == BinaryDataClass.Text)
 			{
 				string strContext = (KPRes.File + (string.IsNullOrEmpty(strDesc) ?
 					string.Empty : (": " + strDesc)));
 
 				TextEncodingForm dlg = new TextEncodingForm();
 				dlg.InitEx(strContext, pbData);
-				if(UIUtil.ShowDialogNotValue(dlg, DialogResult.OK)) return null;
+				if (UIUtil.ShowDialogNotValue(dlg, DialogResult.OK)) return null;
 
 				Encoding enc = dlg.SelectedEncoding;
 				int iStart = (int)dlg.DataStartOffset;
 				UIUtil.DestroyForm(dlg);
-				if(enc != null)
+				if (enc != null)
 				{
 					try
 					{
@@ -641,7 +641,7 @@ namespace KeePass.Forms
 						strText = StrUtil.ReplaceNulls(strText);
 						return StrUtil.Utf8.GetBytes(strText);
 					}
-					catch(Exception) { Debug.Assert(false); }
+					catch (Exception) { Debug.Assert(false); }
 				}
 			}
 
@@ -650,7 +650,7 @@ namespace KeePass.Forms
 
 		private void OnTextFindKeyDown(object sender, KeyEventArgs e)
 		{
-			if(e.KeyCode == Keys.Return) // Return == Enter
+			if (e.KeyCode == Keys.Return) // Return == Enter
 			{
 				UIUtil.SetHandled(e, true);
 				PerformQuickFind();
@@ -659,21 +659,21 @@ namespace KeePass.Forms
 
 		private void OnTextFindKeyUp(object sender, KeyEventArgs e)
 		{
-			if(e.KeyCode == Keys.Return) // Return == Enter
+			if (e.KeyCode == Keys.Return) // Return == Enter
 				UIUtil.SetHandled(e, true);
 		}
 
 		private void PerformQuickFind()
 		{
 			string strNeedle = m_tbFind.Text;
-			if(string.IsNullOrEmpty(strNeedle)) return;
+			if (string.IsNullOrEmpty(strNeedle)) return;
 
 			int iStart = m_rtbText.SelectionStart + m_rtbText.SelectionLength;
-			if(iStart < 0) { Debug.Assert(false); iStart = 0; }
-			if(iStart >= m_rtbText.TextLength) iStart = 0;
+			if (iStart < 0) { Debug.Assert(false); iStart = 0; }
+			if (iStart >= m_rtbText.TextLength) iStart = 0;
 
 			int p = m_rtbText.Find(strNeedle, iStart, -1, RichTextBoxFinds.None);
-			if(p < 0) m_rtbText.Find(strNeedle, 0, -1, RichTextBoxFinds.None);
+			if (p < 0) m_rtbText.Find(strNeedle, 0, -1, RichTextBoxFinds.None);
 		}
 
 		private void OnEditSelectAll(object sender, EventArgs e)

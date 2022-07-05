@@ -58,31 +58,31 @@ namespace KeePassLib.Cryptography
 			uint uCodeDigits, bool bAddChecksum, int iTruncationOffset,
 			string strAlg)
 		{
-			if(pbSecret == null) { Debug.Assert(false); pbSecret = MemUtil.EmptyByteArray; }
-			if(uCodeDigits == 0) { Debug.Assert(false); return string.Empty; }
-			if(uCodeDigits > 8) { Debug.Assert(false); return string.Empty; }
+			if (pbSecret == null) { Debug.Assert(false); pbSecret = MemUtil.EmptyByteArray; }
+			if (uCodeDigits == 0) { Debug.Assert(false); return string.Empty; }
+			if (uCodeDigits > 8) { Debug.Assert(false); return string.Empty; }
 
 			byte[] pbText = MemUtil.UInt64ToBytes(uFactor);
 			Array.Reverse(pbText); // To big-endian
 
 			byte[] pbHash;
-			if(string.IsNullOrEmpty(strAlg) || (strAlg == AlgHmacSha1))
+			if (string.IsNullOrEmpty(strAlg) || (strAlg == AlgHmacSha1))
 			{
-				using(HMACSHA1 h = new HMACSHA1(pbSecret))
+				using (HMACSHA1 h = new HMACSHA1(pbSecret))
 				{
 					pbHash = h.ComputeHash(pbText);
 				}
 			}
-			else if(strAlg == AlgHmacSha256)
+			else if (strAlg == AlgHmacSha256)
 			{
-				using(HMACSHA256 h = new HMACSHA256(pbSecret))
+				using (HMACSHA256 h = new HMACSHA256(pbSecret))
 				{
 					pbHash = h.ComputeHash(pbText);
 				}
 			}
-			else if(strAlg == AlgHmacSha512)
+			else if (strAlg == AlgHmacSha512)
 			{
-				using(HMACSHA512 h = new HMACSHA512(pbSecret))
+				using (HMACSHA512 h = new HMACSHA512(pbSecret))
 				{
 					pbHash = h.ComputeHash(pbText);
 				}
@@ -90,7 +90,7 @@ namespace KeePassLib.Cryptography
 			else { Debug.Assert(false); return string.Empty; }
 
 			uint uOffset = (uint)(pbHash[pbHash.Length - 1] & 0xF);
-			if((iTruncationOffset >= 0) && (iTruncationOffset < (pbHash.Length - 4)))
+			if ((iTruncationOffset >= 0) && (iTruncationOffset < (pbHash.Length - 4)))
 				uOffset = (uint)iTruncationOffset;
 
 			uint uBinary = (uint)(((pbHash[uOffset] & 0x7F) << 24) |
@@ -99,7 +99,7 @@ namespace KeePassLib.Cryptography
 				(pbHash[uOffset + 3] & 0xFF));
 
 			uint uOtp = (uBinary % g_vDigitsPower[uCodeDigits]);
-			if(bAddChecksum)
+			if (bAddChecksum)
 				uOtp = ((uOtp * 10) + CalculateChecksum(uOtp, uCodeDigits));
 
 			uint uDigits = (bAddChecksum ? (uCodeDigits + 1) : uCodeDigits);
@@ -115,19 +115,19 @@ namespace KeePassLib.Cryptography
 			bool bDoubleDigit = true;
 			uint uTotal = 0;
 
-			while(0 < uDigits--)
+			while (0 < uDigits--)
 			{
 				uint uDigit = (uNum % 10);
 				uNum /= 10;
 
-				if(bDoubleDigit) uDigit = g_vDoubleDigits[uDigit];
+				if (bDoubleDigit) uDigit = g_vDoubleDigits[uDigit];
 
 				uTotal += uDigit;
 				bDoubleDigit = !bDoubleDigit;
 			}
 
 			uint uResult = (uTotal % 10);
-			if(uResult != 0) uResult = 10 - uResult;
+			if (uResult != 0) uResult = 10 - uResult;
 
 			return uResult;
 		}

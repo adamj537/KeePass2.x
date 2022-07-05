@@ -47,7 +47,7 @@ namespace KeePass.Forms
 		{
 			m_lInfo = lInfo;
 
-			if(!bModal) this.ShowInTaskbar = true;
+			if (!bModal) this.ShowInTaskbar = true;
 		}
 
 		public UpdateCheckForm()
@@ -58,7 +58,7 @@ namespace KeePass.Forms
 
 		private void OnFormLoad(object sender, EventArgs e)
 		{
-			if(m_lInfo == null) throw new InvalidOperationException();
+			if (m_lInfo == null) throw new InvalidOperationException();
 
 			GlobalWindowManager.AddWindow(this, this);
 
@@ -90,9 +90,9 @@ namespace KeePass.Forms
 			ListViewGroup lvg = null;
 			const uint uMinComp = 2;
 
-			foreach(UpdateComponentInfo uc in m_lInfo)
+			foreach (UpdateComponentInfo uc in m_lInfo)
 			{
-				if(uc.Category != strCat)
+				if (uc.Category != strCat)
 				{
 					lvg = new ListViewGroup(uc.Category);
 					m_lvInfo.Groups.Add(lvg);
@@ -102,22 +102,22 @@ namespace KeePass.Forms
 				ListViewItem lvi = new ListViewItem(uc.Name);
 
 				string strStatus = KPRes.Unknown + ".";
-				if(uc.Status == UpdateComponentStatus.UpToDate)
+				if (uc.Status == UpdateComponentStatus.UpToDate)
 				{
 					strStatus = KPRes.UpToDate + ".";
 					lvi.ImageIndex = 1;
 				}
-				else if(uc.Status == UpdateComponentStatus.NewVerAvailable)
+				else if (uc.Status == UpdateComponentStatus.NewVerAvailable)
 				{
 					strStatus = KPRes.NewVersionAvailable + "!";
 					lvi.ImageIndex = 2;
 				}
-				else if(uc.Status == UpdateComponentStatus.PreRelease)
+				else if (uc.Status == UpdateComponentStatus.PreRelease)
 				{
 					strStatus = KPRes.PreReleaseVersion + ".";
 					lvi.ImageIndex = 3;
 				}
-				else if(uc.Status == UpdateComponentStatus.DownloadFailed)
+				else if (uc.Status == UpdateComponentStatus.DownloadFailed)
 				{
 					strStatus = KPRes.UpdateCheckFailedNoDl;
 					lvi.ImageIndex = 4;
@@ -127,13 +127,13 @@ namespace KeePass.Forms
 				lvi.SubItems.Add(strStatus);
 				lvi.SubItems.Add(StrUtil.VersionToString(uc.VerInstalled, uMinComp));
 
-				if((uc.Status == UpdateComponentStatus.UpToDate) ||
+				if ((uc.Status == UpdateComponentStatus.UpToDate) ||
 					(uc.Status == UpdateComponentStatus.NewVerAvailable) ||
 					(uc.Status == UpdateComponentStatus.PreRelease))
 					lvi.SubItems.Add(StrUtil.VersionToString(uc.VerAvailable, uMinComp));
 				else lvi.SubItems.Add("?");
 
-				if(lvg != null) lvi.Group = lvg;
+				if (lvg != null) lvi.Group = lvg;
 				m_lvInfo.Items.Add(lvi);
 			}
 
@@ -142,7 +142,7 @@ namespace KeePass.Forms
 
 		private void OnFormClosed(object sender, FormClosedEventArgs e)
 		{
-			if(m_ilIcons != null)
+			if (m_ilIcons != null)
 			{
 				m_lvInfo.SmallImageList = null; // Detach event handlers
 				m_ilIcons.Dispose();
@@ -189,14 +189,14 @@ namespace KeePass.Forms
 		private void OnInfoItemActivate(object sender, EventArgs e)
 		{
 			ListView.SelectedListViewItemCollection lvsic = m_lvInfo.SelectedItems;
-			if((lvsic == null) || (lvsic.Count != 1)) { Debug.Assert(false); return; }
+			if ((lvsic == null) || (lvsic.Count != 1)) { Debug.Assert(false); return; }
 			ListViewItem lvi = lvsic[0];
-			if((lvi == null) || (lvi.Group == null)) { Debug.Assert(false); return; }
+			if ((lvi == null) || (lvi.Group == null)) { Debug.Assert(false); return; }
 
 			string strGroup = (lvi.Group.Header ?? string.Empty);
-			if(strGroup == PwDefs.ShortProductName)
+			if (strGroup == PwDefs.ShortProductName)
 				OpenUrl(PwDefs.HomepageUrl);
-			else if(strGroup == KPRes.Plugins)
+			else if (strGroup == KPRes.Plugins)
 				OpenUrl(PwDefs.PluginsUrl);
 			else { Debug.Assert(false); }
 		}

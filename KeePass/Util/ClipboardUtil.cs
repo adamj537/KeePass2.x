@@ -58,7 +58,7 @@ namespace KeePass.Util
 		public static bool Copy(ProtectedString psToCopy, bool bIsEntryInfo,
 			PwEntry peEntryInfo, PwDatabase pwReferenceSource)
 		{
-			if(psToCopy == null) throw new ArgumentNullException("psToCopy");
+			if (psToCopy == null) throw new ArgumentNullException("psToCopy");
 			return Copy(psToCopy.ReadString(), true, bIsEntryInfo, peEntryInfo,
 				pwReferenceSource, IntPtr.Zero);
 		}
@@ -66,35 +66,35 @@ namespace KeePass.Util
 		public static bool Copy(string strToCopy, bool bSprCompile, bool bIsEntryInfo,
 			PwEntry peEntryInfo, PwDatabase pwReferenceSource, IntPtr hOwner)
 		{
-			if(strToCopy == null) throw new ArgumentNullException("strToCopy");
-			if(strToCopy.Length == 0) { Clear(); return true; }
+			if (strToCopy == null) throw new ArgumentNullException("strToCopy");
+			if (strToCopy.Length == 0) { Clear(); return true; }
 
-			if(bIsEntryInfo && !AppPolicy.Try(AppPolicyId.CopyToClipboard))
+			if (bIsEntryInfo && !AppPolicy.Try(AppPolicyId.CopyToClipboard))
 				return false;
 
 			string strData = strToCopy;
-			if(bSprCompile)
+			if (bSprCompile)
 				strData = SprEngine.Compile(strData, new SprContext(
 					peEntryInfo, pwReferenceSource, SprCompileFlags.All));
 
 			try
 			{
 				// if(SetStringUwp(strData)) { } else
-				if(!NativeLib.IsUnix()) // Windows
+				if (!NativeLib.IsUnix()) // Windows
 				{
-					if(!OpenW(hOwner, true))
+					if (!OpenW(hOwner, true))
 						throw new InvalidOperationException();
 
 					bool bFailed = false;
-					if(!AttachIgnoreFormatsW()) bFailed = true;
-					if(!SetDataW(null, strData, null)) bFailed = true;
+					if (!AttachIgnoreFormatsW()) bFailed = true;
+					if (!SetDataW(null, strData, null)) bFailed = true;
 					CloseW();
 
-					if(bFailed) return false;
+					if (bFailed) return false;
 				}
-				else if(NativeLib.GetPlatformID() == PlatformID.MacOSX)
+				else if (NativeLib.GetPlatformID() == PlatformID.MacOSX)
 					SetStringM(strData);
-				else if(NativeLib.IsUnix())
+				else if (NativeLib.IsUnix())
 					SetStringU(strData);
 				else
 				{
@@ -102,19 +102,19 @@ namespace KeePass.Util
 					Clipboard.SetText(strData);
 				}
 			}
-			catch(Exception) { Debug.Assert(false); return false; }
+			catch (Exception) { Debug.Assert(false); return false; }
 
 			g_pbDataHash = HashString(strData);
 
-			if(peEntryInfo != null) peEntryInfo.Touch(false);
+			if (peEntryInfo != null) peEntryInfo.Touch(false);
 
-			if(bIsEntryInfo)
+			if (bIsEntryInfo)
 				Program.TriggerSystem.RaiseEvent(EcasEventIDs.CopiedEntryInfo,
 					EcasProperty.Text, strData);
 
 			// SprEngine.Compile might have modified the database
 			MainForm mf = Program.MainForm;
-			if((mf != null) && bSprCompile)
+			if ((mf != null) && bSprCompile)
 			{
 				mf.RefreshEntriesList();
 				mf.UpdateUI(false, null, false, null, false, null, false);
@@ -139,8 +139,8 @@ namespace KeePass.Util
 		public static bool Copy(byte[] pbToCopy, string strFormat, bool bIsEntryInfo,
 			IntPtr hOwner)
 		{
-			if(pbToCopy == null) throw new ArgumentNullException("pbToCopy");
-			if(pbToCopy.Length == 0) { Clear(); return true; }
+			if (pbToCopy == null) throw new ArgumentNullException("pbToCopy");
+			if (pbToCopy.Length == 0) { Clear(); return true; }
 
 			string strMedia = StrUtil.GetCustomMediaType(strFormat);
 			string strData = StrUtil.DataToDataUri(pbToCopy, strMedia);
@@ -157,18 +157,18 @@ namespace KeePass.Util
 		public static bool CopyAndMinimize(string strToCopy, bool bIsEntryInfo,
 			Form formContext, PwEntry peContext, PwDatabase pdContext)
 		{
-			if(strToCopy == null) { Debug.Assert(false); return false; }
+			if (strToCopy == null) { Debug.Assert(false); return false; }
 
 			IntPtr hOwner = ((formContext != null) ? formContext.Handle : IntPtr.Zero);
 
-			if(Copy(strToCopy, true, bIsEntryInfo, peContext, pdContext, hOwner))
+			if (Copy(strToCopy, true, bIsEntryInfo, peContext, pdContext, hOwner))
 			{
-				if(formContext != null)
+				if (formContext != null)
 				{
-					if(Program.Config.MainWindow.DropToBackAfterClipboardCopy)
+					if (Program.Config.MainWindow.DropToBackAfterClipboardCopy)
 						NativeMethods.LoseFocus(formContext, true);
 
-					if(Program.Config.MainWindow.MinimizeAfterClipboardCopy &&
+					if (Program.Config.MainWindow.MinimizeAfterClipboardCopy &&
 						formContext.MinimizeBox && formContext.Enabled)
 						UIUtil.SetWindowState(formContext, FormWindowState.Minimized);
 				}
@@ -182,7 +182,7 @@ namespace KeePass.Util
 		public static bool CopyAndMinimize(ProtectedString psToCopy, bool bIsEntryInfo,
 			Form formContext, PwEntry peContext, PwDatabase pdContext)
 		{
-			if(psToCopy == null) { Debug.Assert(false); return false; }
+			if (psToCopy == null) { Debug.Assert(false); return false; }
 
 			return CopyAndMinimize(psToCopy.ReadString(), bIsEntryInfo,
 				formContext, peContext, pdContext);
@@ -199,47 +199,47 @@ namespace KeePass.Util
 		public static void Clear()
 		{
 			// Ensure that there's no infinite recursion
-			if(!g_csClearing.TryEnter()) { Debug.Assert(false); return; }
+			if (!g_csClearing.TryEnter()) { Debug.Assert(false); return; }
 
 			// In some situations (e.g. when running in a VM, when using
 			// a clipboard extension utility, ...) the clipboard cannot
 			// be cleared; for this case we first overwrite the clipboard
 			// with a non-sensitive text
 			try { Copy("--", false, false, null, null, IntPtr.Zero); }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			bool bNativeSuccess = false;
 			try
 			{
-				if(!NativeLib.IsUnix()) // Windows
+				if (!NativeLib.IsUnix()) // Windows
 				{
-					if(OpenW(IntPtr.Zero, true)) // Clears the clipboard
+					if (OpenW(IntPtr.Zero, true)) // Clears the clipboard
 					{
 						CloseW();
 						bNativeSuccess = true;
 					}
 				}
-				else if(NativeLib.GetPlatformID() == PlatformID.MacOSX)
+				else if (NativeLib.GetPlatformID() == PlatformID.MacOSX)
 				{
 					SetStringM(string.Empty);
 					bNativeSuccess = true;
 				}
-				else if(NativeLib.IsUnix())
+				else if (NativeLib.IsUnix())
 				{
 					SetStringU(string.Empty);
 					bNativeSuccess = true;
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			g_pbDataHash = null;
 			g_csClearing.Exit();
 
-			if(bNativeSuccess) return;
+			if (bNativeSuccess) return;
 
 			Debug.Assert(false);
 			try { Clipboard.Clear(); } // Fallback; empty data object
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		public static void ClearIfOwner()
@@ -258,10 +258,10 @@ namespace KeePass.Util
 			}
 			catch(Exception) { Debug.Assert(false); } */
 
-			if(g_pbDataHash == null) return;
+			if (g_pbDataHash == null) return;
 
 			byte[] pbCur = ComputeHash();
-			if((pbCur == null) || !MemUtil.ArraysEqual(pbCur, g_pbDataHash))
+			if ((pbCur == null) || !MemUtil.ArraysEqual(pbCur, g_pbDataHash))
 				return;
 
 			Clear();
@@ -271,12 +271,12 @@ namespace KeePass.Util
 		{
 			try
 			{
-				if(string.IsNullOrEmpty(str)) return null;
+				if (string.IsNullOrEmpty(str)) return null;
 
 				byte[] pb = StrUtil.Utf8.GetBytes(str);
 				return CryptoUtil.HashSha256(pb);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return null;
 		}
@@ -284,38 +284,38 @@ namespace KeePass.Util
 		public static byte[] ComputeHash()
 		{
 			try { return HashString(GetText()); }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return null;
 		}
 
 		public static bool ContainsText()
 		{
-			if(NativeLib.IsUnix()) return true;
+			if (NativeLib.IsUnix()) return true;
 			return Clipboard.ContainsText();
 		}
 
 		public static bool ContainsData(string strFormat)
 		{
-			if(string.IsNullOrEmpty(strFormat)) { Debug.Assert(false); return false; }
-			if(strFormat.Equals(DataFormats.UnicodeText, StrUtil.CaseIgnoreCmp) ||
+			if (string.IsNullOrEmpty(strFormat)) { Debug.Assert(false); return false; }
+			if (strFormat.Equals(DataFormats.UnicodeText, StrUtil.CaseIgnoreCmp) ||
 				strFormat.Equals(DataFormats.Text, StrUtil.CaseIgnoreCmp) ||
 				strFormat.Equals(DataFormats.OemText, StrUtil.CaseIgnoreCmp))
 				return ContainsText();
 
 			string strData = GetText();
-			if(string.IsNullOrEmpty(strData)) return false;
+			if (string.IsNullOrEmpty(strData)) return false;
 
 			return StrUtil.IsDataUri(strData, StrUtil.GetCustomMediaType(strFormat));
 		}
 
 		public static string GetText()
 		{
-			if(!NativeLib.IsUnix()) // Windows
+			if (!NativeLib.IsUnix()) // Windows
 				return Clipboard.GetText();
-			if(NativeLib.GetPlatformID() == PlatformID.MacOSX)
+			if (NativeLib.GetPlatformID() == PlatformID.MacOSX)
 				return GetStringM();
-			if(NativeLib.IsUnix())
+			if (NativeLib.IsUnix())
 				return GetStringU();
 
 			Debug.Assert(false);
@@ -327,14 +327,14 @@ namespace KeePass.Util
 			try
 			{
 				string str = GetText();
-				if(string.IsNullOrEmpty(str)) return null;
+				if (string.IsNullOrEmpty(str)) return null;
 
 				string strMedia = StrUtil.GetCustomMediaType(strFormat);
-				if(!StrUtil.IsDataUri(str, strMedia)) return null;
+				if (!StrUtil.IsDataUri(str, strMedia)) return null;
 
 				return StrUtil.DataUriToData(str);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return null;
 		}

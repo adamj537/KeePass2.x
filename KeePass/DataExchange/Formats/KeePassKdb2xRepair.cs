@@ -68,7 +68,7 @@ namespace KeePass.DataExchange.Formats
 			int r = VistaTaskDialog.ShowMessageBoxEx(strMsg, strTitle,
 				PwDefs.ShortProductName, VtdIcon.Warning, null,
 				KPRes.YesCmd, iYes, KPRes.NoCmd, iNo);
-			if(r < 0)
+			if (r < 0)
 				r = (MessageService.AskYesNo(strTitle + MessageService.NewParagraph +
 					strMsg, PwDefs.ShortProductName, false, MessageBoxIcon.Warning) ?
 					iYes : iNo);
@@ -85,7 +85,7 @@ namespace KeePass.DataExchange.Formats
 			kdbx.RepairMode = true;
 
 			try { kdbx.Load(sInput, KdbxFormat.Default, slLogger); }
-			catch(Exception) { }
+			catch (Exception) { }
 		}
 
 		/* private sealed class CappedByteStream : Stream

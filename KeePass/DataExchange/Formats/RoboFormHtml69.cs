@@ -55,7 +55,7 @@ namespace KeePass.DataExchange.Formats
 			strData = strData.Replace(@"<WBR>", string.Empty);
 			strData = strData.Replace(@"&shy;", string.Empty);
 
-			using(WebBrowser wb = new WebBrowser())
+			using (WebBrowser wb = new WebBrowser())
 			{
 				wb.Visible = false;
 				wb.ScriptErrorsSuppressed = true;
@@ -74,7 +74,7 @@ namespace KeePass.DataExchange.Formats
 			char[] vSeps = new char[] { '/', '\\' };
 
 			int iLastSep = strTitle.LastIndexOfAny(vSeps);
-			if(iLastSep >= 0)
+			if (iLastSep >= 0)
 			{
 				string strTree = strTitle.Substring(0, iLastSep);
 				pg = pd.RootGroup.FindCreateSubTree(strTree, vSeps, true);
@@ -88,27 +88,27 @@ namespace KeePass.DataExchange.Formats
 		private static string MapKey(string strKey)
 		{
 			string s = ImportUtil.MapNameToStandardField(strKey, true);
-			if(string.IsNullOrEmpty(s)) return strKey;
+			if (string.IsNullOrEmpty(s)) return strKey;
 
-			if((s == PwDefs.TitleField) || (s == PwDefs.UrlField))
+			if ((s == PwDefs.TitleField) || (s == PwDefs.UrlField))
 				return strKey;
 
-			return s;			
+			return s;
 		}
 
 		private static List<HtmlElement> GetElements(HtmlElement hRoot,
 			string strTagName, string strAttribName, string strAttribValue)
 		{
 			List<HtmlElement> l = new List<HtmlElement>();
-			if(hRoot == null) { Debug.Assert(false); return l; }
-			if(string.IsNullOrEmpty(strTagName)) { Debug.Assert(false); return l; }
+			if (hRoot == null) { Debug.Assert(false); return l; }
+			if (string.IsNullOrEmpty(strTagName)) { Debug.Assert(false); return l; }
 
-			foreach(HtmlElement hEl in hRoot.GetElementsByTagName(strTagName))
+			foreach (HtmlElement hEl in hRoot.GetElementsByTagName(strTagName))
 			{
-				if(!string.IsNullOrEmpty(strAttribName) && (strAttribValue != null))
+				if (!string.IsNullOrEmpty(strAttribName) && (strAttribValue != null))
 				{
 					string strValue = XmlUtil.SafeAttribute(hEl, strAttribName);
-					if(!strValue.Equals(strAttribValue, StrUtil.CaseIgnoreCmp))
+					if (!strValue.Equals(strAttribValue, StrUtil.CaseIgnoreCmp))
 						continue;
 				}
 
@@ -125,12 +125,12 @@ namespace KeePass.DataExchange.Formats
 				"caption").Count > 0);
 #endif
 
-			foreach(HtmlElement hTable in hBody.GetElementsByTagName("TABLE"))
+			foreach (HtmlElement hTable in hBody.GetElementsByTagName("TABLE"))
 			{
 				Debug.Assert(XmlUtil.SafeAttribute(hTable, "width") == "100%");
 				string strRules = XmlUtil.SafeAttribute(hTable, "rules");
 				string strFrame = XmlUtil.SafeAttribute(hTable, "frame");
-				if(strRules.Equals("cols", StrUtil.CaseIgnoreCmp) &&
+				if (strRules.Equals("cols", StrUtil.CaseIgnoreCmp) &&
 					strFrame.Equals("void", StrUtil.CaseIgnoreCmp))
 					continue;
 
@@ -138,14 +138,14 @@ namespace KeePass.DataExchange.Formats
 				PwGroup pg = null;
 				bool bNotesHeaderFound = false;
 
-				foreach(HtmlElement hTr in hTable.GetElementsByTagName("TR"))
+				foreach (HtmlElement hTr in hTable.GetElementsByTagName("TR"))
 				{
 					// 7.9.1.1+
 					List<HtmlElement> lCaption = GetElements(hTr, "SPAN",
 						"class", "caption");
-					if(lCaption.Count == 0)
+					if (lCaption.Count == 0)
 						lCaption = GetElements(hTr, "DIV", "class", "caption");
-					if(lCaption.Count > 0)
+					if (lCaption.Count > 0)
 					{
 						string strTitle = ParseTitle(XmlUtil.SafeInnerText(
 							lCaption[0]), pd, out pg);
@@ -154,28 +154,28 @@ namespace KeePass.DataExchange.Formats
 					}
 
 					// 7.9.1.1+
-					if(hTr.GetElementsByTagName("TABLE").Count > 0) continue;
+					if (hTr.GetElementsByTagName("TABLE").Count > 0) continue;
 
 					HtmlElementCollection lTd = hTr.GetElementsByTagName("TD");
-					if(lTd.Count == 1)
+					if (lTd.Count == 1)
 					{
 						HtmlElement e = lTd[0];
 						string strText = XmlUtil.SafeInnerText(e);
 						string strClass = XmlUtil.SafeAttribute(e, "class");
 
-						if(strClass.Equals("caption", StrUtil.CaseIgnoreCmp))
+						if (strClass.Equals("caption", StrUtil.CaseIgnoreCmp))
 						{
 							Debug.Assert(pg == null);
 							strText = ParseTitle(strText, pd, out pg);
 							ImportUtil.AppendToField(pe, PwDefs.TitleField, strText, pd);
 						}
-						else if(strClass.Equals("subcaption", StrUtil.CaseIgnoreCmp))
+						else if (strClass.Equals("subcaption", StrUtil.CaseIgnoreCmp))
 							ImportUtil.AppendToField(pe, PwDefs.UrlField,
 								ImportUtil.FixUrl(strText), pd);
-						else if(strClass.Equals("field", StrUtil.CaseIgnoreCmp))
+						else if (strClass.Equals("field", StrUtil.CaseIgnoreCmp))
 						{
 							// 7.9.2.5+
-							if(strText.EndsWith(":") && !bNotesHeaderFound)
+							if (strText.EndsWith(":") && !bNotesHeaderFound)
 								bNotesHeaderFound = true;
 							else
 								ImportUtil.AppendToField(pe, PwDefs.NotesField,
@@ -183,23 +183,23 @@ namespace KeePass.DataExchange.Formats
 						}
 						else { Debug.Assert(false); }
 					}
-					else if((lTd.Count == 2) || (lTd.Count == 3))
+					else if ((lTd.Count == 2) || (lTd.Count == 3))
 					{
 						string strKey = XmlUtil.SafeInnerText(lTd[0]);
 						string strValue = XmlUtil.SafeInnerText(lTd[lTd.Count - 1]);
-						if(lTd.Count == 3) { Debug.Assert(string.IsNullOrEmpty(lTd[1].InnerText)); }
+						if (lTd.Count == 3) { Debug.Assert(string.IsNullOrEmpty(lTd[1].InnerText)); }
 
-						if(strKey.EndsWith(":")) // 7.9.1.1+
+						if (strKey.EndsWith(":")) // 7.9.1.1+
 							strKey = strKey.Substring(0, strKey.Length - 1);
 
-						if(strKey.Length > 0)
+						if (strKey.Length > 0)
 							ImportUtil.AppendToField(pe, MapKey(strKey), strValue, pd);
 						else { Debug.Assert(false); }
 					}
 					else { Debug.Assert(false); }
 				}
 
-				if(pg != null) pg.AddEntry(pe, true);
+				if (pg != null) pg.AddEntry(pe, true);
 #if DEBUG
 				else { Debug.Assert(bHasSpanCaptions); }
 #endif

@@ -41,7 +41,7 @@ namespace KeePassLib.Cryptography.KeyDerivation
 
 		private static void EnsureInitialized()
 		{
-			if(g_l.Count != 0) return;
+			if (g_l.Count != 0) return;
 
 			g_l.Add(new AesKdf());
 			g_l.Add(new Argon2Kdf(Argon2Type.D));
@@ -56,13 +56,13 @@ namespace KeePassLib.Cryptography.KeyDerivation
 
 		public static KdfEngine Get(PwUuid pu)
 		{
-			if(pu == null) { Debug.Assert(false); return null; }
+			if (pu == null) { Debug.Assert(false); return null; }
 
 			EnsureInitialized();
 
-			foreach(KdfEngine kdf in g_l)
+			foreach (KdfEngine kdf in g_l)
 			{
-				if(pu.Equals(kdf.Uuid)) return kdf;
+				if (pu.Equals(kdf.Uuid)) return kdf;
 			}
 
 			return null;
@@ -70,13 +70,13 @@ namespace KeePassLib.Cryptography.KeyDerivation
 
 		public static KdfEngine Get(string strName)
 		{
-			if(string.IsNullOrEmpty(strName)) { Debug.Assert(false); return null; }
+			if (string.IsNullOrEmpty(strName)) { Debug.Assert(false); return null; }
 
 			EnsureInitialized();
 
-			foreach(KdfEngine kdf in g_l)
+			foreach (KdfEngine kdf in g_l)
 			{
-				if(strName.Equals(kdf.Name, StrUtil.CaseIgnoreCmp)) return kdf;
+				if (strName.Equals(kdf.Name, StrUtil.CaseIgnoreCmp)) return kdf;
 			}
 
 			return null;
@@ -84,12 +84,12 @@ namespace KeePassLib.Cryptography.KeyDerivation
 
 		public static void Add(KdfEngine kdf)
 		{
-			if(kdf == null) { Debug.Assert(false); return; }
+			if (kdf == null) { Debug.Assert(false); return; }
 
 			EnsureInitialized();
 
-			if(Get(kdf.Uuid) != null) { Debug.Assert(false); return; }
-			if(Get(kdf.Name) != null) { Debug.Assert(false); return; }
+			if (Get(kdf.Uuid) != null) { Debug.Assert(false); return; }
+			if (Get(kdf.Name) != null) { Debug.Assert(false); return; }
 
 			g_l.Add(kdf);
 		}

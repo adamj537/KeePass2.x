@@ -57,16 +57,16 @@ namespace KeePassLib
 		public void SearchEntries(SearchParameters sp, PwObjectList<PwEntry> lResults,
 			IStatusLogger slStatus)
 		{
-			if(sp == null) { Debug.Assert(false); return; }
-			if(lResults == null) { Debug.Assert(false); return; }
+			if (sp == null) { Debug.Assert(false); return; }
+			if (lResults == null) { Debug.Assert(false); return; }
 
 			Debug.Assert(lResults.UCount == 0);
 			lResults.Clear();
 
 			PwSearchMode sm = sp.SearchMode;
-			if((sm == PwSearchMode.Simple) || (sm == PwSearchMode.Regular))
+			if ((sm == PwSearchMode.Simple) || (sm == PwSearchMode.Regular))
 				SrsmSearch(sp, lResults, slStatus);
-			else if(sm == PwSearchMode.XPath)
+			else if (sm == PwSearchMode.XPath)
 				SrxpSearch(sp, lResults, slStatus);
 			else { Debug.Assert(false); }
 		}
@@ -78,18 +78,18 @@ namespace KeePassLib
 			DateTime dtNow = DateTime.UtcNow;
 
 			List<PwEntry> l = new List<PwEntry>();
-			foreach(PwEntry pe in lAll)
+			foreach (PwEntry pe in lAll)
 			{
-				if(sp.ExcludeExpired && pe.Expires && (pe.ExpiryTime <= dtNow))
+				if (sp.ExcludeExpired && pe.Expires && (pe.ExpiryTime <= dtNow))
 					continue;
-				if(sp.RespectEntrySearchingDisabled && !pe.GetSearchingEnabled())
+				if (sp.RespectEntrySearchingDisabled && !pe.GetSearchingEnabled())
 					continue;
 
 				l.Add(pe);
 			}
 
 			List<string> lTerms;
-			if(sp.SearchMode == PwSearchMode.Simple)
+			if (sp.SearchMode == PwSearchMode.Simple)
 				lTerms = StrUtil.SplitSearchTerms(sp.SearchString);
 			else
 			{
@@ -102,13 +102,13 @@ namespace KeePassLib
 
 			SearchParameters spSub = sp.Clone();
 
-			for(int iTerm = 0; iTerm < lTerms.Count; ++iTerm)
+			for (int iTerm = 0; iTerm < lTerms.Count; ++iTerm)
 			{
 				string strTerm = lTerms[iTerm]; // No trim
-				if(string.IsNullOrEmpty(strTerm)) continue;
+				if (string.IsNullOrEmpty(strTerm)) continue;
 
 				bool bNegate = false;
-				if((sp.SearchMode == PwSearchMode.Simple) &&
+				if ((sp.SearchMode == PwSearchMode.Simple) &&
 					(strTerm.Length >= 2) && (strTerm[0] == '-'))
 				{
 					strTerm = strTerm.Substring(1);
@@ -121,21 +121,21 @@ namespace KeePassLib
 				ulong uStEntriesMax = (ulong)lTerms.Count * (ulong)l.Count;
 
 				List<PwEntry> lOut;
-				if(!SrsmSearchSingle(spSub, l, out lOut, sl, uStEntriesDone,
+				if (!SrsmSearchSingle(spSub, l, out lOut, sl, uStEntriesDone,
 					uStEntriesMax))
 				{
 					l.Clear(); // Do not return non-matching entries
 					break;
 				}
 
-				if(bNegate)
+				if (bNegate)
 				{
 					List<PwEntry> lNew = new List<PwEntry>();
 					int iNeg = 0;
 
-					foreach(PwEntry pe in l)
+					foreach (PwEntry pe in l)
 					{
-						if((iNeg < lOut.Count) && object.ReferenceEquals(lOut[iNeg], pe))
+						if ((iNeg < lOut.Count) && object.ReferenceEquals(lOut[iNeg], pe))
 							++iNeg;
 						else
 						{
@@ -160,17 +160,17 @@ namespace KeePassLib
 			lOut = new List<PwEntry>();
 
 			string strTerm = sp.SearchString;
-			if(string.IsNullOrEmpty(strTerm))
+			if (string.IsNullOrEmpty(strTerm))
 			{
 				lOut.AddRange(lIn);
 				return true;
 			}
 
 			Regex rx = null;
-			if(sp.SearchMode == PwSearchMode.Regular)
+			if (sp.SearchMode == PwSearchMode.Regular)
 			{
 				RegexOptions ro = RegexOptions.None;
-				if((sp.ComparisonMode == StringComparison.CurrentCultureIgnoreCase) ||
+				if ((sp.ComparisonMode == StringComparison.CurrentCultureIgnoreCase) ||
 #if !KeePassUAP
 					(sp.ComparisonMode == StringComparison.InvariantCultureIgnoreCase) ||
 #endif
@@ -182,16 +182,16 @@ namespace KeePassLib
 				rx = new Regex(strTerm, ro);
 			}
 
-			foreach(PwEntry pe in lIn)
+			foreach (PwEntry pe in lIn)
 			{
-				if(sl != null)
+				if (sl != null)
 				{
 					uint uPct = (uint)((uStEntriesDone * 100UL) / uStEntriesMax);
-					if(!sl.SetProgress(uPct)) return false;
+					if (!sl.SetProgress(uPct)) return false;
 					++uStEntriesDone;
 				}
 
-				if(SrsmIsMatch(sp, rx, pe)) lOut.Add(pe);
+				if (SrsmIsMatch(sp, rx, pe)) lOut.Add(pe);
 			}
 
 			return true;
@@ -199,70 +199,70 @@ namespace KeePassLib
 
 		private static bool SrsmIsMatch(SearchParameters sp, Regex rx, PwEntry pe)
 		{
-			if(sp == null) { Debug.Assert(false); return false; }
+			if (sp == null) { Debug.Assert(false); return false; }
 
-			foreach(KeyValuePair<string, ProtectedString> kvp in pe.Strings)
+			foreach (KeyValuePair<string, ProtectedString> kvp in pe.Strings)
 			{
 				string strKey = kvp.Key;
 				ProtectedString ps = kvp.Value;
 
-				switch(strKey)
+				switch (strKey)
 				{
 					case PwDefs.TitleField:
-						if(sp.SearchInTitles && SrsmIsMatch(sp, rx, pe, ps.ReadString()))
+						if (sp.SearchInTitles && SrsmIsMatch(sp, rx, pe, ps.ReadString()))
 							return true;
 						break;
 					case PwDefs.UserNameField:
-						if(sp.SearchInUserNames && SrsmIsMatch(sp, rx, pe, ps.ReadString()))
+						if (sp.SearchInUserNames && SrsmIsMatch(sp, rx, pe, ps.ReadString()))
 							return true;
 						break;
 					case PwDefs.PasswordField:
-						if(sp.SearchInPasswords && SrsmIsMatch(sp, rx, pe, ps.ReadString()))
+						if (sp.SearchInPasswords && SrsmIsMatch(sp, rx, pe, ps.ReadString()))
 							return true;
 						break;
 					case PwDefs.UrlField:
-						if(sp.SearchInUrls && SrsmIsMatch(sp, rx, pe, ps.ReadString()))
+						if (sp.SearchInUrls && SrsmIsMatch(sp, rx, pe, ps.ReadString()))
 							return true;
 						break;
 					case PwDefs.NotesField:
-						if(sp.SearchInNotes && SrsmIsMatch(sp, rx, pe, ps.ReadString()))
+						if (sp.SearchInNotes && SrsmIsMatch(sp, rx, pe, ps.ReadString()))
 							return true;
 						break;
 					default:
 						Debug.Assert(!PwDefs.IsStandardField(strKey));
-						if(sp.SearchInOther && SrsmIsMatch(sp, rx, pe, ps.ReadString()))
+						if (sp.SearchInOther && SrsmIsMatch(sp, rx, pe, ps.ReadString()))
 							return true;
 						break;
 				}
 
-				if(sp.SearchInStringNames && SrsmIsMatch(sp, rx, pe, strKey))
+				if (sp.SearchInStringNames && SrsmIsMatch(sp, rx, pe, strKey))
 					return true;
 			}
 
-			if(sp.SearchInTags)
+			if (sp.SearchInTags)
 			{
-				foreach(string strTag in pe.GetTagsInherited())
+				foreach (string strTag in pe.GetTagsInherited())
 				{
-					if(SrsmIsMatch(sp, rx, pe, strTag)) return true;
+					if (SrsmIsMatch(sp, rx, pe, strTag)) return true;
 				}
 			}
 
-			if(sp.SearchInUuids && SrsmIsMatch(sp, rx, pe, pe.Uuid.ToHexString()))
+			if (sp.SearchInUuids && SrsmIsMatch(sp, rx, pe, pe.Uuid.ToHexString()))
 				return true;
 
-			if(sp.SearchInGroupPaths && (pe.ParentGroup != null) &&
+			if (sp.SearchInGroupPaths && (pe.ParentGroup != null) &&
 				SrsmIsMatch(sp, rx, pe, pe.ParentGroup.GetFullPath("\n", true)))
 				return true;
 
-			if(sp.SearchInGroupNames && (pe.ParentGroup != null) &&
+			if (sp.SearchInGroupNames && (pe.ParentGroup != null) &&
 				SrsmIsMatch(sp, rx, pe, pe.ParentGroup.Name))
 				return true;
 
-			if(sp.SearchInHistory)
+			if (sp.SearchInHistory)
 			{
-				foreach(PwEntry peHist in pe.History)
+				foreach (PwEntry peHist in pe.History)
 				{
-					if(SrsmIsMatch(sp, rx, peHist)) return true;
+					if (SrsmIsMatch(sp, rx, peHist)) return true;
 				}
 			}
 
@@ -272,12 +272,12 @@ namespace KeePassLib
 		private static bool SrsmIsMatch(SearchParameters sp, Regex rx, PwEntry pe,
 			string strData)
 		{
-			if(strData == null) { Debug.Assert(false); strData = string.Empty; }
+			if (strData == null) { Debug.Assert(false); strData = string.Empty; }
 
 			StrPwEntryDelegate f = sp.DataTransformationFn;
-			if(f != null) strData = f(strData, pe);
+			if (f != null) strData = f(strData, pe);
 
-			if(rx != null) return rx.IsMatch(strData);
+			if (rx != null) return rx.IsMatch(strData);
 			return (strData.IndexOf(sp.SearchString, sp.ComparisonMode) >= 0);
 		}
 
@@ -292,33 +292,33 @@ namespace KeePassLib
 			XmlDocument xd;
 			XPathNodeIterator xpIt = XmlUtilEx.FindNodes(pd, sp.SearchString, sl, out xd);
 
-			if((sl != null) && !sl.SetProgress(98)) return;
+			if ((sl != null) && !sl.SetProgress(98)) return;
 
-			while(xpIt.MoveNext())
+			while (xpIt.MoveNext())
 			{
-				if((sl != null) && !sl.ContinueWork()) return;
+				if ((sl != null) && !sl.ContinueWork()) return;
 
 				XPathNavigator xpNav = xpIt.Current.Clone();
 
-				while(true)
+				while (true)
 				{
 					XPathNodeType nt = xpNav.NodeType;
-					if(nt == XPathNodeType.Root) break;
+					if (nt == XPathNodeType.Root) break;
 
-					if((nt == XPathNodeType.Element) &&
+					if ((nt == XPathNodeType.Element) &&
 						(xpNav.Name == KdbxFile.ElemEntry))
 					{
 						SrxpAddResult(dResults, xpNav);
 						break;
 					}
 
-					if(!xpNav.MoveToParent()) { Debug.Assert(false); break; }
+					if (!xpNav.MoveToParent()) { Debug.Assert(false); break; }
 				}
 			}
 
-			EntryHandler eh = delegate(PwEntry pe)
+			EntryHandler eh = delegate (PwEntry pe)
 			{
-				if(dResults.ContainsKey(pe.Uuid)) lResults.Add(pe);
+				if (dResults.ContainsKey(pe.Uuid)) lResults.Add(pe);
 				return true;
 			};
 			TraverseTree(TraversalMethod.PreOrder, null, eh);
@@ -327,10 +327,10 @@ namespace KeePassLib
 
 		private static void SrxpClearString(bool bIf, PwEntry pe, string strKey)
 		{
-			if(bIf)
+			if (bIf)
 			{
 				ProtectedString ps = pe.Strings.Get(strKey);
-				if(ps != null)
+				if (ps != null)
 					pe.Strings.Set(strKey, (ps.IsProtected ?
 						ProtectedString.EmptyEx : ProtectedString.Empty));
 			}
@@ -343,18 +343,18 @@ namespace KeePassLib
 
 			DateTime dtNow = DateTime.UtcNow;
 
-			GroupHandler gh = delegate(PwGroup pg)
+			GroupHandler gh = delegate (PwGroup pg)
 			{
-				if(!sp.SearchInGroupNames) pg.Name = string.Empty;
-				if(!sp.SearchInTags) pg.Tags.Clear();
+				if (!sp.SearchInGroupNames) pg.Name = string.Empty;
+				if (!sp.SearchInTags) pg.Tags.Clear();
 
 				PwObjectList<PwEntry> l = pg.Entries;
-				for(int i = (int)l.UCount - 1; i >= 0; --i)
+				for (int i = (int)l.UCount - 1; i >= 0; --i)
 				{
 					PwEntry pe = l.GetAt((uint)i);
 
-					if(sp.ExcludeExpired && pe.Expires && (pe.ExpiryTime <= dtNow)) { }
-					else if(sp.RespectEntrySearchingDisabled && !pe.GetSearchingEnabled()) { }
+					if (sp.ExcludeExpired && pe.Expires && (pe.ExpiryTime <= dtNow)) { }
+					else if (sp.RespectEntrySearchingDisabled && !pe.GetSearchingEnabled()) { }
 					else continue;
 
 					l.RemoveAt((uint)i);
@@ -363,7 +363,7 @@ namespace KeePassLib
 				return true;
 			};
 
-			EntryHandler eh = delegate(PwEntry pe)
+			EntryHandler eh = delegate (PwEntry pe)
 			{
 				SrxpClearString(!sp.SearchInTitles, pe, PwDefs.TitleField);
 				SrxpClearString(!sp.SearchInUserNames, pe, PwDefs.UserNameField);
@@ -371,15 +371,15 @@ namespace KeePassLib
 				SrxpClearString(!sp.SearchInUrls, pe, PwDefs.UrlField);
 				SrxpClearString(!sp.SearchInNotes, pe, PwDefs.NotesField);
 
-				if(!sp.SearchInOther)
+				if (!sp.SearchInOther)
 				{
 					List<string> lKeys = pe.Strings.GetKeys();
-					foreach(string strKey in lKeys)
+					foreach (string strKey in lKeys)
 						SrxpClearString(!PwDefs.IsStandardField(strKey), pe, strKey);
 				}
 
-				if(!sp.SearchInTags) pe.Tags.Clear();
-				if(!sp.SearchInHistory) pe.History.Clear();
+				if (!sp.SearchInTags) pe.Tags.Clear();
+				if (!sp.SearchInHistory) pe.History.Clear();
 
 				return true;
 			};
@@ -396,19 +396,19 @@ namespace KeePassLib
 			try
 			{
 				Debug.Assert(xpNavEntry.NamespaceURI == string.Empty);
-				if(!xpNavEntry.MoveToChild(KdbxFile.ElemUuid, string.Empty))
+				if (!xpNavEntry.MoveToChild(KdbxFile.ElemUuid, string.Empty))
 				{
 					Debug.Assert(false);
 					return;
 				}
 
 				string strUuid = xpNavEntry.Value;
-				if(string.IsNullOrEmpty(strUuid)) { Debug.Assert(false); return; }
+				if (string.IsNullOrEmpty(strUuid)) { Debug.Assert(false); return; }
 
 				byte[] pb = Convert.FromBase64String(strUuid);
 				dResults[new PwUuid(pb)] = true;
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 	}
 }

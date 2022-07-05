@@ -77,8 +77,8 @@ namespace KeePass.Forms
 
 		private void OnFormLoad(object sender, EventArgs e)
 		{
-			if(m_ilIcons == null) { Debug.Assert(false); throw new InvalidOperationException(); }
-			if(m_pd == null) { Debug.Assert(false); throw new InvalidOperationException(); }
+			if (m_ilIcons == null) { Debug.Assert(false); throw new InvalidOperationException(); }
+			if (m_pd == null) { Debug.Assert(false); throw new InvalidOperationException(); }
 
 			GlobalWindowManager.AddWindow(this);
 
@@ -92,7 +92,7 @@ namespace KeePass.Forms
 			UIUtil.SetExplorerTheme(m_lvIcons, false);
 			UIUtil.SetExplorerTheme(m_lvCustomIcons, false);
 
-			if(m_ilIcons.Images.Count < (long)m_uNumberOfStandardIcons)
+			if (m_ilIcons.Images.Count < (long)m_uNumberOfStandardIcons)
 			{
 				Debug.Assert(false);
 				m_uNumberOfStandardIcons = (uint)m_ilIcons.Images.Count;
@@ -100,11 +100,11 @@ namespace KeePass.Forms
 
 			m_lvIcons.BeginUpdate();
 			m_lvIcons.SmallImageList = m_ilIcons;
-			for(uint i = 0; i < m_uNumberOfStandardIcons; ++i)
+			for (uint i = 0; i < m_uNumberOfStandardIcons; ++i)
 				m_lvIcons.Items.Add(i.ToString(), (int)i);
 			m_lvIcons.EndUpdate();
 
-			if(m_uDefaultIcon < m_uNumberOfStandardIcons)
+			if (m_uDefaultIcon < m_uNumberOfStandardIcons)
 			{
 				m_lvIcons.EnsureVisible((int)m_uDefaultIcon);
 				UIUtil.SetFocusedItem(m_lvIcons, m_lvIcons.Items[
@@ -114,7 +114,7 @@ namespace KeePass.Forms
 
 			RecreateCustomIconList(m_puDefaultCustomIcon);
 
-			if(!m_puDefaultCustomIcon.Equals(PwUuid.Zero))
+			if (!m_puDefaultCustomIcon.Equals(PwUuid.Zero))
 			{
 				m_radioCustom.Checked = true;
 				UIUtil.SetFocus(m_lvCustomIcons, this);
@@ -134,9 +134,9 @@ namespace KeePass.Forms
 			int cSelStd = m_lvIcons.SelectedIndices.Count;
 			int cSelCustom = m_lvCustomIcons.SelectedIndices.Count;
 
-			if(m_radioStandard.Checked && (cSelStd == 1))
+			if (m_radioStandard.Checked && (cSelStd == 1))
 				m_btnOK.Enabled = true;
-			else if(m_radioCustom.Checked && (cSelCustom == 1))
+			else if (m_radioCustom.Checked && (cSelCustom == 1))
 				m_btnOK.Enabled = true;
 			else m_btnOK.Enabled = false;
 
@@ -154,14 +154,14 @@ namespace KeePass.Forms
 
 		private void SelectCustomIcon(PwUuid pu)
 		{
-			if(pu.Equals(PwUuid.Zero)) return;
+			if (pu.Equals(PwUuid.Zero)) return;
 
-			foreach(ListViewItem lvi in m_lvCustomIcons.Items)
+			foreach (ListViewItem lvi in m_lvCustomIcons.Items)
 			{
 				PwCustomIcon ci = (lvi.Tag as PwCustomIcon);
-				if(ci == null) { Debug.Assert(false); continue; }
+				if (ci == null) { Debug.Assert(false); continue; }
 
-				if(ci.Uuid.Equals(pu))
+				if (ci.Uuid.Equals(pu))
 				{
 					m_lvCustomIcons.BeginUpdate(); // Avoid animation from left
 					lvi.EnsureVisible();
@@ -181,13 +181,13 @@ namespace KeePass.Forms
 			List<ListViewItem> lUnnamed = new List<ListViewItem>();
 			List<ListViewItem> lNamed = new List<ListViewItem>();
 
-			for(int i = 0; i < m_pd.CustomIcons.Count; ++i)
+			for (int i = 0; i < m_pd.CustomIcons.Count; ++i)
 			{
 				PwCustomIcon ci = m_pd.CustomIcons[i];
 				bool bMulti = (ci.Name == MultipleValuesEx.CueString);
 
 				ListViewItem lvi = new ListViewItem();
-				if(ci.Name.Length == 0)
+				if (ci.Name.Length == 0)
 				{
 					lvi.Text = lUnnamed.Count.ToString();
 					lUnnamed.Add(lvi);
@@ -195,7 +195,7 @@ namespace KeePass.Forms
 				else
 				{
 					lvi.Text = ci.Name;
-					if(bMulti) lUnnamed.Insert(0, lvi);
+					if (bMulti) lUnnamed.Insert(0, lvi);
 					else lNamed.Add(lvi);
 				}
 
@@ -203,20 +203,20 @@ namespace KeePass.Forms
 				lvi.Tag = ci;
 
 				Image img = ci.GetImage();
-				if(bMulti)
+				if (bMulti)
 					lvi.ToolTipText = ci.Name;
-				else if(img != null)
+				else if (img != null)
 				{
-					if(sb.Length != 0) sb.Remove(0, sb.Length);
+					if (sb.Length != 0) sb.Remove(0, sb.Length);
 
-					if(ci.Name.Length != 0) sb.AppendLine(ci.Name);
+					if (ci.Name.Length != 0) sb.AppendLine(ci.Name);
 					sb.Append(img.Width);
 					sb.Append(" \u00D7 ");
 					sb.Append(img.Height);
 					sb.AppendLine(" px");
 					sb.Append(StrUtil.FormatDataSizeKB((ulong)ci.ImageDataPng.Length));
 #if DEBUG
-					if(ci.LastModificationTime.HasValue)
+					if (ci.LastModificationTime.HasValue)
 					{
 						sb.AppendLine();
 						sb.Append("((( "); // Debug indicator
@@ -229,7 +229,7 @@ namespace KeePass.Forms
 				}
 			}
 
-			Comparison<ListViewItem> f = delegate(ListViewItem x, ListViewItem y)
+			Comparison<ListViewItem> f = delegate (ListViewItem x, ListViewItem y)
 			{
 				string strX = (((x != null) ? x.Text : null) ?? string.Empty);
 				string strY = (((y != null) ? y.Text : null) ?? string.Empty);
@@ -257,7 +257,7 @@ namespace KeePass.Forms
 
 		private void OnBtnOK(object sender, EventArgs e)
 		{
-			if(!SaveChosenIcon())
+			if (!SaveChosenIcon())
 			{
 				this.DialogResult = DialogResult.None;
 				MessageService.ShowWarning(KPRes.PickIcon);
@@ -270,15 +270,15 @@ namespace KeePass.Forms
 			int cS = lvsicS.Count;
 			m_uChosenIcon = ((cS > 0) ? (uint)lvsicS[0] : m_uDefaultIcon);
 
-			if(m_radioStandard.Checked && (cS != 1)) return false;
+			if (m_radioStandard.Checked && (cS != 1)) return false;
 
-			if(m_radioCustom.Checked)
+			if (m_radioCustom.Checked)
 			{
 				ListView.SelectedListViewItemCollection lvsicC = m_lvCustomIcons.SelectedItems;
-				if(lvsicC.Count != 1) return false;
+				if (lvsicC.Count != 1) return false;
 
 				PwCustomIcon ci = (lvsicC[0].Tag as PwCustomIcon);
-				if(ci == null) { Debug.Assert(false); return false; }
+				if (ci == null) { Debug.Assert(false); return false; }
 
 				m_puChosenCustomIcon = ci.Uuid;
 			}
@@ -334,7 +334,7 @@ namespace KeePass.Forms
 
 			OpenFileDialogEx ofd = UIUtil.CreateOpenFileDialog(KPRes.ImportFileTitle,
 				sbFilter.ToString(), 1, null, true, AppDefs.FileDialogContext.Import);
-			if(ofd.ShowDialog() != DialogResult.OK) return;
+			if (ofd.ShowDialog() != DialogResult.OK) return;
 
 			// Predicate<PwCustomIcon> fRequiresKdbx4p1 = delegate(PwCustomIcon ci)
 			// {
@@ -343,7 +343,7 @@ namespace KeePass.Forms
 			// bool bUseFileName = m_pd.CustomIcons.Exists(fRequiresKdbx4p1);
 
 			PwUuid puSelect = PwUuid.Zero;
-			foreach(string strFile in ofd.FileNames)
+			foreach (string strFile in ofd.FileNames)
 			{
 				MemoryStream msPng = new MemoryStream();
 				string strError = null;
@@ -352,18 +352,18 @@ namespace KeePass.Forms
 				{
 					byte[] pb = File.ReadAllBytes(strFile);
 
-					using(Image img = GfxUtil.LoadImage(pb))
+					using (Image img = GfxUtil.LoadImage(pb))
 					{
-						if(img == null) throw new FormatException();
+						if (img == null) throw new FormatException();
 
 						const int wMax = PwCustomIcon.MaxWidth;
 						const int hMax = PwCustomIcon.MaxHeight;
 
-						if((img.Width <= wMax) && (img.Height <= hMax))
+						if ((img.Width <= wMax) && (img.Height <= hMax))
 							img.Save(msPng, ImageFormat.Png);
 						else
 						{
-							using(Image imgSc = GfxUtil.ScaleImage(img, wMax, hMax))
+							using (Image imgSc = GfxUtil.ScaleImage(img, wMax, hMax))
 							{
 								imgSc.Save(msPng, ImageFormat.Png);
 							}
@@ -384,23 +384,23 @@ namespace KeePass.Forms
 					m_pd.UINeedsIconUpdate = true;
 					m_pd.Modified = true;
 
-					if(puSelect.Equals(PwUuid.Zero)) puSelect = pu;
+					if (puSelect.Equals(PwUuid.Zero)) puSelect = pu;
 				}
-				catch(ArgumentException)
+				catch (ArgumentException)
 				{
 					strError = KPRes.ImageFormatFeatureUnsupported;
 				}
-				catch(System.Runtime.InteropServices.ExternalException)
+				catch (System.Runtime.InteropServices.ExternalException)
 				{
 					strError = KPRes.ImageFormatFeatureUnsupported;
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
 					strError = ex.Message;
 				}
 				finally { msPng.Close(); }
 
-				if(!string.IsNullOrEmpty(strError))
+				if (!string.IsNullOrEmpty(strError))
 					MessageService.ShowWarning(strFile, strError);
 			}
 
@@ -412,7 +412,7 @@ namespace KeePass.Forms
 		private static void AddFileType(StringBuilder sbBuffer, string strEnding,
 			string strName)
 		{
-			if(sbBuffer.Length > 0) sbBuffer.Append('|');
+			if (sbBuffer.Length > 0) sbBuffer.Append('|');
 			sbBuffer.Append(strName);
 			sbBuffer.Append('|');
 			sbBuffer.Append(strEnding);
@@ -421,13 +421,13 @@ namespace KeePass.Forms
 		private void OnBtnCustomRemove(object sender, EventArgs e)
 		{
 			ListView.SelectedListViewItemCollection lvsic = m_lvCustomIcons.SelectedItems;
-			if(lvsic.Count == 0) { Debug.Assert(false); return; }
+			if (lvsic.Count == 0) { Debug.Assert(false); return; }
 
 			List<PwUuid> lDel = new List<PwUuid>();
-			foreach(ListViewItem lvi in lvsic)
+			foreach (ListViewItem lvi in lvsic)
 			{
 				PwCustomIcon ci = (lvi.Tag as PwCustomIcon);
-				if(ci != null) lDel.Add(ci.Uuid);
+				if (ci != null) lDel.Add(ci.Uuid);
 				else { Debug.Assert(false); }
 			}
 
@@ -442,29 +442,29 @@ namespace KeePass.Forms
 		private void OnIconsItemActivate(object sender, EventArgs e)
 		{
 			OnIconsItemSelectionChanged(sender, null);
-			if(!SaveChosenIcon()) return;
+			if (!SaveChosenIcon()) return;
 			this.DialogResult = DialogResult.OK;
 		}
 
 		private void OnCustomIconsItemActivate(object sender, EventArgs e)
 		{
 			OnCustomIconsItemSelectionChanged(sender, null);
-			if(!SaveChosenIcon()) return;
+			if (!SaveChosenIcon()) return;
 			this.DialogResult = DialogResult.OK;
 		}
 
 		private void OnBtnCustomSave(object sender, EventArgs e)
 		{
 			ListView.SelectedListViewItemCollection lvsic = m_lvCustomIcons.SelectedItems;
-			if(lvsic.Count == 0) return;
+			if (lvsic.Count == 0) return;
 
-			if(lvsic.Count == 1)
+			if (lvsic.Count == 1)
 			{
 				PwCustomIcon ci = (lvsic[0].Tag as PwCustomIcon);
-				if(ci == null) { Debug.Assert(false); return; }
+				if (ci == null) { Debug.Assert(false); return; }
 
 				string strName = KPRes.Export;
-				if(ci.Name.Length != 0) strName = ci.Name;
+				if (ci.Name.Length != 0) strName = ci.Name;
 				strName = UrlUtil.FilterFileName(strName);
 
 				StringBuilder sbFilter = new StringBuilder();
@@ -475,39 +475,39 @@ namespace KeePass.Forms
 				SaveFileDialogEx sfd = UIUtil.CreateSaveFileDialog(KPRes.ExportFileTitle,
 					strName + ".png", sbFilter.ToString(), 1, null,
 					AppDefs.FileDialogContext.Export);
-				if(sfd.ShowDialog() == DialogResult.OK)
+				if (sfd.ShowDialog() == DialogResult.OK)
 					SaveImageFile(ci, sfd.FileName);
 			}
 			else // lvsic.Count >= 2
 			{
 				FolderBrowserDialog fbd = UIUtil.CreateFolderBrowserDialog(KPRes.ExportToPrompt);
-				if(fbd.ShowDialog() != DialogResult.OK) return;
+				if (fbd.ShowDialog() != DialogResult.OK) return;
 
 				string strDir = UrlUtil.EnsureTerminatingSeparator(
 					fbd.SelectedPath, false);
 				Dictionary<string, int> dStart = new Dictionary<string, int>();
 
-				foreach(ListViewItem lvi in lvsic)
+				foreach (ListViewItem lvi in lvsic)
 				{
 					try
 					{
 						PwCustomIcon ci = (lvi.Tag as PwCustomIcon);
-						if(ci == null) { Debug.Assert(false); continue; }
+						if (ci == null) { Debug.Assert(false); continue; }
 
 						string strName = KPRes.Export;
-						if(ci.Name.Length != 0) strName = ci.Name;
+						if (ci.Name.Length != 0) strName = ci.Name;
 						strName = UrlUtil.FilterFileName(strName);
 
 						int iStart;
 						dStart.TryGetValue(strName, out iStart);
 
-						for(int i = iStart; i < int.MaxValue; ++i)
+						for (int i = iStart; i < int.MaxValue; ++i)
 						{
 							string strFile = strDir + strName + ((i == 0) ?
 								string.Empty : (" (" + i.ToString() + ")")) +
 								".png";
 
-							if(!File.Exists(strFile))
+							if (!File.Exists(strFile))
 							{
 								SaveImageFile(ci, strFile);
 								dStart[strName] = i + 1;
@@ -515,19 +515,19 @@ namespace KeePass.Forms
 							}
 						}
 					}
-					catch(Exception ex) { MessageService.ShowWarning(ex); }
+					catch (Exception ex) { MessageService.ShowWarning(ex); }
 				}
 			}
 		}
 
 		private static void SaveImageFile(PwCustomIcon ci, string strFile)
 		{
-			if((ci == null) || string.IsNullOrEmpty(strFile)) { Debug.Assert(false); return; }
+			if ((ci == null) || string.IsNullOrEmpty(strFile)) { Debug.Assert(false); return; }
 
 			try
 			{
 				Image img = ci.GetImage();
-				if(img == null) { Debug.Assert(false); return; }
+				if (img == null) { Debug.Assert(false); return; }
 
 				// string strExt = UrlUtil.GetExtension(strFile);
 				ImageFormat fmt = ImageFormat.Png;
@@ -535,15 +535,15 @@ namespace KeePass.Forms
 
 				img.Save(strFile, fmt);
 			}
-			catch(Exception ex) { MessageService.ShowWarning(strFile, ex); }
+			catch (Exception ex) { MessageService.ShowWarning(strFile, ex); }
 		}
 
 		private void OnCustomIconsBeforeLabelEdit(object sender, LabelEditEventArgs e)
 		{
 			PwCustomIcon ci = (m_lvCustomIcons.Items[e.Item].Tag as PwCustomIcon);
-			if(ci == null) { Debug.Assert(false); e.CancelEdit = true; return; }
+			if (ci == null) { Debug.Assert(false); e.CancelEdit = true; return; }
 
-			if(ci.Name == MultipleValuesEx.CueString)
+			if (ci.Name == MultipleValuesEx.CueString)
 				e.CancelEdit = true;
 		}
 
@@ -553,14 +553,14 @@ namespace KeePass.Forms
 			int iItem = e.Item;
 			e.CancelEdit = true;
 
-			if(strNew == null) return; // Edit aborted (Esc)
-			if(strNew == MultipleValuesEx.CueString) return;
-			if(Regex.IsMatch(strNew, "^\\d+$")) strNew = string.Empty;
+			if (strNew == null) return; // Edit aborted (Esc)
+			if (strNew == MultipleValuesEx.CueString) return;
+			if (Regex.IsMatch(strNew, "^\\d+$")) strNew = string.Empty;
 
 			PwCustomIcon ci = (m_lvCustomIcons.Items[iItem].Tag as PwCustomIcon);
-			if(ci == null) { Debug.Assert(false); return; }
+			if (ci == null) { Debug.Assert(false); return; }
 
-			if(ci.Name != strNew)
+			if (ci.Name != strNew)
 			{
 				ci.Name = strNew;
 				ci.LastModificationTime = DateTime.UtcNow;
@@ -575,31 +575,31 @@ namespace KeePass.Forms
 
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
-			if(((keyData & Keys.KeyCode) == Keys.Return) && m_tbFind.Focused)
+			if (((keyData & Keys.KeyCode) == Keys.Return) && m_tbFind.Focused)
 			{
 				msg.Result = IntPtr.Zero;
 
 				string strFind = m_tbFind.Text;
-				if(string.IsNullOrEmpty(strFind)) return true;
+				if (string.IsNullOrEmpty(strFind)) return true;
 
 				bool bFwd = ((keyData & Keys.Shift) == Keys.None);
 				int n = m_lvCustomIcons.Items.Count;
 				int iStart = (bFwd ? 0 : (n - 1));
 
 				ListView.SelectedIndexCollection lvsic = m_lvCustomIcons.SelectedIndices;
-				if(lvsic.Count != 0)
+				if (lvsic.Count != 0)
 				{
 					iStart = lvsic[0] + (bFwd ? 1 : -1);
 					UIUtil.DeselectAllItems(m_lvCustomIcons);
 				}
 
-				for(int i = 0; i < n; ++i)
+				for (int i = 0; i < n; ++i)
 				{
 					int j = (bFwd ? (iStart + i) : (iStart - i + n)) % n;
 					ListViewItem lvi = m_lvCustomIcons.Items[j];
 
 					string strText = lvi.Text;
-					if(strText.IndexOf(strFind, StrUtil.CaseIgnoreCmp) >= 0)
+					if (strText.IndexOf(strFind, StrUtil.CaseIgnoreCmp) >= 0)
 					{
 						lvi.EnsureVisible();
 						UIUtil.SetFocusedItem(m_lvCustomIcons, lvi, true);

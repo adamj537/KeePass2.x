@@ -96,7 +96,7 @@ namespace KeePass.Forms
 			bool bSecDesk = (Program.Config.Security.MasterKeyOnSecureDesktop &&
 				ProtectedDialog.IsSupported);
 
-			GFunc<KeyCreationForm> fConstruct = delegate()
+			GFunc<KeyCreationForm> fConstruct = delegate ()
 			{
 				KeyCreationForm f = new KeyCreationForm();
 				f.InitEx(ioInfo, bCreatingNew);
@@ -104,7 +104,7 @@ namespace KeePass.Forms
 				return f;
 			};
 
-			GFunc<KeyCreationForm, KeyCreationFormResult> fResultBuilder = delegate(
+			GFunc<KeyCreationForm, KeyCreationFormResult> fResultBuilder = delegate (
 				KeyCreationForm f)
 			{
 				KeyCreationFormResult rEx = new KeyCreationFormResult();
@@ -117,7 +117,7 @@ namespace KeePass.Forms
 				KeyCreationFormResult>(bSecDesk, fConstruct, fResultBuilder, out r);
 
 			GAction fIac = ((r != null) ? r.InvokeAfterClose : null);
-			if(fIac != null) fIac();
+			if (fIac != null) fIac();
 
 			return dr;
 		}
@@ -169,7 +169,7 @@ namespace KeePass.Forms
 			m_cmbKeyFile.Items.Add(KPRes.NoKeyFileSpecifiedMeta);
 			m_cmbKeyFile.SelectedIndex = 0;
 
-			foreach(KeyProvider kp in Program.KeyProviderPool)
+			foreach (KeyProvider kp in Program.KeyProviderPool)
 				m_cmbKeyFile.Items.Add(kp.Name);
 
 			m_imgKeyFileWarning = UIUtil.IconToBitmap(SystemIcons.Warning,
@@ -181,10 +181,10 @@ namespace KeePass.Forms
 			UIUtil.ApplyKeyUIFlags(Program.Config.UI.KeyCreationFlags,
 				m_cbPassword, m_cbKeyFile, m_cbUserAccount, m_cbHidePassword);
 
-			if(!m_cbKeyFile.Enabled && !m_cbKeyFile.Checked)
+			if (!m_cbKeyFile.Enabled && !m_cbKeyFile.Checked)
 				UIUtil.SetEnabledFast(false, m_lblKeyFileInfo, m_lblKeyFileWarning);
 
-			if(WinUtil.IsWindows9x || NativeLib.IsUnix() ||
+			if (WinUtil.IsWindows9x || NativeLib.IsUnix() ||
 				(!m_cbUserAccount.Enabled && !m_cbUserAccount.Checked))
 			{
 				UIUtil.SetChecked(m_cbUserAccount, false);
@@ -203,9 +203,9 @@ namespace KeePass.Forms
 		{
 			// Focusing doesn't always work in OnFormLoad;
 			// https://sourceforge.net/p/keepass/feature-requests/1735/
-			if(m_tbPassword.CanFocus) UIUtil.ResetFocus(m_tbPassword, this, true);
-			else if(m_cmbKeyFile.CanFocus) UIUtil.SetFocus(m_cmbKeyFile, this, true);
-			else if(m_btnOK.CanFocus) UIUtil.SetFocus(m_btnOK, this, true);
+			if (m_tbPassword.CanFocus) UIUtil.ResetFocus(m_tbPassword, this, true);
+			else if (m_cmbKeyFile.CanFocus) UIUtil.SetFocus(m_cmbKeyFile, this, true);
+			else if (m_btnOK.CanFocus) UIUtil.SetFocus(m_btnOK, this, true);
 			else { Debug.Assert(false); }
 		}
 
@@ -213,14 +213,14 @@ namespace KeePass.Forms
 		{
 			Debug.Assert(m_uUIAutoBlocked == 0);
 
-			if(m_imgKeyFileWarning != null)
+			if (m_imgKeyFileWarning != null)
 			{
 				m_picKeyFileWarning.Image = null;
 				m_imgKeyFileWarning.Dispose();
 				m_imgKeyFileWarning = null;
 			}
 
-			if(m_imgAccWarning != null)
+			if (m_imgAccWarning != null)
 			{
 				m_picAccWarning.Image = null;
 				m_imgAccWarning.Dispose();
@@ -234,7 +234,7 @@ namespace KeePass.Forms
 
 		private void UpdateUIState()
 		{
-			if(m_uUIAutoBlocked != 0) return;
+			if (m_uUIAutoBlocked != 0) return;
 			++m_uUIAutoBlocked;
 
 			bool bPassword = m_cbPassword.Checked;
@@ -258,7 +258,7 @@ namespace KeePass.Forms
 				m_cbUserAccount, m_lblWindowsAccDesc, m_picAccWarning,
 				m_lblWindowsAccDesc2, m_lnkUserAccount
 			};
-			foreach(Control c in vExpert) c.Visible = bExpert;
+			foreach (Control c in vExpert) c.Visible = bExpert;
 
 			m_cmbKeyFile.Enabled = bKeyFile;
 			UIUtil.SetToolTipByText(m_ttRect, m_cmbKeyFile);
@@ -273,7 +273,7 @@ namespace KeePass.Forms
 		{
 			m_pKey = KeyUtil.KeyFromUI(m_cbPassword, m_icgPassword, m_tbPassword,
 				m_cbKeyFile, m_cmbKeyFile, m_cbUserAccount, m_ioInfo, m_bSecureDesktop);
-			if(m_pKey == null) this.DialogResult = DialogResult.None;
+			if (m_pKey == null) this.DialogResult = DialogResult.None;
 		}
 
 		private void OnBtnCancel(object sender, EventArgs e)
@@ -283,10 +283,10 @@ namespace KeePass.Forms
 
 		private void OnPasswordCheckedChanged(object sender, EventArgs e)
 		{
-			if(m_uUIAutoBlocked != 0) return;
+			if (m_uUIAutoBlocked != 0) return;
 
 			UpdateUIState(); // Enables the text box (req. for focus), if checked
-			if(m_cbPassword.Checked) UIUtil.SetFocus(m_tbPassword, this);
+			if (m_cbPassword.Checked) UIUtil.SetFocus(m_tbPassword, this);
 		}
 
 		private void OnExpertCheckedChanged(object sender, EventArgs e)
@@ -314,16 +314,16 @@ namespace KeePass.Forms
 			IOConnectionInfo ioc = m_ioInfo;
 			bool bSecDesk = m_bSecureDesktop;
 
-			GAction f = delegate()
+			GAction f = delegate ()
 			{
 				KeyFileCreationForm dlg = new KeyFileCreationForm();
 				dlg.InitEx(ioc);
 
 				DialogResult dr = dlg.ShowDialog();
-				if((dr == DialogResult.OK) && !bSecDesk)
+				if ((dr == DialogResult.OK) && !bSecDesk)
 				{
 					string strFile = dlg.ResultFile;
-					if(!string.IsNullOrEmpty(strFile))
+					if (!string.IsNullOrEmpty(strFile))
 					{
 						m_cmbKeyFile.Items.Add(strFile);
 						m_cmbKeyFile.SelectedIndex = m_cmbKeyFile.Items.Count - 1;
@@ -344,21 +344,21 @@ namespace KeePass.Forms
 		{
 			string strFile = FileDialogsEx.ShowKeyFileDialog(false,
 				KPRes.KeyFileUseExisting, null, false, m_bSecureDesktop);
-			if(string.IsNullOrEmpty(strFile)) return;
+			if (string.IsNullOrEmpty(strFile)) return;
 
 			try
 			{
 				IOConnectionInfo ioc = IOConnectionInfo.FromPath(strFile);
-				if(!IOConnection.FileExists(ioc, true))
+				if (!IOConnection.FileExists(ioc, true))
 					throw new FileNotFoundException();
 
 				// Check the file size?
 			}
-			catch(Exception ex) { MessageService.ShowWarning(strFile, ex); return; }
+			catch (Exception ex) { MessageService.ShowWarning(strFile, ex); return; }
 
-			if(!KfxFile.CanLoad(strFile))
+			if (!KfxFile.CanLoad(strFile))
 			{
-				if(!MessageService.AskYesNo(strFile + MessageService.NewParagraph +
+				if (!MessageService.AskYesNo(strFile + MessageService.NewParagraph +
 					KPRes.KeyFileNoXml + MessageService.NewParagraph +
 					KPRes.KeyFileUseAnywayQ, null, false))
 					return;
@@ -372,7 +372,7 @@ namespace KeePass.Forms
 
 		private void ShowHelpEx(string strTopic, string strSection)
 		{
-			GAction f = delegate() { AppHelp.ShowHelp(strTopic, strSection); };
+			GAction f = delegate () { AppHelp.ShowHelp(strTopic, strSection); };
 
 			ProtectedDialog.ContinueOnNormalDesktop(f, this, ref m_fInvokeAfterClose,
 				m_bSecureDesktop);

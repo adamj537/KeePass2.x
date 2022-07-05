@@ -38,7 +38,7 @@ namespace KeePass.UI
 	{
 		public QualityProgressBar() : base()
 		{
-			if(Program.DesignMode) return;
+			if (Program.DesignMode) return;
 
 			this.DoubleBuffered = true;
 		}
@@ -93,29 +93,29 @@ namespace KeePass.UI
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			try { PaintPriv(e); }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private void PaintPriv(PaintEventArgs e)
 		{
 			Graphics g = e.Graphics;
-			if(g == null) { base.OnPaint(e); return; }
+			if (g == null) { base.OnPaint(e); return; }
 
 			int nNormPos = m_nPosition - m_nMinimum;
 			int nNormMax = m_nMaximum - m_nMinimum;
-			if(nNormMax <= 0) { Debug.Assert(false); nNormMax = 100; }
-			if(nNormPos < 0) { Debug.Assert(false); nNormPos = 0; }
-			if(nNormPos > nNormMax) { Debug.Assert(false); nNormPos = nNormMax; }
+			if (nNormMax <= 0) { Debug.Assert(false); nNormMax = 100; }
+			if (nNormPos < 0) { Debug.Assert(false); nNormPos = 0; }
+			if (nNormPos > nNormMax) { Debug.Assert(false); nNormPos = nNormMax; }
 
 			Rectangle rectClient = this.ClientRectangle;
 			Rectangle rectDraw;
 			VisualStyleElement vse = VisualStyleElement.ProgressBar.Bar.Normal;
-			if(VisualStyleRenderer.IsSupported &&
+			if (VisualStyleRenderer.IsSupported &&
 				VisualStyleRenderer.IsElementDefined(vse))
 			{
 				VisualStyleRenderer vsr = new VisualStyleRenderer(vse);
 
-				if(vsr.IsBackgroundPartiallyTransparent())
+				if (vsr.IsBackgroundPartiallyTransparent())
 					vsr.DrawParentBackground(g, rectClient, this);
 
 				vsr.DrawBackground(g, rectClient);
@@ -145,7 +145,7 @@ namespace KeePass.UI
 			Color clrStart = AppDefs.ColorQualityLow;
 			Color clrEnd = AppDefs.ColorQualityHigh;
 			Color clrMid = AppDefs.ColorQualityMid;
-			if(!this.Enabled)
+			if (!this.Enabled)
 			{
 				clrStart = UIUtil.ColorToGrayscale(SystemColors.ControlDark);
 				clrEnd = UIUtil.ColorToGrayscale(SystemColors.ControlLight);
@@ -153,7 +153,7 @@ namespace KeePass.UI
 			}
 
 			bool bRtl = (this.RightToLeft == RightToLeft.Yes);
-			if(bRtl)
+			if (bRtl)
 			{
 				Color clrTemp = clrStart;
 				clrStart = clrEnd;
@@ -163,10 +163,10 @@ namespace KeePass.UI
 			// Workaround for Windows <= XP
 			Rectangle rectGrad = new Rectangle(rectDraw.X, rectDraw.Y,
 				rectDraw.Width, rectDraw.Height);
-			if(!WinUtil.IsAtLeastWindowsVista && !NativeLib.IsUnix())
+			if (!WinUtil.IsAtLeastWindowsVista && !NativeLib.IsUnix())
 				rectGrad.Inflate(1, 0);
 
-			using(LinearGradientBrush brush = new LinearGradientBrush(rectGrad,
+			using (LinearGradientBrush brush = new LinearGradientBrush(rectGrad,
 				clrStart, clrEnd, LinearGradientMode.Horizontal))
 			{
 				ColorBlend cb = new ColorBlend();
@@ -183,7 +183,7 @@ namespace KeePass.UI
 
 		private void PaintText(Graphics g, Rectangle rectDraw, bool bRtl)
 		{
-			if(string.IsNullOrEmpty(m_strText)) return;
+			if (string.IsNullOrEmpty(m_strText)) return;
 
 			Font f = (FontUtil.DefaultFont ?? this.Font);
 			Color clrFG = UIUtil.ColorToGrayscale(this.ForeColor);
@@ -194,23 +194,23 @@ namespace KeePass.UI
 			int dw = rectDraw.Width;
 			int dh = rectDraw.Height;
 
-			if(!NativeLib.IsUnix() || !UIUtil.IsDarkColor(clrFG))
+			if (!NativeLib.IsUnix() || !UIUtil.IsDarkColor(clrFG))
 			{
 				Rectangle rectGlow = rectDraw;
 				rectGlow.Width = TextRenderer.MeasureText(g, m_strText, f).Width;
 				rectGlow.X = ((dw - rectGlow.Width) / 2) + dx;
 
 				// Instead of an ellipse, Mono draws a circle
-				if(NativeLib.IsUnix())
+				if (NativeLib.IsUnix())
 					rectGlow.Inflate(rectGlow.Width * 2, rectGlow.Height * 2);
 				else
 					rectGlow.Inflate(rectGlow.Width / 2, rectGlow.Height / 2);
 
-				using(GraphicsPath gpGlow = new GraphicsPath())
+				using (GraphicsPath gpGlow = new GraphicsPath())
 				{
 					gpGlow.AddEllipse(rectGlow);
 
-					using(PathGradientBrush pgbGlow = new PathGradientBrush(gpGlow))
+					using (PathGradientBrush pgbGlow = new PathGradientBrush(gpGlow))
 					{
 						pgbGlow.CenterPoint = new PointF((dw / 2.0f) + dx,
 							(dh / 2.0f) + dy);
@@ -232,13 +232,13 @@ namespace KeePass.UI
 			//	TextFormatFlags.VerticalCenter);
 			// TextRenderer.DrawText(g, m_strText, f, rectDraw, clrFG, tff);
 
-			using(SolidBrush br = new SolidBrush(clrFG))
+			using (SolidBrush br = new SolidBrush(clrFG))
 			{
 				StringFormatFlags sff = (StringFormatFlags.FitBlackBox |
 					StringFormatFlags.NoClip);
-				if(bRtl) sff |= StringFormatFlags.DirectionRightToLeft;
+				if (bRtl) sff |= StringFormatFlags.DirectionRightToLeft;
 
-				using(StringFormat sf = new StringFormat(sff))
+				using (StringFormat sf = new StringFormat(sff))
 				{
 					sf.Alignment = StringAlignment.Center;
 					sf.LineAlignment = StringAlignment.Center;

@@ -99,23 +99,23 @@ namespace KeePass.DataExchange.Formats
 			dMaps["keyword"] = strMapTags;
 
 			string[] vNames = csv.ReadLine();
-			if((vNames == null) || (vNames.Length == 0)) { Debug.Assert(false); return; }
+			if ((vNames == null) || (vNames.Length == 0)) { Debug.Assert(false); return; }
 
-			for(int i = 0; i < vNames.Length; ++i)
+			for (int i = 0; i < vNames.Length; ++i)
 			{
 				string str = vNames[i];
 
-				if(string.IsNullOrEmpty(str)) { Debug.Assert(false); str = strMapIgnore; }
+				if (string.IsNullOrEmpty(str)) { Debug.Assert(false); str = strMapIgnore; }
 				else
 				{
 					string strMapped = null;
 					dMaps.TryGetValue(str, out strMapped);
 
-					if(string.IsNullOrEmpty(strMapped))
+					if (string.IsNullOrEmpty(strMapped))
 					{
 						Debug.Assert(false);
 						strMapped = ImportUtil.MapNameToStandardField(str, true);
-						if(string.IsNullOrEmpty(strMapped)) strMapped = PwDefs.NotesField;
+						if (string.IsNullOrEmpty(strMapped)) strMapped = PwDefs.NotesField;
 					}
 
 					str = strMapped;
@@ -126,19 +126,19 @@ namespace KeePass.DataExchange.Formats
 
 			Dictionary<string, PwGroup> dGroups = new Dictionary<string, PwGroup>();
 
-			while(true)
+			while (true)
 			{
 				string[] v = csv.ReadLine();
-				if(v == null) break;
-				if(v.Length == 0) continue;
+				if (v == null) break;
+				if (v.Length == 0) continue;
 
 				PwEntry pe = new PwEntry(true, true);
 				PwGroup pg = pwStorage.RootGroup;
 
-				for(int i = 0; i < v.Length; ++i)
+				for (int i = 0; i < v.Length; ++i)
 				{
 					string strValue = v[i];
-					if(string.IsNullOrEmpty(strValue)) continue;
+					if (string.IsNullOrEmpty(strValue)) continue;
 
 					strValue = strValue.Replace(@"<COMMA>", ",");
 					strValue = strValue.Replace(@"<-N/L-/>", "\n");
@@ -147,11 +147,11 @@ namespace KeePass.DataExchange.Formats
 
 					string strName = ((i < vNames.Length) ? vNames[i] : PwDefs.NotesField);
 
-					if(strName == strMapIgnore) { }
-					else if(strName == strMapGroup)
+					if (strName == strMapIgnore) { }
+					else if (strName == strMapGroup)
 					{
 						dGroups.TryGetValue(strValue, out pg);
-						if(pg == null)
+						if (pg == null)
 						{
 							pg = new PwGroup(true, true);
 							pg.Name = strValue;
@@ -160,16 +160,16 @@ namespace KeePass.DataExchange.Formats
 							dGroups[strValue] = pg;
 						}
 					}
-					else if(strName == strMapTags)
+					else if (strName == strMapTags)
 						StrUtil.AddTags(pe.Tags, StrUtil.StringToTags(strValue));
-					else if(strName == strMapLastMod)
+					else if (strName == strMapLastMod)
 					{
 						double dUnix;
-						if(double.TryParse(strValue, out dUnix))
+						if (double.TryParse(strValue, out dUnix))
 							pe.LastModificationTime = TimeUtil.ConvertUnixTime(dUnix);
 						else { Debug.Assert(false); }
 					}
-					else if(strName == strMapEMail)
+					else if (strName == strMapEMail)
 						ImportUtil.AppendToField(pe, PwDefs.UrlField,
 							"mailto:" + strValue, pwStorage);
 					else ImportUtil.AppendToField(pe, strName, strValue, pwStorage);

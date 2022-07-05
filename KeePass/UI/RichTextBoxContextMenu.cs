@@ -81,14 +81,14 @@ namespace KeePass.UI
 
 		public void Detach()
 		{
-			if(m_rtb != null)
+			if (m_rtb != null)
 			{
 				m_rtb.ContextMenuStrip = null;
 
 				m_ctx.Opening -= this.OnMenuOpening;
 				m_ctx = null;
 
-				for(int i = 0; i < (int)RtbCtxCommands.Count; ++i)
+				for (int i = 0; i < (int)RtbCtxCommands.Count; ++i)
 					m_vMenuItems[i] = null;
 
 				m_rtb = null;
@@ -125,7 +125,7 @@ namespace KeePass.UI
 				Properties.Resources.B16x16_EditShred, this.OnCopyAllCommand);
 			m_vMenuItems[++iPos] = ctx.Items.Add(KPRes.SelectAll,
 				Properties.Resources.B16x16_Edit, this.OnSelectAllCommand);
-			
+
 			Debug.Assert(iPos == ((int)RtbCtxCommands.Count - 1));
 			return ctx;
 		}
@@ -135,7 +135,7 @@ namespace KeePass.UI
 			bool bHasText = (m_rtb.TextLength > 0);
 			bool bHasSel = (m_rtb.SelectionLength > 0);
 
-			if(m_rtb.ReadOnly)
+			if (m_rtb.ReadOnly)
 			{
 				m_vMenuItems[(int)RtbCtxCommands.Undo].Enabled = false;
 				m_vMenuItems[(int)RtbCtxCommands.Cut].Enabled = false;
@@ -169,28 +169,28 @@ namespace KeePass.UI
 				int p = m_rtb.GetCharIndexFromPosition(m_rtb.PointToClient(
 					Cursor.Position));
 				m_rtb.Select(p, 1);
-				if(UIUtil.RtfIsFirstCharLink(m_rtb))
+				if (UIUtil.RtfIsFirstCharLink(m_rtb))
 				{
 					int l = p;
-					while((l - 1) >= 0)
+					while ((l - 1) >= 0)
 					{
 						m_rtb.Select(l - 1, 1);
-						if(!UIUtil.RtfIsFirstCharLink(m_rtb)) break;
+						if (!UIUtil.RtfIsFirstCharLink(m_rtb)) break;
 						--l;
 					}
 
 					int r = p, n = m_rtb.TextLength;
-					while((r + 1) < n)
+					while ((r + 1) < n)
 					{
 						m_rtb.Select(r + 1, 1);
-						if(!UIUtil.RtfIsFirstCharLink(m_rtb)) break;
+						if (!UIUtil.RtfIsFirstCharLink(m_rtb)) break;
 						++r;
 					}
 
 					strLink = m_rtb.Text.Substring(l, r - l + 1);
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			m_rtb.Select(iSelStart, iSelLength); // Restore selection
 			return strLink;
@@ -214,7 +214,7 @@ namespace KeePass.UI
 		private void OnPasteCommand(object sender, EventArgs e)
 		{
 			CustomRichTextBoxEx crtb = (m_rtb as CustomRichTextBoxEx);
-			if(crtb != null) crtb.PasteAcceptable();
+			if (crtb != null) crtb.PasteAcceptable();
 			else m_rtb.Paste();
 		}
 

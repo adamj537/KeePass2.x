@@ -64,7 +64,7 @@ namespace KeePass.Plugins
 		{
 			return m_vPlugins.GetEnumerator();
 		}
-		
+
 		public IEnumerator<PluginInfo> GetEnumerator()
 		{
 			return m_vPlugins.GetEnumerator();
@@ -83,7 +83,7 @@ namespace KeePass.Plugins
 			LoadAllPlugins(strAppDir, SearchOption.TopDirectoryOnly, vExclNames);
 			g_strUserDir = strAppDir; // Preliminary, see below
 
-			if(WinUtil.IsAppX)
+			if (WinUtil.IsAppX)
 			{
 				string str = UrlUtil.EnsureTerminatingSeparator(
 					AppConfigSerializer.AppDataDirectory, false) + AppDefs.PluginsDir;
@@ -91,7 +91,7 @@ namespace KeePass.Plugins
 
 				g_strUserDir = str;
 			}
-			else if(!NativeLib.IsUnix())
+			else if (!NativeLib.IsUnix())
 			{
 				string str = UrlUtil.EnsureTerminatingSeparator(strAppDir,
 					false) + AppDefs.PluginsDir;
@@ -104,11 +104,11 @@ namespace KeePass.Plugins
 				try
 				{
 					DirectoryInfo diPlgRoot = new DirectoryInfo(strAppDir);
-					foreach(DirectoryInfo diSub in diPlgRoot.GetDirectories())
+					foreach (DirectoryInfo diSub in diPlgRoot.GetDirectories())
 					{
-						if(diSub == null) { Debug.Assert(false); continue; }
+						if (diSub == null) { Debug.Assert(false); continue; }
 
-						if(string.Equals(diSub.Name, AppDefs.PluginsDir,
+						if (string.Equals(diSub.Name, AppDefs.PluginsDir,
 							StrUtil.CaseIgnoreCmp))
 						{
 							LoadAllPlugins(diSub.FullName, SearchOption.AllDirectories,
@@ -118,7 +118,7 @@ namespace KeePass.Plugins
 						}
 					}
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 		}
 
@@ -128,7 +128,7 @@ namespace KeePass.Plugins
 
 			try
 			{
-				if(!Directory.Exists(strDir)) return; // No assert
+				if (!Directory.Exists(strDir)) return; // No assert
 
 				List<string> lDlls = UrlUtil.GetFilePaths(strDir, "*.dll", so);
 				FilterList(lDlls, vExclNames);
@@ -145,26 +145,26 @@ namespace KeePass.Plugins
 				LoadPlugins(lDlls, null, null, true);
 				LoadPlugins(lExes, null, null, true);
 
-				if(lPlgxs.Count != 0)
+				if (lPlgxs.Count != 0)
 				{
 					OnDemandStatusDialog dlgStatus = new OnDemandStatusDialog(true, null);
 					dlgStatus.StartLogging(PwDefs.ShortProductName, false);
 
 					try
 					{
-						foreach(string strFile in lPlgxs)
+						foreach (string strFile in lPlgxs)
 							PlgxPlugin.Load(strFile, dlgStatus);
 					}
 					finally { dlgStatus.EndLogging(); }
 				}
 			}
-			catch(Exception) { Debug.Assert(false); } // Path access violation
+			catch (Exception) { Debug.Assert(false); } // Path access violation
 		}
 
 		public void LoadPlugin(string strFilePath, string strTypeName,
 			string strDisplayFilePath, bool bSkipCacheFile)
 		{
-			if(strFilePath == null) throw new ArgumentNullException("strFilePath");
+			if (strFilePath == null) throw new ArgumentNullException("strFilePath");
 
 			List<string> l = new List<string>();
 			l.Add(strFilePath);
@@ -178,9 +178,9 @@ namespace KeePass.Plugins
 			string strCacheRoot = UrlUtil.EnsureTerminatingSeparator(
 				PlgxCache.GetCacheRoot(), false);
 
-			foreach(string strFile in lFiles)
+			foreach (string strFile in lFiles)
 			{
-				if(bSkipCacheFiles && strFile.StartsWith(strCacheRoot,
+				if (bSkipCacheFiles && strFile.StartsWith(strCacheRoot,
 					StrUtil.CaseIgnoreCmp))
 					continue;
 
@@ -189,13 +189,13 @@ namespace KeePass.Plugins
 				{
 					fvi = FileVersionInfo.GetVersionInfo(strFile);
 
-					if((fvi == null) || (fvi.ProductName == null) ||
+					if ((fvi == null) || (fvi.ProductName == null) ||
 						(fvi.ProductName != AppDefs.PluginProductName))
 					{
 						continue;
 					}
 				}
-				catch(Exception) { continue; }
+				catch (Exception) { continue; }
 
 				Exception exShowStd = null;
 				try
@@ -209,27 +209,27 @@ namespace KeePass.Plugins
 					CheckCompatibility(strHash, pi.Interface);
 					// CheckCompatibilityRefl(strFile);
 
-					if(!pi.Interface.Initialize(m_host))
+					if (!pi.Interface.Initialize(m_host))
 						continue; // Fail without error
 
 					m_vPlugins.Add(pi);
 				}
-				catch(BadImageFormatException exBif)
+				catch (BadImageFormatException exBif)
 				{
-					if(Is1xPlugin(strFile))
+					if (Is1xPlugin(strFile))
 						MessageService.ShowWarning(KPRes.PluginIncompatible +
 							MessageService.NewLine + strFile + MessageService.NewParagraph +
 							KPRes.Plugin1x + MessageService.NewParagraph + KPRes.Plugin1xHint);
 					else exShowStd = exBif;
 				}
-				catch(Exception exLoad)
+				catch (Exception exLoad)
 				{
-					if(Program.CommandLineArgs[AppDefs.CommandLineOptions.Debug] != null)
+					if (Program.CommandLineArgs[AppDefs.CommandLineOptions.Debug] != null)
 						MessageService.ShowWarningExcp(strFile, exLoad);
 					else exShowStd = exLoad;
 				}
 
-				if(exShowStd != null)
+				if (exShowStd != null)
 					ShowLoadError(strFile, exShowStd, null);
 			}
 		}
@@ -237,14 +237,14 @@ namespace KeePass.Plugins
 		internal static void ShowLoadError(string strPath, Exception ex,
 			IStatusLogger slStatus)
 		{
-			if(string.IsNullOrEmpty(strPath)) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strPath)) { Debug.Assert(false); return; }
 
-			if(slStatus != null)
+			if (slStatus != null)
 				slStatus.SetText(KPRes.PluginLoadFailed, LogStatusType.Info);
 
 			string strMsg = KPRes.PluginIncompatible + MessageService.NewLine +
 				strPath + MessageService.NewParagraph + KPRes.PluginUpdateHint;
-			if(NativeLib.IsUnix())
+			if (NativeLib.IsUnix())
 				strMsg += MessageService.NewParagraph + KPRes.PluginMonoComplete;
 
 			bool bShowExcp = (Program.CommandLineArgs[
@@ -258,22 +258,22 @@ namespace KeePass.Plugins
 			vtd.WindowTitle = PwDefs.ShortProductName;
 			vtd.SetIcon(VtdIcon.Warning);
 
-			if(!vtd.ShowDialog())
+			if (!vtd.ShowDialog())
 			{
-				if(!bShowExcp) MessageService.ShowWarning(strMsg);
+				if (!bShowExcp) MessageService.ShowWarning(strMsg);
 				else MessageService.ShowWarningExcp(strPath, ex);
 			}
 		}
 
 		public void UnloadAllPlugins()
 		{
-			foreach(PluginInfo plugin in m_vPlugins)
+			foreach (PluginInfo plugin in m_vPlugins)
 			{
 				Debug.Assert(plugin.Interface != null);
-				if(plugin.Interface != null)
+				if (plugin.Interface != null)
 				{
 					try { plugin.Interface.Terminate(); }
-					catch(Exception) { Debug.Assert(false); }
+					catch (Exception) { Debug.Assert(false); }
 				}
 			}
 
@@ -284,10 +284,10 @@ namespace KeePass.Plugins
 			string strTypeName)
 		{
 			Debug.Assert(strFilePath != null);
-			if(strFilePath == null) throw new ArgumentNullException("strFilePath");
+			if (strFilePath == null) throw new ArgumentNullException("strFilePath");
 
 			string strType;
-			if(string.IsNullOrEmpty(strTypeName))
+			if (string.IsNullOrEmpty(strTypeName))
 			{
 				strType = UrlUtil.GetFileName(strFilePath);
 				strType = UrlUtil.StripExtension(strType) + "." +
@@ -298,7 +298,7 @@ namespace KeePass.Plugins
 			ObjectHandle oh = Activator.CreateInstanceFrom(strFilePath, strType);
 
 			Plugin plugin = (oh.Unwrap() as Plugin);
-			if(plugin == null) throw new FileLoadException();
+			if (plugin == null) throw new FileLoadException();
 			return plugin;
 		}
 
@@ -313,19 +313,19 @@ namespace KeePass.Plugins
 
 				return (strData.IndexOf(strSig) >= 0);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return false;
 		}
 
 		private static void FilterList(List<string> l, string[] vExclNames)
 		{
-			if((l == null) || (vExclNames == null)) { Debug.Assert(false); return; }
+			if ((l == null) || (vExclNames == null)) { Debug.Assert(false); return; }
 
-			for(int i = l.Count - 1; i >= 0; --i)
+			for (int i = l.Count - 1; i >= 0; --i)
 			{
 				string strName = UrlUtil.GetFileName(l[i]);
-				if(string.IsNullOrEmpty(strName))
+				if (string.IsNullOrEmpty(strName))
 				{
 					Debug.Assert(false);
 					l.RemoveAt(i);
@@ -333,17 +333,17 @@ namespace KeePass.Plugins
 				}
 
 				// Ignore satellite assemblies
-				if(strName.EndsWith(".resources.dll", StrUtil.CaseIgnoreCmp))
+				if (strName.EndsWith(".resources.dll", StrUtil.CaseIgnoreCmp))
 				{
 					l.RemoveAt(i);
 					continue;
 				}
 
-				foreach(string strExcl in vExclNames)
+				foreach (string strExcl in vExclNames)
 				{
-					if(string.IsNullOrEmpty(strExcl)) { Debug.Assert(false); continue; }
+					if (string.IsNullOrEmpty(strExcl)) { Debug.Assert(false); continue; }
 
-					if(strName.Equals(strExcl, StrUtil.CaseIgnoreCmp))
+					if (strName.Equals(strExcl, StrUtil.CaseIgnoreCmp))
 					{
 						l.RemoveAt(i);
 						break;
@@ -357,17 +357,17 @@ namespace KeePass.Plugins
 		{
 			bool bPreferDll = Program.IsStableAssembly();
 
-			for(int i = lDlls.Count - 1; i >= 0; --i)
+			for (int i = lDlls.Count - 1; i >= 0; --i)
 			{
 				string strDllPre = UrlUtil.StripExtension(lDlls[i]);
 
-				for(int j = lPlgxs.Count - 1; j >= 0; --j)
+				for (int j = lPlgxs.Count - 1; j >= 0; --j)
 				{
 					string strPlgxPre = UrlUtil.StripExtension(lPlgxs[j]);
 
-					if(string.Equals(strDllPre, strPlgxPre, StrUtil.CaseIgnoreCmp))
+					if (string.Equals(strDllPre, strPlgxPre, StrUtil.CaseIgnoreCmp))
 					{
-						if(bPreferDll) lPlgxs.RemoveAt(j);
+						if (bPreferDll) lPlgxs.RemoveAt(j);
 						else lDlls.RemoveAt(i);
 
 						break;
@@ -379,13 +379,13 @@ namespace KeePass.Plugins
 		private static void CheckRefs(Module m, int iMdTokenType,
 			GAction<Module, int> fCheck)
 		{
-			if((m == null) || (fCheck == null)) { Debug.Assert(false); return; }
-			if((iMdTokenType & 0x00FFFFFF) != 0)
+			if ((m == null) || (fCheck == null)) { Debug.Assert(false); return; }
+			if ((iMdTokenType & 0x00FFFFFF) != 0)
 			{
 				Debug.Assert(false); // Not a valid MetadataTokenType
 				return;
 			}
-			if((iMdTokenType < 0) || (iMdTokenType == 0x7F000000))
+			if ((iMdTokenType < 0) || (iMdTokenType == 0x7F000000))
 			{
 				Debug.Assert(false); // Loop below would need to be adjusted
 				return;
@@ -398,10 +398,10 @@ namespace KeePass.Plugins
 				int s = iMdTokenType | 1; // RID = 0 <=> 'nil token'
 				int e = iMdTokenType | 0x00FFFFFF;
 
-				for(int i = s; i <= e; ++i) fCheck(m, i);
+				for (int i = s; i <= e; ++i) fCheck(m, i);
 			}
-			catch(ArgumentOutOfRangeException) { } // End of metadata table
-			catch(ArgumentException) { Debug.Assert(false); }
+			catch (ArgumentOutOfRangeException) { } // End of metadata table
+			catch (ArgumentException) { Debug.Assert(false); }
 			// Other exceptions indicate an unresolved reference
 		}
 
@@ -412,11 +412,11 @@ namespace KeePass.Plugins
 
 			// ResolveType should throw exception for unresolvable token
 			Type t = m.ResolveType(iMdToken);
-			if(t == null) { Debug.Assert(false); return; }
+			if (t == null) { Debug.Assert(false); return; }
 
-			if(t.Assembly == typeof(PluginManager).Assembly)
+			if (t.Assembly == typeof(PluginManager).Assembly)
 			{
-				if(t.IsNotPublic || t.IsNestedPrivate || t.IsNestedAssembly ||
+				if (t.IsNotPublic || t.IsNestedPrivate || t.IsNestedAssembly ||
 					t.IsNestedFamANDAssem)
 					throw new UnauthorizedAccessException("Ref.: " + t.ToString() + ".");
 			}
@@ -429,22 +429,22 @@ namespace KeePass.Plugins
 
 			// ResolveMember should throw exception for unresolvable token
 			MemberInfo mi = m.ResolveMember(iMdToken);
-			if(mi == null) { Debug.Assert(false); return; }
+			if (mi == null) { Debug.Assert(false); return; }
 
-			if(mi.Module == typeof(PluginManager).Module)
+			if (mi.Module == typeof(PluginManager).Module)
 			{
 				MethodBase mb = (mi as MethodBase);
-				if(mb != null)
+				if (mb != null)
 				{
-					if(mb.IsPrivate || mb.IsAssembly || mb.IsFamilyAndAssembly)
+					if (mb.IsPrivate || mb.IsAssembly || mb.IsFamilyAndAssembly)
 						ThrowRefAccessExcp(mb);
 					return;
 				}
 
 				FieldInfo fi = (mi as FieldInfo);
-				if(fi != null)
+				if (fi != null)
 				{
-					if(fi.IsPrivate || fi.IsAssembly || fi.IsFamilyAndAssembly)
+					if (fi.IsPrivate || fi.IsAssembly || fi.IsFamilyAndAssembly)
 						ThrowRefAccessExcp(fi);
 					return;
 				}
@@ -460,9 +460,9 @@ namespace KeePass.Plugins
 			try
 			{
 				Type t = mi.DeclaringType;
-				if(t != null) str += t.ToString() + " -> ";
+				if (t != null) str += t.ToString() + " -> ";
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			throw new MemberAccessException(str + mi.ToString() + ".");
 		}
@@ -472,12 +472,12 @@ namespace KeePass.Plugins
 			// When trying to resolve a non-existing token, Mono
 			// terminates the whole process with a SIGABRT instead
 			// of just throwing an ArgumentOutOfRangeException
-			if(MonoWorkarounds.IsRequired(9604)) return;
+			if (MonoWorkarounds.IsRequired(9604)) return;
 
 			Assembly asm = p.GetType().Assembly;
-			if(asm == typeof(PluginManager).Assembly) { Debug.Assert(false); return; }
+			if (asm == typeof(PluginManager).Assembly) { Debug.Assert(false); return; }
 
-			foreach(Module m in asm.GetModules())
+			foreach (Module m in asm.GetModules())
 			{
 				// MetadataTokenType.TypeRef = 0x01000000
 				CheckRefs(m, 0x01000000, CheckTypeRef);
@@ -492,7 +492,7 @@ namespace KeePass.Plugins
 			AceApplication aceApp = Program.Config.Application;
 			// bool? ob = aceApp.GetPluginCompat(strHash);
 			// if(ob.HasValue) return ob.Value;
-			if(aceApp.IsPluginCompat(strHash)) return;
+			if (aceApp.IsPluginCompat(strHash)) return;
 
 			CheckCompatibilityPriv(p);
 
@@ -524,18 +524,18 @@ namespace KeePass.Plugins
 		internal void AddMenuItems(PluginMenuType t, ToolStripItemCollection c,
 			ToolStripItem tsiPrev)
 		{
-			if(c == null) { Debug.Assert(false); return; }
+			if (c == null) { Debug.Assert(false); return; }
 
 			List<ToolStripItem> l = new List<ToolStripItem>();
-			foreach(PluginInfo pi in m_vPlugins)
+			foreach (PluginInfo pi in m_vPlugins)
 			{
-				if(pi == null) { Debug.Assert(false); continue; }
+				if (pi == null) { Debug.Assert(false); continue; }
 
 				Plugin p = pi.Interface;
-				if(p == null) { Debug.Assert(false); continue; }
+				if (p == null) { Debug.Assert(false); continue; }
 
 				ToolStripMenuItem tsmi = p.GetMenuItem(t);
-				if(tsmi != null)
+				if (tsmi != null)
 				{
 					// string strTip = tsmi.ToolTipText;
 					// if((strTip == null) || (strTip == tsmi.Text))
@@ -547,22 +547,22 @@ namespace KeePass.Plugins
 					l.Add(tsmi);
 				}
 			}
-			if(l.Count == 0) return;
+			if (l.Count == 0) return;
 
 			int iPrev = ((tsiPrev != null) ? c.IndexOf(tsiPrev) : -1);
-			if(iPrev < 0) { Debug.Assert(false); iPrev = c.Count - 1; }
+			if (iPrev < 0) { Debug.Assert(false); iPrev = c.Count - 1; }
 			int iIns = iPrev + 1;
 
 			l.Sort(PluginManager.CompareToolStripItems);
-			if((iPrev >= 0) && (iPrev < c.Count) && !(c[iPrev] is ToolStripSeparator))
+			if ((iPrev >= 0) && (iPrev < c.Count) && !(c[iPrev] is ToolStripSeparator))
 				l.Insert(0, new ToolStripSeparator());
-			if((iIns < c.Count) && !(c[iIns] is ToolStripSeparator))
+			if ((iIns < c.Count) && !(c[iIns] is ToolStripSeparator))
 				l.Add(new ToolStripSeparator());
 
-			if(iIns == c.Count) c.AddRange(l.ToArray());
+			if (iIns == c.Count) c.AddRange(l.ToArray());
 			else
 			{
-				for(int i = 0; i < l.Count; ++i)
+				for (int i = 0; i < l.Count; ++i)
 					c.Insert(iIns + i, l[i]);
 			}
 		}

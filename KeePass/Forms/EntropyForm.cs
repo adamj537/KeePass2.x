@@ -53,11 +53,11 @@ namespace KeePass.Forms
 
 		public static byte[] CollectEntropyIfEnabled(PwProfile pp)
 		{
-			if(pp == null) { Debug.Assert(false); return null; }
-			if(!pp.CollectUserEntropy) return null;
+			if (pp == null) { Debug.Assert(false); return null; }
+			if (!pp.CollectUserEntropy) return null;
 
 			EntropyForm ef = new EntropyForm();
-			if(UIUtil.ShowDialogNotValue(ef, DialogResult.OK)) return null;
+			if (UIUtil.ShowDialogNotValue(ef, DialogResult.OK)) return null;
 
 			byte[] pb = ef.GeneratedEntropy;
 			UIUtil.DestroyForm(ef);
@@ -107,7 +107,7 @@ namespace KeePass.Forms
 
 		private void OnRandomMouseMove(object sender, MouseEventArgs e)
 		{
-			if(m_h == null) { Debug.Assert(false); return; }
+			if (m_h == null) { Debug.Assert(false); return; }
 
 			byte[] pb = new byte[8 + 4 + 4];
 			MemUtil.Int64ToBytesEx(DateTime.UtcNow.ToBinary(), pb, 0);
@@ -122,10 +122,10 @@ namespace KeePass.Forms
 
 		private void OnBtnOK(object sender, EventArgs e)
 		{
-			if(m_h == null) { Debug.Assert(false); return; }
+			if (m_h == null) { Debug.Assert(false); return; }
 
 			string str = m_tbEdit.Text;
-			if(!string.IsNullOrEmpty(str))
+			if (!string.IsNullOrEmpty(str))
 			{
 				byte[] pbText = StrUtil.Utf8.GetBytes(str);
 				m_h.TransformBlock(pbText, 0, pbText.Length, pbText, 0);
@@ -147,13 +147,13 @@ namespace KeePass.Forms
 
 		private void OnFormClosed(object sender, FormClosedEventArgs e)
 		{
-			if(m_h != null) // E.g. when clicking [Cancel]
+			if (m_h != null) // E.g. when clicking [Cancel]
 			{
 				m_h.Clear();
 				m_h = null;
 			}
 
-			if(m_bmpRandom != null)
+			if (m_bmpRandom != null)
 			{
 				m_picRandom.Image = null;
 				m_bmpRandom.Dispose();
@@ -167,7 +167,7 @@ namespace KeePass.Forms
 		private static Bitmap CreateRandomBitmap(Size sz)
 		{
 			int w = sz.Width, h = sz.Height;
-			if((w <= 0) || (h <= 0)) { Debug.Assert(false); return null; }
+			if ((w <= 0) || (h <= 0)) { Debug.Assert(false); return null; }
 
 			byte[] pbRandom = new byte[w * h];
 			Program.GlobalRandom.NextBytes(pbRandom);
@@ -181,13 +181,13 @@ namespace KeePass.Forms
 			bool bFastCopy = (bd.Stride == (w * 4));
 			Debug.Assert(bFastCopy); // 32 bits per pixel => no excess in line
 
-			if(bFastCopy)
+			if (bFastCopy)
 			{
 				byte[] pbBmpData = new byte[w * h * 4];
 				int p = 0;
-				if(BitConverter.IsLittleEndian)
+				if (BitConverter.IsLittleEndian)
 				{
-					for(int i = 0; i < pbBmpData.Length; i += 4)
+					for (int i = 0; i < pbBmpData.Length; i += 4)
 					{
 						byte bt = pbRandom[p++];
 
@@ -199,7 +199,7 @@ namespace KeePass.Forms
 				}
 				else // Big-endian
 				{
-					for(int i = 0; i < pbBmpData.Length; i += 4)
+					for (int i = 0; i < pbBmpData.Length; i += 4)
 					{
 						byte bt = pbRandom[p++];
 
@@ -216,12 +216,12 @@ namespace KeePass.Forms
 
 			bmp.UnlockBits(bd);
 
-			if(!bFastCopy)
+			if (!bFastCopy)
 			{
 				int p = 0;
-				for(int y = 0; y < h; ++y)
+				for (int y = 0; y < h; ++y)
 				{
-					for(int x = 0; x < w; ++x)
+					for (int x = 0; x < w; ++x)
 					{
 						int c = pbRandom[p++];
 						bmp.SetPixel(x, y, Color.FromArgb(255, c, c, c));

@@ -40,7 +40,7 @@ namespace KeePass.App.Configuration
 			get { return m_spLast; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_spLast = value;
 			}
 		}
@@ -52,16 +52,16 @@ namespace KeePass.App.Configuration
 			get { return m_lUserProfiles; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_lUserProfiles = value;
 			}
 		}
 
 		internal int FindProfileIndex(string strName)
 		{
-			for(int i = 0; i < m_lUserProfiles.Count; ++i)
+			for (int i = 0; i < m_lUserProfiles.Count; ++i)
 			{
-				if(m_lUserProfiles[i].Name == strName) return i;
+				if (m_lUserProfiles[i].Name == strName) return i;
 			}
 
 			return -1;
@@ -80,8 +80,8 @@ namespace KeePass.App.Configuration
 
 		private static int CompareProfilesByName(SearchParameters spA, SearchParameters spB)
 		{
-			if(spA == null) { Debug.Assert(false); return ((spB == null) ? 0 : -1); }
-			if(spB == null) { Debug.Assert(false); return 1; }
+			if (spA == null) { Debug.Assert(false); return ((spB == null) ? 0 : -1); }
+			if (spB == null) { Debug.Assert(false); return 1; }
 
 			return StrUtil.CompareNaturally(spA.Name, spB.Name);
 		}

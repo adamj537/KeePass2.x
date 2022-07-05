@@ -70,7 +70,7 @@ namespace KeePassLib.Cryptography.KeyDerivation
 
 		public override void Randomize(KdfParameters p)
 		{
-			if(p == null) { Debug.Assert(false); return; }
+			if (p == null) { Debug.Assert(false); return; }
 			Debug.Assert(g_uuid.Equals(p.KdfUuid));
 
 			byte[] pbSeed = CryptoRandom.Instance.GetRandomBytes(32);
@@ -79,24 +79,24 @@ namespace KeePassLib.Cryptography.KeyDerivation
 
 		public override byte[] Transform(byte[] pbMsg, KdfParameters p)
 		{
-			if(pbMsg == null) throw new ArgumentNullException("pbMsg");
-			if(p == null) throw new ArgumentNullException("p");
+			if (pbMsg == null) throw new ArgumentNullException("pbMsg");
+			if (p == null) throw new ArgumentNullException("p");
 
 			Type tRounds = p.GetTypeOf(ParamRounds);
-			if(tRounds == null) throw new ArgumentNullException("p.Rounds");
-			if(tRounds != typeof(ulong)) throw new ArgumentOutOfRangeException("p.Rounds");
+			if (tRounds == null) throw new ArgumentNullException("p.Rounds");
+			if (tRounds != typeof(ulong)) throw new ArgumentOutOfRangeException("p.Rounds");
 			ulong uRounds = p.GetUInt64(ParamRounds, 0);
 
 			byte[] pbSeed = p.GetByteArray(ParamSeed);
-			if(pbSeed == null) throw new ArgumentNullException("p.Seed");
+			if (pbSeed == null) throw new ArgumentNullException("p.Seed");
 
-			if(pbMsg.Length != 32)
+			if (pbMsg.Length != 32)
 			{
 				Debug.Assert(false);
 				pbMsg = CryptoUtil.HashSha256(pbMsg);
 			}
 
-			if(pbSeed.Length != 32)
+			if (pbSeed.Length != 32)
 			{
 				Debug.Assert(false);
 				pbSeed = CryptoUtil.HashSha256(pbSeed);
@@ -109,25 +109,25 @@ namespace KeePassLib.Cryptography.KeyDerivation
 			ulong uNumRounds)
 		{
 			Debug.Assert((pbOriginalKey32 != null) && (pbOriginalKey32.Length == 32));
-			if(pbOriginalKey32 == null) throw new ArgumentNullException("pbOriginalKey32");
-			if(pbOriginalKey32.Length != 32) throw new ArgumentException();
+			if (pbOriginalKey32 == null) throw new ArgumentNullException("pbOriginalKey32");
+			if (pbOriginalKey32.Length != 32) throw new ArgumentException();
 
 			Debug.Assert((pbKeySeed32 != null) && (pbKeySeed32.Length == 32));
-			if(pbKeySeed32 == null) throw new ArgumentNullException("pbKeySeed32");
-			if(pbKeySeed32.Length != 32) throw new ArgumentException();
+			if (pbKeySeed32 == null) throw new ArgumentNullException("pbKeySeed32");
+			if (pbKeySeed32.Length != 32) throw new ArgumentException();
 
 			byte[] pbNewKey = new byte[32];
 			Array.Copy(pbOriginalKey32, pbNewKey, pbNewKey.Length);
 
 			try
 			{
-				if(NativeLib.TransformKey256(pbNewKey, pbKeySeed32, uNumRounds))
+				if (NativeLib.TransformKey256(pbNewKey, pbKeySeed32, uNumRounds))
 					return CryptoUtil.HashSha256(pbNewKey);
 
-				if(TransformKeyGCrypt(pbNewKey, pbKeySeed32, uNumRounds))
+				if (TransformKeyGCrypt(pbNewKey, pbKeySeed32, uNumRounds))
 					return CryptoUtil.HashSha256(pbNewKey);
 
-				if(TransformKeyManaged(pbNewKey, pbKeySeed32, uNumRounds))
+				if (TransformKeyManaged(pbNewKey, pbKeySeed32, uNumRounds))
 					return CryptoUtil.HashSha256(pbNewKey);
 			}
 			finally { MemUtil.ZeroByteArray(pbNewKey); }
@@ -153,9 +153,9 @@ namespace KeePassLib.Cryptography.KeyDerivation
 #else
 			byte[] pbIV = new byte[16];
 
-			using(SymmetricAlgorithm a = CryptoUtil.CreateAes())
+			using (SymmetricAlgorithm a = CryptoUtil.CreateAes())
 			{
-				if(a.BlockSize != 128) // AES block size
+				if (a.BlockSize != 128) // AES block size
 				{
 					Debug.Assert(false);
 					a.BlockSize = 128;
@@ -163,17 +163,17 @@ namespace KeePassLib.Cryptography.KeyDerivation
 				a.KeySize = 256;
 				a.Mode = CipherMode.ECB;
 
-				using(ICryptoTransform t = a.CreateEncryptor(pbKeySeed32, pbIV))
+				using (ICryptoTransform t = a.CreateEncryptor(pbKeySeed32, pbIV))
 				{
 					// !t.CanReuseTransform -- doesn't work with Mono
-					if((t == null) || (t.InputBlockSize != 16) ||
+					if ((t == null) || (t.InputBlockSize != 16) ||
 						(t.OutputBlockSize != 16))
 					{
 						Debug.Assert(false);
 						return false;
 					}
 
-					for(ulong u = 0; u < uNumRounds; ++u)
+					for (ulong u = 0; u < uNumRounds; ++u)
 					{
 						t.TransformBlock(pbNewKey32, 0, 16, pbNewKey32, 0);
 						t.TransformBlock(pbNewKey32, 16, 16, pbNewKey32, 16);
@@ -191,13 +191,13 @@ namespace KeePassLib.Cryptography.KeyDerivation
 			ulong uRounds;
 
 			// Try native method
-			if(NativeLib.TransformKeyBenchmark256(uMilliseconds, out uRounds))
+			if (NativeLib.TransformKeyBenchmark256(uMilliseconds, out uRounds))
 			{
 				p.SetUInt64(ParamRounds, uRounds);
 				return p;
 			}
 
-			if(TransformKeyBenchmarkGCrypt(uMilliseconds, out uRounds))
+			if (TransformKeyBenchmarkGCrypt(uMilliseconds, out uRounds))
 			{
 				p.SetUInt64(ParamRounds, uRounds);
 				return p;
@@ -205,7 +205,7 @@ namespace KeePassLib.Cryptography.KeyDerivation
 
 			byte[] pbKey = new byte[32];
 			byte[] pbNewKey = new byte[32];
-			for(int i = 0; i < pbKey.Length; ++i)
+			for (int i = 0; i < pbKey.Length; ++i)
 			{
 				pbKey[i] = (byte)i;
 				pbNewKey[i] = (byte)i;
@@ -218,9 +218,9 @@ namespace KeePassLib.Cryptography.KeyDerivation
 #else
 			byte[] pbIV = new byte[16];
 
-			using(SymmetricAlgorithm a = CryptoUtil.CreateAes())
+			using (SymmetricAlgorithm a = CryptoUtil.CreateAes())
 			{
-				if(a.BlockSize != 128) // AES block size
+				if (a.BlockSize != 128) // AES block size
 				{
 					Debug.Assert(false);
 					a.BlockSize = 128;
@@ -228,10 +228,10 @@ namespace KeePassLib.Cryptography.KeyDerivation
 				a.KeySize = 256;
 				a.Mode = CipherMode.ECB;
 
-				using(ICryptoTransform t = a.CreateEncryptor(pbKey, pbIV))
+				using (ICryptoTransform t = a.CreateEncryptor(pbKey, pbIV))
 				{
 					// !t.CanReuseTransform -- doesn't work with Mono
-					if((t == null) || (t.InputBlockSize != 16) ||
+					if ((t == null) || (t.InputBlockSize != 16) ||
 						(t.OutputBlockSize != 16))
 					{
 						Debug.Assert(false);
@@ -242,9 +242,9 @@ namespace KeePassLib.Cryptography.KeyDerivation
 
 					uRounds = 0;
 					int tStart = Environment.TickCount;
-					while(true)
+					while (true)
 					{
-						for(ulong j = 0; j < BenchStep; ++j)
+						for (ulong j = 0; j < BenchStep; ++j)
 						{
 #if KeePassUAP
 							aes.ProcessBlock(pbNewKey, 0, pbNewKey, 0);
@@ -256,14 +256,14 @@ namespace KeePassLib.Cryptography.KeyDerivation
 						}
 
 						uRounds += BenchStep;
-						if(uRounds < BenchStep) // Overflow check
+						if (uRounds < BenchStep) // Overflow check
 						{
 							uRounds = ulong.MaxValue;
 							break;
 						}
 
 						uint tElapsed = (uint)(Environment.TickCount - tStart);
-						if(tElapsed > uMilliseconds) break;
+						if (tElapsed > uMilliseconds) break;
 					}
 
 					p.SetUInt64(ParamRounds, uRounds);

@@ -53,7 +53,7 @@ namespace KeePassLib.Keys
 		public KeyProviderQueryContext(IOConnectionInfo ioInfo, bool bCreatingNewKey,
 			bool bOnSecDesktop)
 		{
-			if(ioInfo == null) throw new ArgumentNullException("ioInfo");
+			if (ioInfo == null) throw new ArgumentNullException("ioInfo");
 
 			m_ioInfo = ioInfo.CloneDeep();
 			m_bCreatingNewKey = bCreatingNewKey;

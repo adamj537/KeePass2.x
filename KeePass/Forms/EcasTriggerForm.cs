@@ -130,13 +130,13 @@ namespace KeePass.Forms
 
 		private void OnBtnPrev(object sender, EventArgs e)
 		{
-			if(m_tabMain.SelectedIndex > 0)
+			if (m_tabMain.SelectedIndex > 0)
 				m_tabMain.SelectedIndex = (m_tabMain.SelectedIndex - 1);
 		}
 
 		private void OnBtnNext(object sender, EventArgs e)
 		{
-			if(m_tabMain.SelectedIndex < (m_tabMain.TabCount - 1))
+			if (m_tabMain.SelectedIndex < (m_tabMain.TabCount - 1))
 				m_tabMain.SelectedIndex = (m_tabMain.SelectedIndex + 1);
 		}
 
@@ -178,10 +178,10 @@ namespace KeePass.Forms
 
 			m_lvEvents.BeginUpdate();
 			m_lvEvents.Items.Clear();
-			foreach(EcasEvent e in m_trigger.EventCollection)
+			foreach (EcasEvent e in m_trigger.EventCollection)
 			{
 				EcasEventType t = Program.EcasPool.FindEvent(e.Type);
-				if(t == null) { Debug.Assert(false); lToRemove.Add(e); continue; }
+				if (t == null) { Debug.Assert(false); lToRemove.Add(e); continue; }
 
 				ListViewItem lvi = m_lvEvents.Items.Add(t.Name);
 				lvi.SubItems.Add(EcasUtil.ParametersToString(e, t.Parameters));
@@ -189,9 +189,9 @@ namespace KeePass.Forms
 				lvi.ImageIndex = (int)t.Icon;
 			}
 
-			foreach(EcasEvent e in lToRemove)
+			foreach (EcasEvent e in lToRemove)
 				m_trigger.EventCollection.Remove(e);
-			if(vSelected != null) UIUtil.SelectItems(m_lvEvents, vSelected);
+			if (vSelected != null) UIUtil.SelectItems(m_lvEvents, vSelected);
 
 			UIUtil.Scroll(m_lvEvents, s, true);
 			m_lvEvents.EndUpdate();
@@ -206,10 +206,10 @@ namespace KeePass.Forms
 
 			m_lvConditions.BeginUpdate();
 			m_lvConditions.Items.Clear();
-			foreach(EcasCondition c in m_trigger.ConditionCollection)
+			foreach (EcasCondition c in m_trigger.ConditionCollection)
 			{
 				EcasConditionType t = Program.EcasPool.FindCondition(c.Type);
-				if(t == null) { Debug.Assert(false); lToRemove.Add(c); continue; }
+				if (t == null) { Debug.Assert(false); lToRemove.Add(c); continue; }
 
 				ListViewItem lvi = m_lvConditions.Items.Add(t.Name);
 				lvi.SubItems.Add(EcasUtil.ParametersToString(c, t.Parameters));
@@ -217,9 +217,9 @@ namespace KeePass.Forms
 				lvi.ImageIndex = (int)t.Icon;
 			}
 
-			foreach(EcasCondition c in lToRemove)
+			foreach (EcasCondition c in lToRemove)
 				m_trigger.ConditionCollection.Remove(c);
-			if(vSelected != null) UIUtil.SelectItems(m_lvConditions, vSelected);
+			if (vSelected != null) UIUtil.SelectItems(m_lvConditions, vSelected);
 
 			UIUtil.Scroll(m_lvConditions, s, true);
 			m_lvConditions.EndUpdate();
@@ -234,10 +234,10 @@ namespace KeePass.Forms
 
 			m_lvActions.BeginUpdate();
 			m_lvActions.Items.Clear();
-			foreach(EcasAction a in m_trigger.ActionCollection)
+			foreach (EcasAction a in m_trigger.ActionCollection)
 			{
 				EcasActionType t = Program.EcasPool.FindAction(a.Type);
-				if(t == null) { Debug.Assert(false); lToRemove.Add(a); continue; }
+				if (t == null) { Debug.Assert(false); lToRemove.Add(a); continue; }
 
 				ListViewItem lvi = m_lvActions.Items.Add(t.Name);
 				lvi.SubItems.Add(EcasUtil.ParametersToString(a, t.Parameters));
@@ -245,9 +245,9 @@ namespace KeePass.Forms
 				lvi.ImageIndex = (int)t.Icon;
 			}
 
-			foreach(EcasAction a in lToRemove)
+			foreach (EcasAction a in lToRemove)
 				m_trigger.ActionCollection.Remove(a);
-			if(vSelected != null) UIUtil.SelectItems(m_lvActions, vSelected);
+			if (vSelected != null) UIUtil.SelectItems(m_lvActions, vSelected);
 
 			UIUtil.Scroll(m_lvActions, s, true);
 			m_lvActions.EndUpdate();
@@ -275,7 +275,7 @@ namespace KeePass.Forms
 
 			EcasEventForm dlg = new EcasEventForm();
 			dlg.InitEx(eNew);
-			if(UIUtil.ShowDialogAndDestroy(dlg) == DialogResult.OK)
+			if (UIUtil.ShowDialogAndDestroy(dlg) == DialogResult.OK)
 			{
 				m_trigger.EventCollection.Add(eNew);
 				UpdateEventListEx(false);
@@ -285,11 +285,11 @@ namespace KeePass.Forms
 		private void OnEventEdit(object sender, EventArgs e)
 		{
 			ListView.SelectedListViewItemCollection lvsic = m_lvEvents.SelectedItems;
-			if((lvsic == null) || (lvsic.Count == 0)) return;
+			if ((lvsic == null) || (lvsic.Count == 0)) return;
 
 			EcasEventForm dlg = new EcasEventForm();
 			dlg.InitEx(lvsic[0].Tag as EcasEvent);
-			if(UIUtil.ShowDialogAndDestroy(dlg) == DialogResult.OK)
+			if (UIUtil.ShowDialogAndDestroy(dlg) == DialogResult.OK)
 				UpdateEventListEx(true);
 		}
 
@@ -303,7 +303,7 @@ namespace KeePass.Forms
 			EcasCondition eNew = new EcasCondition();
 			EcasConditionForm dlg = new EcasConditionForm();
 			dlg.InitEx(eNew);
-			if(UIUtil.ShowDialogAndDestroy(dlg) == DialogResult.OK)
+			if (UIUtil.ShowDialogAndDestroy(dlg) == DialogResult.OK)
 			{
 				m_trigger.ConditionCollection.Add(eNew);
 				UpdateConditionListEx(false);
@@ -313,11 +313,11 @@ namespace KeePass.Forms
 		private void OnConditionEdit(object sender, EventArgs e)
 		{
 			ListView.SelectedListViewItemCollection lvsic = m_lvConditions.SelectedItems;
-			if((lvsic == null) || (lvsic.Count == 0)) return;
+			if ((lvsic == null) || (lvsic.Count == 0)) return;
 
 			EcasConditionForm dlg = new EcasConditionForm();
 			dlg.InitEx(lvsic[0].Tag as EcasCondition);
-			if(UIUtil.ShowDialogAndDestroy(dlg) == DialogResult.OK)
+			if (UIUtil.ShowDialogAndDestroy(dlg) == DialogResult.OK)
 				UpdateConditionListEx(true);
 		}
 
@@ -331,7 +331,7 @@ namespace KeePass.Forms
 			EcasAction eNew = new EcasAction();
 			EcasActionForm dlg = new EcasActionForm();
 			dlg.InitEx(eNew);
-			if(UIUtil.ShowDialogAndDestroy(dlg) == DialogResult.OK)
+			if (UIUtil.ShowDialogAndDestroy(dlg) == DialogResult.OK)
 			{
 				m_trigger.ActionCollection.Add(eNew);
 				UpdateActionListEx(false);
@@ -341,11 +341,11 @@ namespace KeePass.Forms
 		private void OnActionEdit(object sender, EventArgs e)
 		{
 			ListView.SelectedListViewItemCollection lvsic = m_lvActions.SelectedItems;
-			if((lvsic == null) || (lvsic.Count == 0)) return;
+			if ((lvsic == null) || (lvsic.Count == 0)) return;
 
 			EcasActionForm dlg = new EcasActionForm();
 			dlg.InitEx(lvsic[0].Tag as EcasAction);
-			if(UIUtil.ShowDialogAndDestroy(dlg) == DialogResult.OK)
+			if (UIUtil.ShowDialogAndDestroy(dlg) == DialogResult.OK)
 				UpdateActionListEx(true);
 		}
 

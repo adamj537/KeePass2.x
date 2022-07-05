@@ -62,34 +62,34 @@ namespace KeePass.DataExchange.Formats
 			string strLastIndexedItem = string.Empty;
 			string strLastLine = string.Empty;
 
-			foreach(string strLine in vLines)
+			foreach (string strLine in vLines)
 			{
-				if(strLine.Length == 0) continue;
+				if (strLine.Length == 0) continue;
 
-				if(strLine == FieldSeparator)
+				if (strLine == FieldSeparator)
 				{
 					bInnerSep = !bInnerSep;
-					if(bInnerSep && !bEmptyEntry)
+					if (bInnerSep && !bEmptyEntry)
 					{
 						pwStorage.RootGroup.AddEntry(pe, true);
 
 						pe = new PwEntry(true, true);
 						bEmptyEntry = true;
 					}
-					else if(!bInnerSep)
+					else if (!bInnerSep)
 						pe.Strings.Set(PwDefs.TitleField, new ProtectedString(
 							pwStorage.MemoryProtection.ProtectTitle,
 							strLastLine));
 
 					bDoImport = true;
 				}
-				else if(bDoImport)
+				else if (bDoImport)
 				{
 					int nIDLen = strLine.IndexOf(": ");
-					if(nIDLen > 0)
+					if (nIDLen > 0)
 					{
 						string strIndex = strLine.Substring(0, nIDLen);
-						if(PwDefs.IsStandardField(strIndex))
+						if (PwDefs.IsStandardField(strIndex))
 							strIndex = Guid.NewGuid().ToString();
 
 						pe.Strings.Set(strIndex, new ProtectedString(
@@ -97,7 +97,7 @@ namespace KeePass.DataExchange.Formats
 
 						strLastIndexedItem = strIndex;
 					}
-					else if(!bEmptyEntry)
+					else if (!bEmptyEntry)
 					{
 						pe.Strings.Set(strLastIndexedItem, new ProtectedString(
 							false, pe.Strings.ReadSafe(strLastIndexedItem) +

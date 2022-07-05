@@ -78,13 +78,13 @@ namespace KeePassLib.Collections
 		{
 			t = default(T);
 
-			if(string.IsNullOrEmpty(strName)) { Debug.Assert(false); return false; }
+			if (string.IsNullOrEmpty(strName)) { Debug.Assert(false); return false; }
 
 			object o;
-			if(!m_d.TryGetValue(strName, out o)) return false; // No assert
+			if (!m_d.TryGetValue(strName, out o)) return false; // No assert
 
-			if(o == null) { Debug.Assert(false); return false; }
-			if(o.GetType() != typeof(T)) { Debug.Assert(false); return false; }
+			if (o == null) { Debug.Assert(false); return false; }
+			if (o.GetType() != typeof(T)) { Debug.Assert(false); return false; }
 
 			t = (T)o;
 			return true;
@@ -93,7 +93,7 @@ namespace KeePassLib.Collections
 		private void SetStruct<T>(string strName, T t)
 			where T : struct
 		{
-			if(string.IsNullOrEmpty(strName)) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strName)) { Debug.Assert(false); return; }
 
 #if DEBUG
 			T tEx;
@@ -106,8 +106,8 @@ namespace KeePassLib.Collections
 		private void SetRef<T>(string strName, T t)
 			where T : class
 		{
-			if(string.IsNullOrEmpty(strName)) { Debug.Assert(false); return; }
-			if(t == null) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strName)) { Debug.Assert(false); return; }
+			if (t == null) { Debug.Assert(false); return; }
 
 #if DEBUG
 			T tEx;
@@ -119,17 +119,17 @@ namespace KeePassLib.Collections
 
 		public bool Remove(string strName)
 		{
-			if(string.IsNullOrEmpty(strName)) { Debug.Assert(false); return false; }
+			if (string.IsNullOrEmpty(strName)) { Debug.Assert(false); return false; }
 
 			return m_d.Remove(strName);
 		}
 
 		public void CopyTo(VariantDictionary d)
 		{
-			if(d == null) { Debug.Assert(false); return; }
+			if (d == null) { Debug.Assert(false); return; }
 
 			// Do not clear the target
-			foreach(KeyValuePair<string, object> kvp in m_d)
+			foreach (KeyValuePair<string, object> kvp in m_d)
 			{
 				d.m_d[kvp.Key] = kvp.Value;
 			}
@@ -137,11 +137,11 @@ namespace KeePassLib.Collections
 
 		public Type GetTypeOf(string strName)
 		{
-			if(string.IsNullOrEmpty(strName)) { Debug.Assert(false); return null; }
+			if (string.IsNullOrEmpty(strName)) { Debug.Assert(false); return null; }
 
 			object o;
 			m_d.TryGetValue(strName, out o);
-			if(o == null) return null; // No assert
+			if (o == null) return null; // No assert
 
 			return o.GetType();
 		}
@@ -149,7 +149,7 @@ namespace KeePassLib.Collections
 		public uint GetUInt32(string strName, uint uDefault)
 		{
 			uint u;
-			if(Get<uint>(strName, out u)) return u;
+			if (Get<uint>(strName, out u)) return u;
 			return uDefault;
 		}
 
@@ -161,7 +161,7 @@ namespace KeePassLib.Collections
 		public ulong GetUInt64(string strName, ulong uDefault)
 		{
 			ulong u;
-			if(Get<ulong>(strName, out u)) return u;
+			if (Get<ulong>(strName, out u)) return u;
 			return uDefault;
 		}
 
@@ -173,7 +173,7 @@ namespace KeePassLib.Collections
 		public bool GetBool(string strName, bool bDefault)
 		{
 			bool b;
-			if(Get<bool>(strName, out b)) return b;
+			if (Get<bool>(strName, out b)) return b;
 			return bDefault;
 		}
 
@@ -185,7 +185,7 @@ namespace KeePassLib.Collections
 		public int GetInt32(string strName, int iDefault)
 		{
 			int i;
-			if(Get<int>(strName, out i)) return i;
+			if (Get<int>(strName, out i)) return i;
 			return iDefault;
 		}
 
@@ -197,7 +197,7 @@ namespace KeePassLib.Collections
 		public long GetInt64(string strName, long lDefault)
 		{
 			long l;
-			if(Get<long>(strName, out l)) return l;
+			if (Get<long>(strName, out l)) return l;
 			return lDefault;
 		}
 
@@ -237,17 +237,17 @@ namespace KeePassLib.Collections
 		{
 			VariantDictionary vdNew = new VariantDictionary();
 
-			foreach(KeyValuePair<string, object> kvp in m_d)
+			foreach (KeyValuePair<string, object> kvp in m_d)
 			{
 				object o = kvp.Value;
-				if(o == null) { Debug.Assert(false); continue; }
+				if (o == null) { Debug.Assert(false); continue; }
 
 				Type t = o.GetType();
-				if(t == typeof(byte[]))
+				if (t == typeof(byte[]))
 				{
 					byte[] p = (byte[])o;
 					byte[] pNew = new byte[p.Length];
-					if(p.Length > 0) Array.Copy(p, pNew, p.Length);
+					if (p.Length > 0) Array.Copy(p, pNew, p.Length);
 
 					o = pNew;
 				}
@@ -260,57 +260,57 @@ namespace KeePassLib.Collections
 
 		public static byte[] Serialize(VariantDictionary p)
 		{
-			if(p == null) { Debug.Assert(false); return null; }
+			if (p == null) { Debug.Assert(false); return null; }
 
 			byte[] pbRet;
-			using(MemoryStream ms = new MemoryStream())
+			using (MemoryStream ms = new MemoryStream())
 			{
 				MemUtil.Write(ms, MemUtil.UInt16ToBytes(VdVersion));
 
-				foreach(KeyValuePair<string, object> kvp in p.m_d)
+				foreach (KeyValuePair<string, object> kvp in p.m_d)
 				{
 					string strName = kvp.Key;
-					if(string.IsNullOrEmpty(strName)) { Debug.Assert(false); continue; }
+					if (string.IsNullOrEmpty(strName)) { Debug.Assert(false); continue; }
 					byte[] pbName = StrUtil.Utf8.GetBytes(strName);
 
 					object o = kvp.Value;
-					if(o == null) { Debug.Assert(false); continue; }
+					if (o == null) { Debug.Assert(false); continue; }
 
 					Type t = o.GetType();
 					VdType vt = VdType.None;
 					byte[] pbValue = null;
-					if(t == typeof(uint))
+					if (t == typeof(uint))
 					{
 						vt = VdType.UInt32;
 						pbValue = MemUtil.UInt32ToBytes((uint)o);
 					}
-					else if(t == typeof(ulong))
+					else if (t == typeof(ulong))
 					{
 						vt = VdType.UInt64;
 						pbValue = MemUtil.UInt64ToBytes((ulong)o);
 					}
-					else if(t == typeof(bool))
+					else if (t == typeof(bool))
 					{
 						vt = VdType.Bool;
 						pbValue = new byte[1];
 						pbValue[0] = ((bool)o ? (byte)1 : (byte)0);
 					}
-					else if(t == typeof(int))
+					else if (t == typeof(int))
 					{
 						vt = VdType.Int32;
 						pbValue = MemUtil.Int32ToBytes((int)o);
 					}
-					else if(t == typeof(long))
+					else if (t == typeof(long))
 					{
 						vt = VdType.Int64;
 						pbValue = MemUtil.Int64ToBytes((long)o);
 					}
-					else if(t == typeof(string))
+					else if (t == typeof(string))
 					{
 						vt = VdType.String;
 						pbValue = StrUtil.Utf8.GetBytes((string)o);
 					}
-					else if(t == typeof(byte[]))
+					else if (t == typeof(byte[]))
 					{
 						vt = VdType.ByteArray;
 						pbValue = (byte[])o;
@@ -333,61 +333,61 @@ namespace KeePassLib.Collections
 
 		public static VariantDictionary Deserialize(byte[] pb)
 		{
-			if(pb == null) { Debug.Assert(false); return null; }
+			if (pb == null) { Debug.Assert(false); return null; }
 
 			VariantDictionary d = new VariantDictionary();
-			using(MemoryStream ms = new MemoryStream(pb, false))
+			using (MemoryStream ms = new MemoryStream(pb, false))
 			{
 				ushort uVersion = MemUtil.BytesToUInt16(MemUtil.Read(ms, 2));
-				if((uVersion & VdmCritical) > (VdVersion & VdmCritical))
+				if ((uVersion & VdmCritical) > (VdVersion & VdmCritical))
 					throw new FormatException(KLRes.FileNewVerReq);
 
-				while(true)
+				while (true)
 				{
 					int iType = ms.ReadByte();
-					if(iType < 0) throw new EndOfStreamException(KLRes.FileCorrupted);
+					if (iType < 0) throw new EndOfStreamException(KLRes.FileCorrupted);
 					byte btType = (byte)iType;
-					if(btType == (byte)VdType.None) break;
+					if (btType == (byte)VdType.None) break;
 
 					int cbName = MemUtil.BytesToInt32(MemUtil.Read(ms, 4));
 					byte[] pbName = MemUtil.Read(ms, cbName);
-					if(pbName.Length != cbName)
+					if (pbName.Length != cbName)
 						throw new EndOfStreamException(KLRes.FileCorrupted);
 					string strName = StrUtil.Utf8.GetString(pbName);
 
 					int cbValue = MemUtil.BytesToInt32(MemUtil.Read(ms, 4));
 					byte[] pbValue = MemUtil.Read(ms, cbValue);
-					if(pbValue.Length != cbValue)
+					if (pbValue.Length != cbValue)
 						throw new EndOfStreamException(KLRes.FileCorrupted);
 
-					switch(btType)
+					switch (btType)
 					{
 						case (byte)VdType.UInt32:
-							if(cbValue == 4)
+							if (cbValue == 4)
 								d.SetUInt32(strName, MemUtil.BytesToUInt32(pbValue));
 							else { Debug.Assert(false); }
 							break;
 
 						case (byte)VdType.UInt64:
-							if(cbValue == 8)
+							if (cbValue == 8)
 								d.SetUInt64(strName, MemUtil.BytesToUInt64(pbValue));
 							else { Debug.Assert(false); }
 							break;
 
 						case (byte)VdType.Bool:
-							if(cbValue == 1)
+							if (cbValue == 1)
 								d.SetBool(strName, (pbValue[0] != 0));
 							else { Debug.Assert(false); }
 							break;
 
 						case (byte)VdType.Int32:
-							if(cbValue == 4)
+							if (cbValue == 4)
 								d.SetInt32(strName, MemUtil.BytesToInt32(pbValue));
 							else { Debug.Assert(false); }
 							break;
 
 						case (byte)VdType.Int64:
-							if(cbValue == 8)
+							if (cbValue == 8)
 								d.SetInt64(strName, MemUtil.BytesToInt64(pbValue));
 							else { Debug.Assert(false); }
 							break;

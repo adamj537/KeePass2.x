@@ -57,29 +57,29 @@ namespace KeePass.DataExchange.Formats
 			strData = StrUtil.NormalizeNewLines(strData, false);
 
 			int iSep = strData.IndexOf(strSep);
-			if(iSep < 0) throw new FormatException();
+			if (iSep < 0) throw new FormatException();
 			string strTitleKey = strData.Substring(0, iSep).Trim();
-			if(strTitleKey.Length == 0) throw new FormatException();
-			if(strTitleKey.IndexOf('\n') >= 0) throw new FormatException();
+			if (strTitleKey.Length == 0) throw new FormatException();
+			if (strTitleKey.IndexOf('\n') >= 0) throw new FormatException();
 
 			PwEntry pe = null;
 			string strName = PwDefs.TitleField;
 
 			string[] vLines = strData.Split('\n');
-			foreach(string strLine in vLines)
+			foreach (string strLine in vLines)
 			{
-				if(strLine == null) { Debug.Assert(false); continue; }
+				if (strLine == null) { Debug.Assert(false); continue; }
 				// Do not trim strLine, otherwise strSep might not be detected
 
 				string strValue = strLine;
 
 				iSep = strLine.IndexOf(strSep);
-				if(iSep >= 0)
+				if (iSep >= 0)
 				{
 					string strCurName = strLine.Substring(0, iSep).Trim();
 					strValue = strLine.Substring(iSep + strSep.Length);
 
-					if(strCurName == strTitleKey)
+					if (strCurName == strTitleKey)
 					{
 						FinishEntry(pe);
 
@@ -88,15 +88,15 @@ namespace KeePass.DataExchange.Formats
 
 						strName = PwDefs.TitleField;
 					}
-					else if(strName == PwDefs.NotesField)
+					else if (strName == PwDefs.NotesField)
 						strValue = strLine; // Restore
 					else
 					{
 						strName = ImportUtil.MapNameToStandardField(strCurName, true);
-						if(string.IsNullOrEmpty(strName))
+						if (string.IsNullOrEmpty(strName))
 						{
 							strName = strCurName;
-							if(string.IsNullOrEmpty(strName))
+							if (string.IsNullOrEmpty(strName))
 							{
 								Debug.Assert(false);
 								strName = PwDefs.NotesField;
@@ -106,13 +106,13 @@ namespace KeePass.DataExchange.Formats
 					}
 				}
 
-				if(pe != null)
+				if (pe != null)
 				{
 					strValue = strValue.Trim();
 
-					if(strValue.Length != 0)
+					if (strValue.Length != 0)
 						ImportUtil.AppendToField(pe, strName, strValue, pwStorage);
-					else if(strName == PwDefs.NotesField)
+					else if (strName == PwDefs.NotesField)
 					{
 						ProtectedString ps = pe.Strings.GetSafe(strName);
 						pe.Strings.Set(strName, ps + MessageService.NewLine);
@@ -126,10 +126,10 @@ namespace KeePass.DataExchange.Formats
 
 		private static void FinishEntry(PwEntry pe)
 		{
-			if(pe == null) return;
+			if (pe == null) return;
 
 			List<string> lKeys = pe.Strings.GetKeys();
-			foreach(string strKey in lKeys)
+			foreach (string strKey in lKeys)
 			{
 				ProtectedString ps = pe.Strings.GetSafe(strKey);
 				pe.Strings.Set(strKey, new ProtectedString(

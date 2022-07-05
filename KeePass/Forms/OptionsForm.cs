@@ -94,22 +94,22 @@ namespace KeePass.Forms
 			// Set ShowInTaskbar immediately, not later, otherwise the form
 			// can disappear:
 			// https://sourceforge.net/p/keepass/discussion/329220/thread/c95b5644/
-			if(bForceInTaskbar) this.ShowInTaskbar = true;
+			if (bForceInTaskbar) this.ShowInTaskbar = true;
 		}
 
 		private void CreateDialogBanner(BannerStyle bs)
 		{
-			if(bs == m_bsCurrent) return;
+			if (bs == m_bsCurrent) return;
 			m_bsCurrent = bs;
 
 			BannerStyle bsPrev = Program.Config.UI.BannerStyle;
-			if(bs != BannerStyle.Default) Program.Config.UI.BannerStyle = bs;
+			if (bs != BannerStyle.Default) Program.Config.UI.BannerStyle = bs;
 
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_KCMSystem, KPRes.Options,
 				KPRes.OptionsDesc);
 
-			if(bs != BannerStyle.Default) Program.Config.UI.BannerStyle = bsPrev;
+			if (bs != BannerStyle.Default) Program.Config.UI.BannerStyle = bsPrev;
 		}
 
 		private void OnFormLoad(object sender, EventArgs e)
@@ -127,7 +127,7 @@ namespace KeePass.Forms
 			this.Icon = AppIcons.Default;
 
 			Debug.Assert(m_ilIcons != null);
-			if(m_ilIcons != null)
+			if (m_ilIcons != null)
 			{
 				m_tabMain.ImageList = m_ilIcons;
 
@@ -140,7 +140,7 @@ namespace KeePass.Forms
 			}
 
 			uint uTab = Program.Config.Defaults.OptionsTabIndex;
-			if(uTab < (uint)m_tabMain.TabPages.Count)
+			if (uTab < (uint)m_tabMain.TabPages.Count)
 				m_tabMain.SelectedTab = m_tabMain.TabPages[(int)uTab];
 
 			m_aceUrlSchemeOverrides = Program.Config.Integration.UrlSchemeOverrides.CloneDeep();
@@ -150,17 +150,17 @@ namespace KeePass.Forms
 			m_cmbMenuStyle.Items.Add(KPRes.Automatic + " (" + KPRes.Recommended + ")");
 			m_cmbMenuStyle.Items.Add(new string('-', 24));
 			int nTsrs = 2, iTsrSel = 0, nSuffixes = 0;
-			foreach(TsrFactory fTsr in TsrPool.Factories)
+			foreach (TsrFactory fTsr in TsrPool.Factories)
 			{
 				string strSuffix = string.Empty;
-				if(!fTsr.IsSupported())
+				if (!fTsr.IsSupported())
 				{
 					strSuffix = " (" + KPRes.IncompatibleEnv + ")";
 					++nSuffixes;
 				}
 
 				string strUuid = Convert.ToBase64String(fTsr.Uuid.UuidBytes);
-				if(Program.Config.UI.ToolStripRenderer == strUuid)
+				if (Program.Config.UI.ToolStripRenderer == strUuid)
 					iTsrSel = nTsrs;
 
 				m_cmbMenuStyle.Items.Add((fTsr.Name ?? string.Empty) + strSuffix);
@@ -169,11 +169,11 @@ namespace KeePass.Forms
 			}
 			Debug.Assert(m_cmbMenuStyle.Items.Count == nTsrs);
 			m_cmbMenuStyle.SelectedIndex = iTsrSel;
-			if(nSuffixes > 0) m_cmbMenuStyle.DropDownWidth = m_cmbMenuStyle.Width * 2;
-			if(AppConfigEx.IsOptionEnforced(Program.Config.UI, "ToolStripRenderer"))
+			if (nSuffixes > 0) m_cmbMenuStyle.DropDownWidth = m_cmbMenuStyle.Width * 2;
+			if (AppConfigEx.IsOptionEnforced(Program.Config.UI, "ToolStripRenderer"))
 				UIUtil.SetEnabledFast(false, m_lblMenuStyle, m_cmbMenuStyle);
 
-			GAction<BannerStyle, string> fAddBannerStyle = delegate(
+			GAction<BannerStyle, string> fAddBannerStyle = delegate (
 				BannerStyle bs, string strDisplay)
 			{
 				Debug.Assert(m_cmbBannerStyle.Items.Count == (long)bs);
@@ -189,7 +189,7 @@ namespace KeePass.Forms
 
 			CreateDialogBanner(BannerStyle.Default); // Default forces generation
 			m_cmbBannerStyle.SelectedIndex = (int)BannerStyle.Default;
-			if((BannerFactory.CustomGenerator != null) ||
+			if ((BannerFactory.CustomGenerator != null) ||
 				AppConfigEx.IsOptionEnforced(Program.Config.UI, "BannerStyle"))
 				UIUtil.SetEnabledFast(false, m_lblBannerStyle, m_cmbBannerStyle);
 
@@ -204,10 +204,10 @@ namespace KeePass.Forms
 
 			AceEscAction aEscCur = Program.Config.MainWindow.EscAction;
 			int iEscSel = (int)AceEscAction.Lock;
-			GAction<AceEscAction, string> fAddEscAction = delegate(
+			GAction<AceEscAction, string> fAddEscAction = delegate (
 				AceEscAction aEsc, string strDisplay)
 			{
-				if(aEsc == aEscCur) iEscSel = m_cmbEscAction.Items.Count;
+				if (aEsc == aEscCur) iEscSel = m_cmbEscAction.Items.Count;
 				Debug.Assert(m_cmbEscAction.Items.Count == (long)aEsc);
 				m_cmbEscAction.Items.Add(strDisplay);
 			};
@@ -220,7 +220,7 @@ namespace KeePass.Forms
 			fAddEscAction(AceEscAction.Exit, KPRes.Exit);
 
 			m_cmbEscAction.SelectedIndex = iEscSel;
-			if(AppConfigEx.IsOptionEnforced(Program.Config.MainWindow, "EscAction"))
+			if (AppConfigEx.IsOptionEnforced(Program.Config.MainWindow, "EscAction"))
 				UIUtil.SetEnabledFast(false, m_lblEscAction, m_cmbEscAction);
 
 			int nWidth = m_lvPolicy.ClientSize.Width - UIUtil.GetVScrollBarWidth();
@@ -239,7 +239,7 @@ namespace KeePass.Forms
 			AccessibilityEx.SetContext(m_linkSecOptEx, m_lblSecOpt);
 			AccessibilityEx.SetContext(m_linkSecOptAdm, m_lblSecOpt);
 
-			if(!NativeLib.IsUnix())
+			if (!NativeLib.IsUnix())
 			{
 				UIUtil.SetShield(m_btnFileExtCreate, true);
 				UIUtil.SetShield(m_btnFileExtRemove, true);
@@ -295,36 +295,36 @@ namespace KeePass.Forms
 			bool bLockTime = (uLockTime > 0);
 			m_numLockAfterTime.Value = (bLockTime ? uLockTime : 300);
 			m_cbLockAfterTime.Checked = bLockTime;
-			if(AppConfigEx.IsOptionEnforced(aceWL, "LockAfterTime"))
+			if (AppConfigEx.IsOptionEnforced(aceWL, "LockAfterTime"))
 				m_cbLockAfterTime.Enabled = false;
 
 			uLockTime = aceWL.LockAfterGlobalTime;
 			bLockTime = (uLockTime > 0);
 			m_numLockAfterGlobalTime.Value = (bLockTime ? uLockTime : 240);
 			m_cbLockAfterGlobalTime.Checked = bLockTime;
-			if(AppConfigEx.IsOptionEnforced(aceWL, "LockAfterGlobalTime"))
+			if (AppConfigEx.IsOptionEnforced(aceWL, "LockAfterGlobalTime"))
 				m_cbLockAfterGlobalTime.Enabled = false;
 
 			int nDefaultExpireDays = Program.Config.Defaults.NewEntryExpiresInDays;
-			if(nDefaultExpireDays < 0)
+			if (nDefaultExpireDays < 0)
 				m_cbDefaultExpireDays.Checked = false;
 			else
 			{
 				m_cbDefaultExpireDays.Checked = true;
 				try { m_numDefaultExpireDays.Value = nDefaultExpireDays; }
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
-			if(AppConfigEx.IsOptionEnforced(Program.Config.Defaults, "NewEntryExpiresInDays"))
+			if (AppConfigEx.IsOptionEnforced(Program.Config.Defaults, "NewEntryExpiresInDays"))
 				m_cbDefaultExpireDays.Enabled = false;
 
 			int nClipClear = Program.Config.Security.ClipboardClearAfterSeconds;
-			if(nClipClear >= 0)
+			if (nClipClear >= 0)
 			{
 				m_cbClipClearTime.Checked = true;
 				m_numClipClearTime.Value = nClipClear;
 			}
 			else m_cbClipClearTime.Checked = false;
-			if(AppConfigEx.IsOptionEnforced(Program.Config.Security, "ClipboardClearAfterSeconds"))
+			if (AppConfigEx.IsOptionEnforced(Program.Config.Security, "ClipboardClearAfterSeconds"))
 				m_cbClipClearTime.Enabled = false;
 
 			m_lvSecurityOptions.Columns.Add(string.Empty); // Resize below
@@ -337,14 +337,14 @@ namespace KeePass.Forms
 
 			bool? obNoSEv = null; // Allow read-only by enforced config
 			string strSEvSuffix = string.Empty;
-			if(MonoWorkarounds.IsRequired(1378))
+			if (MonoWorkarounds.IsRequired(1378))
 			{
 				obNoSEv = true;
 				strSEvSuffix = " (" + KPRes.UnsupportedByMono + ")";
 			}
 
 			bool? obNoWin = null; // Allow read-only by enforced config
-			if(NativeLib.IsUnix()) obNoWin = true;
+			if (NativeLib.IsUnix()) obNoWin = true;
 
 			m_cdxSecurityOptions.CreateItem(aceWL, "LockOnWindowMinimize",
 				lvg, KPRes.LockOnMinimizeTaskbar);
@@ -364,11 +364,11 @@ namespace KeePass.Forms
 			lvg = new ListViewGroup(KPRes.ClipboardMain);
 			m_lvSecurityOptions.Groups.Add(lvg);
 
-			Action<ListViewItem> fClipME = delegate(ListViewItem lvi)
+			Action<ListViewItem> fClipME = delegate (ListViewItem lvi)
 			{
-				if(lvi == null) { Debug.Assert(false); return; }
+				if (lvi == null) { Debug.Assert(false); return; }
 				string str = lvi.Text;
-				if(string.IsNullOrEmpty(str)) { Debug.Assert(false); return; }
+				if (string.IsNullOrEmpty(str)) { Debug.Assert(false); return; }
 				lvi.ToolTipText = str + "." + MessageService.NewParagraph +
 					KPRes.ClipboardOptionME;
 			};
@@ -385,7 +385,7 @@ namespace KeePass.Forms
 			lvg = new ListViewGroup(KPRes.Advanced);
 			m_lvSecurityOptions.Groups.Add(lvg);
 
-			if(NativeLib.IsLibraryInstalled())
+			if (NativeLib.IsLibraryInstalled())
 				m_cdxSecurityOptions.CreateItem(Program.Config.Native, "NativeKeyTransformations",
 					lvg, KPRes.NativeLibUse);
 
@@ -439,9 +439,9 @@ namespace KeePass.Forms
 			m_strInitialTsRenderer = Program.Config.UI.ToolStripRenderer;
 
 			bool? obNoMin = null;
-			if(MonoWorkarounds.IsRequired(1418)) obNoMin = true;
+			if (MonoWorkarounds.IsRequired(1418)) obNoMin = true;
 			bool? obNoFocus = null;
-			if(MonoWorkarounds.IsRequired(1976)) obNoFocus = true;
+			if (MonoWorkarounds.IsRequired(1976)) obNoFocus = true;
 
 			m_lvGuiOptions.Columns.Add(KPRes.Options); // Resize below
 
@@ -493,7 +493,7 @@ namespace KeePass.Forms
 			m_cdxGuiOptions.CreateItem(Program.Config.MainWindow, "EntrySelGroupSel",
 				lvg, KPRes.EntrySelGroupSel);
 
-			if(!Program.Config.MainWindow.EntryListShowDerefData)
+			if (!Program.Config.MainWindow.EntryListShowDerefData)
 			{
 				Debug.Assert(!Program.Config.MainWindow.EntryListShowDerefDataAsync);
 				Program.Config.MainWindow.EntryListShowDerefDataAsync = false;
@@ -565,8 +565,8 @@ namespace KeePass.Forms
 			UIUtil.ResizeColumns(m_lvGuiOptions, true);
 
 			try { m_numMruCount.Value = Program.Config.Application.MostRecentlyUsed.MaxItemCount; }
-			catch(Exception) { Debug.Assert(false); m_numMruCount.Value = AceMru.DefaultMaxItemCount; }
-			if(AppConfigEx.IsOptionEnforced(Program.Config.Application.MostRecentlyUsed, "MaxItemCount"))
+			catch (Exception) { Debug.Assert(false); m_numMruCount.Value = AceMru.DefaultMaxItemCount; }
+			if (AppConfigEx.IsOptionEnforced(Program.Config.Application.MostRecentlyUsed, "MaxItemCount"))
 			{
 				m_lblMruCount.Enabled = false;
 				m_numMruCount.Enabled = false;
@@ -576,12 +576,12 @@ namespace KeePass.Forms
 			m_btnAltColor.SelectedColor = ((c != 0) ? Color.FromArgb(c) :
 				UIUtil.GetAlternateColor(m_lvGuiOptions.BackColor));
 			m_cbAltColor.Checked = (c != 0);
-			if(AppConfigEx.IsOptionEnforced(Program.Config.MainWindow, "EntryListAlternatingBgColor"))
+			if (AppConfigEx.IsOptionEnforced(Program.Config.MainWindow, "EntryListAlternatingBgColor"))
 				m_cbAltColor.Enabled = false;
 
-			if(AppConfigEx.IsOptionEnforced(Program.Config.UI, "StandardFont"))
+			if (AppConfigEx.IsOptionEnforced(Program.Config.UI, "StandardFont"))
 				m_fcgList.Enabled = false;
-			if(AppConfigEx.IsOptionEnforced(Program.Config.UI, "PasswordFont") ||
+			if (AppConfigEx.IsOptionEnforced(Program.Config.UI, "PasswordFont") ||
 				MonoWorkarounds.IsRequired(5795))
 				m_fcgPassword.Enabled = false;
 		}
@@ -591,25 +591,25 @@ namespace KeePass.Forms
 			Keys kAT = (Keys)Program.Config.Integration.HotKeyGlobalAutoType;
 			m_hkAutoType.HotKey = kAT;
 			m_kPrevAT = m_hkAutoType.HotKey; // Adjusted one
-			if(AppConfigEx.IsOptionEnforced(Program.Config.Integration, "HotKeyGlobalAutoType"))
+			if (AppConfigEx.IsOptionEnforced(Program.Config.Integration, "HotKeyGlobalAutoType"))
 				UIUtil.SetEnabledFast(false, m_lblAutoType, m_hkAutoType);
 
 			Keys kATP = (Keys)Program.Config.Integration.HotKeyGlobalAutoTypePassword;
 			m_hkAutoTypePassword.HotKey = kATP;
 			m_kPrevATP = m_hkAutoTypePassword.HotKey; // Adjusted one
-			if(AppConfigEx.IsOptionEnforced(Program.Config.Integration, "HotKeyGlobalAutoTypePassword"))
+			if (AppConfigEx.IsOptionEnforced(Program.Config.Integration, "HotKeyGlobalAutoTypePassword"))
 				UIUtil.SetEnabledFast(false, m_lblAutoTypePassword, m_hkAutoTypePassword);
 
 			Keys kATS = (Keys)Program.Config.Integration.HotKeySelectedAutoType;
 			m_hkAutoTypeSelected.HotKey = kATS;
 			m_kPrevATS = m_hkAutoTypeSelected.HotKey; // Adjusted one
-			if(AppConfigEx.IsOptionEnforced(Program.Config.Integration, "HotKeySelectedAutoType"))
+			if (AppConfigEx.IsOptionEnforced(Program.Config.Integration, "HotKeySelectedAutoType"))
 				UIUtil.SetEnabledFast(false, m_lblAutoTypeSelected, m_hkAutoTypeSelected);
 
 			Keys kSW = (Keys)Program.Config.Integration.HotKeyShowWindow;
 			m_hkShowWindow.HotKey = kSW;
 			m_kPrevSW = m_hkShowWindow.HotKey; // Adjusted one
-			if(AppConfigEx.IsOptionEnforced(Program.Config.Integration, "HotKeyShowWindow"))
+			if (AppConfigEx.IsOptionEnforced(Program.Config.Integration, "HotKeyShowWindow"))
 				UIUtil.SetEnabledFast(false, m_lblShowWindow, m_hkShowWindow);
 
 			m_cbAutoRun.Checked = ShellUtil.GetStartWithWindows(AppDefs.AutoRunName);
@@ -622,7 +622,7 @@ namespace KeePass.Forms
 		private void LoadAdvancedOptions()
 		{
 			bool? obNoMin = null;
-			if(MonoWorkarounds.IsRequired(1418)) obNoMin = true;
+			if (MonoWorkarounds.IsRequired(1418)) obNoMin = true;
 
 			m_lvAdvanced.Columns.Add(string.Empty); // Resize below
 
@@ -702,7 +702,7 @@ namespace KeePass.Forms
 			lvg = new ListViewGroup(KPRes.Advanced);
 			m_lvAdvanced.Groups.Add(lvg);
 
-			if(!Program.Config.Integration.SearchKeyFiles)
+			if (!Program.Config.Integration.SearchKeyFiles)
 				Program.Config.Integration.SearchKeyFilesOnRemovableMedia = false;
 			ListViewItem lviSearch = m_cdxAdvanced.CreateItem(
 				Program.Config.Integration, "SearchKeyFiles",
@@ -735,23 +735,23 @@ namespace KeePass.Forms
 			m_cdxAdvanced.UpdateData(false);
 			UIUtil.ResizeColumns(m_lvAdvanced, true);
 
-			if(AppConfigEx.IsOptionEnforced(Program.Config.Integration, "ProxyType") ||
+			if (AppConfigEx.IsOptionEnforced(Program.Config.Integration, "ProxyType") ||
 				AppConfigEx.IsOptionEnforced(Program.Config.Integration, "ProxyAddress"))
 				m_btnProxy.Enabled = false;
 		}
 
 		private bool ValidateOptions()
 		{
-			GFunc<HotKeyControlEx, bool> fAltMod = delegate(HotKeyControlEx c)
+			GFunc<HotKeyControlEx, bool> fAltMod = delegate (HotKeyControlEx c)
 			{
 				Keys m = (c.HotKey & Keys.Modifiers);
 				return ((m == Keys.Alt) || (m == (Keys.Alt | Keys.Shift)));
 			};
 
-			if(fAltMod(m_hkAutoType) || fAltMod(m_hkAutoTypePassword) ||
+			if (fAltMod(m_hkAutoType) || fAltMod(m_hkAutoTypePassword) ||
 				fAltMod(m_hkAutoTypeSelected) || fAltMod(m_hkShowWindow))
 			{
-				if(!MessageService.AskYesNo(KPRes.HotKeyAltOnly + MessageService.NewParagraph +
+				if (!MessageService.AskYesNo(KPRes.HotKeyAltOnly + MessageService.NewParagraph +
 					KPRes.HotKeyAltOnlyHint + MessageService.NewParagraph +
 					KPRes.HotKeyAltOnlyQuestion, null, false))
 					return false;
@@ -762,24 +762,24 @@ namespace KeePass.Forms
 
 		private void SaveOptions()
 		{
-			if(!m_cbLockAfterTime.Checked)
+			if (!m_cbLockAfterTime.Checked)
 				Program.Config.Security.WorkspaceLocking.LockAfterTime = 0;
 			else
 				Program.Config.Security.WorkspaceLocking.LockAfterTime =
 					(uint)m_numLockAfterTime.Value;
 
-			if(!m_cbLockAfterGlobalTime.Checked)
+			if (!m_cbLockAfterGlobalTime.Checked)
 				Program.Config.Security.WorkspaceLocking.LockAfterGlobalTime = 0;
 			else
 				Program.Config.Security.WorkspaceLocking.LockAfterGlobalTime =
 					(uint)m_numLockAfterGlobalTime.Value;
 
-			if(m_cbDefaultExpireDays.Checked)
+			if (m_cbDefaultExpireDays.Checked)
 				Program.Config.Defaults.NewEntryExpiresInDays =
 					(int)m_numDefaultExpireDays.Value;
 			else Program.Config.Defaults.NewEntryExpiresInDays = -1;
 
-			if(m_cbClipClearTime.Checked)
+			if (m_cbClipClearTime.Checked)
 				Program.Config.Security.ClipboardClearAfterSeconds =
 					(int)m_numClipClearTime.Value;
 			else Program.Config.Security.ClipboardClearAfterSeconds = -1;
@@ -795,7 +795,7 @@ namespace KeePass.Forms
 			m_dTsrUuids.TryGetValue(m_cmbMenuStyle.SelectedIndex, out strUuid);
 			Program.Config.UI.ToolStripRenderer = (strUuid ?? string.Empty);
 
-			if(m_cmbBannerStyle.SelectedIndex != (int)BannerStyle.Default)
+			if (m_cmbBannerStyle.SelectedIndex != (int)BannerStyle.Default)
 				Program.Config.UI.BannerStyle = (BannerStyle)
 					m_cmbBannerStyle.SelectedIndex;
 
@@ -834,7 +834,7 @@ namespace KeePass.Forms
 		private void OnFormClosed(object sender, FormClosedEventArgs e)
 		{
 			int nTab = m_tabMain.SelectedIndex;
-			if((nTab >= 0) && (nTab < m_tabMain.TabPages.Count))
+			if ((nTab >= 0) && (nTab < m_tabMain.TabPages.Count))
 				Program.Config.Defaults.OptionsTabIndex = (uint)nTab;
 
 			m_tabMain.ImageList = null; // Detach event handlers
@@ -856,34 +856,34 @@ namespace KeePass.Forms
 			int nHotKeyID)
 		{
 			Keys kNew = hkControl.HotKey;
-			if(kNew == kPrev) return;
+			if (kNew == kPrev) return;
 
 			kPrev = kNew;
 
-			if(nHotKeyID == AppDefs.GlobalHotKeyId.AutoType)
+			if (nHotKeyID == AppDefs.GlobalHotKeyId.AutoType)
 				Program.Config.Integration.HotKeyGlobalAutoType = (long)kNew;
-			else if(nHotKeyID == AppDefs.GlobalHotKeyId.AutoTypePassword)
+			else if (nHotKeyID == AppDefs.GlobalHotKeyId.AutoTypePassword)
 				Program.Config.Integration.HotKeyGlobalAutoTypePassword = (long)kNew;
-			else if(nHotKeyID == AppDefs.GlobalHotKeyId.AutoTypeSelected)
+			else if (nHotKeyID == AppDefs.GlobalHotKeyId.AutoTypeSelected)
 				Program.Config.Integration.HotKeySelectedAutoType = (long)kNew;
-			else if(nHotKeyID == AppDefs.GlobalHotKeyId.ShowWindow)
+			else if (nHotKeyID == AppDefs.GlobalHotKeyId.ShowWindow)
 				Program.Config.Integration.HotKeyShowWindow = (long)kNew;
 			else { Debug.Assert(false); }
 
 			HotKeyManager.UnregisterHotKey(nHotKeyID);
-			if(kNew != Keys.None)
+			if (kNew != Keys.None)
 				HotKeyManager.RegisterHotKey(nHotKeyID, kNew);
 		}
 
 		private void UpdateUIState()
 		{
-			if(m_bBlockUIUpdate) return;
+			if (m_bBlockUIUpdate) return;
 			m_bBlockUIUpdate = true;
 
 			m_numLockAfterTime.Enabled = (m_cbLockAfterTime.Checked &&
 				m_cbLockAfterTime.Enabled);
 
-			if(WinUtil.IsWindows9x || NativeLib.IsUnix())
+			if (WinUtil.IsWindows9x || NativeLib.IsUnix())
 			{
 				m_cbLockAfterGlobalTime.Checked = false;
 				m_cbLockAfterGlobalTime.Enabled = false;
@@ -906,7 +906,7 @@ namespace KeePass.Forms
 
 		private void OnBtnOK(object sender, EventArgs e)
 		{
-			if(!ValidateOptions()) { this.DialogResult = DialogResult.None; return; }
+			if (!ValidateOptions()) { this.DialogResult = DialogResult.None; return; }
 
 			SaveOptions();
 		}
@@ -948,21 +948,21 @@ namespace KeePass.Forms
 
 		private void OnCheckedChangedAutoRun(object sender, EventArgs e)
 		{
-			if(m_bLoadingSettings) return;
+			if (m_bLoadingSettings) return;
 
 			bool bRequested = m_cbAutoRun.Checked;
 			bool bCurrent = ShellUtil.GetStartWithWindows(AppDefs.AutoRunName);
 
-			if(bRequested != bCurrent)
+			if (bRequested != bCurrent)
 			{
 				string strPath = WinUtil.GetExecutable().Trim();
-				if(!strPath.StartsWith("\"")) strPath = "\"" + strPath + "\"";
+				if (!strPath.StartsWith("\"")) strPath = "\"" + strPath + "\"";
 				ShellUtil.SetStartWithWindows(AppDefs.AutoRunName, strPath,
 					bRequested);
 
 				bool bNew = ShellUtil.GetStartWithWindows(AppDefs.AutoRunName);
 
-				if(bNew != bRequested)
+				if (bNew != bRequested)
 					m_cbAutoRun.Checked = bNew;
 			}
 		}
@@ -982,7 +982,7 @@ namespace KeePass.Forms
 			UrlOverridesForm dlg = new UrlOverridesForm();
 			dlg.InitEx(m_aceUrlSchemeOverrides, m_strUrlOverrideAll);
 
-			if(dlg.ShowDialog() == DialogResult.OK)
+			if (dlg.ShowDialog() == DialogResult.OK)
 				m_strUrlOverrideAll = dlg.UrlOverrideAll;
 
 			UIUtil.DestroyForm(dlg);

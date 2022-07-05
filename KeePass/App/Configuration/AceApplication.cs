@@ -53,7 +53,7 @@ namespace KeePass.App.Configuration
 			get { return m_strLanguageFile; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strLanguageFile = value;
 			}
 		}
@@ -73,7 +73,7 @@ namespace KeePass.App.Configuration
 			get { return m_strHelpUrl; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strHelpUrl = value;
 			}
 		}
@@ -86,7 +86,7 @@ namespace KeePass.App.Configuration
 			get { return m_strLastUpdChk; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strLastUpdChk = value;
 			}
 		}
@@ -96,12 +96,12 @@ namespace KeePass.App.Configuration
 		{
 			get
 			{
-				if(m_ioLastDb == null) m_ioLastDb = new IOConnectionInfo();
+				if (m_ioLastDb == null) m_ioLastDb = new IOConnectionInfo();
 				return m_ioLastDb;
 			}
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_ioLastDb = value;
 			}
 		}
@@ -111,12 +111,12 @@ namespace KeePass.App.Configuration
 		{
 			get
 			{
-				if(m_mru == null) m_mru = new AceMru();
+				if (m_mru == null) m_mru = new AceMru();
 				return m_mru;
 			}
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_mru = value;
 			}
 		}
@@ -143,7 +143,7 @@ namespace KeePass.App.Configuration
 			get { return SerializeWorkingDirectories(); }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				DeserializeWorkingDirectories(value);
 			}
 		}
@@ -153,12 +153,12 @@ namespace KeePass.App.Configuration
 		{
 			get
 			{
-				if(m_su == null) m_su = new AceStartUp();
+				if (m_su == null) m_su = new AceStartUp();
 				return m_su;
 			}
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_su = value;
 			}
 		}
@@ -168,12 +168,12 @@ namespace KeePass.App.Configuration
 		{
 			get
 			{
-				if(m_fo == null) m_fo = new AceOpenDb();
+				if (m_fo == null) m_fo = new AceOpenDb();
 				return m_fo;
 			}
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_fo = value;
 			}
 		}
@@ -240,7 +240,7 @@ namespace KeePass.App.Configuration
 			get { return m_fc; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_fc = value;
 			}
 		}
@@ -251,7 +251,7 @@ namespace KeePass.App.Configuration
 			get { return m_triggers; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_triggers = value;
 			}
 		}
@@ -263,7 +263,7 @@ namespace KeePass.App.Configuration
 			get { return m_strPluginCachePath; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strPluginCachePath = value;
 			}
 		}
@@ -275,7 +275,7 @@ namespace KeePass.App.Configuration
 			get { return m_lPluginCompat; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_lPluginCompat = value;
 			}
 		}
@@ -292,16 +292,16 @@ namespace KeePass.App.Configuration
 		{
 			string str;
 
-			if(d == AceDir.App)
+			if (d == AceDir.App)
 				str = UrlUtil.GetFileDirectory(WinUtil.GetExecutable(),
 					true, false) + AppDefs.LanguagesDir;
-			else if(d == AceDir.User)
+			else if (d == AceDir.User)
 				str = UrlUtil.EnsureTerminatingSeparator(
 					AppConfigSerializer.AppDataDirectory, false) +
 					AppDefs.LanguagesDir;
 			else { Debug.Assert(false); return string.Empty; }
 
-			if(bTermSep) str = UrlUtil.EnsureTerminatingSeparator(str, false);
+			if (bTermSep) str = UrlUtil.EnsureTerminatingSeparator(str, false);
 
 			return str;
 		}
@@ -311,10 +311,10 @@ namespace KeePass.App.Configuration
 		internal string GetLanguageFilePath()
 		{
 			string str = m_strLanguageFile;
-			if(str.Length == 0) return string.Empty;
+			if (str.Length == 0) return string.Empty;
 
 			string strDir, strName;
-			if(str.StartsWith(LngPrefixUser, StrUtil.CaseIgnoreCmp))
+			if (str.StartsWith(LngPrefixUser, StrUtil.CaseIgnoreCmp))
 			{
 				strDir = GetLanguagesDir(AceDir.User, true);
 				strName = str.Substring(LngPrefixUser.Length);
@@ -328,7 +328,7 @@ namespace KeePass.App.Configuration
 			// File name must not contain a directory separator
 			// (language files must be directly in the directory,
 			// not any subdirectory of it or somewhere else)
-			if(UrlUtil.GetFileName(strName) != strName)
+			if (UrlUtil.GetFileName(strName) != strName)
 			{
 				Debug.Assert(false);
 				return string.Empty;
@@ -340,17 +340,17 @@ namespace KeePass.App.Configuration
 		internal void SetLanguageFilePath(string strPath)
 		{
 			m_strLanguageFile = string.Empty;
-			if(string.IsNullOrEmpty(strPath)) return;
+			if (string.IsNullOrEmpty(strPath)) return;
 
 			string str = GetLanguagesDir(AceDir.App, true);
-			if(strPath.StartsWith(str, StrUtil.CaseIgnoreCmp))
+			if (strPath.StartsWith(str, StrUtil.CaseIgnoreCmp))
 			{
 				m_strLanguageFile = strPath.Substring(str.Length);
 				return;
 			}
 
 			str = GetLanguagesDir(AceDir.User, true);
-			if(strPath.StartsWith(str, StrUtil.CaseIgnoreCmp))
+			if (strPath.StartsWith(str, StrUtil.CaseIgnoreCmp))
 			{
 				m_strLanguageFile = LngPrefixUser + strPath.Substring(str.Length);
 				return;
@@ -363,7 +363,7 @@ namespace KeePass.App.Configuration
 		{
 			// strContext may be null
 
-			if(!m_bRememberWorkDirs) return null;
+			if (!m_bRememberWorkDirs) return null;
 
 			string str;
 			m_dictWorkingDirs.TryGetValue(strContext ?? string.Empty, out str);
@@ -376,23 +376,23 @@ namespace KeePass.App.Configuration
 
 			// if(!m_bRememberWorkDirs) return;
 
-			if(string.IsNullOrEmpty(strContext)) return;
+			if (string.IsNullOrEmpty(strContext)) return;
 			m_dictWorkingDirs[strContext] = (strDir ?? string.Empty);
 		}
 
 		internal List<string> GetWorkingDirectoryContexts()
 		{
-			if(!m_bRememberWorkDirs) return new List<string>();
+			if (!m_bRememberWorkDirs) return new List<string>();
 
 			return new List<string>(m_dictWorkingDirs.Keys);
 		}
 
 		private string[] SerializeWorkingDirectories()
 		{
-			if(!m_bRememberWorkDirs) return new string[0];
+			if (!m_bRememberWorkDirs) return new string[0];
 
 			List<string> l = new List<string>();
-			foreach(KeyValuePair<string, string> kvp in m_dictWorkingDirs)
+			foreach (KeyValuePair<string, string> kvp in m_dictWorkingDirs)
 				l.Add(kvp.Key + @"@" + kvp.Value);
 			return l.ToArray();
 		}
@@ -404,12 +404,12 @@ namespace KeePass.App.Configuration
 
 			m_dictWorkingDirs.Clear();
 
-			foreach(string str in v)
+			foreach (string str in v)
 			{
-				if(str == null) { Debug.Assert(false); continue; }
+				if (str == null) { Debug.Assert(false); continue; }
 
 				int iSep = str.IndexOf('@');
-				if(iSep <= 0) { Debug.Assert(false); continue; }
+				if (iSep <= 0) { Debug.Assert(false); continue; }
 
 				m_dictWorkingDirs[str.Substring(0, iSep)] = str.Substring(iSep + 1);
 			}
@@ -417,7 +417,7 @@ namespace KeePass.App.Configuration
 
 		internal bool IsPluginCompat(string strHash)
 		{
-			if(string.IsNullOrEmpty(strHash)) { Debug.Assert(false); return false; }
+			if (string.IsNullOrEmpty(strHash)) { Debug.Assert(false); return false; }
 
 			string str = "@" + strHash + "@" + WinUtil.GetAssemblyVersion() + "@1";
 
@@ -426,11 +426,11 @@ namespace KeePass.App.Configuration
 
 		internal void SetPluginCompat(string strHash)
 		{
-			if(string.IsNullOrEmpty(strHash)) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strHash)) { Debug.Assert(false); return; }
 
 			string str = "@" + strHash + "@" + WinUtil.GetAssemblyVersion() + "@1";
 
-			if(m_lPluginCompat.Contains(str)) { Debug.Assert(false); return; }
+			if (m_lPluginCompat.Contains(str)) { Debug.Assert(false); return; }
 			m_lPluginCompat.Insert(0, str); // See auto. maintenance
 		}
 	}
@@ -556,7 +556,7 @@ namespace KeePass.App.Configuration
 			get { return m_lItems; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_lItems = value;
 			}
 		}

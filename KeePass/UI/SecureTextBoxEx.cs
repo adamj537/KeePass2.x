@@ -51,7 +51,7 @@ namespace KeePass.UI
 			get { return m_psText; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); value = ProtectedString.EmptyEx; }
+				if (value == null) { Debug.Assert(false); value = ProtectedString.EmptyEx; }
 				m_psText = value.WithProtection(true); // For incremental editing
 
 				ShowCurrentText(0, 0);
@@ -66,7 +66,7 @@ namespace KeePass.UI
 		{
 			get
 			{
-				if(!m_ochPasswordChar.HasValue)
+				if (!m_ochPasswordChar.HasValue)
 				{
 					// On Windows 98/ME, an ANSI character must be used as
 					// password char
@@ -80,14 +80,14 @@ namespace KeePass.UI
 
 		public SecureTextBoxEx()
 		{
-			if(Program.DesignMode) return;
+			if (Program.DesignMode) return;
 
 			try
 			{
 				bool bSTA = (Thread.CurrentThread.GetApartmentState() == ApartmentState.STA);
 				this.AllowDrop = bSTA;
 			}
-			catch(Exception) { Debug.Assert(false); this.AllowDrop = false; }
+			catch (Exception) { Debug.Assert(false); this.AllowDrop = false; }
 
 			this.UseSystemPasswordChar = true;
 		}
@@ -95,32 +95,32 @@ namespace KeePass.UI
 #if DEBUG
 		~SecureTextBoxEx()
 		{
-			if(!Program.DesignMode) { Debug.Assert(m_bInitExCalled); }
+			if (!Program.DesignMode) { Debug.Assert(m_bInitExCalled); }
 		}
 #endif
 
 		public static void InitEx(ref SecureTextBoxEx s)
 		{
-			if(Program.DesignMode) return;
+			if (Program.DesignMode) return;
 
 #if DEBUG
-			if(s != null) s.m_bInitExCalled = true; // Org. object
+			if (s != null) s.m_bInitExCalled = true; // Org. object
 #endif
 			UIUtil.PerformOverride(ref s);
 #if DEBUG
-			if(s != null) s.m_bInitExCalled = true; // New object
+			if (s != null) s.m_bInitExCalled = true; // New object
 #endif
 		}
 
 		public virtual void EnableProtection(bool bEnable)
 		{
-			if(bEnable == this.UseSystemPasswordChar) return;
+			if (bEnable == this.UseSystemPasswordChar) return;
 
-			if(!MonoWorkarounds.IsRequired(5795))
+			if (!MonoWorkarounds.IsRequired(5795))
 			{
 				FontUtil.SetDefaultFont(this);
 
-				if(bEnable) FontUtil.AssignDefault(this);
+				if (bEnable) FontUtil.AssignDefault(this);
 				else FontUtil.AssignDefaultMono(this, true);
 			}
 
@@ -130,21 +130,21 @@ namespace KeePass.UI
 
 		private void ShowCurrentText(int nSelStart, int nSelLength)
 		{
-			if(nSelStart < 0) nSelStart = this.SelectionStart;
-			if(nSelLength < 0) nSelLength = this.SelectionLength;
+			if (nSelStart < 0) nSelStart = this.SelectionStart;
+			if (nSelLength < 0) nSelLength = this.SelectionLength;
 
 			++m_uBlockTextChanged;
-			if(!this.UseSystemPasswordChar)
+			if (!this.UseSystemPasswordChar)
 				this.Text = m_psText.ReadString();
 			else
 				this.Text = new string(SecureTextBoxEx.PasswordCharEx, m_psText.Length);
 			--m_uBlockTextChanged;
 
 			int nNewTextLen = this.TextLength;
-			if(nSelStart < 0) { Debug.Assert(false); nSelStart = 0; }
-			if(nSelStart > nNewTextLen) nSelStart = nNewTextLen; // Behind last char
-			if(nSelLength < 0) { Debug.Assert(false); nSelLength = 0; }
-			if((nSelStart + nSelLength) > nNewTextLen)
+			if (nSelStart < 0) { Debug.Assert(false); nSelStart = 0; }
+			if (nSelStart > nNewTextLen) nSelStart = nNewTextLen; // Behind last char
+			if (nSelLength < 0) { Debug.Assert(false); nSelLength = 0; }
+			if ((nSelStart + nSelLength) > nNewTextLen)
 				nSelLength = nNewTextLen - nSelStart;
 			Select(nSelStart, nSelLength);
 
@@ -155,9 +155,9 @@ namespace KeePass.UI
 
 		protected override void OnTextChanged(EventArgs e)
 		{
-			if(m_uBlockTextChanged != 0) return;
+			if (m_uBlockTextChanged != 0) return;
 
-			if(!this.UseSystemPasswordChar)
+			if (!this.UseSystemPasswordChar)
 			{
 				m_psText = new ProtectedString(true, this.Text);
 				base.OnTextChanged(e);
@@ -172,18 +172,18 @@ namespace KeePass.UI
 			StringBuilder sbNewPart = new StringBuilder();
 
 			char chPasswordChar = SecureTextBoxEx.PasswordCharEx;
-			for(int i = 0; i < strText.Length; ++i)
+			for (int i = 0; i < strText.Length; ++i)
 			{
-				if(strText[i] != chPasswordChar)
+				if (strText[i] != chPasswordChar)
 				{
-					if(inxLeft == -1) inxLeft = i;
+					if (inxLeft == -1) inxLeft = i;
 					inxRight = i;
 
 					sbNewPart.Append(strText[i]);
 				}
 			}
 
-			if(inxLeft < 0)
+			if (inxLeft < 0)
 				RemoveInsert(nSelPos, strText.Length - nSelPos, string.Empty);
 			else
 				RemoveInsert(inxLeft, strText.Length - inxRight - 1,
@@ -199,21 +199,21 @@ namespace KeePass.UI
 			try
 			{
 				int cr = m_psText.Length - (nLeftRem + nRightRem);
-				if(cr >= 0) m_psText = m_psText.Remove(nLeftRem, cr);
+				if (cr >= 0) m_psText = m_psText.Remove(nLeftRem, cr);
 				else { Debug.Assert(false); }
 				Debug.Assert(m_psText.Length == (nLeftRem + nRightRem));
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			try { m_psText = m_psText.Insert(nLeftRem, strInsert); }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		protected override void OnGotFocus(EventArgs e)
 		{
 			base.OnGotFocus(e);
 
-			if(m_bFirstGotFocus)
+			if (m_bFirstGotFocus)
 			{
 				m_bFirstGotFocus = false;
 
@@ -224,22 +224,22 @@ namespace KeePass.UI
 				// e.g. the selection restoration when hiding/unhiding does
 				// not work the first time (because after restoring the
 				// selection, we would override it here by selecting all)
-				if((this.SelectionStart <= 0) && (this.SelectionLength <= 0))
+				if ((this.SelectionStart <= 0) && (this.SelectionLength <= 0))
 					SelectAll();
 			}
 		}
 
 		private static bool DragCheck(DragEventArgs e)
 		{
-			if(e.Data.GetDataPresent(typeof(string)))
+			if (e.Data.GetDataPresent(typeof(string)))
 			{
 				DragDropEffects eA = e.AllowedEffect;
-				if((eA & DragDropEffects.Copy) != DragDropEffects.None)
+				if ((eA & DragDropEffects.Copy) != DragDropEffects.None)
 				{
 					e.Effect = DragDropEffects.Copy;
 					return true;
 				}
-				if((eA & DragDropEffects.Move) != DragDropEffects.None)
+				if ((eA & DragDropEffects.Move) != DragDropEffects.None)
 				{
 					e.Effect = DragDropEffects.Move;
 					return true;
@@ -252,21 +252,21 @@ namespace KeePass.UI
 
 		protected override void OnDragEnter(DragEventArgs drgevent)
 		{
-			if(!DragCheck(drgevent)) base.OnDragEnter(drgevent);
+			if (!DragCheck(drgevent)) base.OnDragEnter(drgevent);
 		}
 
 		protected override void OnDragOver(DragEventArgs drgevent)
 		{
-			if(!DragCheck(drgevent)) base.OnDragOver(drgevent);
+			if (!DragCheck(drgevent)) base.OnDragOver(drgevent);
 		}
 
 		protected override void OnDragDrop(DragEventArgs drgevent)
 		{
-			if(drgevent.Data.GetDataPresent(typeof(string)))
+			if (drgevent.Data.GetDataPresent(typeof(string)))
 			{
 				string str = (drgevent.Data.GetData(typeof(string)) as string);
-				if(str == null) { Debug.Assert(false); return; }
-				if(str.Length == 0) return;
+				if (str == null) { Debug.Assert(false); return; }
+				if (str.Length == 0) return;
 
 				Paste(str);
 			}

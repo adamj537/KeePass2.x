@@ -44,7 +44,7 @@ namespace KeePassLib.Keys
 			get { return m_meta; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_meta = value;
 			}
 		}
@@ -55,35 +55,35 @@ namespace KeePassLib.Keys
 			get { return m_key; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_key = value;
 			}
 		}
 
 		public static KfxFile Create(ulong uVersion, byte[] pbKey, byte[] pbHash)
 		{
-			if(pbKey == null) throw new ArgumentNullException("pbKey");
-			if(pbKey.Length == 0) throw new ArgumentOutOfRangeException("pbKey");
+			if (pbKey == null) throw new ArgumentNullException("pbKey");
+			if (pbKey.Length == 0) throw new ArgumentOutOfRangeException("pbKey");
 
-			if(uVersion == 0) uVersion = 0x0002000000000000;
+			if (uVersion == 0) uVersion = 0x0002000000000000;
 
 			// Null hash: generate one, empty hash: store no hash
-			if(pbHash == null) pbHash = HashData(pbKey);
+			if (pbHash == null) pbHash = HashData(pbKey);
 			VerifyHash(pbKey, pbHash);
 
 			KfxFile kf = new KfxFile();
 
-			if(uVersion == 0x0001000000000000)
+			if (uVersion == 0x0001000000000000)
 				kf.Meta.Version = "1.00"; // KeePass <= 2.46 used two zeros
 			else kf.Meta.Version = StrUtil.VersionToString(uVersion, 2);
 
-			if(uVersion == 0x0001000000000000)
+			if (uVersion == 0x0001000000000000)
 				kf.Key.Data.Value = Convert.ToBase64String(pbKey);
-			else if(uVersion == 0x0002000000000000)
+			else if (uVersion == 0x0002000000000000)
 			{
 				kf.Key.Data.Value = FormatKeyHex(pbKey, 3);
 
-				if(pbHash.Length != 0)
+				if (pbHash.Length != 0)
 					kf.Key.Data.Hash = MemUtil.ByteArrayToHexString(pbHash);
 			}
 			else throw new NotSupportedException(KLRes.FileVersionUnsupported);
@@ -101,17 +101,17 @@ namespace KeePassLib.Keys
 
 		internal static bool CanLoad(string strFilePath)
 		{
-			if(string.IsNullOrEmpty(strFilePath)) { Debug.Assert(false); return false; }
+			if (string.IsNullOrEmpty(strFilePath)) { Debug.Assert(false); return false; }
 
 			try
 			{
 				IOConnectionInfo ioc = IOConnectionInfo.FromPath(strFilePath);
-				using(Stream s = IOConnection.OpenRead(ioc))
+				using (Stream s = IOConnection.OpenRead(ioc))
 				{
 					return (Load(s) != null);
 				}
 			}
-			catch(Exception) { }
+			catch (Exception) { }
 
 			return false;
 		}
@@ -131,27 +131,27 @@ namespace KeePassLib.Keys
 			StringBuilder sb = new StringBuilder();
 			string str = MemUtil.ByteArrayToHexString(pb);
 
-			for(int i = 0; i < str.Length; ++i)
+			for (int i = 0; i < str.Length; ++i)
 			{
-				if((i & 0x1F) == 0)
+				if ((i & 0x1F) == 0)
 				{
 					sb.AppendLine();
 					sb.Append('\t', cTabs);
 				}
-				else if((i & 0x07) == 0) sb.Append(' ');
+				else if ((i & 0x07) == 0) sb.Append(' ');
 
 				sb.Append(str[i]);
 			}
 
 			sb.AppendLine();
-			if(cTabs > 0) sb.Append('\t', cTabs - 1);
+			if (cTabs > 0) sb.Append('\t', cTabs - 1);
 			return sb.ToString();
 		}
 
 		private ulong GetVersion()
 		{
 			string str = m_meta.Version;
-			if(string.IsNullOrEmpty(str)) return 0;
+			if (string.IsNullOrEmpty(str)) return 0;
 
 			return StrUtil.ParseVersion(str);
 		}
@@ -161,7 +161,7 @@ namespace KeePassLib.Keys
 			ulong uVersion = GetVersion();
 
 			byte[] pbKey = ParseKey(uVersion, m_key.Data.Value);
-			if((pbKey == null) || (pbKey.Length == 0))
+			if ((pbKey == null) || (pbKey.Length == 0))
 				throw new FormatException(KLRes.FileCorrupted);
 
 			byte[] pbHash = ParseHash(m_key.Data.Hash);
@@ -178,26 +178,26 @@ namespace KeePassLib.Keys
 		private static void VerifyHash(byte[] pbKey, byte[] pbHash)
 		{
 			// The hash is optional; empty hash means success
-			if((pbHash == null) || (pbHash.Length == 0)) return;
+			if ((pbHash == null) || (pbHash.Length == 0)) return;
 
 			byte[] pbHashCmp = HashData(pbKey);
-			if(!MemUtil.ArraysEqual(pbHash, pbHashCmp))
+			if (!MemUtil.ArraysEqual(pbHash, pbHashCmp))
 				throw new InvalidDataException(KLRes.KeyHashMismatch);
 		}
 
 		private static byte[] ParseKey(ulong uVersion, string strKey)
 		{
-			if(strKey == null) throw new ArgumentNullException("strKey");
+			if (strKey == null) throw new ArgumentNullException("strKey");
 
 			strKey = StrUtil.RemoveWhiteSpace(strKey);
-			if(string.IsNullOrEmpty(strKey)) return MemUtil.EmptyByteArray;
+			if (string.IsNullOrEmpty(strKey)) return MemUtil.EmptyByteArray;
 
 			uVersion &= KfxVersionCriticalMask;
 
 			byte[] pbKey;
-			if(uVersion == 0x0001000000000000)
+			if (uVersion == 0x0001000000000000)
 				pbKey = Convert.FromBase64String(strKey);
-			else if(uVersion == 0x0002000000000000)
+			else if (uVersion == 0x0002000000000000)
 				pbKey = ParseHex(strKey);
 			else throw new NotSupportedException(KLRes.FileVersionUnsupported);
 
@@ -211,10 +211,10 @@ namespace KeePassLib.Keys
 
 		private static byte[] ParseHex(string str)
 		{
-			if(str == null) throw new ArgumentNullException("str");
-			if(str.Length == 0) return MemUtil.EmptyByteArray;
+			if (str == null) throw new ArgumentNullException("str");
+			if (str.Length == 0) return MemUtil.EmptyByteArray;
 
-			if(((str.Length & 1) != 0) || !StrUtil.IsHexString(str, true))
+			if (((str.Length & 1) != 0) || !StrUtil.IsHexString(str, true))
 				throw new FormatException();
 
 			return MemUtil.HexStringToByteArray(str);
@@ -230,7 +230,7 @@ namespace KeePassLib.Keys
 			get { return m_strVersion; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strVersion = value;
 			}
 		}
@@ -244,7 +244,7 @@ namespace KeePassLib.Keys
 			get { return m_data; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_data = value;
 			}
 		}
@@ -260,7 +260,7 @@ namespace KeePassLib.Keys
 			get { return m_strHash; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strHash = value;
 			}
 		}
@@ -273,7 +273,7 @@ namespace KeePassLib.Keys
 			get { return m_strValue; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strValue = value;
 			}
 		}

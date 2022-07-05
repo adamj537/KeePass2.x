@@ -38,7 +38,7 @@ namespace KeePass.App.Configuration
 			get { return m_pwgoAutoProfile; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_pwgoAutoProfile = value;
 			}
 		}
@@ -49,7 +49,7 @@ namespace KeePass.App.Configuration
 			get { return m_pwgoLastProfile; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_pwgoLastProfile = value;
 			}
 		}
@@ -61,7 +61,7 @@ namespace KeePass.App.Configuration
 			get { return m_vUserProfiles; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_vUserProfiles = value;
 			}
 		}

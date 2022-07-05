@@ -80,7 +80,7 @@ namespace KeePassLib.Security
 			get
 			{
 				ProtectedBinary p = m_pbUtf8; // Local ref for thread-safety
-				if(p != null) return (p.Length == 0);
+				if (p != null) return (p.Length == 0);
 
 				Debug.Assert(m_strPlainText != null);
 				return (m_strPlainText.Length == 0);
@@ -95,10 +95,10 @@ namespace KeePassLib.Security
 		{
 			get
 			{
-				if(m_nCachedLength >= 0) return m_nCachedLength;
+				if (m_nCachedLength >= 0) return m_nCachedLength;
 
 				ProtectedBinary p = m_pbUtf8; // Local ref for thread-safety
-				if(p != null)
+				if (p != null)
 				{
 					byte[] pbPlain = p.ReadData();
 					try { m_nCachedLength = StrUtil.Utf8.GetCharCount(pbPlain); }
@@ -161,16 +161,16 @@ namespace KeePassLib.Security
 		/// be <c>null</c>-terminated.</param>
 		public ProtectedString(bool bEnableProtection, XorredBuffer xb)
 		{
-			if(xb == null) { Debug.Assert(false); throw new ArgumentNullException("xb"); }
+			if (xb == null) { Debug.Assert(false); throw new ArgumentNullException("xb"); }
 
 			byte[] pb = xb.ReadPlainText();
 			try { Init(bEnableProtection, pb); }
-			finally { if(bEnableProtection) MemUtil.ZeroByteArray(pb); }
+			finally { if (bEnableProtection) MemUtil.ZeroByteArray(pb); }
 		}
 
 		private void Init(bool bEnableProtection, string str)
 		{
-			if(str == null) throw new ArgumentNullException("str");
+			if (str == null) throw new ArgumentNullException("str");
 
 			m_bIsProtected = bEnableProtection;
 
@@ -181,11 +181,11 @@ namespace KeePassLib.Security
 
 		private void Init(bool bEnableProtection, byte[] pbUtf8)
 		{
-			if(pbUtf8 == null) throw new ArgumentNullException("pbUtf8");
+			if (pbUtf8 == null) throw new ArgumentNullException("pbUtf8");
 
 			m_bIsProtected = bEnableProtection;
 
-			if(bEnableProtection)
+			if (bEnableProtection)
 				m_pbUtf8 = new ProtectedBinary(true, pbUtf8);
 			else
 				m_strPlainText = StrUtil.Utf8.GetString(pbUtf8, 0, pbUtf8.Length);
@@ -200,7 +200,7 @@ namespace KeePassLib.Security
 		/// <returns>Plain-text string. Is never <c>null</c>.</returns>
 		public string ReadString()
 		{
-			if(m_strPlainText != null) return m_strPlainText;
+			if (m_strPlainText != null) return m_strPlainText;
 
 			byte[] pb = ReadUtf8();
 			string str = ((pb.Length == 0) ? string.Empty :
@@ -224,7 +224,7 @@ namespace KeePassLib.Security
 		/// <returns>Plain-text char array.</returns>
 		public char[] ReadChars()
 		{
-			if(m_strPlainText != null) return m_strPlainText.ToCharArray();
+			if (m_strPlainText != null) return m_strPlainText.ToCharArray();
 
 			byte[] pb = ReadUtf8();
 			char[] v;
@@ -243,7 +243,7 @@ namespace KeePassLib.Security
 		public byte[] ReadUtf8()
 		{
 			ProtectedBinary p = m_pbUtf8; // Local ref for thread-safety
-			if(p != null) return p.ReadData();
+			if (p != null) return p.ReadData();
 
 			return StrUtil.Utf8.GetBytes(m_strPlainText);
 		}
@@ -254,7 +254,7 @@ namespace KeePassLib.Security
 		/// </summary>
 		public byte[] ReadXorredString(CryptoRandomStream crsRandomSource)
 		{
-			if(crsRandomSource == null) { Debug.Assert(false); throw new ArgumentNullException("crsRandomSource"); }
+			if (crsRandomSource == null) { Debug.Assert(false); throw new ArgumentNullException("crsRandomSource"); }
 
 			byte[] pbData = ReadUtf8();
 			int cb = pbData.Length;
@@ -262,7 +262,7 @@ namespace KeePassLib.Security
 			byte[] pbPad = crsRandomSource.GetRandomBytes((uint)cb);
 			Debug.Assert(pbPad.Length == cb);
 
-			for(int i = 0; i < cb; ++i)
+			for (int i = 0; i < cb; ++i)
 				pbData[i] ^= pbPad[i];
 
 			MemUtil.ZeroByteArray(pbPad);
@@ -271,7 +271,7 @@ namespace KeePassLib.Security
 
 		public ProtectedString WithProtection(bool bProtect)
 		{
-			if(bProtect == m_bIsProtected) return this;
+			if (bProtect == m_bIsProtected) return this;
 
 			byte[] pb = ReadUtf8();
 
@@ -281,12 +281,12 @@ namespace KeePassLib.Security
 
 		public bool Equals(ProtectedString ps, bool bCheckProtEqual)
 		{
-			if(ps == null) throw new ArgumentNullException("ps");
-			if(object.ReferenceEquals(this, ps)) return true; // Perf. opt.
+			if (ps == null) throw new ArgumentNullException("ps");
+			if (object.ReferenceEquals(this, ps)) return true; // Perf. opt.
 
 			bool bPA = m_bIsProtected, bPB = ps.m_bIsProtected;
-			if(bCheckProtEqual && (bPA != bPB)) return false;
-			if(!bPA && !bPB) return (ReadString() == ps.ReadString());
+			if (bCheckProtEqual && (bPA != bPB)) return false;
+			if (!bPA && !bPB) return (ReadString() == ps.ReadString());
 
 			byte[] pbA = ReadUtf8(), pbB = null;
 			bool bEq;
@@ -297,8 +297,8 @@ namespace KeePassLib.Security
 			}
 			finally
 			{
-				if(bPA) MemUtil.ZeroByteArray(pbA);
-				if(bPB && (pbB != null)) MemUtil.ZeroByteArray(pbB);
+				if (bPA) MemUtil.ZeroByteArray(pbA);
+				if (bPB && (pbB != null)) MemUtil.ZeroByteArray(pbB);
 			}
 
 			return bEq;
@@ -306,11 +306,11 @@ namespace KeePassLib.Security
 
 		public ProtectedString Insert(int iStart, string strInsert)
 		{
-			if(iStart < 0) throw new ArgumentOutOfRangeException("iStart");
-			if(strInsert == null) throw new ArgumentNullException("strInsert");
-			if(strInsert.Length == 0) return this;
+			if (iStart < 0) throw new ArgumentOutOfRangeException("iStart");
+			if (strInsert == null) throw new ArgumentNullException("strInsert");
+			if (strInsert.Length == 0) return this;
 
-			if(!m_bIsProtected)
+			if (!m_bIsProtected)
 				return new ProtectedString(false, ReadString().Insert(
 					iStart, strInsert));
 
@@ -321,7 +321,7 @@ namespace KeePassLib.Security
 
 			try
 			{
-				if(iStart > v.Length)
+				if (iStart > v.Length)
 					throw new ArgumentOutOfRangeException("iStart");
 
 				char[] vIns = strInsert.ToCharArray();
@@ -341,8 +341,8 @@ namespace KeePassLib.Security
 			finally
 			{
 				MemUtil.ZeroArray<char>(v);
-				if(vNew != null) MemUtil.ZeroArray<char>(vNew);
-				if(pbNew != null) MemUtil.ZeroByteArray(pbNew);
+				if (vNew != null) MemUtil.ZeroArray<char>(vNew);
+				if (pbNew != null) MemUtil.ZeroByteArray(pbNew);
 			}
 
 			return ps;
@@ -350,11 +350,11 @@ namespace KeePassLib.Security
 
 		public ProtectedString Remove(int iStart, int nCount)
 		{
-			if(iStart < 0) throw new ArgumentOutOfRangeException("iStart");
-			if(nCount < 0) throw new ArgumentOutOfRangeException("nCount");
-			if(nCount == 0) return this;
+			if (iStart < 0) throw new ArgumentOutOfRangeException("iStart");
+			if (nCount < 0) throw new ArgumentOutOfRangeException("nCount");
+			if (nCount == 0) return this;
 
-			if(!m_bIsProtected)
+			if (!m_bIsProtected)
 				return new ProtectedString(false, ReadString().Remove(
 					iStart, nCount));
 
@@ -365,7 +365,7 @@ namespace KeePassLib.Security
 
 			try
 			{
-				if((iStart + nCount) > v.Length)
+				if ((iStart + nCount) > v.Length)
 					throw new ArgumentException("(iStart + nCount) > v.Length");
 
 				vNew = new char[v.Length - nCount];
@@ -382,8 +382,8 @@ namespace KeePassLib.Security
 			finally
 			{
 				MemUtil.ZeroArray<char>(v);
-				if(vNew != null) MemUtil.ZeroArray<char>(vNew);
-				if(pbNew != null) MemUtil.ZeroByteArray(pbNew);
+				if (vNew != null) MemUtil.ZeroArray<char>(vNew);
+				if (pbNew != null) MemUtil.ZeroByteArray(pbNew);
 			}
 
 			return ps;
@@ -391,12 +391,12 @@ namespace KeePassLib.Security
 
 		public static ProtectedString operator +(ProtectedString a, ProtectedString b)
 		{
-			if(a == null) throw new ArgumentNullException("a");
-			if(b == null) throw new ArgumentNullException("b");
+			if (a == null) throw new ArgumentNullException("a");
+			if (b == null) throw new ArgumentNullException("b");
 
-			if(b.IsEmpty) return a.WithProtection(a.IsProtected || b.IsProtected);
-			if(a.IsEmpty) return b.WithProtection(a.IsProtected || b.IsProtected);
-			if(!a.IsProtected && !b.IsProtected)
+			if (b.IsEmpty) return a.WithProtection(a.IsProtected || b.IsProtected);
+			if (a.IsEmpty) return b.WithProtection(a.IsProtected || b.IsProtected);
+			if (!a.IsProtected && !b.IsProtected)
 				return new ProtectedString(false, a.ReadString() + b.ReadString());
 
 			char[] vA = a.ReadChars(), vB = null, vNew = null;
@@ -417,9 +417,9 @@ namespace KeePassLib.Security
 			finally
 			{
 				MemUtil.ZeroArray<char>(vA);
-				if(vB != null) MemUtil.ZeroArray<char>(vB);
-				if(vNew != null) MemUtil.ZeroArray<char>(vNew);
-				if(pbNew != null) MemUtil.ZeroByteArray(pbNew);
+				if (vB != null) MemUtil.ZeroArray<char>(vB);
+				if (vNew != null) MemUtil.ZeroArray<char>(vNew);
+				if (pbNew != null) MemUtil.ZeroByteArray(pbNew);
 			}
 
 			return ps;

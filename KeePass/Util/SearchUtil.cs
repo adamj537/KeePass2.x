@@ -36,33 +36,33 @@ namespace KeePass.Util
 
 		internal static void PrepareForSerialize(SearchParameters sp)
 		{
-			if(sp == null) { Debug.Assert(false); return; }
+			if (sp == null) { Debug.Assert(false); return; }
 
 			sp.DataTransformation = GetTransformation(sp);
 		}
 
 		internal static void FinishDeserialize(SearchParameters sp)
 		{
-			if(sp == null) { Debug.Assert(false); return; }
+			if (sp == null) { Debug.Assert(false); return; }
 
 			SetTransformation(sp, sp.DataTransformation);
 		}
 
 		internal static string GetTransformation(SearchParameters spIn)
 		{
-			if(spIn == null) { Debug.Assert(false); return string.Empty; }
+			if (spIn == null) { Debug.Assert(false); return string.Empty; }
 
-			if(spIn.DataTransformationFn == null) return string.Empty;
+			if (spIn.DataTransformationFn == null) return string.Empty;
 			return StrTrfDeref;
 		}
 
 		internal static void SetTransformation(SearchParameters spOut,
 			string strTrf)
 		{
-			if(spOut == null) { Debug.Assert(false); return; }
-			if(strTrf == null) { Debug.Assert(false); return; }
+			if (spOut == null) { Debug.Assert(false); return; }
+			if (strTrf == null) { Debug.Assert(false); return; }
 
-			if(strTrf == StrTrfDeref)
+			if (strTrf == StrTrfDeref)
 				spOut.DataTransformationFn = SprEngine.DerefFn;
 			else spOut.DataTransformationFn = null;
 		}
@@ -70,8 +70,8 @@ namespace KeePass.Util
 		internal static PwGroup Find(SearchParameters sp, PwGroup pgRoot,
 			IStatusLogger sl)
 		{
-			if(sp == null) { Debug.Assert(false); throw new ArgumentNullException("sp"); }
-			if(pgRoot == null) { Debug.Assert(false); throw new ArgumentNullException("pgRoot"); }
+			if (sp == null) { Debug.Assert(false); throw new ArgumentNullException("sp"); }
+			if (pgRoot == null) { Debug.Assert(false); throw new ArgumentNullException("pgRoot"); }
 
 			string strName = KPRes.SearchGroupName + " (\"" + sp.SearchString +
 				"\" " + KPRes.SearchResultsInSeparator + " \"" + pgRoot.Name + "\")";

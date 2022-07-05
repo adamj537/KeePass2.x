@@ -389,19 +389,19 @@ namespace KeePass.UI.ToolStripRendering
 
 		protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
 		{
-			if(e != null)
+			if (e != null)
 			{
 				ToolStripItem tsi = e.Item;
-				if(tsi != null)
+				if (tsi != null)
 				{
 					bool bDropDown = (tsi.OwnerItem != null);
 					bool bCtxMenu = (tsi.Owner is ContextMenuStrip);
 
 					Color clr = tsi.ForeColor;
 
-					if(!tsi.Enabled && !tsi.Selected)
+					if (!tsi.Enabled && !tsi.Selected)
 					{
-						if(!UIUtil.IsHighContrast)
+						if (!UIUtil.IsHighContrast)
 						{
 							// Draw light "shadow"
 							Rectangle r = e.TextRectangle;
@@ -414,16 +414,16 @@ namespace KeePass.UI.ToolStripRendering
 
 						clr = SystemColors.GrayText;
 					}
-					else if(tsi.Selected && (bDropDown || bCtxMenu))
+					else if (tsi.Selected && (bDropDown || bCtxMenu))
 						clr = SystemColors.HighlightText;
-					else if(clr.ToArgb() == Control.DefaultForeColor.ToArgb())
+					else if (clr.ToArgb() == Control.DefaultForeColor.ToArgb())
 						clr = SystemColors.MenuText;
 					else
 					{
 						bool bDarkBack = this.IsDarkStyle;
 						bool bDarkText = UIUtil.IsDarkColor(clr);
 
-						if((bDarkBack && bDarkText) || (!bDarkBack && !bDarkText))
+						if ((bDarkBack && bDarkText) || (!bDarkBack && !bDarkText))
 						{
 							Debug.Assert(false);
 							clr = SystemColors.MenuText;
@@ -443,7 +443,7 @@ namespace KeePass.UI.ToolStripRendering
 			ToolStripItem tsi = ((e != null) ? e.Item : null);
 			bool bCtxItem = ((tsi != null) ? (tsi.Owner is ContextMenuStrip) : false);
 
-			if((tsi != null) && (bCtxItem || (tsi.OwnerItem != null)) &&
+			if ((tsi != null) && (bCtxItem || (tsi.OwnerItem != null)) &&
 				tsi.Selected && !tsi.Enabled)
 			{
 				Rectangle rect = tsi.ContentRectangle;
@@ -457,7 +457,7 @@ namespace KeePass.UI.ToolStripRendering
 				Pen p = new Pen(clrBorder);
 
 				Graphics g = e.Graphics;
-				if(g != null)
+				if (g != null)
 				{
 					g.FillRectangle(br, rect);
 					g.DrawRectangle(p, rect);

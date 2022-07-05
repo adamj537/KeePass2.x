@@ -35,7 +35,7 @@ namespace KeePassLib.Cryptography.Cipher
 			get
 			{
 				PwUuid pu = g_uuid;
-				if(pu == null)
+				if (pu == null)
 				{
 					pu = new PwUuid(new byte[] {
 						0xD6, 0x03, 0x8A, 0x2B, 0x8B, 0x6F, 0x4C, 0xB5,
@@ -119,7 +119,7 @@ namespace KeePassLib.Cryptography.Cipher
 		public ChaCha20Stream(Stream sBase, bool bWriting, byte[] pbKey32,
 			byte[] pbIV12)
 		{
-			if(sBase == null) throw new ArgumentNullException("sBase");
+			if (sBase == null) throw new ArgumentNullException("sBase");
 
 			m_sBase = sBase;
 			m_bWriting = bWriting;
@@ -128,9 +128,9 @@ namespace KeePassLib.Cryptography.Cipher
 
 		protected override void Dispose(bool bDisposing)
 		{
-			if(bDisposing)
+			if (bDisposing)
 			{
-				if(m_sBase != null)
+				if (m_sBase != null)
 				{
 					m_c.Dispose();
 					m_c = null;
@@ -148,7 +148,7 @@ namespace KeePassLib.Cryptography.Cipher
 		public override void Flush()
 		{
 			Debug.Assert(m_sBase != null);
-			if(m_bWriting && (m_sBase != null)) m_sBase.Flush();
+			if (m_bWriting && (m_sBase != null)) m_sBase.Flush();
 		}
 
 		public override long Seek(long lOffset, SeekOrigin soOrigin)
@@ -165,7 +165,7 @@ namespace KeePassLib.Cryptography.Cipher
 
 		public override int Read(byte[] pbBuffer, int iOffset, int nCount)
 		{
-			if(m_bWriting) throw new InvalidOperationException();
+			if (m_bWriting) throw new InvalidOperationException();
 
 			int cbRead = m_sBase.Read(pbBuffer, iOffset, nCount);
 			m_c.Decrypt(pbBuffer, iOffset, cbRead);
@@ -174,12 +174,12 @@ namespace KeePassLib.Cryptography.Cipher
 
 		public override void Write(byte[] pbBuffer, int iOffset, int nCount)
 		{
-			if(nCount < 0) throw new ArgumentOutOfRangeException("nCount");
-			if(nCount == 0) return;
+			if (nCount < 0) throw new ArgumentOutOfRangeException("nCount");
+			if (nCount == 0) return;
 
-			if(!m_bWriting) throw new InvalidOperationException();
+			if (!m_bWriting) throw new InvalidOperationException();
 
-			if((m_pbBuffer == null) || (m_pbBuffer.Length < nCount))
+			if ((m_pbBuffer == null) || (m_pbBuffer.Length < nCount))
 				m_pbBuffer = new byte[nCount];
 			Array.Copy(pbBuffer, iOffset, m_pbBuffer, 0, nCount);
 

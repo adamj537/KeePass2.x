@@ -50,25 +50,25 @@ namespace KeePass.Util
 		private static bool OpenW(IntPtr hOwner, bool bEmpty)
 		{
 			IntPtr h = hOwner;
-			if(h == IntPtr.Zero)
+			if (h == IntPtr.Zero)
 			{
 				try
 				{
 					Form f = GlobalWindowManager.TopWindow;
-					if(f != null) h = f.Handle;
+					if (f != null) h = f.Handle;
 
-					if(h == IntPtr.Zero) h = Program.GetSafeMainWindowHandle();
+					if (h == IntPtr.Zero) h = Program.GetSafeMainWindowHandle();
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 
-			return InvokeAndRetry(delegate()
+			return InvokeAndRetry(delegate ()
 			{
-				if(NativeMethods.OpenClipboard(h))
+				if (NativeMethods.OpenClipboard(h))
 				{
-					if(bEmpty)
+					if (bEmpty)
 					{
-						if(!NativeMethods.EmptyClipboard()) { Debug.Assert(false); }
+						if (!NativeMethods.EmptyClipboard()) { Debug.Assert(false); }
 					}
 
 					return true;
@@ -132,13 +132,13 @@ namespace KeePass.Util
 		{
 			UIntPtr pSize = new UIntPtr((uint)pbData.Length);
 			IntPtr h = NativeMethods.GlobalAlloc(NativeMethods.GHND, pSize);
-			if(h == IntPtr.Zero) { Debug.Assert(false); return false; }
+			if (h == IntPtr.Zero) { Debug.Assert(false); return false; }
 
 			Debug.Assert(NativeMethods.GlobalSize(h).ToUInt64() >=
 				(ulong)pbData.Length); // Might be larger
 
 			IntPtr pMem = NativeMethods.GlobalLock(h);
-			if(pMem == IntPtr.Zero)
+			if (pMem == IntPtr.Zero)
 			{
 				Debug.Assert(false);
 				NativeMethods.GlobalFree(h);
@@ -148,7 +148,7 @@ namespace KeePass.Util
 			Marshal.Copy(pbData, 0, pMem, pbData.Length);
 			NativeMethods.GlobalUnlock(h); // May return false on success
 
-			if(NativeMethods.SetClipboardData(uFormat, h) == IntPtr.Zero)
+			if (NativeMethods.SetClipboardData(uFormat, h) == IntPtr.Zero)
 			{
 				Debug.Assert(false);
 				NativeMethods.GlobalFree(h);
@@ -160,7 +160,7 @@ namespace KeePass.Util
 
 		private static bool SetDataW(uint? ouFormat, string strData, bool? obForceUni)
 		{
-			if(strData == null) { Debug.Assert(false); return false; }
+			if (strData == null) { Debug.Assert(false); return false; }
 
 			bool bUni = (obForceUni.HasValue ? obForceUni.Value :
 				(Marshal.SystemDefaultCharSize >= 2));
@@ -179,37 +179,37 @@ namespace KeePass.Util
 
 		private static void CloseW()
 		{
-			if(!NativeMethods.CloseClipboard()) { Debug.Assert(false); }
+			if (!NativeMethods.CloseClipboard()) { Debug.Assert(false); }
 		}
 
 		private static bool AttachIgnoreFormatsW()
 		{
 			bool r = true;
 
-			if(Program.Config.Security.UseClipboardViewerIgnoreFormat)
+			if (Program.Config.Security.UseClipboardViewerIgnoreFormat)
 			{
 				uint cf = NativeMethods.RegisterClipboardFormat(CfnViewerIgnore);
-				if(cf == 0) { Debug.Assert(false); r = false; }
-				else if(!SetDataW(cf, PwDefs.ShortProductName, null)) r = false;
+				if (cf == 0) { Debug.Assert(false); r = false; }
+				else if (!SetDataW(cf, PwDefs.ShortProductName, null)) r = false;
 			}
 
-			if(Program.Config.Security.ClipboardNoPersist)
+			if (Program.Config.Security.ClipboardNoPersist)
 			{
 				byte[] pbFalse = new byte[4];
 				byte[] pbTrue = new byte[] { 1, 0, 0, 0 };
 
 				uint cf = NativeMethods.RegisterClipboardFormat(CfnNoMonitorProc);
-				if(cf == 0) { Debug.Assert(false); r = false; }
+				if (cf == 0) { Debug.Assert(false); r = false; }
 				// The value type is not defined/documented; we store a BOOL/DWORD
-				else if(!SetDataW(cf, pbTrue)) r = false;
+				else if (!SetDataW(cf, pbTrue)) r = false;
 
 				cf = NativeMethods.RegisterClipboardFormat(CfnCloud);
-				if(cf == 0) { Debug.Assert(false); r = false; }
-				else if(!SetDataW(cf, pbFalse)) r = false;
+				if (cf == 0) { Debug.Assert(false); r = false; }
+				else if (!SetDataW(cf, pbFalse)) r = false;
 
 				cf = NativeMethods.RegisterClipboardFormat(CfnHistory);
-				if(cf == 0) { Debug.Assert(false); r = false; }
-				else if(!SetDataW(cf, pbFalse)) r = false;
+				if (cf == 0) { Debug.Assert(false); r = false; }
+				else if (!SetDataW(cf, pbFalse)) r = false;
 			}
 
 			return r;
@@ -217,12 +217,12 @@ namespace KeePass.Util
 
 		private static bool InvokeAndRetry(GFunc<bool> f)
 		{
-			if(f == null) { Debug.Assert(false); return false; }
+			if (f == null) { Debug.Assert(false); return false; }
 
-			for(int i = 0; i < CntUnmanagedRetries; ++i)
+			for (int i = 0; i < CntUnmanagedRetries; ++i)
 			{
-				try { if(f()) return true; }
-				catch(Exception) { }
+				try { if (f()) return true; }
+				catch (Exception) { }
 
 				Thread.Sleep(CntUnmanagedDelay);
 			}

@@ -59,7 +59,7 @@ namespace KeePass.Util
 		public static void Init(ToolStripSplitButton btnHost)
 		{
 			Release();
-			if(btnHost == null) throw new ArgumentNullException("btnHost");
+			if (btnHost == null) throw new ArgumentNullException("btnHost");
 
 			g_tsiHost = btnHost;
 			g_tsiHost.DropDownOpening += OnMenuOpening;
@@ -67,7 +67,7 @@ namespace KeePass.Util
 
 		public static void Release()
 		{
-			if(g_tsiHost == null) return;
+			if (g_tsiHost == null) return;
 
 			Clear();
 
@@ -78,7 +78,7 @@ namespace KeePass.Util
 		private static void Clear()
 		{
 			int n = g_lTopLevelItems.Count;
-			if(n == 0) return;
+			if (n == 0) return;
 
 			BlockLayout(true);
 
@@ -98,10 +98,10 @@ namespace KeePass.Util
 
 			List<ToolStripItem> lOthers = new List<ToolStripItem>();
 			int iKnown = 0;
-			for(int iMenu = 0; iMenu < tsic.Count; ++iMenu)
+			for (int iMenu = 0; iMenu < tsic.Count; ++iMenu)
 			{
 				ToolStripItem tsi = tsic[iMenu];
-				if((iKnown < n) && (tsi == g_lTopLevelItems[iKnown])) ++iKnown;
+				if ((iKnown < n) && (tsi == g_lTopLevelItems[iKnown])) ++iKnown;
 				else lOthers.Add(tsi);
 			}
 			Debug.Assert((iKnown == n) && ((lOthers.Count + n) == tsic.Count));
@@ -116,18 +116,18 @@ namespace KeePass.Util
 		private static void BlockLayout(bool bBlock)
 		{
 			ToolStrip ts = ((g_tsiHost != null) ? g_tsiHost.Owner : null);
-			if(ts == null) { Debug.Assert(false); return; }
+			if (ts == null) { Debug.Assert(false); return; }
 
-			if(bBlock) ts.SuspendLayout();
+			if (bBlock) ts.SuspendLayout();
 			else ts.ResumeLayout();
 		}
 
 		private static void OnMenuOpening(object sender, EventArgs e)
 		{
-			if(g_tsiHost == null) { Debug.Assert(false); return; }
+			if (g_tsiHost == null) { Debug.Assert(false); return; }
 
 			PwGroup pg = GetTemplatesGroup(null);
-			if(pg == null) pg = new PwGroup();
+			if (pg == null) pg = new PwGroup();
 
 			BlockLayout(true);
 
@@ -147,10 +147,10 @@ namespace KeePass.Util
 		internal static PwGroup GetTemplatesGroup(PwDatabase pdIn)
 		{
 			PwDatabase pd = (pdIn ?? Program.MainForm.ActiveDatabase);
-			if((pd == null) || !pd.IsOpen) { Debug.Assert(false); return null; }
+			if ((pd == null) || !pd.IsOpen) { Debug.Assert(false); return null; }
 
 			PwUuid pu = pd.EntryTemplatesGroup;
-			if(pu.Equals(PwUuid.Zero)) return null;
+			if (pu.Equals(PwUuid.Zero)) return null;
 
 			return pd.RootGroup.FindGroup(pu, true);
 		}
@@ -159,16 +159,16 @@ namespace KeePass.Util
 		{
 			MainForm mf = Program.MainForm;
 			PwDatabase pd = mf.ActiveDatabase;
-			if((pd == null) || !pd.IsOpen) { Debug.Assert(false); return null; }
+			if ((pd == null) || !pd.IsOpen) { Debug.Assert(false); return null; }
 
 			ImageList il = mf.ClientIcons;
-			if(il == null) { Debug.Assert(false); return null; }
+			if (il == null) { Debug.Assert(false); return null; }
 
 			int i;
-			if(puCustom.Equals(PwUuid.Zero)) i = (int)ic;
+			if (puCustom.Equals(PwUuid.Zero)) i = (int)ic;
 			else i = (int)PwIcon.Count + pd.GetCustomIconIndex(puCustom);
 
-			if((i < 0) || (i >= il.Images.Count)) { Debug.Assert(false); return null; }
+			if ((i < 0) || (i >= il.Images.Count)) { Debug.Assert(false); return null; }
 			return il.Images[i];
 		}
 
@@ -184,18 +184,18 @@ namespace KeePass.Util
 		{
 			List<ToolStripItem> l = new List<ToolStripItem>();
 
-			if(pg == null) { Debug.Assert(false); return l; }
-			if(g_tsiHost == null) { Debug.Assert(false); return l; }
+			if (pg == null) { Debug.Assert(false); return l; }
+			if (g_tsiHost == null) { Debug.Assert(false); return l; }
 
 			bool bGroups = (pg.Groups.UCount != 0);
 			bool bEntries = (pg.Entries.UCount != 0);
-			if(!bGroups && !bEntries)
+			if (!bGroups && !bEntries)
 			{
 				l.Add(CreateEmptyItem());
 				return l;
 			}
 
-			foreach(PwGroup pgSub in pg.Groups)
+			foreach (PwGroup pgSub in pg.Groups)
 			{
 				string strText = StrUtil.EncodeMenuText(pgSub.Name);
 				ToolStripMenuItem tsmi = new ToolStripMenuItem(strText);
@@ -207,13 +207,13 @@ namespace KeePass.Util
 
 				PwGroup pgSubCur = pgSub; // Copy the ref., as pgSub changes
 
-				tsmi.DropDownOpening += delegate(object sender, EventArgs e)
+				tsmi.DropDownOpening += delegate (object sender, EventArgs e)
 				{
 					Debug.Assert(object.ReferenceEquals(sender, tsmi));
 					Debug.Assert(object.ReferenceEquals(tsmi.Tag, pgSubCur));
 
 					ToolStripItemCollection tsic = tsmi.DropDownItems;
-					if((tsic.Count == 1) && (tsic[0] == tsmiDynPlh))
+					if ((tsic.Count == 1) && (tsic[0] == tsmiDynPlh))
 					{
 						BlockLayout(true);
 
@@ -227,9 +227,9 @@ namespace KeePass.Util
 				l.Add(tsmi);
 			}
 
-			if(bGroups && bEntries) l.Add(new ToolStripSeparator());
+			if (bGroups && bEntries) l.Add(new ToolStripSeparator());
 
-			foreach(PwEntry pe in pg.Entries)
+			foreach (PwEntry pe in pg.Entries)
 			{
 				string strText = StrUtil.EncodeMenuText(pe.Strings.ReadSafe(
 					PwDefs.TitleField));
@@ -247,37 +247,37 @@ namespace KeePass.Util
 		private static void OnMenuExecute(object sender, EventArgs e)
 		{
 			ToolStripMenuItem tsmi = (sender as ToolStripMenuItem);
-			if(tsmi == null) { Debug.Assert(false); return; }
+			if (tsmi == null) { Debug.Assert(false); return; }
 
 			PwEntry peTemplate = (tsmi.Tag as PwEntry);
-			if(peTemplate == null) { Debug.Assert(false); return; }
+			if (peTemplate == null) { Debug.Assert(false); return; }
 
 			MainForm mf = Program.MainForm;
-			if(mf == null) { Debug.Assert(false); return; }
+			if (mf == null) { Debug.Assert(false); return; }
 
 			PwDatabase pd = mf.ActiveDatabase;
-			if((pd == null) || !pd.IsOpen) { Debug.Assert(false); return; }
+			if ((pd == null) || !pd.IsOpen) { Debug.Assert(false); return; }
 
 			// Ensure that the correct database is still active
-			if(pd != mf.DocumentManager.FindContainerOf(peTemplate)) return;
+			if (pd != mf.DocumentManager.FindContainerOf(peTemplate)) return;
 
-			GFunc<PwEntry> fNewEntry = delegate()
+			GFunc<PwEntry> fNewEntry = delegate ()
 			{
 				PwEntry pe = peTemplate.Duplicate();
 				pe.History.Clear();
 				return pe;
 			};
 
-			Action<PwEntry> fAddPre = delegate(PwEntry pe)
+			Action<PwEntry> fAddPre = delegate (PwEntry pe)
 			{
-				if(EntryTemplates.EntryCreating != null)
+				if (EntryTemplates.EntryCreating != null)
 					EntryTemplates.EntryCreating(null, new TemplateEntryEventArgs(
 						peTemplate.CloneDeep(), pe));
 			};
 
-			Action<PwEntry> fAddPost = delegate(PwEntry pe)
+			Action<PwEntry> fAddPost = delegate (PwEntry pe)
 			{
-				if(EntryTemplates.EntryCreated != null)
+				if (EntryTemplates.EntryCreated != null)
 					EntryTemplates.EntryCreated(null, new TemplateEntryEventArgs(
 						peTemplate.CloneDeep(), pe));
 			};

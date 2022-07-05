@@ -51,24 +51,24 @@ namespace KeePass.DataExchange.Formats
 			CsvStreamReader csv = new CsvStreamReader(strData, true);
 			Dictionary<string, PwGroup> dictGroups = new Dictionary<string, PwGroup>();
 
-			while(true)
+			while (true)
 			{
 				string[] vLine = csv.ReadLine();
-				if(vLine == null) break;
-				if(vLine.Length == 0) continue; // Skip empty line
-				if(vLine.Length == 5) continue; // Skip header line
-				if(vLine.Length != 34) { Debug.Assert(false); continue; }
+				if (vLine == null) break;
+				if (vLine.Length == 0) continue; // Skip empty line
+				if (vLine.Length == 5) continue; // Skip header line
+				if (vLine.Length != 34) { Debug.Assert(false); continue; }
 
 				string strType = vLine[0].Trim();
-				if(strType.Equals("Is Template", StrUtil.CaseIgnoreCmp)) continue;
-				if(strType.Equals("1")) continue; // Skip template
+				if (strType.Equals("Is Template", StrUtil.CaseIgnoreCmp)) continue;
+				if (strType.Equals("1")) continue; // Skip template
 
 				string strGroup = vLine[2].Trim();
 				PwGroup pg;
-				if(strGroup.Length == 0) pg = pwStorage.RootGroup;
+				if (strGroup.Length == 0) pg = pwStorage.RootGroup;
 				else
 				{
-					if(dictGroups.ContainsKey(strGroup)) pg = dictGroups[strGroup];
+					if (dictGroups.ContainsKey(strGroup)) pg = dictGroups[strGroup];
 					else
 					{
 						pg = new PwGroup(true, true, strGroup, PwIcon.Folder);
@@ -81,25 +81,25 @@ namespace KeePass.DataExchange.Formats
 				pg.AddEntry(pe, true);
 
 				string strTitle = vLine[1].Trim();
-				if(strTitle.Length > 0)
+				if (strTitle.Length > 0)
 					ImportUtil.AppendToField(pe, PwDefs.TitleField, strTitle, pwStorage);
 
-				for(int i = 0; i < 10; ++i)
+				for (int i = 0; i < 10; ++i)
 				{
 					string strKey = vLine[(i * 3) + 3].Trim();
 					string strValue = vLine[(i * 3) + 4].Trim();
-					if((strKey.Length == 0) || (strValue.Length == 0)) continue;
+					if ((strKey.Length == 0) || (strValue.Length == 0)) continue;
 
 					string strMapped = ImportUtil.MapNameToStandardField(strKey, true);
-					if(string.IsNullOrEmpty(strMapped)) strMapped = strKey;
+					if (string.IsNullOrEmpty(strMapped)) strMapped = strKey;
 					ImportUtil.AppendToField(pe, strMapped, strValue, pwStorage);
 				}
 
 				string strNotesPre = pe.Strings.ReadSafe(PwDefs.NotesField);
 				string strNotes = vLine[33].Trim();
-				if(strNotes.Length > 0)
+				if (strNotes.Length > 0)
 				{
-					if(strNotesPre.Length == 0)
+					if (strNotesPre.Length == 0)
 						ImportUtil.AppendToField(pe, PwDefs.NotesField, strNotes, pwStorage);
 					else
 						pe.Strings.Set(PwDefs.NotesField, new ProtectedString(

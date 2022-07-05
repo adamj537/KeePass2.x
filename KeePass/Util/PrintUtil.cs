@@ -38,32 +38,32 @@ namespace KeePass.Util
 	{
 		public static void PrintHtml(string strHtml)
 		{
-			if(string.IsNullOrEmpty(strHtml)) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strHtml)) { Debug.Assert(false); return; }
 
 			try
 			{
-				if(!PrintHtmlShell(strHtml))
+				if (!PrintHtmlShell(strHtml))
 				{
-					if(!PrintHtmlWB(strHtml))
+					if (!PrintHtmlWB(strHtml))
 						PrintHtmlExec(strHtml);
 				}
 			}
-			catch(Exception ex) { MessageService.ShowWarning(ex); }
+			catch (Exception ex) { MessageService.ShowWarning(ex); }
 		}
 
 		private static bool PrintHtmlShell(string strHtml)
 		{
-			if(NativeLib.IsUnix()) return false;
+			if (NativeLib.IsUnix()) return false;
 
 			RegistryKey k = null;
 			try
 			{
 				k = Registry.ClassesRoot.OpenSubKey(
 					"htmlfile\\shell\\print\\command", false);
-				if(k == null) { Debug.Assert(false); return false; }
+				if (k == null) { Debug.Assert(false); return false; }
 
 				string str = (k.GetValue(string.Empty) as string);
-				if(string.IsNullOrEmpty(str)) { Debug.Assert(false); return false; }
+				if (string.IsNullOrEmpty(str)) { Debug.Assert(false); return false; }
 				str = FixPrintCommandLine(str);
 
 				string strPath = Program.TempFilesPool.GetTempFileName("html");
@@ -71,14 +71,14 @@ namespace KeePass.Util
 				string strOrg = str;
 				str = UrlUtil.ExpandShellVariables(str, new string[] {
 					strPath }, true);
-				if(str == strOrg) { Debug.Assert(false); return false; }
+				if (str == strOrg) { Debug.Assert(false); return false; }
 
 				File.WriteAllText(strPath, strHtml, StrUtil.Utf8);
 				WinUtil.OpenUrl("cmd://" + str, null, false);
 				return true;
 			}
-			catch(Exception) { Debug.Assert(false); }
-			finally { if(k != null) k.Close(); }
+			catch (Exception) { Debug.Assert(false); }
+			finally { if (k != null) k.Close(); }
 
 			return false;
 		}
@@ -90,7 +90,7 @@ namespace KeePass.Util
 			// Workaround for Microsoft Office breaking the 'Print' shell verb;
 			// https://sourceforge.net/p/keepass/bugs/1675/
 			// https://support.microsoft.com/en-us/help/274527/cannot-print-file-with--htm-extension-from-windows-explorer-by-right-c
-			if(str.IndexOf("\\msohtmed.exe", StrUtil.CaseIgnoreCmp) >= 0)
+			if (str.IndexOf("\\msohtmed.exe", StrUtil.CaseIgnoreCmp) >= 0)
 			{
 				string strSys = UrlUtil.EnsureTerminatingSeparator(
 					Environment.SystemDirectory, false);
@@ -105,13 +105,13 @@ namespace KeePass.Util
 		private static bool PrintHtmlWB(string strHtml)
 		{
 			// Mono's WebBrowser implementation doesn't support printing
-			if(NativeLib.IsUnix()) return false;
+			if (NativeLib.IsUnix()) return false;
 
 			try
 			{
 				// Printing and disposing immediately seems to be supported;
 				// https://docs.microsoft.com/en-us/dotnet/framework/winforms/controls/how-to-print-with-a-webbrowser-control
-				using(WebBrowser wb = new WebBrowser())
+				using (WebBrowser wb = new WebBrowser())
 				{
 					wb.AllowWebBrowserDrop = false;
 					wb.IsWebBrowserContextMenuEnabled = false;
@@ -126,7 +126,7 @@ namespace KeePass.Util
 				Program.TempFilesPool.AddWebBrowserPrintContent();
 				return true;
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return false;
 		}
@@ -143,11 +143,11 @@ namespace KeePass.Util
 			// Try to use the 'Print' verb; if it's not available, the
 			// default verb is used (to just display the file)
 			string[] v = (psi.Verbs ?? new string[0]);
-			foreach(string strVerb in v)
+			foreach (string strVerb in v)
 			{
-				if(strVerb == null) { Debug.Assert(false); continue; }
+				if (strVerb == null) { Debug.Assert(false); continue; }
 
-				if(strVerb.Equals("Print", StrUtil.CaseIgnoreCmp))
+				if (strVerb.Equals("Print", StrUtil.CaseIgnoreCmp))
 				{
 					psi.Verb = strVerb;
 					break;

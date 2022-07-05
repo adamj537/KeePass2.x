@@ -105,7 +105,7 @@ namespace KeePass.Forms
 
 			m_nIconDim = m_tvFolders.ItemHeight;
 
-			if(UIUtil.VistaStyleListsSupported)
+			if (UIUtil.VistaStyleListsSupported)
 			{
 				UIUtil.SetExplorerTheme(m_tvFolders, true);
 				UIUtil.SetExplorerTheme(m_lvFiles, true);
@@ -115,7 +115,7 @@ namespace KeePass.Forms
 			Debug.Assert(!m_lblHint.AutoSize); // For RTL support
 			m_lblHint.Text = m_strHint;
 
-			if(UIUtil.ColorsEqual(m_lblHint.ForeColor, Color.Black))
+			if (UIUtil.ColorsEqual(m_lblHint.ForeColor, Color.Black))
 				m_lblHint.ForeColor = Color.FromArgb(96, 96, 96);
 
 			int nWidth = m_lvFiles.ClientSize.Width - UIUtil.GetVScrollBarWidth();
@@ -125,7 +125,7 @@ namespace KeePass.Forms
 			InitialPopulateFolders();
 
 			string strWorkDir = Program.Config.Application.GetWorkingDirectory(m_strContext);
-			if(string.IsNullOrEmpty(strWorkDir))
+			if (string.IsNullOrEmpty(strWorkDir))
 				strWorkDir = WinUtil.GetHomeDirectory();
 			BrowseToFolder(strWorkDir);
 
@@ -139,12 +139,12 @@ namespace KeePass.Forms
 			m_tvFolders.ImageList = null;
 			m_lvFiles.SmallImageList = null;
 
-			if(m_ilFolders != null) { m_ilFolders.Dispose(); m_ilFolders = null; }
-			if(m_ilFiles != null) { m_ilFiles.Dispose(); m_ilFiles = null; }
+			if (m_ilFolders != null) { m_ilFolders.Dispose(); m_ilFolders = null; }
+			if (m_ilFiles != null) { m_ilFiles.Dispose(); m_ilFiles = null; }
 
-			foreach(Image imgFld in m_vFolderImages) imgFld.Dispose();
+			foreach (Image imgFld in m_vFolderImages) imgFld.Dispose();
 			m_vFolderImages.Clear();
-			foreach(Image imgFile in m_vFileImages) imgFile.Dispose();
+			foreach (Image imgFile in m_vFileImages) imgFile.Dispose();
 			m_vFileImages.Clear();
 
 			GlobalWindowManager.RemoveWindow(this);
@@ -160,29 +160,29 @@ namespace KeePass.Forms
 			List<TreeNode> l = new List<TreeNode>();
 
 			string str = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-			if(!string.IsNullOrEmpty(str))
+			if (!string.IsNullOrEmpty(str))
 			{
 				TreeNode tn = CreateFolderNode(str, false, null);
-				if(tn != null) l.Add(tn);
+				if (tn != null) l.Add(tn);
 			}
 
 			str = Environment.GetEnvironmentVariable("USERPROFILE");
-			if(!string.IsNullOrEmpty(str))
+			if (!string.IsNullOrEmpty(str))
 			{
 				TreeNode tn = CreateFolderNode(str, false, null);
-				if(tn != null) l.Add(tn);
+				if (tn != null) l.Add(tn);
 			}
 
 			DriveInfo[] vDrives = DriveInfo.GetDrives();
-			foreach(DriveInfo drv in vDrives)
+			foreach (DriveInfo drv in vDrives)
 			{
 				try
 				{
 					DirectoryInfo diDrive = drv.RootDirectory;
 					TreeNode tn = CreateFolderNode(diDrive.FullName, true, drv);
-					if(tn != null) l.Add(tn);
+					if (tn != null) l.Add(tn);
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 
 			RebuildFolderImageList();
@@ -194,9 +194,9 @@ namespace KeePass.Forms
 		{
 			GetObjectPropsUnscaled(strPath, drvHint, out img, ref strDisplayName);
 
-			if(img != null)
+			if (img != null)
 			{
-				if((img.Width != m_nIconDim) || (img.Height != m_nIconDim))
+				if ((img.Width != m_nIconDim) || (img.Height != m_nIconDim))
 				{
 					Image imgScaled = GfxUtil.ScaleImage(img, m_nIconDim,
 						m_nIconDim, ScaleTransformFlags.UIIcon);
@@ -217,19 +217,19 @@ namespace KeePass.Forms
 				NativeMethods.SHGetFileInfo(strPath, m_nIconDim, m_nIconDim,
 					out img, out strName);
 
-				if(!string.IsNullOrEmpty(strName) && (strName.IndexOf(
+				if (!string.IsNullOrEmpty(strName) && (strName.IndexOf(
 					Path.DirectorySeparatorChar) < 0))
 					strDisplayName = strName;
 
-				if(img != null) return;
+				if (img != null) return;
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			ImageList.ImageCollection icons = Program.MainForm.ClientIcons.Images;
 
-			if((strPath.Length <= 3) && (drvHint != null))
+			if ((strPath.Length <= 3) && (drvHint != null))
 			{
-				switch(drvHint.DriveType)
+				switch (drvHint.DriveType)
 				{
 					case DriveType.Fixed:
 						img = new Bitmap(icons[(int)PwIcon.Drive]);
@@ -255,11 +255,11 @@ namespace KeePass.Forms
 			}
 
 			img = UIUtil.GetFileIcon(strPath, m_nIconDim, m_nIconDim);
-			if(img != null) return;
+			if (img != null) return;
 
-			if(Directory.Exists(strPath))
+			if (Directory.Exists(strPath))
 				img = new Bitmap(icons[(int)PwIcon.Folder]);
-			else if(File.Exists(strPath))
+			else if (File.Exists(strPath))
 				img = new Bitmap(icons[(int)PwIcon.PaperNew]);
 			else
 			{
@@ -288,7 +288,7 @@ namespace KeePass.Forms
 				InitNodePlusMinus(tn, di, bForcePlusMinus);
 				return tn;
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return null;
 		}
@@ -298,26 +298,26 @@ namespace KeePass.Forms
 		{
 			bool bMark = true;
 
-			if(!bForce)
+			if (!bForce)
 			{
 				try
 				{
 					DirectoryInfo[] vDirs = di.GetDirectories();
 					bool bFoundDir = false;
-					foreach(DirectoryInfo diSub in vDirs)
+					foreach (DirectoryInfo diSub in vDirs)
 					{
-						if(!IsValidFileSystemObject(diSub)) continue;
+						if (!IsValidFileSystemObject(diSub)) continue;
 
 						bFoundDir = true;
 						break;
 					}
 
-					if(!bFoundDir) bMark = false;
+					if (!bFoundDir) bMark = false;
 				}
-				catch(Exception) { bMark = false; } // Usually unauthorized
+				catch (Exception) { bMark = false; } // Usually unauthorized
 			}
 
-			if(bMark)
+			if (bMark)
 			{
 				tn.Nodes.Add(StrDummyNode);
 				tn.Collapse();
@@ -330,7 +330,7 @@ namespace KeePass.Forms
 				m_vFolderImages, m_nIconDim, m_nIconDim);
 			m_tvFolders.ImageList = imgNew;
 
-			if(m_ilFolders != null) m_ilFolders.Dispose();
+			if (m_ilFolders != null) m_ilFolders.Dispose();
 			m_ilFolders = imgNew;
 		}
 
@@ -346,25 +346,25 @@ namespace KeePass.Forms
 				vDirs = di.GetDirectories();
 				vFiles = di.GetFiles();
 			}
-			catch(Exception) { m_lvFiles.EndUpdate(); return; } // Unauthorized
+			catch (Exception) { m_lvFiles.EndUpdate(); return; } // Unauthorized
 
-			foreach(Image imgFile in m_vFileImages) imgFile.Dispose();
+			foreach (Image imgFile in m_vFileImages) imgFile.Dispose();
 			m_vFileImages.Clear();
 
 			List<ListViewItem> lDirItems = new List<ListViewItem>();
 			List<ListViewItem> lFileItems = new List<ListViewItem>();
 
-			foreach(DirectoryInfo diSub in vDirs)
+			foreach (DirectoryInfo diSub in vDirs)
 			{
 				AddFileItem(diSub, m_vFileImages, lDirItems, -1);
 			}
-			foreach(FileInfo fi in vFiles)
+			foreach (FileInfo fi in vFiles)
 			{
 				AddFileItem(fi, m_vFileImages, lFileItems, fi.Length);
 			}
 
 			m_lvFiles.SmallImageList = null;
-			if(m_ilFiles != null) m_ilFiles.Dispose();
+			if (m_ilFiles != null) m_ilFiles.Dispose();
 			m_ilFiles = UIUtil.BuildImageListUnscaled(m_vFileImages, m_nIconDim, m_nIconDim);
 			m_lvFiles.SmallImageList = m_ilFiles;
 
@@ -379,17 +379,17 @@ namespace KeePass.Forms
 
 		private static bool IsValidFileSystemObject(FileSystemInfo fsi)
 		{
-			if(fsi == null) { Debug.Assert(false); return false; }
+			if (fsi == null) { Debug.Assert(false); return false; }
 
 			string strName = fsi.Name;
-			if(string.IsNullOrEmpty(strName) || (strName == ".") ||
+			if (string.IsNullOrEmpty(strName) || (strName == ".") ||
 				(strName == "..")) return false;
-			if(strName.EndsWith(".lnk", StrUtil.CaseIgnoreCmp)) return false;
-			if(strName.EndsWith(".url", StrUtil.CaseIgnoreCmp)) return false;
+			if (strName.EndsWith(".lnk", StrUtil.CaseIgnoreCmp)) return false;
+			if (strName.EndsWith(".url", StrUtil.CaseIgnoreCmp)) return false;
 
 			FileAttributes fa = fsi.Attributes;
-			if((long)(fa & FileAttributes.ReparsePoint) != 0) return false;
-			if(((long)(fa & FileAttributes.System) != 0) &&
+			if ((long)(fa & FileAttributes.ReparsePoint) != 0) return false;
+			if (((long)(fa & FileAttributes.System) != 0) &&
 				((long)(fa & FileAttributes.Hidden) != 0)) return false;
 
 			return true;
@@ -398,7 +398,7 @@ namespace KeePass.Forms
 		private void AddFileItem(FileSystemInfo fsi, List<Image> lImages,
 			List<ListViewItem> lItems, long lFileLength)
 		{
-			if(!IsValidFileSystemObject(fsi)) return;
+			if (!IsValidFileSystemObject(fsi)) return;
 
 			Image img;
 			string strText = fsi.Name;
@@ -409,7 +409,7 @@ namespace KeePass.Forms
 			ListViewItem lvi = new ListViewItem(strText, lImages.Count - 1);
 			lvi.Tag = fsi.FullName;
 
-			if(lFileLength < 0) lvi.SubItems.Add(string.Empty);
+			if (lFileLength < 0) lvi.SubItems.Add(string.Empty);
 			else lvi.SubItems.Add(StrUtil.FormatDataSizeKB((ulong)lFileLength));
 
 			lItems.Add(lvi);
@@ -418,26 +418,26 @@ namespace KeePass.Forms
 		private bool PerformFileSelection()
 		{
 			ListView.SelectedListViewItemCollection lvsic = m_lvFiles.SelectedItems;
-			if((lvsic == null) || (lvsic.Count != 1)) { Debug.Assert(false); return false; }
+			if ((lvsic == null) || (lvsic.Count != 1)) { Debug.Assert(false); return false; }
 
 			string str = (lvsic[0].Tag as string);
-			if(string.IsNullOrEmpty(str)) { Debug.Assert(false); return false; }
+			if (string.IsNullOrEmpty(str)) { Debug.Assert(false); return false; }
 
 			try
 			{
-				if(Directory.Exists(str))
+				if (Directory.Exists(str))
 				{
 					TreeNode tn = m_tvFolders.SelectedNode;
-					if(tn == null) { Debug.Assert(false); return false; }
+					if (tn == null) { Debug.Assert(false); return false; }
 
-					if(!tn.IsExpanded) tn.Expand();
+					if (!tn.IsExpanded) tn.Expand();
 
-					foreach(TreeNode tnSub in tn.Nodes)
+					foreach (TreeNode tnSub in tn.Nodes)
 					{
 						string strSub = (tnSub.Tag as string);
-						if(string.IsNullOrEmpty(strSub)) { Debug.Assert(false); continue; }
+						if (string.IsNullOrEmpty(strSub)) { Debug.Assert(false); continue; }
 
-						if(strSub.Equals(str, StrUtil.CaseIgnoreCmp))
+						if (strSub.Equals(str, StrUtil.CaseIgnoreCmp))
 						{
 							m_tvFolders.SelectedNode = tnSub;
 							tnSub.EnsureVisible();
@@ -447,7 +447,7 @@ namespace KeePass.Forms
 
 					Debug.Assert(false);
 				}
-				else if(File.Exists(str))
+				else if (File.Exists(str))
 				{
 					m_strSelectedFile = str;
 
@@ -458,27 +458,27 @@ namespace KeePass.Forms
 				}
 				else { Debug.Assert(false); }
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return false;
 		}
 
 		private void OnBtnOK(object sender, EventArgs e)
 		{
-			if(!PerformFileSelection()) this.DialogResult = DialogResult.None;
+			if (!PerformFileSelection()) this.DialogResult = DialogResult.None;
 		}
 
 		private void OnFilesItemActivate(object sender, EventArgs e)
 		{
-			if(PerformFileSelection()) this.DialogResult = DialogResult.OK;
+			if (PerformFileSelection()) this.DialogResult = DialogResult.OK;
 		}
 
 		private void OnFoldersBeforeExpand(object sender, TreeViewCancelEventArgs e)
 		{
 			TreeNode tn = e.Node;
-			if(tn == null) { Debug.Assert(false); e.Cancel = true; return; }
+			if (tn == null) { Debug.Assert(false); e.Cancel = true; return; }
 
-			if((tn.Nodes.Count == 1) && (tn.Nodes[0].Text == StrDummyNode))
+			if ((tn.Nodes.Count == 1) && (tn.Nodes[0].Text == StrDummyNode))
 			{
 				tn.Nodes.Clear();
 				List<TreeNode> lNodes = new List<TreeNode>();
@@ -487,15 +487,15 @@ namespace KeePass.Forms
 				{
 					DirectoryInfo di = new DirectoryInfo(tn.Tag as string);
 					DirectoryInfo[] vSubDirs = di.GetDirectories();
-					foreach(DirectoryInfo diSub in vSubDirs)
+					foreach (DirectoryInfo diSub in vSubDirs)
 					{
-						if(!IsValidFileSystemObject(diSub)) continue;
+						if (!IsValidFileSystemObject(diSub)) continue;
 
 						TreeNode tnSub = CreateFolderNode(diSub.FullName, false, null);
-						if(tnSub != null) lNodes.Add(tnSub);
+						if (tnSub != null) lNodes.Add(tnSub);
 					}
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 
 				RebuildFolderImageList();
 				lNodes.Sort(new FbfPrivTviComparer());
@@ -509,58 +509,58 @@ namespace KeePass.Forms
 			{
 				DirectoryInfo di = new DirectoryInfo(strPath);
 				string[] vPath = di.FullName.Split(Path.DirectorySeparatorChar);
-				if((vPath == null) || (vPath.Length == 0)) { Debug.Assert(false); return; }
+				if ((vPath == null) || (vPath.Length == 0)) { Debug.Assert(false); return; }
 
 				TreeNode tn = null;
 				string str = string.Empty;
-				for(int i = 0; i < vPath.Length; ++i)
+				for (int i = 0; i < vPath.Length; ++i)
 				{
-					if(i > 0) str = UrlUtil.EnsureTerminatingSeparator(str, false);
+					if (i > 0) str = UrlUtil.EnsureTerminatingSeparator(str, false);
 					str += vPath[i];
-					if(i == 0) str = UrlUtil.EnsureTerminatingSeparator(str, false);
+					if (i == 0) str = UrlUtil.EnsureTerminatingSeparator(str, false);
 
 					TreeNodeCollection tnc = ((tn != null) ? tn.Nodes : m_tvFolders.Nodes);
 					tn = null;
 
-					foreach(TreeNode tnSub in tnc)
+					foreach (TreeNode tnSub in tnc)
 					{
 						string strSub = (tnSub.Tag as string);
-						if(string.IsNullOrEmpty(strSub)) { Debug.Assert(false); continue; }
+						if (string.IsNullOrEmpty(strSub)) { Debug.Assert(false); continue; }
 
-						if(strSub.Equals(str, StrUtil.CaseIgnoreCmp))
+						if (strSub.Equals(str, StrUtil.CaseIgnoreCmp))
 						{
 							tn = tnSub;
 							break;
 						}
 					}
 
-					if(tn == null) { Debug.Assert(false); break; }
+					if (tn == null) { Debug.Assert(false); break; }
 
-					if((i != (vPath.Length - 1)) && !tn.IsExpanded) tn.Expand();
+					if ((i != (vPath.Length - 1)) && !tn.IsExpanded) tn.Expand();
 				}
 
-				if(tn != null)
+				if (tn != null)
 				{
 					m_tvFolders.SelectedNode = tn;
 					tn.EnsureVisible();
 				}
 				else { Debug.Assert(false); }
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private void OnFoldersAfterSelect(object sender, TreeViewEventArgs e)
 		{
 			TreeNode tn = e.Node;
 			string strPath = (tn.Tag as string);
-			if(strPath == null) { Debug.Assert(false); return; }
+			if (strPath == null) { Debug.Assert(false); return; }
 
 			try
 			{
 				DirectoryInfo di = new DirectoryInfo(strPath);
 				BuildFilesList(di);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private void OnFilesSelectedIndexChanged(object sender, EventArgs e)

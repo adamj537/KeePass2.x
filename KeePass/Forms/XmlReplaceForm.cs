@@ -54,7 +54,7 @@ namespace KeePass.Forms
 
 		private void OnFormLoad(object sender, EventArgs e)
 		{
-			if(m_pd == null) { Debug.Assert(false); throw new InvalidOperationException(); }
+			if (m_pd == null) { Debug.Assert(false); throw new InvalidOperationException(); }
 
 			GlobalWindowManager.AddWindow(this);
 
@@ -82,7 +82,7 @@ namespace KeePass.Forms
 
 		private void OnFormClosed(object sender, FormClosedEventArgs e)
 		{
-			if(m_imgWarning != null)
+			if (m_imgWarning != null)
 			{
 				m_picWarning.Image = null;
 				m_imgWarning.Dispose();
@@ -115,17 +115,17 @@ namespace KeePass.Forms
 
 				opt.SelectNodesXPath = m_tbSelNodes.Text;
 
-				if(m_rbRemove.Checked) opt.Operation = XmlReplaceOp.RemoveNodes;
-				else if(m_rbReplace.Checked) opt.Operation = XmlReplaceOp.ReplaceData;
+				if (m_rbRemove.Checked) opt.Operation = XmlReplaceOp.RemoveNodes;
+				else if (m_rbReplace.Checked) opt.Operation = XmlReplaceOp.ReplaceData;
 				else { Debug.Assert(false); }
 
-				if(m_rbInnerText.Checked) opt.Data = XmlReplaceData.InnerText;
-				else if(m_rbInnerXml.Checked) opt.Data = XmlReplaceData.InnerXml;
-				else if(m_rbOuterXml.Checked) opt.Data = XmlReplaceData.OuterXml;
+				if (m_rbInnerText.Checked) opt.Data = XmlReplaceData.InnerText;
+				else if (m_rbInnerXml.Checked) opt.Data = XmlReplaceData.InnerXml;
+				else if (m_rbOuterXml.Checked) opt.Data = XmlReplaceData.OuterXml;
 				else { Debug.Assert(false); }
 
-				if(m_cbCase.Checked) f |= XmlReplaceFlags.CaseSensitive;
-				if(m_cbRegex.Checked) f |= XmlReplaceFlags.Regex;
+				if (m_cbCase.Checked) f |= XmlReplaceFlags.CaseSensitive;
+				if (m_cbRegex.Checked) f |= XmlReplaceFlags.Regex;
 
 				opt.FindText = m_tbMatch.Text;
 				opt.ReplaceText = m_tbReplace.Text;
@@ -134,7 +134,7 @@ namespace KeePass.Forms
 				XmlUtil.Replace(m_pd, opt);
 				this.Enabled = true;
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				this.Enabled = true;
 				MessageService.ShowWarning(ex);

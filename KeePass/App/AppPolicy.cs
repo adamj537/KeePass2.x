@@ -216,7 +216,7 @@ namespace KeePass.App
 			get { return m_apfCurrent; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_apfCurrent = value;
 			}
 		}
@@ -235,7 +235,7 @@ namespace KeePass.App
 		{
 			string str;
 
-			switch(p)
+			switch (p)
 			{
 				case AppPolicyId.Plugins:
 					str = KPRes.Plugins;
@@ -301,7 +301,7 @@ namespace KeePass.App
 		{
 			string str;
 
-			switch(p)
+			switch (p)
 			{
 				case AppPolicyId.Plugins:
 					str = KPRes.PolicyPluginsDesc;
@@ -374,7 +374,7 @@ namespace KeePass.App
 		{
 			bool b = true;
 
-			switch(p)
+			switch (p)
 			{
 				case AppPolicyId.Plugins: b = m_apfCurrent.Plugins; break;
 				case AppPolicyId.Export: b = m_apfCurrent.Export; break;
@@ -396,7 +396,7 @@ namespace KeePass.App
 				default: Debug.Assert(false); break;
 			}
 
-			if(!b)
+			if (!b)
 			{
 				string strMsg = RequiredPolicyMessage(p);
 				MessageService.ShowWarning(strMsg);
@@ -411,19 +411,19 @@ namespace KeePass.App
 			{
 				AppConfigEx cfg = Program.Config;
 
-				if(!AppPolicy.Current.UnhidePasswords)
+				if (!AppPolicy.Current.UnhidePasswords)
 				{
 					List<AceColumn> l = cfg.MainWindow.EntryListColumns;
-					foreach(AceColumn c in l)
+					foreach (AceColumn c in l)
 					{
-						if(c == null) { Debug.Assert(false); continue; }
+						if (c == null) { Debug.Assert(false); continue; }
 
-						if(c.Type == AceColumnType.Password)
+						if (c.Type == AceColumnType.Password)
 							c.HideWithAsterisks = true;
 					}
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 	}
 }

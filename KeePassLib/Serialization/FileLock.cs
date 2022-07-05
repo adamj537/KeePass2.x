@@ -43,7 +43,7 @@ namespace KeePassLib.Serialization
 		{
 			StringBuilder sb = new StringBuilder();
 
-			if(!string.IsNullOrEmpty(strBaseFile))
+			if (!string.IsNullOrEmpty(strBaseFile))
 			{
 				sb.Append(strBaseFile);
 				sb.Append(MessageService.NewParagraph);
@@ -52,7 +52,7 @@ namespace KeePassLib.Serialization
 			sb.Append(KLRes.FileLockedWrite);
 			sb.Append(MessageService.NewLine);
 
-			if(!string.IsNullOrEmpty(strUser)) sb.Append(strUser);
+			if (!string.IsNullOrEmpty(strUser)) sb.Append(strUser);
 			else sb.Append("?");
 
 			sb.Append(MessageService.NewParagraph);
@@ -83,7 +83,7 @@ namespace KeePassLib.Serialization
 				this.ID = (strID ?? string.Empty).Trim();
 
 				DateTime dt;
-				if(TimeUtil.TryDeserializeUtc(strTime.Trim(), out dt))
+				if (TimeUtil.TryDeserializeUtc(strTime.Trim(), out dt))
 					this.Time = dt;
 				else
 				{
@@ -95,7 +95,7 @@ namespace KeePassLib.Serialization
 				this.Machine = (strMachine ?? string.Empty).Trim();
 				this.Domain = (strDomain ?? string.Empty).Trim();
 
-				if(this.Domain.Equals(this.Machine, StrUtil.CaseIgnoreCmp))
+				if (this.Domain.Equals(this.Machine, StrUtil.CaseIgnoreCmp))
 					this.Domain = string.Empty;
 			}
 
@@ -106,11 +106,11 @@ namespace KeePassLib.Serialization
 
 				bool bMachine = (this.Machine.Length > 0);
 				bool bDomain = (this.Domain.Length > 0);
-				if(bMachine || bDomain)
+				if (bMachine || bDomain)
 				{
 					sb.Append(" (");
 					sb.Append(this.Machine);
-					if(bMachine && bDomain) sb.Append(" @ ");
+					if (bMachine && bDomain) sb.Append(" @ ");
 					sb.Append(this.Domain);
 					sb.Append(")");
 				}
@@ -124,25 +124,25 @@ namespace KeePassLib.Serialization
 				try
 				{
 					s = IOConnection.OpenRead(iocLockFile);
-					if(s == null) return null;
+					if (s == null) return null;
 
 					string str = null;
-					using(StreamReader sr = new StreamReader(s, StrUtil.Utf8))
+					using (StreamReader sr = new StreamReader(s, StrUtil.Utf8))
 					{
 						str = sr.ReadToEnd();
 					}
-					if(str == null) { Debug.Assert(false); return null; }
+					if (str == null) { Debug.Assert(false); return null; }
 
 					str = StrUtil.NormalizeNewLines(str, false);
 					string[] v = str.Split('\n');
-					if((v == null) || (v.Length < 6)) { Debug.Assert(false); return null; }
+					if ((v == null) || (v.Length < 6)) { Debug.Assert(false); return null; }
 
-					if(!v[0].StartsWith(LockFileHeader)) { Debug.Assert(false); return null; }
+					if (!v[0].StartsWith(LockFileHeader)) { Debug.Assert(false); return null; }
 					return new LockFileInfo(v[1], v[2], v[3], v[4], v[5]);
 				}
-				catch(FileNotFoundException) { }
-				catch(Exception) { Debug.Assert(false); }
-				finally { if(s != null) s.Close(); }
+				catch (FileNotFoundException) { }
+				catch (Exception) { Debug.Assert(false); }
+				finally { if (s != null) s.Close(); }
 
 				return null;
 			}
@@ -188,10 +188,10 @@ namespace KeePassLib.Serialization
 					byte[] pbFile = StrUtil.Utf8.GetBytes(sb.ToString());
 
 					s = IOConnection.OpenWrite(iocLockFile);
-					if(s == null) throw new IOException(iocLockFile.GetDisplayName());
+					if (s == null) throw new IOException(iocLockFile.GetDisplayName());
 					s.Write(pbFile, 0, pbFile.Length);
 				}
-				finally { if(s != null) s.Close(); }
+				finally { if (s != null) s.Close(); }
 
 				return lfi;
 			}
@@ -199,13 +199,13 @@ namespace KeePassLib.Serialization
 
 		public FileLock(IOConnectionInfo iocBaseFile)
 		{
-			if(iocBaseFile == null) throw new ArgumentNullException("strBaseFile");
+			if (iocBaseFile == null) throw new ArgumentNullException("strBaseFile");
 
 			m_iocLockFile = iocBaseFile.CloneDeep();
 			m_iocLockFile.Path += LockFileExt;
 
 			LockFileInfo lfiEx = LockFileInfo.Load(m_iocLockFile);
-			if(lfiEx != null)
+			if (lfiEx != null)
 			{
 				m_iocLockFile = null; // Otherwise Dispose deletes the existing one
 				throw new FileLockException(iocBaseFile.GetDisplayName(),
@@ -228,10 +228,10 @@ namespace KeePassLib.Serialization
 
 		private void Dispose(bool bDisposing)
 		{
-			if(m_iocLockFile == null) return;
+			if (m_iocLockFile == null) return;
 
 			bool bFileDeleted = false;
-			for(int r = 0; r < 5; ++r)
+			for (int r = 0; r < 5; ++r)
 			{
 				// if(!OwnLockFile()) { bFileDeleted = true; break; }
 
@@ -240,11 +240,11 @@ namespace KeePassLib.Serialization
 					IOConnection.DeleteFile(m_iocLockFile);
 					bFileDeleted = true;
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 
-				if(bFileDeleted) break;
+				if (bFileDeleted) break;
 
-				if(bDisposing) Thread.Sleep(50);
+				if (bDisposing) Thread.Sleep(50);
 			}
 
 			// if(bDisposing && !bFileDeleted)

@@ -61,7 +61,7 @@ namespace KeePass.DataExchange.Formats
 			strData = strData.Replace("\r", string.Empty);
 			string[] vLines = strData.Split(new char[] { '\n' });
 
-			if(vLines.Length >= 1)
+			if (vLines.Length >= 1)
 			{
 				Debug.Assert(vLines[0].StartsWith("Contents of: "));
 				vLines[0] = string.Empty; // Trigger 'new entry' below
@@ -71,15 +71,15 @@ namespace KeePass.DataExchange.Formats
 			bool bInNotes = false;
 			DateTime? dtExpire = null;
 
-			for(int i = 0; i < vLines.Length; ++i)
+			for (int i = 0; i < vLines.Length; ++i)
 			{
 				string strLine = vLines[i];
 
-				if((i + 2) < vLines.Length)
+				if ((i + 2) < vLines.Length)
 				{
 					string strSep = new string('-', vLines[i + 1].Length);
 
-					if((strLine.Length == 0) && (vLines[i + 2] == strSep) &&
+					if ((strLine.Length == 0) && (vLines[i + 2] == strSep) &&
 						(strSep.Length > 0))
 					{
 						AddEntry(pwStorage.RootGroup, dItems, ref bInNotes, ref dtExpire);
@@ -92,33 +92,33 @@ namespace KeePass.DataExchange.Formats
 					}
 				}
 
-				if(bInNotes)
+				if (bInNotes)
 				{
-					if(dItems.ContainsKey(PwDefs.NotesField))
+					if (dItems.ContainsKey(PwDefs.NotesField))
 						dItems[PwDefs.NotesField] += MessageService.NewLine + strLine;
 					else dItems[PwDefs.NotesField] = strLine;
 				}
-				else if(strLine.StartsWith(StrFieldUser))
+				else if (strLine.StartsWith(StrFieldUser))
 					AddField(dItems, PwDefs.UserNameField, strLine.Substring(
 						StrFieldUser.Length));
-				else if(strLine.StartsWith(StrFieldPw))
+				else if (strLine.StartsWith(StrFieldPw))
 					AddField(dItems, PwDefs.PasswordField, strLine.Substring(
 						StrFieldPw.Length));
-				else if(strLine.StartsWith(StrFieldUrl))
+				else if (strLine.StartsWith(StrFieldUrl))
 					AddField(dItems, PwDefs.UrlField, strLine.Substring(
 						StrFieldUrl.Length));
-				else if(strLine.StartsWith(StrFieldType))
+				else if (strLine.StartsWith(StrFieldType))
 					AddField(dItems, "Type", strLine.Substring(StrFieldType.Length));
-				else if(strLine.StartsWith(StrFieldExpires))
+				else if (strLine.StartsWith(StrFieldExpires))
 				{
 					string strExp = strLine.Substring(StrFieldExpires.Length);
 
 					DateTime dtExp;
-					if(DateTime.TryParse(strExp, out dtExp))
+					if (DateTime.TryParse(strExp, out dtExp))
 						dtExpire = TimeUtil.ToUtc(dtExp, false);
 					else { Debug.Assert(false); }
 				}
-				else if(strLine.StartsWith(StrFieldNotes))
+				else if (strLine.StartsWith(StrFieldNotes))
 				{
 					AddField(dItems, PwDefs.NotesField, strLine.Substring(
 						StrFieldNotes.Length));
@@ -134,14 +134,14 @@ namespace KeePass.DataExchange.Formats
 		private static void AddField(Dictionary<string, string> dItems,
 			string strKey, string strValue)
 		{
-			if(!dItems.ContainsKey(strKey))
+			if (!dItems.ContainsKey(strKey))
 			{
 				dItems[strKey] = strValue;
 				return;
 			}
 
 			string strPreValue = dItems[strKey];
-			if((strPreValue.Length > 0) && (strValue.Length > 0))
+			if ((strPreValue.Length > 0) && (strValue.Length > 0))
 				strPreValue += ", ";
 
 			dItems[strKey] = strPreValue + strValue;
@@ -150,15 +150,15 @@ namespace KeePass.DataExchange.Formats
 		private static void AddEntry(PwGroup pg, Dictionary<string, string> dItems,
 			ref bool bInNotes, ref DateTime? dtExpire)
 		{
-			if(dItems.Count > 0)
+			if (dItems.Count > 0)
 			{
 				PwEntry pe = new PwEntry(true, true);
 				pg.AddEntry(pe, true);
 
-				foreach(KeyValuePair<string, string> kvp in dItems)
+				foreach (KeyValuePair<string, string> kvp in dItems)
 					pe.Strings.Set(kvp.Key, new ProtectedString(false, kvp.Value));
 
-				if(dtExpire.HasValue)
+				if (dtExpire.HasValue)
 				{
 					pe.Expires = true;
 					pe.ExpiryTime = dtExpire.Value;

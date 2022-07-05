@@ -51,8 +51,8 @@ namespace KeePass.Forms
 		private void OnFormLoad(object sender, EventArgs e)
 		{
 			GlobalWindowManager.AddWindow(this);
-			try { if(this.Owner == null) this.Owner = Program.MainForm; }
-			catch(Exception) { Debug.Assert(false); }
+			try { if (this.Owner == null) this.Owner = Program.MainForm; }
+			catch (Exception) { Debug.Assert(false); }
 
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_Folder_Download, KPRes.ImportBehavior,
@@ -78,15 +78,15 @@ namespace KeePass.Forms
 
 		private void OnBtnOK(object sender, EventArgs e)
 		{
-			if(m_radioCreateNew.Checked)
+			if (m_radioCreateNew.Checked)
 				m_mmSelected = PwMergeMethod.CreateNewUuids;
-			else if(m_radioKeepExisting.Checked)
+			else if (m_radioKeepExisting.Checked)
 				m_mmSelected = PwMergeMethod.KeepExisting;
-			else if(m_radioOverwrite.Checked)
+			else if (m_radioOverwrite.Checked)
 				m_mmSelected = PwMergeMethod.OverwriteExisting;
-			else if(m_radioOverwriteIfNewer.Checked)
+			else if (m_radioOverwriteIfNewer.Checked)
 				m_mmSelected = PwMergeMethod.OverwriteIfNewer;
-			else if(m_radioSynchronize.Checked)
+			else if (m_radioSynchronize.Checked)
 				m_mmSelected = PwMergeMethod.Synchronize;
 		}
 

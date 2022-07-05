@@ -301,25 +301,25 @@ namespace KeePass.App
 
 		public static string GetEntryField(PwEntry pe, string strFieldId)
 		{
-			if(pe == null) throw new ArgumentNullException("pe");
-			if(strFieldId == null) throw new ArgumentNullException("strFieldId");
+			if (pe == null) throw new ArgumentNullException("pe");
+			if (strFieldId == null) throw new ArgumentNullException("strFieldId");
 
-			if(strFieldId == AppDefs.ColumnIdnGroup)
+			if (strFieldId == AppDefs.ColumnIdnGroup)
 				return ((pe.ParentGroup != null) ? pe.ParentGroup.Name : string.Empty);
-			else if(strFieldId == AppDefs.ColumnIdnCreationTime)
+			else if (strFieldId == AppDefs.ColumnIdnCreationTime)
 				return TimeUtil.ToDisplayString(pe.CreationTime);
-			else if(strFieldId == AppDefs.ColumnIdnLastModificationTime)
+			else if (strFieldId == AppDefs.ColumnIdnLastModificationTime)
 				return TimeUtil.ToDisplayString(pe.LastModificationTime);
-			else if(strFieldId == AppDefs.ColumnIdnLastAccessTime)
+			else if (strFieldId == AppDefs.ColumnIdnLastAccessTime)
 				return TimeUtil.ToDisplayString(pe.LastAccessTime);
-			else if(strFieldId == AppDefs.ColumnIdnExpiryTime)
+			else if (strFieldId == AppDefs.ColumnIdnExpiryTime)
 			{
-				if(!pe.Expires) return KPRes.NeverExpires;
+				if (!pe.Expires) return KPRes.NeverExpires;
 				return TimeUtil.ToDisplayString(pe.ExpiryTime);
 			}
-			else if(strFieldId == AppDefs.ColumnIdnUuid)
+			else if (strFieldId == AppDefs.ColumnIdnUuid)
 				return pe.Uuid.ToHexString();
-			else if(strFieldId == AppDefs.ColumnIdnAttachment)
+			else if (strFieldId == AppDefs.ColumnIdnAttachment)
 				return pe.Binaries.UCount.ToString();
 
 			return pe.Strings.ReadSafe(strFieldId);
@@ -327,15 +327,15 @@ namespace KeePass.App
 
 		internal static Color GetQualityColor(float fQ, bool bToControlBack)
 		{
-			if(fQ < 0.0f) { Debug.Assert(false); fQ = 0.0f; }
-			if(fQ > 1.0f) { Debug.Assert(false); fQ = 1.0f; }
+			if (fQ < 0.0f) { Debug.Assert(false); fQ = 0.0f; }
+			if (fQ > 1.0f) { Debug.Assert(false); fQ = 1.0f; }
 
 			Color clrL = AppDefs.ColorQualityLow;
 			Color clrH = AppDefs.ColorQualityHigh;
 			Color clrM = AppDefs.ColorQualityMid;
 
 			int iR, iG, iB;
-			if(fQ <= 0.5f)
+			if (fQ <= 0.5f)
 			{
 				fQ *= 2.0f;
 				iR = clrL.R + (int)(fQ * ((int)clrM.R - (int)clrL.R));
@@ -350,15 +350,15 @@ namespace KeePass.App
 				iB = clrM.B + (int)(fQ * ((int)clrH.B - (int)clrM.B));
 			}
 
-			if(iR < 0) { Debug.Assert(false); iR = 0; }
-			if(iR > 255) { Debug.Assert(false); iR = 255; }
-			if(iG < 0) { Debug.Assert(false); iG = 0; }
-			if(iG > 255) { Debug.Assert(false); iG = 255; }
-			if(iB < 0) { Debug.Assert(false); iB = 0; }
-			if(iB > 255) { Debug.Assert(false); iB = 255; }
+			if (iR < 0) { Debug.Assert(false); iR = 0; }
+			if (iR > 255) { Debug.Assert(false); iR = 255; }
+			if (iG < 0) { Debug.Assert(false); iG = 0; }
+			if (iG > 255) { Debug.Assert(false); iG = 255; }
+			if (iB < 0) { Debug.Assert(false); iB = 0; }
+			if (iB > 255) { Debug.Assert(false); iB = 255; }
 
 			Color clrQ = Color.FromArgb(iR, iG, iB);
-			if(bToControlBack)
+			if (bToControlBack)
 				return UIUtil.ColorTowards(clrQ, AppDefs.ColorControlNormal, 0.5);
 			return clrQ;
 		}

@@ -53,7 +53,7 @@ namespace KeePass.Util
 			get { return m_strSeq; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strSeq = value;
 			}
 		}
@@ -65,7 +65,7 @@ namespace KeePass.Util
 		public AutoTypeEventArgs(string strSequence, bool bObfuscated, PwEntry pe,
 			PwDatabase pd)
 		{
-			if(strSequence == null) throw new ArgumentNullException("strSequence");
+			if (strSequence == null) throw new ArgumentNullException("strSequence");
 			// pe may be null
 
 			m_strSeq = strSequence;
@@ -108,19 +108,19 @@ namespace KeePass.Util
 				// // https://msdn.microsoft.com/en-us/library/system.windows.forms.sendkeys.aspx
 				// ConfigurationManager.AppSettings.Set("SendKeys", "SendInput");
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		internal static bool IsMatchWindow(string strWindow, string strFilter)
 		{
-			if(strWindow == null) { Debug.Assert(false); return false; }
-			if(strFilter == null) { Debug.Assert(false); return false; }
+			if (strWindow == null) { Debug.Assert(false); return false; }
+			if (strFilter == null) { Debug.Assert(false); return false; }
 
 			Debug.Assert(NormalizeWindowText(strWindow) == strWindow); // Should be done by caller
 			string strF = NormalizeWindowText(strFilter);
 
 			int ccF = strF.Length;
-			if((ccF > 4) && (strF[0] == '/') && (strF[1] == '/') &&
+			if ((ccF > 4) && (strF[0] == '/') && (strF[1] == '/') &&
 				(strF[ccF - 2] == '/') && (strF[ccF - 1] == '/'))
 			{
 				try
@@ -128,7 +128,7 @@ namespace KeePass.Util
 					string strRx = strF.Substring(2, ccF - 4);
 					return Regex.IsMatch(strWindow, strRx, RegexOptions.IgnoreCase);
 				}
-				catch(Exception) { return false; }
+				catch (Exception) { return false; }
 			}
 
 			return StrUtil.SimplePatternMatch(strF, strWindow, StrUtil.CaseIgnoreCmp);
@@ -136,33 +136,33 @@ namespace KeePass.Util
 
 		private static bool IsMatchSub(string strWindow, string strSub)
 		{
-			if(strWindow == null) { Debug.Assert(false); return false; }
-			if(strSub == null) { Debug.Assert(false); return false; }
+			if (strWindow == null) { Debug.Assert(false); return false; }
+			if (strSub == null) { Debug.Assert(false); return false; }
 
 			Debug.Assert(NormalizeWindowText(strWindow) == strWindow); // Should be done by caller
 			string strS = NormalizeWindowText(strSub);
 
 			// If strS is empty, return false, because strS is a substring
 			// that must occur, not a filter
-			if(strS.Length == 0) return false;
+			if (strS.Length == 0) return false;
 
 			return (strWindow.IndexOf(strS, StrUtil.CaseIgnoreCmp) >= 0);
 		}
 
 		private static bool Execute(AutoTypeCtx ctx)
 		{
-			if(ctx == null) { Debug.Assert(false); return false; }
+			if (ctx == null) { Debug.Assert(false); return false; }
 
 			string strSeq = ctx.Sequence;
 			PwEntry pweData = ctx.Entry;
-			if(pweData == null) { Debug.Assert(false); return false; }
+			if (pweData == null) { Debug.Assert(false); return false; }
 
-			if(!pweData.GetAutoTypeEnabled()) return false;
-			if(!AppPolicy.Try(AppPolicyId.AutoType)) return false;
+			if (!pweData.GetAutoTypeEnabled()) return false;
+			if (!AppPolicy.Try(AppPolicyId.AutoType)) return false;
 
-			if(NativeLib.IsUnix())
+			if (NativeLib.IsUnix())
 			{
-				if(!NativeMethods.TryXDoTool() && !NativeLib.IsWayland())
+				if (!NativeMethods.TryXDoTool() && !NativeLib.IsWayland())
 				{
 					MessageService.ShowWarning(KPRes.AutoTypeXDoToolRequired,
 						KPRes.PackageInstallHint);
@@ -177,7 +177,7 @@ namespace KeePass.Util
 			AutoTypeEventArgs args = new AutoTypeEventArgs(strSeq, bObfuscate,
 				pweData, pwDatabase);
 
-			if(AutoType.FilterCompilePre != null) AutoType.FilterCompilePre(null, args);
+			if (AutoType.FilterCompilePre != null) AutoType.FilterCompilePre(null, args);
 
 			args.Sequence = SprEngine.Compile(args.Sequence, new SprContext(
 				pweData, pwDatabase, SprCompileFlags.All, true, false));
@@ -192,31 +192,31 @@ namespace KeePass.Util
 
 			Application.DoEvents();
 
-			if(AutoType.FilterSendPre != null) AutoType.FilterSendPre(null, args);
-			if(AutoType.FilterSend != null) AutoType.FilterSend(null, args);
+			if (AutoType.FilterSendPre != null) AutoType.FilterSendPre(null, args);
+			if (AutoType.FilterSend != null) AutoType.FilterSend(null, args);
 
-			if(args.Sequence.Length > 0)
+			if (args.Sequence.Length > 0)
 			{
 				string strError = null;
 				try { SendInputEx.SendKeysWait(args.Sequence, args.SendObfuscated); }
-				catch(SecurityException exSec) { strError = exSec.Message; }
-				catch(Exception ex)
+				catch (SecurityException exSec) { strError = exSec.Message; }
+				catch (Exception ex)
 				{
 					strError = args.Sequence + MessageService.NewParagraph +
 						ex.Message;
 				}
 
-				if(AutoType.SendPost != null) AutoType.SendPost(null, args);
+				if (AutoType.SendPost != null) AutoType.SendPost(null, args);
 
-				if(!string.IsNullOrEmpty(strError))
+				if (!string.IsNullOrEmpty(strError))
 				{
 					try
 					{
 						MainForm mfP = Program.MainForm;
-						if(mfP != null)
+						if (mfP != null)
 							mfP.EnsureVisibleForegroundWindow(false, false);
 					}
-					catch(Exception) { Debug.Assert(false); }
+					catch (Exception) { Debug.Assert(false); }
 
 					MessageService.ShowWarning(strError);
 				}
@@ -226,7 +226,7 @@ namespace KeePass.Util
 			EntryUtil.ExpireTanEntryIfOption(pweData, pwDatabase);
 
 			MainForm mf = Program.MainForm;
-			if(mf != null)
+			if (mf != null)
 			{
 				// Always refresh entry list (e.g. {NEWPASSWORD} might
 				// have changed data)
@@ -236,7 +236,7 @@ namespace KeePass.Util
 				// pd.Modified is set by SprEngine
 				mf.UpdateUI(false, null, false, null, false, null, false);
 
-				if(Program.Config.MainWindow.MinimizeAfterAutoType &&
+				if (Program.Config.MainWindow.MinimizeAfterAutoType &&
 					mf.IsCommandTypeInvokable(null, MainForm.AppCommandType.Window))
 					UIUtil.SetWindowState(mf, FormWindowState.Minimized);
 			}
@@ -246,11 +246,11 @@ namespace KeePass.Util
 
 		private static bool PerformInternal(AutoTypeCtx ctx, string strWindow)
 		{
-			if(ctx == null) { Debug.Assert(false); return false; }
+			if (ctx == null) { Debug.Assert(false); return false; }
 
 			AutoTypeCtx ctxNew = ctx.Clone();
 
-			if(Program.Config.Integration.AutoTypePrependInitSequenceForIE &&
+			if (Program.Config.Integration.AutoTypePrependInitSequenceForIE &&
 				WinUtil.IsInternetExplorer7Window(strWindow))
 			{
 				ctxNew.Sequence = @"{DELAY 50}1{DELAY 50}{BACKSPACE}" +
@@ -266,7 +266,7 @@ namespace KeePass.Util
 			SequenceQueriesEventArgs e = new SequenceQueriesEventArgs(
 				GetNextEventID(), hWnd, strWindow);
 
-			if(AutoType.SequenceQueriesBegin != null)
+			if (AutoType.SequenceQueriesBegin != null)
 				AutoType.SequenceQueriesBegin(null, e);
 
 			return e;
@@ -274,7 +274,7 @@ namespace KeePass.Util
 
 		private static void GetSequencesForWindowEnd(SequenceQueriesEventArgs e)
 		{
-			if(AutoType.SequenceQueriesEnd != null)
+			if (AutoType.SequenceQueriesEnd != null)
 				AutoType.SequenceQueriesEnd(null, e);
 		}
 
@@ -285,10 +285,10 @@ namespace KeePass.Util
 		{
 			List<string> l = new List<string>();
 
-			if(pwe == null) { Debug.Assert(false); return l; }
-			if(strWindow == null) { Debug.Assert(false); return l; } // May be empty
+			if (pwe == null) { Debug.Assert(false); return l; }
+			if (strWindow == null) { Debug.Assert(false); return l; } // May be empty
 
-			if(!pwe.GetAutoTypeEnabled()) return l;
+			if (!pwe.GetAutoTypeEnabled()) return l;
 
 			SprContext sprCtx = new SprContext(pwe, pdContext,
 				SprCompileFlags.NonActive);
@@ -298,13 +298,13 @@ namespace KeePass.Util
 
 			// Specifically defined sequences must match before the title,
 			// in order to allow selecting the first item as default one
-			foreach(AutoTypeAssociation a in pwe.AutoType.Associations)
+			foreach (AutoTypeAssociation a in pwe.AutoType.Associations)
 			{
 				string strFilter = SprEngine.Compile(a.WindowName, sprCtx);
-				if(IsMatchWindow(strWindow, strFilter))
+				if (IsMatchWindow(strWindow, strFilter))
 				{
 					string strSeq = a.Sequence;
-					if(string.IsNullOrEmpty(strSeq))
+					if (string.IsNullOrEmpty(strSeq))
 						strSeq = pwe.GetAutoTypeSequence();
 					AddSequence(l, strSeq);
 				}
@@ -313,46 +313,46 @@ namespace KeePass.Util
 			RaiseSequenceQueryEvent(AutoType.SequenceQuery, iEventID,
 				hWnd, strWindow, pwe, pdContext, l);
 
-			if(Program.Config.Integration.AutoTypeMatchByTitle)
+			if (Program.Config.Integration.AutoTypeMatchByTitle)
 			{
 				string strTitle = SprEngine.Compile(pwe.Strings.ReadSafe(
 					PwDefs.TitleField), sprCtx);
-				if(IsMatchSub(strWindow, strTitle))
+				if (IsMatchSub(strWindow, strTitle))
 					AddSequence(l, pwe.GetAutoTypeSequence());
 			}
 
 			string strCmpUrl = null; // To cache the compiled URL
-			if(Program.Config.Integration.AutoTypeMatchByUrlInTitle)
+			if (Program.Config.Integration.AutoTypeMatchByUrlInTitle)
 			{
 				strCmpUrl = SprEngine.Compile(pwe.Strings.ReadSafe(
 					PwDefs.UrlField), sprCtx);
-				if(IsMatchSub(strWindow, strCmpUrl))
+				if (IsMatchSub(strWindow, strCmpUrl))
 					AddSequence(l, pwe.GetAutoTypeSequence());
 			}
 
-			if(Program.Config.Integration.AutoTypeMatchByUrlHostInTitle)
+			if (Program.Config.Integration.AutoTypeMatchByUrlHostInTitle)
 			{
-				if(strCmpUrl == null)
+				if (strCmpUrl == null)
 					strCmpUrl = SprEngine.Compile(pwe.Strings.ReadSafe(
 						PwDefs.UrlField), sprCtx);
 
 				string strCleanUrl = StrUtil.RemovePlaceholders(strCmpUrl).Trim();
 				string strHost = UrlUtil.GetHost(strCleanUrl);
 
-				if(strHost.StartsWith("www.", StrUtil.CaseIgnoreCmp) &&
+				if (strHost.StartsWith("www.", StrUtil.CaseIgnoreCmp) &&
 					(strCleanUrl.StartsWith("http:", StrUtil.CaseIgnoreCmp) ||
 					strCleanUrl.StartsWith("https:", StrUtil.CaseIgnoreCmp)))
 					strHost = strHost.Substring(4);
 
-				if(IsMatchSub(strWindow, strHost))
+				if (IsMatchSub(strWindow, strHost))
 					AddSequence(l, pwe.GetAutoTypeSequence());
 			}
 
-			if(Program.Config.Integration.AutoTypeMatchByTagInTitle)
+			if (Program.Config.Integration.AutoTypeMatchByTagInTitle)
 			{
-				foreach(string strTag in pwe.GetTagsInherited())
+				foreach (string strTag in pwe.GetTagsInherited())
 				{
-					if(IsMatchSub(strWindow, strTag))
+					if (IsMatchSub(strWindow, strTag))
 					{
 						AddSequence(l, pwe.GetAutoTypeSequence());
 						break;
@@ -371,26 +371,26 @@ namespace KeePass.Util
 			string strWindow, PwEntry pwe, PwDatabase pdContext,
 			List<string> lSeq)
 		{
-			if(f == null) return;
+			if (f == null) return;
 
 			SequenceQueryEventArgs e = new SequenceQueryEventArgs(iEventID,
 				hWnd, strWindow, pwe, pdContext);
 			f(null, e);
 
-			foreach(string strSeq in e.Sequences)
+			foreach (string strSeq in e.Sequences)
 				AddSequence(lSeq, strSeq);
 		}
 
 		private static void AddSequence(List<string> lSeq, string strSeq)
 		{
-			if(strSeq == null) { Debug.Assert(false); return; }
+			if (strSeq == null) { Debug.Assert(false); return; }
 
 			string strCanSeq = CanonicalizeSeq(strSeq);
 
-			for(int i = 0; i < lSeq.Count; ++i)
+			for (int i = 0; i < lSeq.Count; ++i)
 			{
 				string strCanEx = CanonicalizeSeq(lSeq[i]);
-				if(strCanEx.Equals(strCanSeq)) return; // Exists already
+				if (strCanEx.Equals(strCanSeq)) return; // Exists already
 			}
 
 			lSeq.Add(strSeq); // Non-canonical version
@@ -407,13 +407,13 @@ namespace KeePass.Util
 			StringBuilder sb = new StringBuilder();
 
 			bool bInPlh = false;
-			for(int i = 0; i < strSeq.Length; ++i)
+			for (int i = 0; i < strSeq.Length; ++i)
 			{
 				char ch = strSeq[i];
 
-				if(ch == '{') bInPlh = true;
-				else if(ch == '}') bInPlh = false;
-				else if(bInPlh) ch = char.ToUpper(ch);
+				if (ch == '{') bInPlh = true;
+				else if (ch == '}') bInPlh = false;
+				else if (bInPlh) ch = char.ToUpper(ch);
 
 				sb.Append(ch);
 			}
@@ -431,7 +431,7 @@ namespace KeePass.Util
 		{
 			bool bValid = !GlobalWindowManager.HasWindowMW(hWnd);
 
-			if(!bValid && bBeepIfNot) SystemSounds.Beep.Play();
+			if (!bValid && bBeepIfNot) SystemSounds.Beep.Play();
 
 			return bValid;
 		}
@@ -445,11 +445,11 @@ namespace KeePass.Util
 		internal static bool PerformGlobal(List<PwDatabase> lSources,
 			ImageList ilIcons, string strSeq)
 		{
-			if(lSources == null) { Debug.Assert(false); return false; }
+			if (lSources == null) { Debug.Assert(false); return false; }
 
-			if(NativeLib.IsUnix())
+			if (NativeLib.IsUnix())
 			{
-				if(!NativeMethods.TryXDoTool(true) && !NativeLib.IsWayland())
+				if (!NativeMethods.TryXDoTool(true) && !NativeLib.IsWayland())
 				{
 					MessageService.ShowWarning(KPRes.AutoTypeXDoToolRequiredGlobalVer);
 					return false;
@@ -461,8 +461,8 @@ namespace KeePass.Util
 			GetForegroundWindowInfo(out hWnd, out strWindow);
 
 			// if(string.IsNullOrEmpty(strWindow)) return false;
-			if(strWindow == null) { Debug.Assert(false); return false; }
-			if(!IsValidAutoTypeWindow(hWnd, true)) return false;
+			if (strWindow == null) { Debug.Assert(false); return false; }
+			if (!IsValidAutoTypeWindow(hWnd, true)) return false;
 
 			SequenceQueriesEventArgs evQueries = GetSequencesForWindowBegin(
 				hWnd, strWindow);
@@ -472,19 +472,19 @@ namespace KeePass.Util
 			bool bExpCanMatch = Program.Config.Integration.AutoTypeExpiredCanMatch;
 			DateTime dtNow = DateTime.UtcNow;
 
-			EntryHandler eh = delegate(PwEntry pe)
+			EntryHandler eh = delegate (PwEntry pe)
 			{
-				if(!bExpCanMatch && pe.Expires && (pe.ExpiryTime <= dtNow))
+				if (!bExpCanMatch && pe.Expires && (pe.ExpiryTime <= dtNow))
 					return true; // Ignore expired entries
 
 				List<string> lSeq = GetSequencesForWindow(pe, hWnd, strWindow,
 					pdCurrent, evQueries.EventID);
 
-				if(!string.IsNullOrEmpty(strSeq) && (lSeq.Count != 0))
+				if (!string.IsNullOrEmpty(strSeq) && (lSeq.Count != 0))
 					lCtxs.Add(new AutoTypeCtx(strSeq, pe, pdCurrent));
 				else
 				{
-					foreach(string strSeqCand in lSeq)
+					foreach (string strSeqCand in lSeq)
 					{
 						lCtxs.Add(new AutoTypeCtx(strSeqCand, pe, pdCurrent));
 					}
@@ -493,9 +493,9 @@ namespace KeePass.Util
 				return true;
 			};
 
-			foreach(PwDatabase pd in lSources)
+			foreach (PwDatabase pd in lSources)
 			{
-				if((pd == null) || !pd.IsOpen) continue;
+				if ((pd == null) || !pd.IsOpen) continue;
 				pdCurrent = pd;
 				pd.RootGroup.TraverseTree(TraversalMethod.PreOrder, null, eh);
 			}
@@ -504,7 +504,7 @@ namespace KeePass.Util
 
 			bool bForceDlg = Program.Config.Integration.AutoTypeAlwaysShowSelDialog;
 
-			if((lCtxs.Count >= 2) || bForceDlg)
+			if ((lCtxs.Count >= 2) || bForceDlg)
 			{
 				AutoTypeCtxForm dlg = new AutoTypeCtxForm();
 				dlg.InitEx(lCtxs, ilIcons);
@@ -513,10 +513,10 @@ namespace KeePass.Util
 				AutoTypeCtx ctx = (bOK ? dlg.SelectedCtx : null);
 				UIUtil.DestroyForm(dlg);
 
-				if(ctx != null)
+				if (ctx != null)
 				{
 					try { NativeMethods.EnsureForegroundWindow(hWnd); }
-					catch(Exception) { Debug.Assert(false); }
+					catch (Exception) { Debug.Assert(false); }
 
 					int nActDelayMS = TargetActivationDelay;
 					string strWindowT = strWindow.Trim();
@@ -525,7 +525,7 @@ namespace KeePass.Util
 					// This apparently is only required here (after showing the
 					// auto-type entry selection dialog), not when using the
 					// context menu command in the main window
-					if(strWindowT.EndsWith("Microsoft Edge", StrUtil.CaseIgnoreCmp))
+					if (strWindowT.EndsWith("Microsoft Edge", StrUtil.CaseIgnoreCmp))
 					{
 						// 700 skips the first 1-2 characters,
 						// 750 sometimes skips the first character
@@ -541,7 +541,7 @@ namespace KeePass.Util
 					AutoType.PerformInternal(ctx, strWindow);
 				}
 			}
-			else if(lCtxs.Count == 1)
+			else if (lCtxs.Count == 1)
 				AutoType.PerformInternal(lCtxs[0], strWindow);
 
 			return true;
@@ -563,22 +563,22 @@ namespace KeePass.Util
 		public static bool PerformIntoPreviousWindow(Form fCurrent, PwEntry pe,
 			PwDatabase pdContext, string strSeq)
 		{
-			if(pe == null) { Debug.Assert(false); return false; }
-			if(!pe.GetAutoTypeEnabled()) return false;
-			if(!AppPolicy.Try(AppPolicyId.AutoTypeWithoutContext)) return false;
+			if (pe == null) { Debug.Assert(false); return false; }
+			if (!pe.GetAutoTypeEnabled()) return false;
+			if (!AppPolicy.Try(AppPolicyId.AutoTypeWithoutContext)) return false;
 
 			bool bTopMost = ((fCurrent != null) ? fCurrent.TopMost : false);
-			if(bTopMost) fCurrent.TopMost = false;
+			if (bTopMost) fCurrent.TopMost = false;
 
 			try
 			{
-				if(!NativeMethods.LoseFocus(fCurrent, true)) { Debug.Assert(false); }
+				if (!NativeMethods.LoseFocus(fCurrent, true)) { Debug.Assert(false); }
 
 				return PerformIntoCurrentWindow(pe, pdContext, strSeq);
 			}
 			finally
 			{
-				if(bTopMost) fCurrent.TopMost = true;
+				if (bTopMost) fCurrent.TopMost = true;
 			}
 		}
 
@@ -597,9 +597,9 @@ namespace KeePass.Util
 		public static bool PerformIntoCurrentWindow(PwEntry pe, PwDatabase pdContext,
 			string strSeq)
 		{
-			if(pe == null) { Debug.Assert(false); return false; }
-			if(!pe.GetAutoTypeEnabled()) return false;
-			if(!AppPolicy.Try(AppPolicyId.AutoTypeWithoutContext)) return false;
+			if (pe == null) { Debug.Assert(false); return false; }
+			if (!pe.GetAutoTypeEnabled()) return false;
+			if (!AppPolicy.Try(AppPolicyId.AutoTypeWithoutContext)) return false;
 
 			Thread.Sleep(TargetActivationDelay);
 
@@ -607,13 +607,13 @@ namespace KeePass.Util
 			string strWindow;
 			GetForegroundWindowInfo(out hWnd, out strWindow);
 
-			if(!NativeLib.IsUnix())
+			if (!NativeLib.IsUnix())
 			{
-				if(strWindow == null) { Debug.Assert(false); return false; }
+				if (strWindow == null) { Debug.Assert(false); return false; }
 			}
 			else strWindow = string.Empty;
 
-			if(strSeq == null)
+			if (strSeq == null)
 			{
 				SequenceQueriesEventArgs evQueries = GetSequencesForWindowBegin(
 					hWnd, strWindow);
@@ -623,7 +623,7 @@ namespace KeePass.Util
 
 				GetSequencesForWindowEnd(evQueries);
 
-				if(lSeq.Count == 0) strSeq = pe.GetAutoTypeSequence();
+				if (lSeq.Count == 0) strSeq = pe.GetAutoTypeSequence();
 				else strSeq = lSeq[0];
 			}
 
@@ -684,14 +684,14 @@ namespace KeePass.Util
 		};
 		internal static string NormalizeWindowText(string str)
 		{
-			if(string.IsNullOrEmpty(str)) return string.Empty;
+			if (string.IsNullOrEmpty(str)) return string.Empty;
 
 			str = str.Trim();
 
-			if(Program.Config.Integration.AutoTypeMatchNormDashes &&
+			if (Program.Config.Integration.AutoTypeMatchNormDashes &&
 				(str.IndexOfAny(g_vNormToHyphen) >= 0))
 			{
-				for(int i = 0; i < g_vNormToHyphen.Length; ++i)
+				for (int i = 0; i < g_vNormToHyphen.Length; ++i)
 					str = str.Replace(g_vNormToHyphen[i], '-');
 			}
 
@@ -704,7 +704,7 @@ namespace KeePass.Util
 			{
 				NativeMethods.GetForegroundWindowInfo(out hWnd, out strWindow, false);
 			}
-			catch(Exception)
+			catch (Exception)
 			{
 				Debug.Assert(false);
 				hWnd = IntPtr.Zero;
@@ -719,20 +719,20 @@ namespace KeePass.Util
 		internal static string GetEnabledText(PwEntry pe, out object oBlocker)
 		{
 			oBlocker = null;
-			if(pe == null) { Debug.Assert(false); return string.Empty; }
+			if (pe == null) { Debug.Assert(false); return string.Empty; }
 
-			if(!pe.AutoType.Enabled)
+			if (!pe.AutoType.Enabled)
 			{
 				oBlocker = pe;
 				return (KPRes.No + " (" + KLRes.EntryLower + ")");
 			}
 
 			PwGroup pg = pe.ParentGroup;
-			while(pg != null)
+			while (pg != null)
 			{
-				if(pg.EnableAutoType.HasValue)
+				if (pg.EnableAutoType.HasValue)
 				{
-					if(pg.EnableAutoType.Value) break;
+					if (pg.EnableAutoType.Value) break;
 
 					oBlocker = pg;
 					return (KPRes.No + " (" + KLRes.GroupLower + " '" + pg.Name + "')");
@@ -749,22 +749,22 @@ namespace KeePass.Util
 
 		internal static string GetSequencesText(PwEntry pe)
 		{
-			if(pe == null) { Debug.Assert(false); return string.Empty; }
+			if (pe == null) { Debug.Assert(false); return string.Empty; }
 
 			string strSeq = pe.GetAutoTypeSequence();
 			Debug.Assert(strSeq.Length != 0);
 			string str = ((strSeq.Length != 0) ? strSeq : ("(" + KPRes.Empty + ")"));
 
 			int cAssoc = pe.AutoType.AssociationsCount;
-			if(cAssoc != 0)
+			if (cAssoc != 0)
 			{
 				Dictionary<string, bool> d = new Dictionary<string, bool>();
 				d[strSeq] = true;
 
-				foreach(AutoTypeAssociation a in pe.AutoType.Associations)
+				foreach (AutoTypeAssociation a in pe.AutoType.Associations)
 				{
 					string strAssocSeq = a.Sequence;
-					if(strAssocSeq.Length != 0) d[strAssocSeq] = true;
+					if (strAssocSeq.Length != 0) d[strAssocSeq] = true;
 				}
 
 				int c = d.Count;

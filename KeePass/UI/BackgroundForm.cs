@@ -43,7 +43,7 @@ namespace KeePass.UI
 			this.DoubleBuffered = true;
 			this.BackColor = Color.Black;
 
-			if(bmpBackground != null) this.BackgroundImage = bmpBackground;
+			if (bmpBackground != null) this.BackgroundImage = bmpBackground;
 		}
 	}
 }

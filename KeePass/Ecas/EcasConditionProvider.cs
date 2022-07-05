@@ -36,11 +36,11 @@ namespace KeePass.Ecas
 
 		public bool IsSupported(PwUuid uuidType)
 		{
-			if(uuidType == null) throw new ArgumentNullException("uuidType");
+			if (uuidType == null) throw new ArgumentNullException("uuidType");
 
-			foreach(EcasConditionType t in m_conditions)
+			foreach (EcasConditionType t in m_conditions)
 			{
-				if(t.Type.Equals(uuidType))
+				if (t.Type.Equals(uuidType))
 					return true;
 			}
 
@@ -49,11 +49,11 @@ namespace KeePass.Ecas
 
 		public EcasConditionType Find(string strConditionName)
 		{
-			if(strConditionName == null) throw new ArgumentNullException("strConditionName");
+			if (strConditionName == null) throw new ArgumentNullException("strConditionName");
 
-			foreach(EcasConditionType t in m_conditions)
+			foreach (EcasConditionType t in m_conditions)
 			{
-				if(t.Name == strConditionName) return t;
+				if (t.Name == strConditionName) return t;
 			}
 
 			return null;
@@ -61,11 +61,11 @@ namespace KeePass.Ecas
 
 		public EcasConditionType Find(PwUuid uuid)
 		{
-			if(uuid == null) throw new ArgumentNullException("uuid");
+			if (uuid == null) throw new ArgumentNullException("uuid");
 
-			foreach(EcasConditionType t in m_conditions)
+			foreach (EcasConditionType t in m_conditions)
 			{
-				if(t.Type.Equals(uuid)) return t;
+				if (t.Type.Equals(uuid)) return t;
 			}
 
 			return null;
@@ -73,11 +73,11 @@ namespace KeePass.Ecas
 
 		public bool Evaluate(EcasCondition c, EcasContext ctx)
 		{
-			if(c == null) throw new ArgumentNullException("c");
+			if (c == null) throw new ArgumentNullException("c");
 
-			foreach(EcasConditionType t in m_conditions)
+			foreach (EcasConditionType t in m_conditions)
 			{
-				if(t.Type.Equals(c.Type))
+				if (t.Type.Equals(c.Type))
 					return t.EvaluateMethod(c, ctx);
 			}
 

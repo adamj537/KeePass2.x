@@ -59,11 +59,11 @@ namespace KeePass.DataExchange.Formats
 			string strXslFile;
 			pwExportInfo.Parameters.TryGetValue(ParamXslFile, out strXslFile);
 
-			if(string.IsNullOrEmpty(strXslFile))
+			if (string.IsNullOrEmpty(strXslFile))
 			{
 				strXslFile = UIGetXslFile();
 
-				if(string.IsNullOrEmpty(strXslFile))
+				if (string.IsNullOrEmpty(strXslFile))
 					return false;
 			}
 
@@ -76,7 +76,7 @@ namespace KeePass.DataExchange.Formats
 			OpenFileDialogEx dlgXsl = UIUtil.CreateOpenFileDialog(KPRes.XslSelectFile,
 				strFilter, 1, "xsl", false, AppDefs.FileDialogContext.Xsl);
 
-			if(dlgXsl.ShowDialog() != DialogResult.OK) return null;
+			if (dlgXsl.ShowDialog() != DialogResult.OK) return null;
 
 			return dlgXsl.FileName;
 		}
@@ -86,14 +86,14 @@ namespace KeePass.DataExchange.Formats
 		{
 			XslCompiledTransform xsl = new XslCompiledTransform();
 			try { xsl.Load(strXslFile); }
-			catch(Exception exXsl)
+			catch (Exception exXsl)
 			{
 				throw new NotSupportedException(strXslFile + MessageService.NewParagraph +
 					KPRes.NoXslFile + MessageService.NewParagraph + exXsl.Message);
 			}
 
 			byte[] pbData;
-			using(MemoryStream ms = new MemoryStream())
+			using (MemoryStream ms = new MemoryStream())
 			{
 				PwDatabase pd = (pwExportInfo.ContextDatabase ?? new PwDatabase());
 				KdbxFile f = new KdbxFile(pd);
@@ -101,10 +101,10 @@ namespace KeePass.DataExchange.Formats
 
 				pbData = ms.ToArray();
 			}
-			if(pbData == null) throw new OutOfMemoryException();
+			if (pbData == null) throw new OutOfMemoryException();
 
 			XmlWriterSettings xws = xsl.OutputSettings;
-			if(xws == null)
+			if (xws == null)
 			{
 				xws = new XmlWriterSettings();
 
@@ -118,11 +118,11 @@ namespace KeePass.DataExchange.Formats
 				xws.OmitXmlDeclaration = true;
 			}
 
-			using(MemoryStream msIn = new MemoryStream(pbData, false))
+			using (MemoryStream msIn = new MemoryStream(pbData, false))
 			{
-				using(XmlReader xrIn = XmlUtilEx.CreateXmlReader(msIn))
+				using (XmlReader xrIn = XmlUtilEx.CreateXmlReader(msIn))
 				{
-					using(XmlWriter xwOut = XmlWriter.Create(sOutput, xws))
+					using (XmlWriter xwOut = XmlWriter.Create(sOutput, xws))
 					{
 						xsl.Transform(xrIn, xwOut);
 					}

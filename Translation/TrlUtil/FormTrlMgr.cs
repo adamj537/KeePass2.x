@@ -110,7 +110,7 @@ namespace TrlUtil
 			kpfc.Window.TextEnglish = f.Text;
 			kpfc.Window.BaseHash = KPControlCustomization.HashControl(f);
 
-			foreach(Control c in f.Controls) AddControl(kpfc, c);
+			foreach (Control c in f.Controls) AddControl(kpfc, c);
 
 			kpfc.Controls.Sort();
 
@@ -119,39 +119,39 @@ namespace TrlUtil
 
 		private static void AddControl(KPFormCustomization kpfc, Control c)
 		{
-			if((kpfc == null) || (c == null)) { Debug.Assert(false); return; }
+			if ((kpfc == null) || (c == null)) { Debug.Assert(false); return; }
 
 			bool bAdd = true;
 
-			if(string.IsNullOrEmpty(c.Text) ||
+			if (string.IsNullOrEmpty(c.Text) ||
 				(c.Text.StartsWith("<") && c.Text.EndsWith(">")) ||
 				((c is Panel) && !(c is TabPage)) || (c is PictureBox) ||
 				(c is ToolStrip) || (c is TreeView) || (c is WebBrowser))
 				bAdd = false;
 
 			// For layout adjustments
-			if((c is ButtonBase) || (c is DateTimePicker) || (c is Label) ||
+			if ((c is ButtonBase) || (c is DateTimePicker) || (c is Label) ||
 				(c is ListControl) || (c is ListView) || (c is ProgressBar) ||
 				(c is QualityProgressBar) || (c is TabControl) || (c is TextBoxBase))
 				bAdd |= (c.Dock != DockStyle.Fill);
 
-			if(string.IsNullOrEmpty(c.Name)) bAdd = false;
+			if (string.IsNullOrEmpty(c.Name)) bAdd = false;
 
-			if(bAdd)
+			if (bAdd)
 			{
 				KPControlCustomization kpcc = new KPControlCustomization();
 				kpcc.Name = c.Name;
 				kpcc.BaseHash = KPControlCustomization.HashControl(c);
 
 				Debug.Assert(!(c is TabControl) || string.IsNullOrEmpty(c.Text));
-				if((c is HotKeyControlEx) || (c is NumericUpDown))
+				if ((c is HotKeyControlEx) || (c is NumericUpDown))
 					kpcc.TextEnglish = string.Empty;
 				else kpcc.TextEnglish = (c.Text ?? string.Empty);
 
 				kpfc.Controls.Add(kpcc);
 			}
 
-			foreach(Control cSub in c.Controls) AddControl(kpfc, cSub);
+			foreach (Control cSub in c.Controls) AddControl(kpfc, cSub);
 		}
 
 		public static void RenderToTreeControl(List<KPFormCustomization> listCustoms,
@@ -161,11 +161,11 @@ namespace TrlUtil
 			tv.Nodes.Clear();
 			dControls.Clear();
 
-			foreach(KPFormCustomization kpfc in listCustoms)
+			foreach (KPFormCustomization kpfc in listCustoms)
 			{
 				string strName = kpfc.FullName;
 				int nLastDot = strName.LastIndexOf('.');
-				if(nLastDot >= 0) strName = strName.Substring(nLastDot + 1);
+				if (nLastDot >= 0) strName = strName.Substring(nLastDot + 1);
 
 				TreeNode tnForm = tv.Nodes.Add(strName);
 				tnForm.Tag = kpfc;
@@ -174,7 +174,7 @@ namespace TrlUtil
 				TreeNode tnWindow = tnForm.Nodes.Add("Window");
 				tnWindow.Tag = kpfc.Window;
 
-				foreach(KPControlCustomization kpcc in kpfc.Controls)
+				foreach (KPControlCustomization kpcc in kpfc.Controls)
 				{
 					TreeNode tnControl = tnForm.Nodes.Add(kpcc.Name);
 					tnControl.Tag = kpcc;
@@ -191,11 +191,11 @@ namespace TrlUtil
 		public static void MergeForms(List<KPFormCustomization> lInto,
 			List<KPFormCustomization> lFrom, StringBuilder sbUnusedText)
 		{
-			foreach(KPFormCustomization kpInto in lInto)
+			foreach (KPFormCustomization kpInto in lInto)
 			{
-				foreach(KPFormCustomization kpFrom in lFrom)
+				foreach (KPFormCustomization kpFrom in lFrom)
 				{
-					if(kpInto.FullName == kpFrom.FullName)
+					if (kpInto.FullName == kpFrom.FullName)
 						MergeFormCustomizations(kpInto, kpFrom, sbUnusedText);
 				}
 			}
@@ -206,11 +206,11 @@ namespace TrlUtil
 		{
 			MergeControlCustomizations(kpInto.Window, kpFrom.Window, sbUnusedText);
 
-			foreach(KPControlCustomization ccInto in kpInto.Controls)
+			foreach (KPControlCustomization ccInto in kpInto.Controls)
 			{
-				foreach(KPControlCustomization ccFrom in kpFrom.Controls)
+				foreach (KPControlCustomization ccFrom in kpFrom.Controls)
 				{
-					if(ccInto.Name == ccFrom.Name)
+					if (ccInto.Name == ccFrom.Name)
 						MergeControlCustomizations(ccInto, ccFrom, sbUnusedText);
 				}
 			}
@@ -219,26 +219,26 @@ namespace TrlUtil
 		private static void MergeControlCustomizations(KPControlCustomization ccInto,
 			KPControlCustomization ccFrom, StringBuilder sbUnusedText)
 		{
-			if(ccFrom.Text.Length > 0)
+			if (ccFrom.Text.Length > 0)
 			{
 				bool bTextValid = true;
 
-				if(!m_bIgnoreBaseHash && (ccFrom.BaseHash.Length > 0) &&
+				if (!m_bIgnoreBaseHash && (ccFrom.BaseHash.Length > 0) &&
 					!ccInto.MatchHash(ccFrom.BaseHash))
 					bTextValid = false;
 
-				if(bTextValid) ccInto.Text = ccFrom.Text;
+				if (bTextValid) ccInto.Text = ccFrom.Text;
 				else // Create a backup
 				{
 					string strTrimmed = ccFrom.Text.Trim();
-					if(strTrimmed.Length > 0) sbUnusedText.AppendLine(strTrimmed);
+					if (strTrimmed.Length > 0) sbUnusedText.AppendLine(strTrimmed);
 				}
 			}
 
-			if(ccFrom.Layout.X.Length > 0) ccInto.Layout.X = ccFrom.Layout.X;
-			if(ccFrom.Layout.Y.Length > 0) ccInto.Layout.Y = ccFrom.Layout.Y;
-			if(ccFrom.Layout.Width.Length > 0) ccInto.Layout.Width = ccFrom.Layout.Width;
-			if(ccFrom.Layout.Height.Length > 0) ccInto.Layout.Height = ccFrom.Layout.Height;
+			if (ccFrom.Layout.X.Length > 0) ccInto.Layout.X = ccFrom.Layout.X;
+			if (ccFrom.Layout.Y.Length > 0) ccInto.Layout.Y = ccFrom.Layout.Y;
+			if (ccFrom.Layout.Width.Length > 0) ccInto.Layout.Width = ccFrom.Layout.Width;
+			if (ccFrom.Layout.Height.Length > 0) ccInto.Layout.Height = ccFrom.Layout.Height;
 		}
 	}
 }

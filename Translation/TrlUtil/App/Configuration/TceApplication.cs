@@ -32,12 +32,12 @@ namespace TrlUtil.App.Configuration
 		{
 			get
 			{
-				if(m_ioLastFile == null) m_ioLastFile = new IOConnectionInfo();
+				if (m_ioLastFile == null) m_ioLastFile = new IOConnectionInfo();
 				return m_ioLastFile;
 			}
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_ioLastFile = value;
 			}
 		}

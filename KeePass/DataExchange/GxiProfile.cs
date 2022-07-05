@@ -68,7 +68,7 @@ namespace KeePass.DataExchange
 			get { return m_strRootXPath; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strRootXPath = value;
 			}
 		}
@@ -80,7 +80,7 @@ namespace KeePass.DataExchange
 			get { return m_strGroupXPath; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strGroupXPath = value;
 			}
 		}
@@ -92,7 +92,7 @@ namespace KeePass.DataExchange
 			get { return m_strGroupNameXPath; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strGroupNameXPath = value;
 			}
 		}
@@ -104,7 +104,7 @@ namespace KeePass.DataExchange
 			get { return m_strEntryXPath; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strEntryXPath = value;
 			}
 		}
@@ -116,7 +116,7 @@ namespace KeePass.DataExchange
 			get { return m_strStringKvpXPath; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strStringKvpXPath = value;
 			}
 		}
@@ -128,7 +128,7 @@ namespace KeePass.DataExchange
 			get { return m_strStringKeyXPath; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strStringKeyXPath = value;
 			}
 		}
@@ -148,7 +148,7 @@ namespace KeePass.DataExchange
 			get { return m_strStringKeyRepl; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strStringKeyRepl = value;
 			}
 		}
@@ -160,7 +160,7 @@ namespace KeePass.DataExchange
 			get { return m_strStringValueXPath; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strStringValueXPath = value;
 			}
 		}
@@ -172,7 +172,7 @@ namespace KeePass.DataExchange
 			get { return m_strStringValueRepl; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strStringValueRepl = value;
 			}
 		}
@@ -184,7 +184,7 @@ namespace KeePass.DataExchange
 			get { return m_strStringKvpXPath2; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strStringKvpXPath2 = value;
 			}
 		}
@@ -196,7 +196,7 @@ namespace KeePass.DataExchange
 			get { return m_strStringKeyXPath2; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strStringKeyXPath2 = value;
 			}
 		}
@@ -216,7 +216,7 @@ namespace KeePass.DataExchange
 			get { return m_strStringKeyRepl2; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strStringKeyRepl2 = value;
 			}
 		}
@@ -228,7 +228,7 @@ namespace KeePass.DataExchange
 			get { return m_strStringValueXPath2; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strStringValueXPath2 = value;
 			}
 		}
@@ -240,7 +240,7 @@ namespace KeePass.DataExchange
 			get { return m_strStringValueRepl2; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strStringValueRepl2 = value;
 			}
 		}
@@ -252,7 +252,7 @@ namespace KeePass.DataExchange
 			get { return m_strBinaryKvpXPath; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strBinaryKvpXPath = value;
 			}
 		}
@@ -264,7 +264,7 @@ namespace KeePass.DataExchange
 			get { return m_strBinaryKeyXPath; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strBinaryKeyXPath = value;
 			}
 		}
@@ -284,7 +284,7 @@ namespace KeePass.DataExchange
 			get { return m_strBinaryKeyRepl; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strBinaryKeyRepl = value;
 			}
 		}
@@ -296,7 +296,7 @@ namespace KeePass.DataExchange
 			get { return m_strBinaryValueXPath; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strBinaryValueXPath = value;
 			}
 		}
@@ -315,7 +315,7 @@ namespace KeePass.DataExchange
 			get { return m_strEntryGroupXPath; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strEntryGroupXPath = value;
 			}
 		}
@@ -327,7 +327,7 @@ namespace KeePass.DataExchange
 			get { return m_strEntryGroupXPath2; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strEntryGroupXPath2 = value;
 			}
 		}
@@ -339,7 +339,7 @@ namespace KeePass.DataExchange
 			get { return m_strEntryGroupSep; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strEntryGroupSep = value;
 			}
 		}

@@ -367,7 +367,7 @@ namespace KeePass.UI.ToolStripRendering
 		{
 			ToolStripItem tsi = ((e != null) ? e.Item : null);
 
-			if((tsi != null) && ((tsi.Owner is ContextMenuStrip) ||
+			if ((tsi != null) && ((tsi.Owner is ContextMenuStrip) ||
 				(tsi.OwnerItem != null)) && tsi.Selected && !tsi.Enabled)
 			{
 				Rectangle rect = tsi.ContentRectangle;
@@ -381,7 +381,7 @@ namespace KeePass.UI.ToolStripRendering
 				Pen p = new Pen(clrBorder);
 
 				Graphics g = e.Graphics;
-				if(g != null)
+				if (g != null)
 				{
 					g.FillRectangle(br, rect);
 					g.DrawRectangle(p, rect);

@@ -52,7 +52,7 @@ namespace KeePass.UI
 
 			public RtfbTag(string strId, string strRtf, bool bStartTag, FontStyle fs)
 			{
-				if(string.IsNullOrEmpty(strId)) strId = GenerateRandomIdCode();
+				if (string.IsNullOrEmpty(strId)) strId = GenerateRandomIdCode();
 				this.IdCode = strId;
 
 				this.RtfCode = strRtf;
@@ -69,10 +69,10 @@ namespace KeePass.UI
 				// the RTF generation; for safety, we do not use
 				// digits at all
 				sb.Append((char)('A' + r.Next(26)));
-				for(int i = 0; i < 12; ++i)
+				for (int i = 0; i < 12; ++i)
 				{
 					int n = r.Next(52); // 62
-					if(n < 26) sb.Append((char)('A' + n));
+					if (n < 26) sb.Append((char)('A' + n));
 					// else if(n < 52)
 					else sb.Append((char)('a' + (n - 26)));
 					// else sb.Append((char)('0' + (n - 52)));
@@ -97,13 +97,13 @@ namespace KeePass.UI
 
 		private static void EnsureInitializedStatic()
 		{
-			if(g_vTags != null) return;
+			if (g_vTags != null) return;
 
 			// When running under Mono, replace bold and italic text
 			// by underlined text, which is rendered correctly (in
 			// contrast to bold and italic text)
 			string strOvrS = null, strOvrE = null;
-			if(MonoWorkarounds.IsRequired(1632))
+			if (MonoWorkarounds.IsRequired(1632))
 			{
 				strOvrS = "\\ul ";
 				strOvrE = "\\ul0 ";
@@ -125,11 +125,11 @@ namespace KeePass.UI
 		{
 			string strL = null, strR = null;
 
-			foreach(RtfbTag rTag in g_vTags)
+			foreach (RtfbTag rTag in g_vTags)
 			{
-				if(rTag.Style == fs)
+				if (rTag.Style == fs)
 				{
-					if(rTag.StartTag) strL = rTag.IdCode;
+					if (rTag.StartTag) strL = rTag.IdCode;
 					else strR = rTag.IdCode;
 				}
 			}
@@ -162,15 +162,15 @@ namespace KeePass.UI
 		{
 			KeyValuePair<string, string> kvpTags = GetStyleIdCodes(fs);
 
-			if(!string.IsNullOrEmpty(strOuterPrefix)) m_sb.Append(strOuterPrefix);
+			if (!string.IsNullOrEmpty(strOuterPrefix)) m_sb.Append(strOuterPrefix);
 
-			if(!string.IsNullOrEmpty(kvpTags.Key)) m_sb.Append(kvpTags.Key);
-			if(!string.IsNullOrEmpty(strInnerPrefix)) m_sb.Append(strInnerPrefix);
+			if (!string.IsNullOrEmpty(kvpTags.Key)) m_sb.Append(kvpTags.Key);
+			if (!string.IsNullOrEmpty(strInnerPrefix)) m_sb.Append(strInnerPrefix);
 			m_sb.Append(str);
-			if(!string.IsNullOrEmpty(strInnerSuffix)) m_sb.Append(strInnerSuffix);
-			if(!string.IsNullOrEmpty(kvpTags.Value)) m_sb.Append(kvpTags.Value);
+			if (!string.IsNullOrEmpty(strInnerSuffix)) m_sb.Append(strInnerSuffix);
+			if (!string.IsNullOrEmpty(kvpTags.Value)) m_sb.Append(kvpTags.Value);
 
-			if(!string.IsNullOrEmpty(strOuterSuffix)) m_sb.Append(strOuterSuffix);
+			if (!string.IsNullOrEmpty(strOuterSuffix)) m_sb.Append(strOuterSuffix);
 		}
 
 		public void AppendLine(string str, FontStyle fs, string strOuterPrefix,
@@ -199,7 +199,7 @@ namespace KeePass.UI
 			// rtbOp.ScrollBars = rtbUI.ScrollBars;
 			rtbOp.Size = rtbUI.Size;
 
-			if(rtbUI.RightToLeft == RightToLeft.Yes)
+			if (rtbUI.RightToLeft == RightToLeft.Yes)
 			{
 				rtbOp.RightToLeft = RightToLeft.Yes;
 				// rtbOp.SelectionAlignment = HorizontalAlignment.Right;
@@ -210,9 +210,9 @@ namespace KeePass.UI
 
 		private static bool MayGetURtf(RichTextBox rtbUI)
 		{
-			if(!g_obURtf.HasValue)
+			if (!g_obURtf.HasValue)
 			{
-				using(RichTextBox rtb = CreateOpRtb(rtbUI))
+				using (RichTextBox rtb = CreateOpRtb(rtbUI))
 				{
 					// Ensure Rtf != null and encourage Unicode
 					rtb.Text = "\u0413\u043E\u0434\r\n\u0397\u03C4\u03B1\r\n" +
@@ -239,7 +239,7 @@ namespace KeePass.UI
 		internal bool Build(RichTextBox rtb, bool bBracesBalanced,
 			ref string strLastRtf)
 		{
-			if(rtb == null) throw new ArgumentNullException("rtb");
+			if (rtb == null) throw new ArgumentNullException("rtb");
 
 			string strText = m_sb.ToString();
 			bool bURtf = MayGetURtf(rtb);
@@ -248,19 +248,19 @@ namespace KeePass.UI
 			// Windows: https://sourceforge.net/p/keepass/bugs/1780/
 			// Mono: https://bugzilla.novell.com/show_bug.cgi?id=586901
 			Dictionary<char, string> dEnc = new Dictionary<char, string>();
-			if(bURtf || MonoWorkarounds.IsRequired(586901))
+			if (bURtf || MonoWorkarounds.IsRequired(586901))
 			{
 				StringBuilder sbEnc = new StringBuilder();
 
-				for(int i = 0; i < strText.Length; ++i)
+				for (int i = 0; i < strText.Length; ++i)
 				{
 					char ch = strText[i];
 
-					if(ch <= '\u00FF') sbEnc.Append(ch);
+					if (ch <= '\u00FF') sbEnc.Append(ch);
 					else
 					{
 						string strCharEnc;
-						if(!dEnc.TryGetValue(ch, out strCharEnc))
+						if (!dEnc.TryGetValue(ch, out strCharEnc))
 						{
 							strCharEnc = RtfbTag.GenerateRandomIdCode();
 							dEnc[ch] = strCharEnc;
@@ -274,13 +274,13 @@ namespace KeePass.UI
 			}
 
 			string strRtf;
-			using(RichTextBox rtbOp = CreateOpRtb(rtb))
+			using (RichTextBox rtbOp = CreateOpRtb(rtb))
 			{
 				string strFlt = StrUtil.RtfFilterText(strText);
 				rtbOp.Text = strFlt;
 				Debug.Assert(rtbOp.Text == strFlt); // Test committed
 
-				if(m_fDefault != null)
+				if (m_fDefault != null)
 				{
 					rtbOp.SelectAll();
 					rtbOp.SelectionFont = m_fDefault;
@@ -289,23 +289,23 @@ namespace KeePass.UI
 				strRtf = rtbOp.Rtf;
 			}
 
-			foreach(KeyValuePair<char, string> kvpEnc in dEnc)
+			foreach (KeyValuePair<char, string> kvpEnc in dEnc)
 			{
 				strRtf = strRtf.Replace(kvpEnc.Value,
 					StrUtil.RtfEncodeChar(kvpEnc.Key));
 			}
-			foreach(RtfbTag rTag in g_vTags)
+			foreach (RtfbTag rTag in g_vTags)
 			{
 				strRtf = strRtf.Replace(rTag.IdCode, rTag.RtfCode);
 			}
 
-			if(bBracesBalanced && MonoWorkarounds.IsRequired(2449941153U))
+			if (bBracesBalanced && MonoWorkarounds.IsRequired(2449941153U))
 				strRtf = Regex.Replace(strRtf,
 					@"(\\)(\{[\u0020-\u005B\u005D-z\w\s]*?)(\})", "$1$2$1$3");
 
 			strRtf = StrUtil.RtfFix(strRtf);
 
-			if(strRtf == strLastRtf) return false;
+			if (strRtf == strLastRtf) return false;
 			rtb.Rtf = strRtf;
 			strLastRtf = strRtf;
 			return true;

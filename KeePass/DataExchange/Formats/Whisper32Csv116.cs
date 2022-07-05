@@ -59,24 +59,24 @@ namespace KeePass.DataExchange.Formats
 			char[] vDateZeroTrim = new char[] { '0' };
 
 			bool bFirst = true;
-			while(true)
+			while (true)
 			{
 				bool bSubZero = false;
-				for(int iField = 0; iField < vFields.Length; ++iField)
+				for (int iField = 0; iField < vFields.Length; ++iField)
 				{
 					vFields[iField] = ReadCsvField(cs);
 
-					if((iField > 0) && (vFields[iField] == null))
+					if ((iField > 0) && (vFields[iField] == null))
 						bSubZero = true;
 				}
-				if(vFields[0] == null) break; // Import successful
-				else if(bSubZero) throw new FormatException();
+				if (vFields[0] == null) break; // Import successful
+				else if (bSubZero) throw new FormatException();
 
-				if(bFirst)
+				if (bFirst)
 				{
 					bFirst = false; // Check first line once only
 
-					if((vFields[0] != "ServiceName") || (vFields[1] != "UserName") ||
+					if ((vFields[0] != "ServiceName") || (vFields[1] != "UserName") ||
 						(vFields[2] != "Password") || (vFields[3] != "Memo") ||
 						(vFields[4] != "Expire") || (vFields[5] != "StartDate") ||
 						(vFields[6] != "DaysToLive"))
@@ -113,7 +113,7 @@ namespace KeePass.DataExchange.Formats
 					pe.LastAccessTime = dt;
 					pe.ExpiryTime = dt.AddDays(double.Parse(vFields[6]));
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 
 				pe.Strings.Set("Days To Live", new ProtectedString(false,
 					vFields[6]));
@@ -125,29 +125,29 @@ namespace KeePass.DataExchange.Formats
 			StringBuilder sbValue = new StringBuilder();
 			char ch;
 
-			while(true)
+			while (true)
 			{
 				ch = cs.ReadChar();
-				if(ch == char.MinValue) return null;
-				else if(ch == '\"') break;
+				if (ch == char.MinValue) return null;
+				else if (ch == '\"') break;
 			}
 
-			while(true)
+			while (true)
 			{
 				ch = cs.ReadChar();
 
-				if(ch == char.MinValue)
+				if (ch == char.MinValue)
 					return null;
-				else if(ch == '\r')
+				else if (ch == '\r')
 					continue;
-				else if(ch == '\"')
+				else if (ch == '\"')
 				{
 					char chSucc = cs.ReadChar();
 
-					if(chSucc == '\"') sbValue.Append('\"');
+					if (chSucc == '\"') sbValue.Append('\"');
 					else break;
 				}
-				else if(ch == '\n')
+				else if (ch == '\n')
 					sbValue.Append(MessageService.NewLine);
 				else sbValue.Append(ch);
 			}

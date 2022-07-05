@@ -56,7 +56,7 @@ namespace KeePass.Ecas
 		{
 			get
 			{
-				if(m_enumCompare == null)
+				if (m_enumCompare == null)
 					m_enumCompare = new EcasEnum(new EcasEnumItem[] {
 						new EcasEnumItem(StdCompareEqual, "="),
 						new EcasEnumItem(StdCompareNotEqual, "<>"),
@@ -80,7 +80,7 @@ namespace KeePass.Ecas
 		{
 			get
 			{
-				if(m_enumStringCompare == null)
+				if (m_enumStringCompare == null)
 					m_enumStringCompare = new EcasEnum(new EcasEnumItem[] {
 						new EcasEnumItem(StdStringCompareEquals, KPRes.EqualsOp),
 						new EcasEnumItem(StdStringCompareContains, KPRes.ContainsOp),
@@ -108,11 +108,11 @@ namespace KeePass.Ecas
 		{
 			string str = GetParamString(vParams, iIndex, string.Empty);
 
-			if(bSprCompile && !string.IsNullOrEmpty(str))
+			if (bSprCompile && !string.IsNullOrEmpty(str))
 			{
 				PwEntry pe = null;
 				try { pe = Program.MainForm.GetSelectedEntry(false); }
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 
 				PwDatabase pd = Program.MainForm.DocumentManager.SafeFindContainerOf(pe);
 
@@ -129,9 +129,9 @@ namespace KeePass.Ecas
 		public static string GetParamString(List<string> vParams, int iIndex,
 			string strDefault)
 		{
-			if(vParams == null) { Debug.Assert(false); return strDefault; }
-			if(iIndex < 0) { Debug.Assert(false); return strDefault; }
-			if(iIndex >= vParams.Count) return strDefault; // No assert
+			if (vParams == null) { Debug.Assert(false); return strDefault; }
+			if (iIndex < 0) { Debug.Assert(false); return strDefault; }
+			if (iIndex >= vParams.Count) return strDefault; // No assert
 
 			return vParams[iIndex];
 		}
@@ -152,23 +152,23 @@ namespace KeePass.Ecas
 		{
 			string str = GetParamString(vParams, iIndex, string.Empty);
 			uint u;
-			if(uint.TryParse(str, out u)) return u;
+			if (uint.TryParse(str, out u)) return u;
 			return uDefault;
 		}
 
 		public static uint GetParamEnum(List<string> vParams, int iIndex,
 			uint uDefault, EcasEnum enumItems)
 		{
-			if(enumItems == null) { Debug.Assert(false); return uDefault; }
+			if (enumItems == null) { Debug.Assert(false); return uDefault; }
 
 			string str = GetParamString(vParams, iIndex, null);
-			if(string.IsNullOrEmpty(str)) { Debug.Assert(false); return uDefault; }
+			if (string.IsNullOrEmpty(str)) { Debug.Assert(false); return uDefault; }
 
 			uint uID;
-			if(!uint.TryParse(str, out uID)) { Debug.Assert(false); return uDefault; }
+			if (!uint.TryParse(str, out uID)) { Debug.Assert(false); return uDefault; }
 
 			// Make sure the enumeration contains the value
-			if(enumItems.GetItemString(uID, null) == null) { Debug.Assert(false); return uDefault; }
+			if (enumItems.GetItemString(uID, null) == null) { Debug.Assert(false); return uDefault; }
 
 			return uID;
 		}
@@ -176,11 +176,11 @@ namespace KeePass.Ecas
 		public static void ParametersToDataGridView(DataGridView dg,
 			IEcasParameterized p, IEcasObject objDefaults)
 		{
-			if(dg == null) throw new ArgumentNullException("dg");
-			if(p == null) throw new ArgumentNullException("p");
-			if(p.Parameters == null) throw new ArgumentException();
-			if(objDefaults == null) throw new ArgumentNullException("objDefaults");
-			if(objDefaults.Parameters == null) throw new ArgumentException();
+			if (dg == null) throw new ArgumentNullException("dg");
+			if (p == null) throw new ArgumentNullException("p");
+			if (p.Parameters == null) throw new ArgumentException();
+			if (objDefaults == null) throw new ArgumentNullException("objDefaults");
+			if (objDefaults.Parameters == null) throw new ArgumentException();
 
 			dg.Rows.Clear();
 			dg.Columns.Clear();
@@ -189,11 +189,11 @@ namespace KeePass.Ecas
 			Color clrBG = dg.DefaultCellStyle.BackColor;
 
 			// https://sourceforge.net/p/keepass/bugs/1808/
-			if(UIUtil.IsDarkColor(clrFG) == UIUtil.IsDarkColor(clrBG))
+			if (UIUtil.IsDarkColor(clrFG) == UIUtil.IsDarkColor(clrBG))
 				clrFG = (UIUtil.IsDarkColor(clrBG) ? Color.White : Color.Black);
 
 			Color clrValueBG = clrBG;
-			if(UIUtil.IsDarkColor(clrBG))
+			if (UIUtil.IsDarkColor(clrBG))
 				clrValueBG = UIUtil.LightenColor(clrValueBG, 0.075);
 			else clrValueBG = UIUtil.DarkenColor(clrValueBG, 0.075);
 
@@ -221,11 +221,11 @@ namespace KeePass.Ecas
 			dg.Columns[1].Width = (nWidth / 2);
 
 			bool bUseDefaults = true;
-			if(objDefaults.Type == null) { Debug.Assert(false); } // Optimistic
-			else if(p.Type == null) { Debug.Assert(false); } // Optimistic
-			else if(!objDefaults.Type.Equals(p.Type)) bUseDefaults = false;
+			if (objDefaults.Type == null) { Debug.Assert(false); } // Optimistic
+			else if (p.Type == null) { Debug.Assert(false); } // Optimistic
+			else if (!objDefaults.Type.Equals(p.Type)) bUseDefaults = false;
 
-			for(int i = 0; i < p.Parameters.Length; ++i)
+			for (int i = 0; i < p.Parameters.Length; ++i)
 			{
 				EcasParameter ep = p.Parameters[i];
 
@@ -241,7 +241,7 @@ namespace KeePass.Ecas
 					objDefaults.Parameters, i) : string.Empty);
 
 				DataGridViewCell c = null;
-				switch(ep.Type)
+				switch (ep.Type)
 				{
 					case EcasValueType.String:
 						c = new DataGridViewTextBoxCell();
@@ -258,14 +258,14 @@ namespace KeePass.Ecas
 						cmb.Sorted = false;
 						cmb.DisplayStyle = DataGridViewComboBoxDisplayStyle.DropDownButton;
 						int iFound = -1;
-						for(int e = 0; e < ep.EnumValues.ItemCount; ++e)
+						for (int e = 0; e < ep.EnumValues.ItemCount; ++e)
 						{
 							EcasEnumItem eei = ep.EnumValues.Items[e];
 							cmb.Items.Add(eei.Name);
-							if(eei.ID.ToString() == strParam) iFound = e;
+							if (eei.ID.ToString() == strParam) iFound = e;
 						}
-						if(iFound >= 0) cmb.Value = ep.EnumValues.Items[iFound].Name;
-						else if(ep.EnumValues.ItemCount > 0) cmb.Value = ep.EnumValues.Items[0].Name;
+						if (iFound >= 0) cmb.Value = ep.EnumValues.Items[iFound].Name;
+						else if (ep.EnumValues.ItemCount > 0) cmb.Value = ep.EnumValues.Items[0].Name;
 						else { Debug.Assert(false); }
 						c = cmb;
 						break;
@@ -285,7 +285,7 @@ namespace KeePass.Ecas
 						break;
 				}
 
-				if(c != null)
+				if (c != null)
 				{
 					cc[1] = c;
 					cc[1].ReadOnly = false;
@@ -307,8 +307,8 @@ namespace KeePass.Ecas
 		public static void DataGridViewToParameters(DataGridView dg, IEcasObject objOut,
 			IEcasParameterized eTypeInfo)
 		{
-			if(dg == null) throw new ArgumentNullException("dg");
-			if(objOut == null) throw new ArgumentNullException("objOut");
+			if (dg == null) throw new ArgumentNullException("dg");
+			if (objOut == null) throw new ArgumentNullException("objOut");
 			// if(vParamDesc == null) throw new ArgumentNullException("vParamDesc");
 			// if(dg.Rows.Count != vParamDesc.Length) { Debug.Assert(false); return; }
 
@@ -317,13 +317,13 @@ namespace KeePass.Ecas
 			bool bTypeInfoValid = ((eTypeInfo != null) && (eTypeInfo.Parameters.Length ==
 				dg.Rows.Count));
 
-			for(int i = 0; i < dg.RowCount; ++i)
+			for (int i = 0; i < dg.RowCount; ++i)
 			{
 				DataGridViewCell c = dg.Rows[i].Cells[1];
 				object oValue = c.Value;
 				string strValue = ((oValue != null) ? oValue.ToString() : string.Empty);
 
-				if(bTypeInfoValid && (eTypeInfo.Parameters[i].EnumValues != null) &&
+				if (bTypeInfoValid && (eTypeInfo.Parameters[i].EnumValues != null) &&
 					(c is DataGridViewComboBoxCell))
 				{
 					objOut.Parameters.Add(eTypeInfo.Parameters[i].EnumValues.GetItemID(
@@ -341,26 +341,26 @@ namespace KeePass.Ecas
 
 			try
 			{
-				if(bGuiToInternal)
+				if (bGuiToInternal)
 				{
 					IEcasParameterized eTypeInfo = null;
 
-					if(dxType == EcasTypeDxMode.Selection)
+					if (dxType == EcasTypeDxMode.Selection)
 					{
 						string strSel = (cmbTypes.SelectedItem as string);
-						if(!string.IsNullOrEmpty(strSel))
+						if (!string.IsNullOrEmpty(strSel))
 						{
-							if(objType == EcasObjectType.Event)
+							if (objType == EcasObjectType.Event)
 							{
 								eTypeInfo = Program.EcasPool.FindEvent(strSel);
 								o.Type = eTypeInfo.Type;
 							}
-							else if(objType == EcasObjectType.Condition)
+							else if (objType == EcasObjectType.Condition)
 							{
 								eTypeInfo = Program.EcasPool.FindCondition(strSel);
 								o.Type = eTypeInfo.Type;
 							}
-							else if(objType == EcasObjectType.Action)
+							else if (objType == EcasObjectType.Action)
 							{
 								eTypeInfo = Program.EcasPool.FindAction(strSel);
 								o.Type = eTypeInfo.Type;
@@ -368,10 +368,10 @@ namespace KeePass.Ecas
 							else { Debug.Assert(false); }
 						}
 					}
-					else if(dxType == EcasTypeDxMode.ParamsTag)
+					else if (dxType == EcasTypeDxMode.ParamsTag)
 					{
 						IEcasParameterized p = (dgvParams.Tag as IEcasParameterized);
-						if((p != null) && (p.Type != null))
+						if ((p != null) && (p.Type != null))
 						{
 							eTypeInfo = p;
 							o.Type = eTypeInfo.Type;
@@ -383,40 +383,40 @@ namespace KeePass.Ecas
 				}
 				else // Internal to GUI
 				{
-					if(dxType == EcasTypeDxMode.Selection)
+					if (dxType == EcasTypeDxMode.Selection)
 					{
-						if(o.Type.Equals(PwUuid.Zero))
+						if (o.Type.Equals(PwUuid.Zero))
 							cmbTypes.SelectedIndex = 0;
 						else
 						{
 							int i = -1;
-							if(objType == EcasObjectType.Event)
+							if (objType == EcasObjectType.Event)
 								i = cmbTypes.FindString(Program.EcasPool.FindEvent(o.Type).Name);
-							else if(objType == EcasObjectType.Condition)
+							else if (objType == EcasObjectType.Condition)
 								i = cmbTypes.FindString(Program.EcasPool.FindCondition(o.Type).Name);
-							else if(objType == EcasObjectType.Action)
+							else if (objType == EcasObjectType.Action)
 								i = cmbTypes.FindString(Program.EcasPool.FindAction(o.Type).Name);
 							else { Debug.Assert(false); }
 
-							if(i >= 0) cmbTypes.SelectedIndex = i;
+							if (i >= 0) cmbTypes.SelectedIndex = i;
 							else { Debug.Assert(false); }
 						}
 					}
 					else { Debug.Assert(dxType != EcasTypeDxMode.ParamsTag); }
 
 					IEcasParameterized t = null;
-					if(objType == EcasObjectType.Event)
+					if (objType == EcasObjectType.Event)
 						t = Program.EcasPool.FindEvent(cmbTypes.SelectedItem as string);
-					else if(objType == EcasObjectType.Condition)
+					else if (objType == EcasObjectType.Condition)
 						t = Program.EcasPool.FindCondition(cmbTypes.SelectedItem as string);
-					else if(objType == EcasObjectType.Action)
+					else if (objType == EcasObjectType.Action)
 						t = Program.EcasPool.FindAction(cmbTypes.SelectedItem as string);
 					else { Debug.Assert(false); }
 
-					if(t != null) EcasUtil.ParametersToDataGridView(dgvParams, t, o);
+					if (t != null) EcasUtil.ParametersToDataGridView(dgvParams, t, o);
 				}
 			}
-			catch(Exception e) { MessageService.ShowWarning(e); bResult = false; }
+			catch (Exception e) { MessageService.ShowWarning(e); bResult = false; }
 
 			return bResult;
 		}
@@ -424,11 +424,11 @@ namespace KeePass.Ecas
 		public static string ParametersToString(IEcasObject ecasObj,
 			EcasParameter[] vParamInfo)
 		{
-			if(ecasObj == null) throw new ArgumentNullException("ecasObj");
-			if(ecasObj.Parameters == null) throw new ArgumentException();
+			if (ecasObj == null) throw new ArgumentNullException("ecasObj");
+			if (ecasObj.Parameters == null) throw new ArgumentException();
 
 			bool bParamInfoValid = true;
-			if((vParamInfo == null) || (ecasObj.Parameters.Count > vParamInfo.Length))
+			if ((vParamInfo == null) || (ecasObj.Parameters.Count > vParamInfo.Length))
 			{
 				Debug.Assert(false);
 				bParamInfoValid = false;
@@ -437,43 +437,43 @@ namespace KeePass.Ecas
 			StringBuilder sb = new StringBuilder();
 
 			EcasCondition eCond = (ecasObj as EcasCondition);
-			if(eCond != null)
+			if (eCond != null)
 			{
-				if(eCond.Negate) sb.Append(KPRes.Not);
+				if (eCond.Negate) sb.Append(KPRes.Not);
 			}
 
-			for(int i = 0; i < ecasObj.Parameters.Count; ++i)
+			for (int i = 0; i < ecasObj.Parameters.Count; ++i)
 			{
 				string strParam = ecasObj.Parameters[i];
 				string strAppend;
 
-				if(bParamInfoValid)
+				if (bParamInfoValid)
 				{
 					EcasValueType t = vParamInfo[i].Type;
-					if(t == EcasValueType.String)
+					if (t == EcasValueType.String)
 						strAppend = strParam;
-					else if(t == EcasValueType.Bool)
+					else if (t == EcasValueType.Bool)
 						strAppend = (StrUtil.StringToBool(strParam) ? KPRes.Yes : KPRes.No);
-					else if(t == EcasValueType.EnumStrings)
+					else if (t == EcasValueType.EnumStrings)
 					{
 						uint uEnumID;
-						if(!uint.TryParse(strParam, out uEnumID)) { Debug.Assert(false); }
+						if (!uint.TryParse(strParam, out uEnumID)) { Debug.Assert(false); }
 						EcasEnum ee = vParamInfo[i].EnumValues;
-						if(ee != null) strAppend = ee.GetItemString(uEnumID, string.Empty);
+						if (ee != null) strAppend = ee.GetItemString(uEnumID, string.Empty);
 						else { Debug.Assert(false); strAppend = strParam; }
 					}
-					else if(t == EcasValueType.Int64)
+					else if (t == EcasValueType.Int64)
 						strAppend = FilterTypeI64(strParam);
-					else if(t == EcasValueType.UInt64)
+					else if (t == EcasValueType.UInt64)
 						strAppend = FilterTypeU64(strParam);
 					else { Debug.Assert(false); strAppend = strParam; }
 				}
 				else strAppend = strParam;
 
-				if(string.IsNullOrEmpty(strAppend)) continue;
+				if (string.IsNullOrEmpty(strAppend)) continue;
 				string strAppTrimmed = strAppend.Trim();
-				if(strAppTrimmed.Length == 0) continue;
-				if(sb.Length > 0) sb.Append(", ");
+				if (strAppTrimmed.Length == 0) continue;
+				if (sb.Length > 0) sb.Append(", ");
 				sb.Append(strAppTrimmed);
 			}
 
@@ -482,21 +482,21 @@ namespace KeePass.Ecas
 
 		public static bool CompareStrings(string x, string y, uint uCompareType)
 		{
-			if(x == null) { Debug.Assert(false); return false; }
-			if(y == null) { Debug.Assert(false); return false; }
+			if (x == null) { Debug.Assert(false); return false; }
+			if (y == null) { Debug.Assert(false); return false; }
 
-			if(uCompareType == EcasUtil.StdStringCompareEquals)
+			if (uCompareType == EcasUtil.StdStringCompareEquals)
 				return x.Equals(y, StrUtil.CaseIgnoreCmp);
-			if(uCompareType == EcasUtil.StdStringCompareContains)
+			if (uCompareType == EcasUtil.StdStringCompareContains)
 				return (x.IndexOf(y, StrUtil.CaseIgnoreCmp) >= 0);
-			if(uCompareType == EcasUtil.StdStringCompareStartsWith)
+			if (uCompareType == EcasUtil.StdStringCompareStartsWith)
 				return x.StartsWith(y, StrUtil.CaseIgnoreCmp);
-			if(uCompareType == EcasUtil.StdStringCompareEndsWith)
+			if (uCompareType == EcasUtil.StdStringCompareEndsWith)
 				return x.EndsWith(y, StrUtil.CaseIgnoreCmp);
-			if(uCompareType == EcasUtil.StdStringCompareRegEx)
+			if (uCompareType == EcasUtil.StdStringCompareRegEx)
 			{
 				try { return Regex.IsMatch(x, y, RegexOptions.IgnoreCase); }
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 				return false;
 			}
 
@@ -506,20 +506,20 @@ namespace KeePass.Ecas
 
 		private static string FilterTypeI64(string str)
 		{
-			if(string.IsNullOrEmpty(str)) return string.Empty;
+			if (string.IsNullOrEmpty(str)) return string.Empty;
 
 			long i64;
-			if(long.TryParse(str, out i64)) return i64.ToString();
+			if (long.TryParse(str, out i64)) return i64.ToString();
 
 			return string.Empty;
 		}
 
 		private static string FilterTypeU64(string str)
 		{
-			if(string.IsNullOrEmpty(str)) return string.Empty;
+			if (string.IsNullOrEmpty(str)) return string.Empty;
 
 			ulong u64;
-			if(ulong.TryParse(str, out u64)) return u64.ToString();
+			if (ulong.TryParse(str, out u64)) return u64.ToString();
 
 			return string.Empty;
 		}

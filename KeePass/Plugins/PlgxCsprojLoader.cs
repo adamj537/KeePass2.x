@@ -49,11 +49,11 @@ namespace KeePass.Plugins
 
 		public static void LoadDefault(string strDirPath, PlgxPluginInfo plgxOutInfo)
 		{
-			if(plgxOutInfo == null) throw new ArgumentNullException("plgxOutInfo");
+			if (plgxOutInfo == null) throw new ArgumentNullException("plgxOutInfo");
 
 			List<string> lCsproj = UrlUtil.GetFilePaths(strDirPath, "*.csproj",
 				SearchOption.AllDirectories);
-			if(lCsproj.Count == 1)
+			if (lCsproj.Count == 1)
 			{
 				plgxOutInfo.ProjectType = PlgxProjectType.CSharp;
 				PlgxCsprojLoader.Load(lCsproj[0], plgxOutInfo);
@@ -74,7 +74,7 @@ namespace KeePass.Plugins
 
 		private static void Load(string strFilePath, PlgxPluginInfo plgxOutInfo)
 		{
-			if(strFilePath == null) throw new ArgumentNullException("strFilePath");
+			if (strFilePath == null) throw new ArgumentNullException("strFilePath");
 
 			plgxOutInfo.CsprojFilePath = strFilePath;
 
@@ -86,39 +86,39 @@ namespace KeePass.Plugins
 
 		private static void ReadProject(XmlNode xn, PlgxPluginInfo plgx)
 		{
-			if(xn.Name != XnnProject) throw new Exception(KLRes.FileCorrupted);
+			if (xn.Name != XnnProject) throw new Exception(KLRes.FileCorrupted);
 
-			foreach(XmlNode xnChild in xn.ChildNodes)
+			foreach (XmlNode xnChild in xn.ChildNodes)
 			{
-				if(xnChild.Name == XnnPropertyGroup) ReadPropertyGroup(xnChild, plgx);
-				else if(xnChild.Name == XnnItemGroup) ReadItemGroup(xnChild, plgx);
+				if (xnChild.Name == XnnPropertyGroup) ReadPropertyGroup(xnChild, plgx);
+				else if (xnChild.Name == XnnItemGroup) ReadItemGroup(xnChild, plgx);
 			}
 		}
 
 		private static void ReadPropertyGroup(XmlNode xn, PlgxPluginInfo plgx)
 		{
-			foreach(XmlNode xnChild in xn.ChildNodes)
+			foreach (XmlNode xnChild in xn.ChildNodes)
 			{
-				if(xnChild.Name == XnnAssemblyName)
+				if (xnChild.Name == XnnAssemblyName)
 					plgx.BaseFileName = xnChild.InnerText;
 			}
 		}
 
 		private static void ReadItemGroup(XmlNode xn, PlgxPluginInfo plgx)
 		{
-			foreach(XmlNode xnChild in xn.ChildNodes)
+			foreach (XmlNode xnChild in xn.ChildNodes)
 			{
-				if(xnChild.Name == XnnEmbeddedRes) ReadEmbeddedRes(xnChild, plgx);
-				else if(xnChild.Name == XnnReference) ReadReference(xnChild, plgx);
-				else if(xnChild.Name == XnnCompile) ReadCompile(xnChild, plgx);
-				else if(xnChild.Name == XnnImport) ReadImport(xnChild, plgx);
+				if (xnChild.Name == XnnEmbeddedRes) ReadEmbeddedRes(xnChild, plgx);
+				else if (xnChild.Name == XnnReference) ReadReference(xnChild, plgx);
+				else if (xnChild.Name == XnnCompile) ReadCompile(xnChild, plgx);
+				else if (xnChild.Name == XnnImport) ReadImport(xnChild, plgx);
 			}
 		}
 
 		private static void ReadEmbeddedRes(XmlNode xn, PlgxPluginInfo plgx)
 		{
 			XmlNode xnInc = xn.Attributes.GetNamedItem(XnnInclude);
-			if((xnInc == null) || string.IsNullOrEmpty(xnInc.Value)) { Debug.Assert(false); return; }
+			if ((xnInc == null) || string.IsNullOrEmpty(xnInc.Value)) { Debug.Assert(false); return; }
 
 			string strResSrc = plgx.GetAbsPath(xnInc.Value); // Converts separators
 			plgx.EmbeddedResourceSources.Add(strResSrc);
@@ -127,15 +127,15 @@ namespace KeePass.Plugins
 		private static void ReadReference(XmlNode xn, PlgxPluginInfo plgx)
 		{
 			XmlNode xnInc = xn.Attributes.GetNamedItem(XnnInclude);
-			if((xnInc == null) || string.IsNullOrEmpty(xnInc.Value)) { Debug.Assert(false); return; }
+			if ((xnInc == null) || string.IsNullOrEmpty(xnInc.Value)) { Debug.Assert(false); return; }
 			string str = xnInc.Value;
 
-			if(UrlUtil.AssemblyEquals(str, PwDefs.ShortProductName))
+			if (UrlUtil.AssemblyEquals(str, PwDefs.ShortProductName))
 				return; // Ignore KeePass references
 
-			foreach(XmlNode xnSub in xn.ChildNodes)
+			foreach (XmlNode xnSub in xn.ChildNodes)
 			{
-				if(xnSub.Name == XnnHintPath)
+				if (xnSub.Name == XnnHintPath)
 				{
 					plgx.IncludedReferencedAssemblies.Add(
 						UrlUtil.ConvertSeparators(xnSub.InnerText, '/'));
@@ -143,7 +143,7 @@ namespace KeePass.Plugins
 				}
 			}
 
-			if(!str.EndsWith(".dll", StrUtil.CaseIgnoreCmp)) str += ".dll";
+			if (!str.EndsWith(".dll", StrUtil.CaseIgnoreCmp)) str += ".dll";
 
 			plgx.CompilerParameters.ReferencedAssemblies.Add(str);
 		}
@@ -151,17 +151,17 @@ namespace KeePass.Plugins
 		private static void ReadCompile(XmlNode xn, PlgxPluginInfo plgx)
 		{
 			XmlNode xnInc = xn.Attributes.GetNamedItem(XnnInclude);
-			if((xnInc == null) || string.IsNullOrEmpty(xnInc.Value)) { Debug.Assert(false); return; }
+			if ((xnInc == null) || string.IsNullOrEmpty(xnInc.Value)) { Debug.Assert(false); return; }
 
 			plgx.SourceFiles.Add(plgx.GetAbsPath(xnInc.Value)); // Converts separators
 		}
 
 		private static void ReadImport(XmlNode xn, PlgxPluginInfo plgx)
 		{
-			if(plgx.ProjectType != PlgxProjectType.VisualBasic) { Debug.Assert(false); return; }
+			if (plgx.ProjectType != PlgxProjectType.VisualBasic) { Debug.Assert(false); return; }
 
 			XmlNode xnInc = xn.Attributes.GetNamedItem(XnnInclude);
-			if((xnInc == null) || string.IsNullOrEmpty(xnInc.Value)) { Debug.Assert(false); return; }
+			if ((xnInc == null) || string.IsNullOrEmpty(xnInc.Value)) { Debug.Assert(false); return; }
 
 			plgx.VbImports.Add(UrlUtil.ConvertSeparators(xnInc.Value));
 		}

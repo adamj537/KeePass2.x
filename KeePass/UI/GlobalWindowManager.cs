@@ -67,7 +67,7 @@ namespace KeePass.UI
 			get
 			{
 				uint u;
-				lock(g_oSyncRoot)
+				lock (g_oSyncRoot)
 				{
 					u = ((uint)(g_vWindows.Count + g_vDialogs.Count) +
 						MessageService.CurrentMessageCount);
@@ -80,15 +80,15 @@ namespace KeePass.UI
 		{
 			get
 			{
-				lock(g_oSyncRoot)
+				lock (g_oSyncRoot)
 				{
-					if(g_vDialogs.Count > 0) return false;
-					if(MessageService.CurrentMessageCount > 0) return false;
+					if (g_vDialogs.Count > 0) return false;
+					if (MessageService.CurrentMessageCount > 0) return false;
 
-					foreach(KeyValuePair<Form, IGwmWindow> kvp in g_vWindows)
+					foreach (KeyValuePair<Form, IGwmWindow> kvp in g_vWindows)
 					{
-						if(kvp.Value == null) return false;
-						else if(!kvp.Value.CanCloseWithoutDataLoss)
+						if (kvp.Value == null) return false;
+						else if (!kvp.Value.CanCloseWithoutDataLoss)
 							return false;
 					}
 				}
@@ -101,10 +101,10 @@ namespace KeePass.UI
 		{
 			get
 			{
-				lock(g_oSyncRoot)
+				lock (g_oSyncRoot)
 				{
 					int n = g_vWindows.Count;
-					if(n > 0) return g_vWindows[n - 1].Key;
+					if (n > 0) return g_vWindows[n - 1].Key;
 				}
 
 				return null;
@@ -121,12 +121,12 @@ namespace KeePass.UI
 
 		public static void AddWindow(Form form, IGwmWindow wnd)
 		{
-			if(form == null) { Debug.Assert(false); throw new ArgumentNullException("form"); }
+			if (form == null) { Debug.Assert(false); throw new ArgumentNullException("form"); }
 
 			KeyValuePair<Form, IGwmWindow> kvp = new KeyValuePair<Form, IGwmWindow>(
 				form, wnd);
 
-			lock(g_oSyncRoot)
+			lock (g_oSyncRoot)
 			{
 				Debug.Assert(g_vWindows.IndexOf(kvp) < 0);
 				g_vWindows.Add(kvp);
@@ -152,7 +152,7 @@ namespace KeePass.UI
 			Debug.Assert(!(form is MainForm)); // MainForm calls the following itself
 			CustomizeFormHandleCreated(form, true, true);
 
-			if(GlobalWindowManager.WindowAdded != null)
+			if (GlobalWindowManager.WindowAdded != null)
 				GlobalWindowManager.WindowAdded(null, new GwmWindowEventArgs(
 					form, wnd));
 		}
@@ -160,22 +160,22 @@ namespace KeePass.UI
 		public static void AddDialog(CommonDialog dlg)
 		{
 			Debug.Assert(dlg != null);
-			if(dlg == null) throw new ArgumentNullException("dlg");
+			if (dlg == null) throw new ArgumentNullException("dlg");
 
-			lock(g_oSyncRoot) { g_vDialogs.Add(dlg); }
+			lock (g_oSyncRoot) { g_vDialogs.Add(dlg); }
 		}
 
 		public static void RemoveWindow(Form form)
 		{
-			if(form == null) { Debug.Assert(false); throw new ArgumentNullException("form"); }
+			if (form == null) { Debug.Assert(false); throw new ArgumentNullException("form"); }
 
-			lock(g_oSyncRoot)
+			lock (g_oSyncRoot)
 			{
-				for(int i = 0; i < g_vWindows.Count; ++i)
+				for (int i = 0; i < g_vWindows.Count; ++i)
 				{
-					if(g_vWindows[i].Key == form)
+					if (g_vWindows[i].Key == form)
 					{
-						if(GlobalWindowManager.WindowRemoved != null)
+						if (GlobalWindowManager.WindowRemoved != null)
 							GlobalWindowManager.WindowRemoved(null, new GwmWindowEventArgs(
 								form, g_vWindows[i].Value));
 
@@ -200,9 +200,9 @@ namespace KeePass.UI
 		public static void RemoveDialog(CommonDialog dlg)
 		{
 			Debug.Assert(dlg != null);
-			if(dlg == null) throw new ArgumentNullException("dlg");
+			if (dlg == null) throw new ArgumentNullException("dlg");
 
-			lock(g_oSyncRoot)
+			lock (g_oSyncRoot)
 			{
 				Debug.Assert(g_vDialogs.IndexOf(dlg) >= 0);
 				g_vDialogs.Remove(dlg);
@@ -214,15 +214,15 @@ namespace KeePass.UI
 			Debug.Assert(GlobalWindowManager.CanCloseAllWindows);
 
 			KeyValuePair<Form, IGwmWindow>[] vWindows;
-			lock(g_oSyncRoot) { vWindows = g_vWindows.ToArray(); }
+			lock (g_oSyncRoot) { vWindows = g_vWindows.ToArray(); }
 			Array.Reverse(vWindows); // Close windows in reverse order
 
-			foreach(KeyValuePair<Form, IGwmWindow> kvp in vWindows)
+			foreach (KeyValuePair<Form, IGwmWindow> kvp in vWindows)
 			{
-				if(kvp.Value == null) continue;
-				else if(kvp.Value.CanCloseWithoutDataLoss)
+				if (kvp.Value == null) continue;
+				else if (kvp.Value.CanCloseWithoutDataLoss)
 				{
-					if(kvp.Key.InvokeRequired)
+					if (kvp.Key.InvokeRequired)
 						kvp.Key.Invoke(new CloseFormDelegate(
 							GlobalWindowManager.CloseForm), kvp.Key);
 					else CloseForm(kvp.Key);
@@ -241,18 +241,18 @@ namespace KeePass.UI
 				f.DialogResult = DialogResult.Cancel;
 				f.Close();
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		public static bool HasWindow(IntPtr hWnd)
 		{
-			if(hWnd == IntPtr.Zero) { Debug.Assert(false); return false; }
+			if (hWnd == IntPtr.Zero) { Debug.Assert(false); return false; }
 
-			lock(g_oSyncRoot)
+			lock (g_oSyncRoot)
 			{
-				foreach(KeyValuePair<Form, IGwmWindow> kvp in g_vWindows)
+				foreach (KeyValuePair<Form, IGwmWindow> kvp in g_vWindows)
 				{
-					if(kvp.Key.Handle == hWnd) return true;
+					if (kvp.Key.Handle == hWnd) return true;
 				}
 			}
 
@@ -261,9 +261,9 @@ namespace KeePass.UI
 
 		internal static bool HasWindowMW(IntPtr hWnd)
 		{
-			if(hWnd == IntPtr.Zero) { Debug.Assert(false); return false; }
+			if (hWnd == IntPtr.Zero) { Debug.Assert(false); return false; }
 
-			if(hWnd == Program.GetSafeMainWindowHandle()) return true;
+			if (hWnd == Program.GetSafeMainWindowHandle()) return true;
 			return HasWindow(hWnd);
 		}
 
@@ -272,12 +272,12 @@ namespace KeePass.UI
 			try
 			{
 				Form f = GlobalWindowManager.TopWindow;
-				if(f == null) return false;
+				if (f == null) return false;
 
 				f.Activate();
 				return true;
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return false;
 		}
@@ -298,45 +298,45 @@ namespace KeePass.UI
 
 				AccessibilityEx.CustomizeForm(f);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		public static void CustomizeControl(Control c)
 		{
-			if(Program.DesignMode) return;
+			if (Program.DesignMode) return;
 
-			if(UISystemFonts.OverrideUIFont)
+			if (UISystemFonts.OverrideUIFont)
 			{
 				Font font = UISystemFonts.DefaultFont;
-				if(font != null) CustomizeFont(c, font);
+				if (font != null) CustomizeFont(c, font);
 			}
 		}
 
 		private static void CustomizeFont(Control c, Font font)
 		{
-			if((c is Form) || (c is ToolStrip) || (c is ContextMenuStrip))
+			if ((c is Form) || (c is ToolStrip) || (c is ContextMenuStrip))
 				c.Font = font;
 
-			foreach(Control cSub in c.Controls)
+			foreach (Control cSub in c.Controls)
 				CustomizeFont(cSub, font);
 
-			if(c.ContextMenuStrip != null)
+			if (c.ContextMenuStrip != null)
 				CustomizeFont(c.ContextMenuStrip, font);
 		}
 
 		internal static void CustomizeFormHandleCreated(Form f,
 			bool? obSubscribe, bool bNow)
 		{
-			if(f == null) { Debug.Assert(false); return; }
+			if (f == null) { Debug.Assert(false); return; }
 
-			if(obSubscribe.HasValue)
+			if (obSubscribe.HasValue)
 			{
-				if(obSubscribe.Value)
+				if (obSubscribe.Value)
 					f.HandleCreated += GlobalWindowManager.OnFormHandleCreated;
 				else f.HandleCreated -= GlobalWindowManager.OnFormHandleCreated;
 			}
 
-			if(bNow) OnFormHandleCreated(f, EventArgs.Empty);
+			if (bNow) OnFormHandleCreated(f, EventArgs.Empty);
 		}
 
 		private static bool g_bDisplayAffChanged = false;
@@ -345,15 +345,15 @@ namespace KeePass.UI
 			try
 			{
 				Form f = (sender as Form);
-				if(f == null) { Debug.Assert(false); return; }
+				if (f == null) { Debug.Assert(false); return; }
 
 				IntPtr hWnd = f.Handle;
-				if(hWnd == IntPtr.Zero) { Debug.Assert(false); return; }
+				if (hWnd == IntPtr.Zero) { Debug.Assert(false); return; }
 
-				if(WinUtil.IsAtLeastWindows7)
+				if (WinUtil.IsAtLeastWindows7)
 				{
 					bool bPrvSC = Program.Config.Security.PreventScreenCapture;
-					if(bPrvSC || g_bDisplayAffChanged)
+					if (bPrvSC || g_bDisplayAffChanged)
 					{
 						NativeMethods.SetWindowDisplayAffinity(hWnd, (bPrvSC ?
 							NativeMethods.WDA_MONITOR : NativeMethods.WDA_NONE));
@@ -361,19 +361,19 @@ namespace KeePass.UI
 					}
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 #if DEBUG
 		private static void DebugClose(Control c)
 		{
-			if(c == null) { Debug.Assert(false); return; }
+			if (c == null) { Debug.Assert(false); return; }
 
 			List<ImageList> lInv = new List<ImageList>();
 			lInv.Add(Program.MainForm.ClientIcons);
 
 			ListView lv = (c as ListView);
-			if(lv != null)
+			if (lv != null)
 			{
 				// Image list properties must be set to null manually
 				// when closing, otherwise we get a memory leak
@@ -384,38 +384,38 @@ namespace KeePass.UI
 			}
 
 			TreeView tv = (c as TreeView);
-			if(tv != null)
+			if (tv != null)
 			{
 				Debug.Assert(!lInv.Contains(tv.ImageList)); // See above
 			}
 
 			TabControl tc = (c as TabControl);
-			if(tc != null)
+			if (tc != null)
 			{
 				Debug.Assert(!lInv.Contains(tc.ImageList)); // See above
 			}
 
 			ToolStrip ts = (c as ToolStrip);
-			if(ts != null)
+			if (ts != null)
 			{
 				Debug.Assert(!lInv.Contains(ts.ImageList)); // See above
 			}
 
 			Button btn = (c as Button);
-			if(btn != null)
+			if (btn != null)
 			{
 				Debug.Assert(!lInv.Contains(btn.ImageList)); // See above
 			}
 
-			foreach(Control cc in c.Controls)
+			foreach (Control cc in c.Controls)
 				DebugClose(cc);
 		}
 #endif
 
 		internal static void InitializeForm(Form f)
 		{
-			if(Program.DesignMode) return;
-			if(f == null) { Debug.Assert(false); return; }
+			if (Program.DesignMode) return;
+			if (f == null) { Debug.Assert(false); return; }
 
 			try
 			{
@@ -423,7 +423,7 @@ namespace KeePass.UI
 
 				AccessibilityEx.InitializeForm(f);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 	}
 }

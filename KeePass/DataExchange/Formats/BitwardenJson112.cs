@@ -45,10 +45,10 @@ namespace KeePass.DataExchange.Formats
 		public override void Import(PwDatabase pwStorage, Stream sInput,
 			IStatusLogger slLogger)
 		{
-			using(StreamReader sr = new StreamReader(sInput, StrUtil.Utf8, true))
+			using (StreamReader sr = new StreamReader(sInput, StrUtil.Utf8, true))
 			{
 				string str = sr.ReadToEnd();
-				if(!string.IsNullOrEmpty(str))
+				if (!string.IsNullOrEmpty(str))
 				{
 					CharStream cs = new CharStream(str);
 					ImportRoot(new JsonObject(cs), pwStorage);
@@ -58,20 +58,20 @@ namespace KeePass.DataExchange.Formats
 
 		private static void ImportRoot(JsonObject jo, PwDatabase pd)
 		{
-			if(jo.GetValue<bool>("encrypted", false))
+			if (jo.GetValue<bool>("encrypted", false))
 				throw new FormatException(KPRes.NoEncNoCompress);
 
 			Dictionary<string, PwGroup> dGroups = new Dictionary<string, PwGroup>();
 			JsonObject[] vGroups = jo.GetValueArray<JsonObject>("folders");
-			if(vGroups != null) ImportGroups(vGroups, dGroups, pd);
+			if (vGroups != null) ImportGroups(vGroups, dGroups, pd);
 			dGroups[string.Empty] = pd.RootGroup; // Also when vGroups is null
 
 			Dictionary<string, string> dCollections = new Dictionary<string, string>();
 			JsonObject[] vCollections = jo.GetValueArray<JsonObject>("collections");
-			if(vCollections != null) ImportCollections(vCollections, dCollections);
+			if (vCollections != null) ImportCollections(vCollections, dCollections);
 
 			JsonObject[] vEntries = jo.GetValueArray<JsonObject>("items");
-			if(vEntries != null) ImportEntries(vEntries, dGroups, dCollections, pd);
+			if (vEntries != null) ImportEntries(vEntries, dGroups, dCollections, pd);
 		}
 
 		private static void ImportGroups(JsonObject[] vGroups,
@@ -79,9 +79,9 @@ namespace KeePass.DataExchange.Formats
 		{
 			char[] vSep = new char[] { '/' };
 
-			foreach(JsonObject jo in vGroups)
+			foreach (JsonObject jo in vGroups)
 			{
-				if(jo == null) { Debug.Assert(false); continue; }
+				if (jo == null) { Debug.Assert(false); continue; }
 
 				string strID = (jo.GetValue<string>("id") ?? string.Empty);
 				string strName = (jo.GetValue<string>("name") ?? string.Empty);
@@ -93,14 +93,14 @@ namespace KeePass.DataExchange.Formats
 		private static void ImportCollections(JsonObject[] vCollections,
 			Dictionary<string, string> dCollections)
 		{
-			foreach(JsonObject jo in vCollections)
+			foreach (JsonObject jo in vCollections)
 			{
-				if(jo == null) { Debug.Assert(false); continue; }
+				if (jo == null) { Debug.Assert(false); continue; }
 
 				string strID = jo.GetValue<string>("id");
 				string strName = jo.GetValue<string>("name");
 
-				if(!string.IsNullOrEmpty(strID) && !string.IsNullOrEmpty(strName))
+				if (!string.IsNullOrEmpty(strID) && !string.IsNullOrEmpty(strName))
 					dCollections[strID] = strName.Replace("/", " / ");
 				else { Debug.Assert(false); }
 			}
@@ -110,9 +110,9 @@ namespace KeePass.DataExchange.Formats
 			Dictionary<string, PwGroup> dGroups, Dictionary<string, string> dCollections,
 			PwDatabase pd)
 		{
-			foreach(JsonObject jo in vEntries)
+			foreach (JsonObject jo in vEntries)
 			{
-				if(jo == null) { Debug.Assert(false); continue; }
+				if (jo == null) { Debug.Assert(false); continue; }
 
 				ImportEntry(jo, dGroups, dCollections, pd);
 			}
@@ -126,18 +126,18 @@ namespace KeePass.DataExchange.Formats
 			PwGroup pg;
 			string strGroupID = (jo.GetValue<string>("folderId") ?? string.Empty);
 			dGroups.TryGetValue(strGroupID, out pg);
-			if(pg == null) { Debug.Assert(false); pg = dGroups[string.Empty]; }
+			if (pg == null) { Debug.Assert(false); pg = dGroups[string.Empty]; }
 			pg.AddEntry(pe, true);
 
 			string[] vCollections = jo.GetValueArray<string>("collectionIds");
-			if(vCollections != null)
+			if (vCollections != null)
 			{
-				foreach(string strID in vCollections)
+				foreach (string strID in vCollections)
 				{
-					if(string.IsNullOrEmpty(strID)) { Debug.Assert(false); continue; }
+					if (string.IsNullOrEmpty(strID)) { Debug.Assert(false); continue; }
 
 					string strName;
-					if(dCollections.TryGetValue(strID, out strName))
+					if (dCollections.TryGetValue(strID, out strName))
 						pe.AddTag(strName);
 					else { Debug.Assert(false); }
 				}
@@ -147,19 +147,19 @@ namespace KeePass.DataExchange.Formats
 			ImportString(jo, "notes", pe, PwDefs.NotesField, pd);
 
 			bool bFav = jo.GetValue<bool>("favorite", false);
-			if(bFav) pe.AddTag(PwDefs.FavoriteTag);
+			if (bFav) pe.AddTag(PwDefs.FavoriteTag);
 
 			JsonObject joSub = jo.GetValue<JsonObject>("login");
-			if(joSub != null) ImportLogin(joSub, pe, pd);
+			if (joSub != null) ImportLogin(joSub, pe, pd);
 
 			joSub = jo.GetValue<JsonObject>("card");
-			if(joSub != null) ImportCard(joSub, pe, pd);
+			if (joSub != null) ImportCard(joSub, pe, pd);
 
 			JsonObject[] v = jo.GetValueArray<JsonObject>("fields");
-			if(v != null) ImportFields(v, pe, pd);
+			if (v != null) ImportFields(v, pe, pd);
 
 			joSub = jo.GetValue<JsonObject>("identity");
-			if(joSub != null) ImportIdentity(joSub, pe, pd);
+			if (joSub != null) ImportIdentity(joSub, pe, pd);
 		}
 
 		private static void ImportLogin(JsonObject jo, PwEntry pe, PwDatabase pd)
@@ -169,18 +169,18 @@ namespace KeePass.DataExchange.Formats
 
 			ImportString(jo, "totp", pe, "TOTP", pd);
 			ProtectedString ps = pe.Strings.Get("TOTP");
-			if(ps != null) pe.Strings.Set("TOTP", ps.WithProtection(true));
+			if (ps != null) pe.Strings.Set("TOTP", ps.WithProtection(true));
 
 			JsonObject[] vUris = jo.GetValueArray<JsonObject>("uris");
-			if(vUris != null)
+			if (vUris != null)
 			{
 				int iUri = 1;
-				foreach(JsonObject joUri in vUris)
+				foreach (JsonObject joUri in vUris)
 				{
-					if(joUri == null) { Debug.Assert(false); continue; }
+					if (joUri == null) { Debug.Assert(false); continue; }
 
 					string str = joUri.GetValue<string>("uri");
-					if(!string.IsNullOrEmpty(str))
+					if (!string.IsNullOrEmpty(str))
 					{
 						ImportUtil.AppendToField(pe, ((iUri == 1) ?
 							PwDefs.UrlField : ("URL " + iUri.ToString())),
@@ -201,11 +201,11 @@ namespace KeePass.DataExchange.Formats
 			int iYear, iMonth;
 			string strYear = (jo.GetValue<string>("expYear") ?? string.Empty);
 			int.TryParse(strYear, out iYear);
-			if((iYear >= 1) && (iYear <= 9999))
+			if ((iYear >= 1) && (iYear <= 9999))
 			{
 				string strMonth = (jo.GetValue<string>("expMonth") ?? string.Empty);
 				int.TryParse(strMonth, out iMonth);
-				if((iMonth <= 0) || (iMonth >= 13)) { Debug.Assert(false); iMonth = 1; }
+				if ((iMonth <= 0) || (iMonth >= 13)) { Debug.Assert(false); iMonth = 1; }
 
 				pe.Expires = true;
 				pe.ExpiryTime = TimeUtil.ToUtc(new DateTime(iYear, iMonth, 1), false);
@@ -215,22 +215,22 @@ namespace KeePass.DataExchange.Formats
 
 		private static void ImportFields(JsonObject[] vFields, PwEntry pe, PwDatabase pd)
 		{
-			foreach(JsonObject jo in vFields)
+			foreach (JsonObject jo in vFields)
 			{
-				if(jo == null) { Debug.Assert(false); continue; }
+				if (jo == null) { Debug.Assert(false); continue; }
 
 				string strName = jo.GetValue<string>("name");
 				string strValue = jo.GetValue<string>("value");
 				long lType = jo.GetValue<long>("type", 0);
 
-				if(!string.IsNullOrEmpty(strName))
+				if (!string.IsNullOrEmpty(strName))
 				{
 					ImportUtil.AppendToField(pe, strName, strValue, pd);
 
-					if((lType == 1) && !PwDefs.IsStandardField(strName))
+					if ((lType == 1) && !PwDefs.IsStandardField(strName))
 					{
 						ProtectedString ps = pe.Strings.Get(strName);
-						if(ps == null) { Debug.Assert(false); }
+						if (ps == null) { Debug.Assert(false); }
 						else pe.Strings.Set(strName, ps.WithProtection(true));
 					}
 				}
@@ -254,7 +254,7 @@ namespace KeePass.DataExchange.Formats
 			ImportString(jo, "company", pe, "Company", pd);
 
 			string str = jo.GetValue<string>("email");
-			if(!string.IsNullOrEmpty(str))
+			if (!string.IsNullOrEmpty(str))
 				ImportUtil.AppendToField(pe, PwDefs.UrlField, "mailto:" + str, pd);
 
 			ImportString(jo, "phone", pe, "Phone", pd);
@@ -274,7 +274,7 @@ namespace KeePass.DataExchange.Formats
 			string strFieldName, PwDatabase pd, string strSep)
 		{
 			string str = jo.GetValue<string>(strJsonKey);
-			if(string.IsNullOrEmpty(str)) return;
+			if (string.IsNullOrEmpty(str)) return;
 
 			ImportUtil.AppendToField(pe, strFieldName, str, pd, strSep, false);
 		}

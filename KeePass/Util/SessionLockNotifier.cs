@@ -75,7 +75,7 @@ namespace KeePass.Util
 				SystemEvents.SessionSwitch += this.OnSessionSwitch;
 				SystemEvents.PowerModeChanged += this.OnPowerModeChanged;
 			}
-			catch(Exception) { Debug.Assert(WinUtil.IsWindows2000); } // 2000 always throws
+			catch (Exception) { Debug.Assert(WinUtil.IsWindows2000); } // 2000 always throws
 
 			m_evHandler = ev;
 			m_bEventsRegistered = true;
@@ -83,7 +83,7 @@ namespace KeePass.Util
 
 		public void Uninstall()
 		{
-			if(m_bEventsRegistered)
+			if (m_bEventsRegistered)
 			{
 				// Unregister event handlers (in the same order as registering,
 				// in case one of them throws)
@@ -93,7 +93,7 @@ namespace KeePass.Util
 					SystemEvents.SessionSwitch -= this.OnSessionSwitch;
 					SystemEvents.PowerModeChanged -= this.OnPowerModeChanged;
 				}
-				catch(Exception) { Debug.Assert(WinUtil.IsWindows2000); } // 2000 always throws
+				catch (Exception) { Debug.Assert(WinUtil.IsWindows2000); } // 2000 always throws
 
 				m_evHandler = null;
 				m_bEventsRegistered = false;
@@ -102,34 +102,34 @@ namespace KeePass.Util
 
 		private void OnSessionEnding(object sender, SessionEndingEventArgs e)
 		{
-			if(m_evHandler != null)
+			if (m_evHandler != null)
 				m_evHandler(sender, new SessionLockEventArgs(SessionLockReason.Ending));
 		}
 
 		private void OnSessionSwitch(object sender, SessionSwitchEventArgs e)
 		{
-			if(m_evHandler != null)
+			if (m_evHandler != null)
 			{
 				SessionLockReason r = SessionLockReason.Unknown;
-				if(e.Reason == SessionSwitchReason.SessionLock)
+				if (e.Reason == SessionSwitchReason.SessionLock)
 					r = SessionLockReason.Lock;
-				else if(e.Reason == SessionSwitchReason.SessionLogoff)
+				else if (e.Reason == SessionSwitchReason.SessionLogoff)
 					r = SessionLockReason.Ending;
-				else if(e.Reason == SessionSwitchReason.ConsoleDisconnect)
+				else if (e.Reason == SessionSwitchReason.ConsoleDisconnect)
 					r = SessionLockReason.UserSwitch;
-				else if((e.Reason == SessionSwitchReason.SessionRemoteControl) ||
+				else if ((e.Reason == SessionSwitchReason.SessionRemoteControl) ||
 					(e.Reason == SessionSwitchReason.RemoteConnect) ||
 					(e.Reason == SessionSwitchReason.RemoteDisconnect))
 					r = SessionLockReason.RemoteControlChange;
 
-				if(r != SessionLockReason.Unknown)
+				if (r != SessionLockReason.Unknown)
 					m_evHandler(sender, new SessionLockEventArgs(r));
 			}
 		}
 
 		private void OnPowerModeChanged(object sender, PowerModeChangedEventArgs e)
 		{
-			if((m_evHandler != null) && (e.Mode == PowerModes.Suspend))
+			if ((m_evHandler != null) && (e.Mode == PowerModes.Suspend))
 				m_evHandler(sender, new SessionLockEventArgs(SessionLockReason.Suspend));
 		}
 	}

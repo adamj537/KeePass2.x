@@ -64,9 +64,9 @@ namespace KeePass.DataExchange.Formats
 
 			XmlNode xmlRoot = xmlDoc.DocumentElement;
 
-			foreach(XmlNode xmlChild in xmlRoot.ChildNodes)
+			foreach (XmlNode xmlChild in xmlRoot.ChildNodes)
 			{
-				if(xmlChild.Name == ElemGroup)
+				if (xmlChild.Name == ElemGroup)
 					ReadGroup(xmlChild, pwStorage.RootGroup, pwStorage);
 				else { Debug.Assert(false); }
 			}
@@ -77,13 +77,13 @@ namespace KeePass.DataExchange.Formats
 			PwGroup pg = new PwGroup(true, true);
 			pgParent.AddGroup(pg, true);
 
-			foreach(XmlNode xmlChild in xmlNode)
+			foreach (XmlNode xmlChild in xmlNode)
 			{
-				if(xmlChild.Name == ElemGroupName)
+				if (xmlChild.Name == ElemGroupName)
 					pg.Name = XmlUtil.SafeInnerText(xmlChild);
-				else if(xmlChild.Name == ElemGroup)
+				else if (xmlChild.Name == ElemGroup)
 					ReadGroup(xmlChild, pg, pwStorage);
-				else if(xmlChild.Name == ElemEntry)
+				else if (xmlChild.Name == ElemEntry)
 					ReadEntry(xmlChild, pg, pwStorage);
 				else { Debug.Assert(false); }
 			}
@@ -94,25 +94,25 @@ namespace KeePass.DataExchange.Formats
 			PwEntry pe = new PwEntry(true, true);
 			pgParent.AddEntry(pe, true);
 
-			foreach(XmlNode xmlChild in xmlNode)
+			foreach (XmlNode xmlChild in xmlNode)
 			{
-				if(xmlChild.Name == ElemEntryName)
+				if (xmlChild.Name == ElemEntryName)
 					pe.Strings.Set(PwDefs.TitleField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectTitle,
 						XmlUtil.SafeInnerText(xmlChild)));
-				else if(xmlChild.Name == ElemEntryUser)
+				else if (xmlChild.Name == ElemEntryUser)
 					pe.Strings.Set(PwDefs.UserNameField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectUserName,
 						XmlUtil.SafeInnerText(xmlChild)));
-				else if(xmlChild.Name == ElemEntryPassword)
+				else if (xmlChild.Name == ElemEntryPassword)
 					pe.Strings.Set(PwDefs.PasswordField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectPassword,
 						XmlUtil.SafeInnerText(xmlChild)));
-				else if(xmlChild.Name == ElemEntryURL)
+				else if (xmlChild.Name == ElemEntryURL)
 					pe.Strings.Set(PwDefs.UrlField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectUrl,
 						XmlUtil.SafeInnerText(xmlChild)));
-				else if(xmlChild.Name == ElemEntryNotes)
+				else if (xmlChild.Name == ElemEntryNotes)
 					pe.Strings.Set(PwDefs.NotesField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectNotes,
 						XmlUtil.SafeInnerText(xmlChild)));

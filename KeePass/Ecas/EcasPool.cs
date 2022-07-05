@@ -57,7 +57,7 @@ namespace KeePass.Ecas
 
 		public EcasPool(bool bAddDefaultProviders)
 		{
-			if(bAddDefaultProviders) AddDefaultProviders();
+			if (bAddDefaultProviders) AddDefaultProviders();
 		}
 
 		private void AddDefaultProviders()
@@ -69,24 +69,24 @@ namespace KeePass.Ecas
 
 		public void AddEventProvider(EcasEventProvider p)
 		{
-			if(p == null) throw new ArgumentNullException("p");
+			if (p == null) throw new ArgumentNullException("p");
 			m_vEventProviders.Add(p);
 		}
 
 		public bool RemoveEventProvider(EcasEventProvider p)
 		{
-			if(p == null) throw new ArgumentNullException("p");
+			if (p == null) throw new ArgumentNullException("p");
 			return m_vEventProviders.Remove(p);
 		}
 
 		public EcasEventType FindEvent(string strEventName)
 		{
-			if(strEventName == null) throw new ArgumentNullException("strEventName");
+			if (strEventName == null) throw new ArgumentNullException("strEventName");
 
-			foreach(EcasEventProvider p in m_vEventProviders)
+			foreach (EcasEventProvider p in m_vEventProviders)
 			{
 				EcasEventType t = p.Find(strEventName);
-				if(t != null) return t;
+				if (t != null) return t;
 			}
 
 			return null;
@@ -94,12 +94,12 @@ namespace KeePass.Ecas
 
 		public EcasEventType FindEvent(PwUuid uuid)
 		{
-			if(uuid == null) throw new ArgumentNullException("uuid");
+			if (uuid == null) throw new ArgumentNullException("uuid");
 
-			foreach(EcasEventProvider p in m_vEventProviders)
+			foreach (EcasEventProvider p in m_vEventProviders)
 			{
 				EcasEventType t = p.Find(uuid);
-				if(t != null) return t;
+				if (t != null) return t;
 			}
 
 			return null;
@@ -107,24 +107,24 @@ namespace KeePass.Ecas
 
 		public void AddConditionProvider(EcasConditionProvider p)
 		{
-			if(p == null) throw new ArgumentNullException("p");
+			if (p == null) throw new ArgumentNullException("p");
 			m_vConditionProviders.Add(p);
 		}
 
 		public bool RemoveConditionProvider(EcasConditionProvider p)
 		{
-			if(p == null) throw new ArgumentNullException("p");
+			if (p == null) throw new ArgumentNullException("p");
 			return m_vConditionProviders.Remove(p);
 		}
 
 		public EcasConditionType FindCondition(string strConditionName)
 		{
-			if(strConditionName == null) throw new ArgumentNullException("strConditionName");
+			if (strConditionName == null) throw new ArgumentNullException("strConditionName");
 
-			foreach(EcasConditionProvider p in m_vConditionProviders)
+			foreach (EcasConditionProvider p in m_vConditionProviders)
 			{
 				EcasConditionType t = p.Find(strConditionName);
-				if(t != null) return t;
+				if (t != null) return t;
 			}
 
 			return null;
@@ -132,12 +132,12 @@ namespace KeePass.Ecas
 
 		public EcasConditionType FindCondition(PwUuid uuid)
 		{
-			if(uuid == null) throw new ArgumentNullException("uuid");
+			if (uuid == null) throw new ArgumentNullException("uuid");
 
-			foreach(EcasConditionProvider p in m_vConditionProviders)
+			foreach (EcasConditionProvider p in m_vConditionProviders)
 			{
 				EcasConditionType t = p.Find(uuid);
-				if(t != null) return t;
+				if (t != null) return t;
 			}
 
 			return null;
@@ -145,24 +145,24 @@ namespace KeePass.Ecas
 
 		public void AddActionProvider(EcasActionProvider p)
 		{
-			if(p == null) throw new ArgumentNullException("p");
+			if (p == null) throw new ArgumentNullException("p");
 			m_vActionProviders.Add(p);
 		}
 
 		public bool RemoveActionProvider(EcasActionProvider p)
 		{
-			if(p == null) throw new ArgumentNullException("p");
+			if (p == null) throw new ArgumentNullException("p");
 			return m_vActionProviders.Remove(p);
 		}
 
 		public EcasActionType FindAction(string strActionName)
 		{
-			if(strActionName == null) throw new ArgumentNullException("strActionName");
+			if (strActionName == null) throw new ArgumentNullException("strActionName");
 
-			foreach(EcasActionProvider p in m_vActionProviders)
+			foreach (EcasActionProvider p in m_vActionProviders)
 			{
 				EcasActionType t = p.Find(strActionName);
-				if(t != null) return t;
+				if (t != null) return t;
 			}
 
 			return null;
@@ -170,12 +170,12 @@ namespace KeePass.Ecas
 
 		public EcasActionType FindAction(PwUuid uuid)
 		{
-			if(uuid == null) throw new ArgumentNullException("uuid");
+			if (uuid == null) throw new ArgumentNullException("uuid");
 
-			foreach(EcasActionProvider p in m_vActionProviders)
+			foreach (EcasActionProvider p in m_vActionProviders)
 			{
 				EcasActionType t = p.Find(uuid);
-				if(t != null) return t;
+				if (t != null) return t;
 			}
 
 			return null;
@@ -183,14 +183,14 @@ namespace KeePass.Ecas
 
 		public bool CompareEvents(EcasEvent e, EcasContext ctx)
 		{
-			if(e == null) throw new ArgumentNullException("e");
-			if(ctx == null) throw new ArgumentNullException("ctx");
+			if (e == null) throw new ArgumentNullException("e");
+			if (ctx == null) throw new ArgumentNullException("ctx");
 
-			if(!e.Type.Equals(ctx.Event.Type)) return false;
+			if (!e.Type.Equals(ctx.Event.Type)) return false;
 
-			foreach(EcasEventProvider p in m_vEventProviders)
+			foreach (EcasEventProvider p in m_vEventProviders)
 			{
-				if(p.IsSupported(e.Type))
+				if (p.IsSupported(e.Type))
 					return p.Compare(e, ctx);
 			}
 
@@ -200,11 +200,11 @@ namespace KeePass.Ecas
 
 		public bool EvaluateCondition(EcasCondition c, EcasContext ctx)
 		{
-			if(c == null) throw new ArgumentNullException("c");
+			if (c == null) throw new ArgumentNullException("c");
 
-			foreach(EcasConditionProvider p in m_vConditionProviders)
+			foreach (EcasConditionProvider p in m_vConditionProviders)
 			{
-				if(p.IsSupported(c.Type))
+				if (p.IsSupported(c.Type))
 				{
 					bool bResult = p.Evaluate(c, ctx);
 					return (c.Negate ? !bResult : bResult);
@@ -217,11 +217,11 @@ namespace KeePass.Ecas
 
 		public void ExecuteAction(EcasAction a, EcasContext ctx)
 		{
-			if(a == null) throw new ArgumentNullException("a");
+			if (a == null) throw new ArgumentNullException("a");
 
-			foreach(EcasActionProvider p in m_vActionProviders)
+			foreach (EcasActionProvider p in m_vActionProviders)
 			{
-				if(p.IsSupported(a.Type))
+				if (p.IsSupported(a.Type))
 				{
 					p.Execute(a, ctx);
 					return;

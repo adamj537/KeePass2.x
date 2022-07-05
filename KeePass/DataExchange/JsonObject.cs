@@ -46,7 +46,7 @@ namespace KeePass.DataExchange
 
 		public JsonObject(CharStream csJsonData)
 		{
-			if(csJsonData == null) throw new ArgumentNullException("csJsonData");
+			if (csJsonData == null) throw new ArgumentNullException("csJsonData");
 
 			Load(csJsonData);
 		}
@@ -66,14 +66,14 @@ namespace KeePass.DataExchange
 		private void Load(CharStream cs)
 		{
 			char chInit = cs.ReadChar(true);
-			if(chInit != '{') ThrowDataException();
+			if (chInit != '{') ThrowDataException();
 
 			Stack<object> sCtx = new Stack<object>();
 			sCtx.Push(this);
 
-			while(sCtx.Count != 0)
+			while (sCtx.Count != 0)
 			{
-				if(sCtx.Count > MaxTreeHeight)
+				if (sCtx.Count > MaxTreeHeight)
 				{
 					Debug.Assert(false);
 					throw new InvalidOperationException(KLRes.StructsTooDeep);
@@ -82,10 +82,10 @@ namespace KeePass.DataExchange
 				object oCtx = sCtx.Peek();
 
 				JsonObject joCtx = (oCtx as JsonObject);
-				if(joCtx != null) { ReadObjectPart(cs, joCtx, sCtx); continue; }
+				if (joCtx != null) { ReadObjectPart(cs, joCtx, sCtx); continue; }
 
 				List<object> lCtx = (oCtx as List<object>);
-				if(lCtx != null) { ReadArrayPart(cs, lCtx, sCtx); continue; }
+				if (lCtx != null) { ReadArrayPart(cs, lCtx, sCtx); continue; }
 
 				ThrowImplException(); // Unknown context object
 			}
@@ -96,21 +96,21 @@ namespace KeePass.DataExchange
 		{
 			char ch = cs.PeekChar(true);
 
-			if(ch == '}') EndContainer(cs, joCtx, sCtx);
-			else if(ch == '\"')
+			if (ch == '}') EndContainer(cs, joCtx, sCtx);
+			else if (ch == '\"')
 			{
 				string strName = ReadString(cs);
 
 				char chSep = cs.ReadChar(true);
-				if(chSep != ':') ThrowDataException();
+				if (chSep != ':') ThrowDataException();
 
 				object oSub = TryBeginContainer(cs, sCtx);
-				if(oSub != null)
+				if (oSub != null)
 					joCtx.m_dItems[strName] = oSub;
 				else
 				{
 					joCtx.m_dItems[strName] = ReadAtomicValue(cs);
-					if(cs.PeekChar(true) == ',') cs.ReadChar(true);
+					if (cs.PeekChar(true) == ',') cs.ReadChar(true);
 				}
 			}
 			else ThrowDataException();
@@ -121,15 +121,15 @@ namespace KeePass.DataExchange
 		{
 			char ch = cs.PeekChar(true);
 
-			if(ch == ']') { EndContainer(cs, lCtx, sCtx); return; }
+			if (ch == ']') { EndContainer(cs, lCtx, sCtx); return; }
 
 			object oSub = TryBeginContainer(cs, sCtx);
-			if(oSub != null)
+			if (oSub != null)
 				lCtx.Add(oSub);
 			else
 			{
 				lCtx.Add(ReadAtomicValue(cs));
-				if(cs.PeekChar(true) == ',') cs.ReadChar(true);
+				if (cs.PeekChar(true) == ',') cs.ReadChar(true);
 			}
 		}
 
@@ -138,10 +138,10 @@ namespace KeePass.DataExchange
 			char ch = cs.PeekChar(true);
 			object oNew = null;
 
-			if(ch == '{') oNew = new JsonObject();
-			else if(ch == '[') oNew = new List<object>();
+			if (ch == '{') oNew = new JsonObject();
+			else if (ch == '[') oNew = new List<object>();
 
-			if(oNew != null)
+			if (oNew != null)
 			{
 				cs.ReadChar(true);
 				sCtx.Push(oNew);
@@ -155,23 +155,23 @@ namespace KeePass.DataExchange
 			Debug.Assert(object.ReferenceEquals(oCtx, sCtx.Peek())); // For Pop()
 
 			char chTerm = cs.ReadChar(true);
-			if(chTerm == '}')
+			if (chTerm == '}')
 			{
-				if(!(oCtx is JsonObject)) ThrowImplException();
+				if (!(oCtx is JsonObject)) ThrowImplException();
 			}
-			else if(chTerm == ']')
+			else if (chTerm == ']')
 			{
-				if(!(oCtx is List<object>)) ThrowImplException();
+				if (!(oCtx is List<object>)) ThrowImplException();
 			}
 			else ThrowImplException(); // Unknown terminator
 
 			sCtx.Pop();
-			if(sCtx.Count == 0) return;
+			if (sCtx.Count == 0) return;
 
 			object oParent = sCtx.Peek();
-			if((oParent is JsonObject) || (oParent is List<object>))
+			if ((oParent is JsonObject) || (oParent is List<object>))
 			{
-				if(cs.PeekChar(true) == ',') cs.ReadChar(true);
+				if (cs.PeekChar(true) == ',') cs.ReadChar(true);
 			}
 			else ThrowImplException(); // Unknown context object
 		}
@@ -180,30 +180,30 @@ namespace KeePass.DataExchange
 		{
 			char chInit = cs.PeekChar(true);
 
-			if(chInit == '\"') return ReadString(cs);
-			if(chInit == 't')
+			if (chInit == '\"') return ReadString(cs);
+			if (chInit == 't')
 			{
 				cs.ReadChar(true);
-				if(cs.ReadChar() != 'r') ThrowDataException();
-				if(cs.ReadChar() != 'u') ThrowDataException();
-				if(cs.ReadChar() != 'e') ThrowDataException();
+				if (cs.ReadChar() != 'r') ThrowDataException();
+				if (cs.ReadChar() != 'u') ThrowDataException();
+				if (cs.ReadChar() != 'e') ThrowDataException();
 				return true;
 			}
-			if(chInit == 'f')
+			if (chInit == 'f')
 			{
 				cs.ReadChar(true);
-				if(cs.ReadChar() != 'a') ThrowDataException();
-				if(cs.ReadChar() != 'l') ThrowDataException();
-				if(cs.ReadChar() != 's') ThrowDataException();
-				if(cs.ReadChar() != 'e') ThrowDataException();
+				if (cs.ReadChar() != 'a') ThrowDataException();
+				if (cs.ReadChar() != 'l') ThrowDataException();
+				if (cs.ReadChar() != 's') ThrowDataException();
+				if (cs.ReadChar() != 'e') ThrowDataException();
 				return false;
 			}
-			if(chInit == 'n')
+			if (chInit == 'n')
 			{
 				cs.ReadChar(true);
-				if(cs.ReadChar() != 'u') ThrowDataException();
-				if(cs.ReadChar() != 'l') ThrowDataException();
-				if(cs.ReadChar() != 'l') ThrowDataException();
+				if (cs.ReadChar() != 'u') ThrowDataException();
+				if (cs.ReadChar() != 'l') ThrowDataException();
+				if (cs.ReadChar() != 'l') ThrowDataException();
 				return null;
 			}
 
@@ -213,20 +213,20 @@ namespace KeePass.DataExchange
 		private static string ReadString(CharStream cs)
 		{
 			char chInit = cs.ReadChar(true);
-			if(chInit != '\"') ThrowImplException(); // Caller should ensure '\"'
+			if (chInit != '\"') ThrowImplException(); // Caller should ensure '\"'
 
 			StringBuilder sb = new StringBuilder();
 
-			while(true)
+			while (true)
 			{
 				char ch = cs.ReadChar();
-				if(ch == char.MinValue) ThrowDataException(); // End of JSON data
-				if(ch == '\"') break; // End of string
+				if (ch == char.MinValue) ThrowDataException(); // End of JSON data
+				if (ch == '\"') break; // End of string
 
-				if(ch == '\\')
+				if (ch == '\\')
 				{
 					char chNext = cs.ReadChar();
-					switch(chNext)
+					switch (chNext)
 					{
 						case '\"':
 						case '\'': // C
@@ -266,10 +266,10 @@ namespace KeePass.DataExchange
 			char ch4 = cs.ReadChar();
 
 			char[] vHex = new char[4] { ch1, ch2, ch3, ch4 };
-			if(Array.IndexOf(vHex, char.MinValue) >= 0) ThrowDataException();
+			if (Array.IndexOf(vHex, char.MinValue) >= 0) ThrowDataException();
 
 			string strHex = new string(vHex);
-			if(!StrUtil.IsHexString(strHex, true)) ThrowDataException();
+			if (!StrUtil.IsHexString(strHex, true)) ThrowDataException();
 
 			return (char)Convert.ToUInt16(strHex, 16);
 		}
@@ -279,42 +279,42 @@ namespace KeePass.DataExchange
 			StringBuilder sb = new StringBuilder();
 			bool bFloat = false, bNeg = false;
 
-			while(true)
+			while (true)
 			{
 				char ch = cs.PeekChar(true);
 
-				if(((ch >= '0') && (ch <= '9')) || (ch == '+')) { }
-				else if(ch == '-') bNeg = true;
-				else if(ch == '.') bFloat = true;
-				else if((ch == 'e') || (ch == 'E')) bFloat = true;
+				if (((ch >= '0') && (ch <= '9')) || (ch == '+')) { }
+				else if (ch == '-') bNeg = true;
+				else if (ch == '.') bFloat = true;
+				else if ((ch == 'e') || (ch == 'E')) bFloat = true;
 				else break;
 
 				cs.ReadChar(true);
 				sb.Append(ch);
 			}
-			if(sb.Length == 0) ThrowDataException();
+			if (sb.Length == 0) ThrowDataException();
 
 			string str = sb.ToString();
 			NumberFormatInfo nfi = NumberFormatInfo.InvariantInfo;
 
-			if(bFloat)
+			if (bFloat)
 			{
 				double d;
-				if(!double.TryParse(str, NumberStyles.Float, nfi, out d))
+				if (!double.TryParse(str, NumberStyles.Float, nfi, out d))
 					ThrowDataException();
 				return d;
 			}
 
-			if(bNeg)
+			if (bNeg)
 			{
 				long i;
-				if(!long.TryParse(str, NumberStyles.Integer, nfi, out i))
+				if (!long.TryParse(str, NumberStyles.Integer, nfi, out i))
 					ThrowDataException();
 				return i;
 			}
 
 			ulong u;
-			if(!ulong.TryParse(str, NumberStyles.Integer, nfi, out u))
+			if (!ulong.TryParse(str, NumberStyles.Integer, nfi, out u))
 				ThrowDataException();
 			return u;
 		}
@@ -322,17 +322,17 @@ namespace KeePass.DataExchange
 		private static T ConvertOrDefault<T>(object o, T tDefault)
 			where T : struct // Use 'as' for class
 		{
-			if(o == null) return tDefault;
+			if (o == null) return tDefault;
 
 			try
 			{
-				if(o is T) return (T)o;
+				if (o is T) return (T)o;
 				return (T)Convert.ChangeType(o, typeof(T));
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			try { return (T)o; }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return tDefault;
 		}
@@ -340,7 +340,7 @@ namespace KeePass.DataExchange
 		public T GetValue<T>(string strKey)
 			where T : class
 		{
-			if(strKey == null) throw new ArgumentNullException("strKey");
+			if (strKey == null) throw new ArgumentNullException("strKey");
 
 			object o;
 			m_dItems.TryGetValue(strKey, out o);
@@ -350,7 +350,7 @@ namespace KeePass.DataExchange
 		public T GetValue<T>(string strKey, T tDefault)
 			where T : struct
 		{
-			if(strKey == null) throw new ArgumentNullException("strKey");
+			if (strKey == null) throw new ArgumentNullException("strKey");
 
 			object o;
 			m_dItems.TryGetValue(strKey, out o);
@@ -361,10 +361,10 @@ namespace KeePass.DataExchange
 			where T : class
 		{
 			List<object> lO = GetValue<List<object>>(strKey);
-			if(lO == null) return null;
+			if (lO == null) return null;
 
 			T[] vT = new T[lO.Count];
-			for(int i = 0; i < lO.Count; ++i) vT[i] = (lO[i] as T);
+			for (int i = 0; i < lO.Count; ++i) vT[i] = (lO[i] as T);
 
 			return vT;
 		}
@@ -373,10 +373,10 @@ namespace KeePass.DataExchange
 			where T : struct
 		{
 			List<object> lO = GetValue<List<object>>(strKey);
-			if(lO == null) return null;
+			if (lO == null) return null;
 
 			T[] vT = new T[lO.Count];
-			for(int i = 0; i < lO.Count; ++i)
+			for (int i = 0; i < lO.Count; ++i)
 				vT[i] = ConvertOrDefault(lO[i], tDefault);
 
 			return vT;

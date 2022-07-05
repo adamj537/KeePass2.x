@@ -86,13 +86,13 @@ namespace KeePass.Forms
 
 		private void OnFormLoad(object sender, EventArgs e)
 		{
-			if(m_pgRoot == null) { Debug.Assert(false); throw new InvalidOperationException(); }
+			if (m_pgRoot == null) { Debug.Assert(false); throw new InvalidOperationException(); }
 
 			GlobalWindowManager.AddWindow(this);
 
 			string strTitle = KPRes.SearchTitle;
 			string strDesc = KPRes.SearchDesc2;
-			if((m_pgRoot.ParentGroup != null) && !string.IsNullOrEmpty(m_pgRoot.Name))
+			if ((m_pgRoot.ParentGroup != null) && !string.IsNullOrEmpty(m_pgRoot.Name))
 			{
 				strTitle += " (" + KPRes.SelectedGroup + ")";
 				strDesc = KPRes.Group + ": '" + m_pgRoot.Name + "'.";
@@ -135,7 +135,7 @@ namespace KeePass.Forms
 				m_cbCaseSensitive, m_cbExcludeExpired, m_cbIgnoreGroupSettings,
 				m_cbDerefData
 			};
-			foreach(CheckBox cb in v) cb.CheckedChanged += this.OnProfilePropertyChanged;
+			foreach (CheckBox cb in v) cb.CheckedChanged += this.OnProfilePropertyChanged;
 
 			UpdateUIState();
 			m_tbSearch.SelectAll();
@@ -161,18 +161,18 @@ namespace KeePass.Forms
 			PwGroup pgResults = null;
 			Exception exFind = null;
 			try { pgResults = SearchUtil.Find(sp, m_pgRoot, sl); }
-			catch(Exception ex) { exFind = ex; }
+			catch (Exception ex) { exFind = ex; }
 
 			this.Enabled = true;
 			// if(fOptDialog != null) Program.MainForm.RedirectActivationPop();
 			sl.EndLogging();
 
-			if(exFind != null)
+			if (exFind != null)
 			{
 				MessageService.ShowWarning(sp.SearchString, exFind);
 				this.DialogResult = DialogResult.None;
 			}
-			else if(pgResults != null)
+			else if (pgResults != null)
 			{
 				m_pgResults = pgResults;
 				m_spResult = sp;
@@ -194,10 +194,10 @@ namespace KeePass.Forms
 			l.Add(ProfileCustom);
 
 			Program.Config.Search.SortProfiles();
-			foreach(SearchParameters sp in Program.Config.Search.UserProfiles)
+			foreach (SearchParameters sp in Program.Config.Search.UserProfiles)
 			{
 				string strName = sp.Name;
-				if(strName == strSelect) iSel = l.Count;
+				if (strName == strSelect) iSel = l.Count;
 				l.Add(strName);
 			}
 
@@ -212,7 +212,7 @@ namespace KeePass.Forms
 
 		private void SetSearchParameters(SearchParameters sp)
 		{
-			if(sp == null) { Debug.Assert(false); sp = new SearchParameters(); }
+			if (sp == null) { Debug.Assert(false); sp = new SearchParameters(); }
 
 			++m_uBlockProfileAuto;
 
@@ -221,9 +221,9 @@ namespace KeePass.Forms
 
 			m_tbSearch.Text = sp.SearchString;
 
-			if(sp.SearchMode == PwSearchMode.Regular)
+			if (sp.SearchMode == PwSearchMode.Regular)
 				m_rbModeRegular.Checked = true;
-			else if(sp.SearchMode == PwSearchMode.XPath)
+			else if (sp.SearchMode == PwSearchMode.XPath)
 				m_rbModeXPath.Checked = true;
 			else
 			{
@@ -265,9 +265,9 @@ namespace KeePass.Forms
 			sp.Name = m_cmbProfiles.Text;
 			sp.SearchString = m_tbSearch.Text;
 
-			if(m_rbModeRegular.Checked)
+			if (m_rbModeRegular.Checked)
 				sp.SearchMode = PwSearchMode.Regular;
-			else if(m_rbModeXPath.Checked)
+			else if (m_rbModeXPath.Checked)
 				sp.SearchMode = PwSearchMode.XPath;
 			else
 			{
@@ -311,33 +311,33 @@ namespace KeePass.Forms
 			m_btnProfileDelete.Enabled = !bCustom;
 
 			m_cbStringName.Enabled = !bXPath;
-			if(bXPath) m_cbStringName.Checked = true;
+			if (bXPath) m_cbStringName.Checked = true;
 
 			m_cbUuid.Enabled = !bXPath;
-			if(bXPath) m_cbUuid.Checked = true;
+			if (bXPath) m_cbUuid.Checked = true;
 
 			m_cbGroupPath.Enabled = !bXPath;
-			if(bXPath) m_cbGroupPath.Checked = false;
+			if (bXPath) m_cbGroupPath.Checked = false;
 
 			bool bGroupPath = m_cbGroupPath.Checked;
 			m_cbGroupName.Enabled = !bGroupPath;
-			if(bGroupPath) m_cbGroupName.Checked = true;
+			if (bGroupPath) m_cbGroupName.Checked = true;
 
 			m_cbCaseSensitive.Enabled = !bXPath;
-			if(bXPath) m_cbCaseSensitive.Checked = true;
+			if (bXPath) m_cbCaseSensitive.Checked = true;
 
 			m_cbDerefData.Enabled = !bXPath;
-			if(bXPath) m_cbDerefData.Checked = false;
+			if (bXPath) m_cbDerefData.Checked = false;
 
 			--m_uBlockProfileAuto;
 		}
 
 		private void OnProfilesSelectedIndexChanged(object sender, EventArgs e)
 		{
-			if(m_uBlockProfileAuto != 0) return;
+			if (m_uBlockProfileAuto != 0) return;
 
 			string strName = m_cmbProfiles.Text;
-			if(strName != ProfileCustom)
+			if (strName != ProfileCustom)
 				SetSearchParameters(Program.Config.Search.FindProfile(strName));
 
 			UpdateUIState();
@@ -345,11 +345,11 @@ namespace KeePass.Forms
 
 		private void OnProfilePropertyChanged(object sender, EventArgs e)
 		{
-			if(m_uBlockProfileAuto != 0) return;
+			if (m_uBlockProfileAuto != 0) return;
 
 			Debug.Assert((m_cmbProfiles.Items.Count != 0) && !m_cmbProfiles.Sorted &&
 				((m_cmbProfiles.Items[0] as string) == ProfileCustom));
-			if(m_cmbProfiles.Items.Count != 0)
+			if (m_cmbProfiles.Items.Count != 0)
 				m_cmbProfiles.SelectedIndex = 0;
 
 			UpdateUIState();
@@ -358,7 +358,7 @@ namespace KeePass.Forms
 		private void OnBtnProfileAdd(object sender, EventArgs e)
 		{
 			List<string> lNames = new List<string>();
-			foreach(SearchParameters sp in Program.Config.Search.UserProfiles)
+			foreach (SearchParameters sp in Program.Config.Search.UserProfiles)
 				lNames.Add(sp.Name);
 
 			SingleLineEditForm dlg = new SingleLineEditForm();
@@ -366,11 +366,11 @@ namespace KeePass.Forms
 				KPRes.ProfileSavePrompt, Properties.Resources.B48x48_KMag,
 				string.Empty, lNames.ToArray());
 
-			if(dlg.ShowDialog() == DialogResult.OK)
+			if (dlg.ShowDialog() == DialogResult.OK)
 			{
 				string strName = dlg.ResultString;
 
-				if(string.IsNullOrEmpty(strName) || (strName == ProfileCustom))
+				if (string.IsNullOrEmpty(strName) || (strName == ProfileCustom))
 					MessageService.ShowWarning(KPRes.FieldNameInvalid);
 				else
 				{
@@ -379,7 +379,7 @@ namespace KeePass.Forms
 
 					AceSearch aceSearch = Program.Config.Search;
 					int i = aceSearch.FindProfileIndex(strName);
-					if(i >= 0) aceSearch.UserProfiles[i] = sp;
+					if (i >= 0) aceSearch.UserProfiles[i] = sp;
 					else aceSearch.UserProfiles.Add(sp);
 
 					UpdateProfilesList(strName);
@@ -392,11 +392,11 @@ namespace KeePass.Forms
 		private void OnBtnProfileDelete(object sender, EventArgs e)
 		{
 			string strName = m_cmbProfiles.Text;
-			if(strName == ProfileCustom) { Debug.Assert(false); return; }
+			if (strName == ProfileCustom) { Debug.Assert(false); return; }
 
 			AceSearch aceSearch = Program.Config.Search;
 			int i = aceSearch.FindProfileIndex(strName);
-			if(i >= 0)
+			if (i >= 0)
 			{
 				aceSearch.UserProfiles.RemoveAt(i);
 

@@ -35,68 +35,68 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 			psOut = ProtectedString.Empty;
 
 			string strPattern = pwProfile.Pattern;
-			if(string.IsNullOrEmpty(strPattern)) return PwgError.Success;
+			if (string.IsNullOrEmpty(strPattern)) return PwgError.Success;
 
 			CharStream cs = new CharStream(strPattern);
 			LinkedList<char> llGenerated = new LinkedList<char>();
 			PwCharSet pcs = new PwCharSet();
 
-			while(true)
+			while (true)
 			{
 				char ch = cs.ReadChar();
-				if(ch == char.MinValue) break;
+				if (ch == char.MinValue) break;
 
 				pcs.Clear();
 
-				if(ch == '\\')
+				if (ch == '\\')
 				{
 					ch = cs.ReadChar();
-					if(ch == char.MinValue) return PwgError.InvalidPattern;
+					if (ch == char.MinValue) return PwgError.InvalidPattern;
 
 					pcs.Add(ch); // Allow "{...}" support and char check
 				}
-				else if(ch == '[')
+				else if (ch == '[')
 				{
-					if(!ReadCustomCharSet(cs, pcs))
+					if (!ReadCustomCharSet(cs, pcs))
 						return PwgError.InvalidPattern;
 				}
 				else
 				{
-					if(!pcs.AddCharSet(ch))
+					if (!pcs.AddCharSet(ch))
 						return PwgError.InvalidPattern;
 				}
 
 				int nCount = 1;
-				if(cs.PeekChar() == '{')
+				if (cs.PeekChar() == '{')
 				{
 					nCount = ReadCount(cs);
-					if(nCount < 0) return PwgError.InvalidPattern;
+					if (nCount < 0) return PwgError.InvalidPattern;
 				}
 
-				for(int i = 0; i < nCount; ++i)
+				for (int i = 0; i < nCount; ++i)
 				{
-					if(!PwGenerator.PrepareCharSet(pcs, pwProfile))
+					if (!PwGenerator.PrepareCharSet(pcs, pwProfile))
 						return PwgError.InvalidCharSet;
-					if(pwProfile.NoRepeatingCharacters)
+					if (pwProfile.NoRepeatingCharacters)
 					{
-						foreach(char chUsed in llGenerated)
+						foreach (char chUsed in llGenerated)
 							pcs.Remove(chUsed);
 					}
 
 					char chGen = PwGenerator.GenerateCharacter(pcs,
 						crsRandomSource);
-					if(chGen == char.MinValue) return PwgError.TooFewCharacters;
+					if (chGen == char.MinValue) return PwgError.TooFewCharacters;
 
 					llGenerated.AddLast(chGen);
 				}
 			}
 
-			if(llGenerated.Count == 0) return PwgError.Success;
+			if (llGenerated.Count == 0) return PwgError.Success;
 
 			char[] v = new char[llGenerated.Count];
 			llGenerated.CopyTo(v, 0);
 
-			if(pwProfile.PatternPermutePassword)
+			if (pwProfile.PatternPermutePassword)
 				PwGenerator.Shuffle(v, crsRandomSource);
 
 			byte[] pbUtf8 = StrUtil.Utf8.GetBytes(v);
@@ -113,31 +113,31 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 			Debug.Assert(pcsOut.Size == 0);
 
 			bool bAdd = true;
-			while(true)
+			while (true)
 			{
 				char ch = cs.ReadChar();
-				if(ch == char.MinValue) return false;
-				if(ch == ']') break;
+				if (ch == char.MinValue) return false;
+				if (ch == ']') break;
 
-				if(ch == '\\')
+				if (ch == '\\')
 				{
 					ch = cs.ReadChar();
-					if(ch == char.MinValue) return false;
+					if (ch == char.MinValue) return false;
 
-					if(bAdd) pcsOut.Add(ch);
+					if (bAdd) pcsOut.Add(ch);
 					else pcsOut.Remove(ch);
 				}
-				else if(ch == '^')
+				else if (ch == '^')
 				{
-					if(bAdd) bAdd = false;
+					if (bAdd) bAdd = false;
 					else return false; // '^' toggles the mode only once
 				}
 				else
 				{
 					PwCharSet pcs = new PwCharSet();
-					if(!pcs.AddCharSet(ch)) return false;
+					if (!pcs.AddCharSet(ch)) return false;
 
-					if(bAdd) pcsOut.Add(pcs.ToString());
+					if (bAdd) pcsOut.Add(pcs.ToString());
 					else pcsOut.Remove(pcs.ToString());
 				}
 			}
@@ -147,22 +147,22 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 
 		private static int ReadCount(CharStream cs)
 		{
-			if(cs.ReadChar() != '{') { Debug.Assert(false); return -1; }
+			if (cs.ReadChar() != '{') { Debug.Assert(false); return -1; }
 
 			// Ensure not empty
 			char chFirst = cs.PeekChar();
-			if((chFirst < '0') || (chFirst > '9')) return -1;
+			if ((chFirst < '0') || (chFirst > '9')) return -1;
 
 			long n = 0;
-			while(true)
+			while (true)
 			{
 				char ch = cs.ReadChar();
-				if(ch == '}') break;
+				if (ch == '}') break;
 
-				if((ch >= '0') && (ch <= '9'))
+				if ((ch >= '0') && (ch <= '9'))
 				{
 					n = (n * 10L) + (long)(ch - '0');
-					if(n > int.MaxValue) return -1;
+					if (n > int.MaxValue) return -1;
 				}
 				else return -1;
 			}

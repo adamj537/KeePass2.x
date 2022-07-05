@@ -83,7 +83,7 @@ namespace KeePassLib.Utility
 #else
 		public static Image LoadImage(byte[] pb)
 		{
-			if(pb == null) throw new ArgumentNullException("pb");
+			if (pb == null) throw new ArgumentNullException("pb");
 
 #if !KeePassLibSD
 			// First try to load the data as ICO and afterwards as
@@ -93,9 +93,9 @@ namespace KeePassLib.Utility
 			try
 			{
 				Image imgIco = ExtractBestImageFromIco(pb);
-				if(imgIco != null) return imgIco;
+				if (imgIco != null) return imgIco;
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 #endif
 
 			MemoryStream ms = new MemoryStream(pb, false);
@@ -124,13 +124,13 @@ namespace KeePassLib.Utility
 						imgSrc.VerticalResolution);
 					Debug.Assert(bmp.Size == imgSrc.Size);
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 #else
 				imgSrc = new Bitmap(s);
 				Bitmap bmp = new Bitmap(imgSrc.Width, imgSrc.Height);
 #endif
 
-				using(Graphics g = Graphics.FromImage(bmp))
+				using (Graphics g = Graphics.FromImage(bmp))
 				{
 					g.Clear(Color.Transparent);
 
@@ -143,20 +143,20 @@ namespace KeePassLib.Utility
 
 				return bmp;
 			}
-			finally { if(imgSrc != null) imgSrc.Dispose(); }
+			finally { if (imgSrc != null) imgSrc.Dispose(); }
 		}
 
 #if !KeePassLibSD
 		private static Image ExtractBestImageFromIco(byte[] pb)
 		{
 			List<GfxImage> l = UnpackIco(pb);
-			if((l == null) || (l.Count == 0)) return null;
+			if ((l == null) || (l.Count == 0)) return null;
 
 			long qMax = 0;
-			foreach(GfxImage gi in l)
+			foreach (GfxImage gi in l)
 			{
-				if(gi.Width == 0) gi.Width = 256;
-				if(gi.Height == 0) gi.Height = 256;
+				if (gi.Width == 0) gi.Width = 256;
+				if (gi.Height == 0) gi.Height = 256;
 
 				qMax = Math.Max(qMax, (long)gi.Width * (long)gi.Height);
 			}
@@ -169,38 +169,38 @@ namespace KeePassLib.Utility
 			Image imgBest = null;
 			int bppBest = -1;
 
-			foreach(GfxImage gi in l)
+			foreach (GfxImage gi in l)
 			{
-				if(((long)gi.Width * (long)gi.Height) < qMax) continue;
+				if (((long)gi.Width * (long)gi.Height) < qMax) continue;
 
 				byte[] pbImg = gi.Data;
 				Image img = null;
 				try
 				{
-					if((pbImg.Length > pbHdrPng.Length) &&
+					if ((pbImg.Length > pbHdrPng.Length) &&
 						MemUtil.ArraysEqual(pbHdrPng,
 						MemUtil.Mid<byte>(pbImg, 0, pbHdrPng.Length)))
 						img = GfxUtil.LoadImage(pbImg);
-					else if((pbImg.Length > pbHdrJpeg.Length) &&
+					else if ((pbImg.Length > pbHdrJpeg.Length) &&
 						MemUtil.ArraysEqual(pbHdrJpeg,
 						MemUtil.Mid<byte>(pbImg, 0, pbHdrJpeg.Length)))
 						img = GfxUtil.LoadImage(pbImg);
 					else
 					{
-						using(MemoryStream ms = new MemoryStream(pb, false))
+						using (MemoryStream ms = new MemoryStream(pb, false))
 						{
-							using(Icon ico = new Icon(ms, gi.Width, gi.Height))
+							using (Icon ico = new Icon(ms, gi.Width, gi.Height))
 							{
 								img = ico.ToBitmap();
 							}
 						}
 					}
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 
-				if(img == null) continue;
+				if (img == null) continue;
 
-				if((img.Width < gi.Width) || (img.Height < gi.Height))
+				if ((img.Width < gi.Width) || (img.Height < gi.Height))
 				{
 					Debug.Assert(false);
 					img.Dispose();
@@ -208,9 +208,9 @@ namespace KeePassLib.Utility
 				}
 
 				int bpp = GetBitsPerPixel(img.PixelFormat);
-				if(bpp > bppBest)
+				if (bpp > bppBest)
 				{
-					if(imgBest != null) imgBest.Dispose();
+					if (imgBest != null) imgBest.Dispose();
 
 					imgBest = img;
 					bppBest = bpp;
@@ -223,35 +223,35 @@ namespace KeePassLib.Utility
 
 		private static List<GfxImage> UnpackIco(byte[] pb)
 		{
-			if(pb == null) { Debug.Assert(false); return null; }
+			if (pb == null) { Debug.Assert(false); return null; }
 
 			const int SizeICONDIR = 6;
 			const int SizeICONDIRENTRY = 16;
 
-			if(pb.Length < SizeICONDIR) return null;
-			if(MemUtil.BytesToUInt16(pb, 0) != 0) return null; // Reserved, 0
-			if(MemUtil.BytesToUInt16(pb, 2) != 1) return null; // ICO type, 1
+			if (pb.Length < SizeICONDIR) return null;
+			if (MemUtil.BytesToUInt16(pb, 0) != 0) return null; // Reserved, 0
+			if (MemUtil.BytesToUInt16(pb, 2) != 1) return null; // ICO type, 1
 
 			int n = MemUtil.BytesToUInt16(pb, 4);
-			if(n < 0) { Debug.Assert(false); return null; }
+			if (n < 0) { Debug.Assert(false); return null; }
 
 			int cbDir = SizeICONDIR + (n * SizeICONDIRENTRY);
-			if(pb.Length < cbDir) return null;
+			if (pb.Length < cbDir) return null;
 
 			List<GfxImage> l = new List<GfxImage>();
 			int iOffset = SizeICONDIR;
-			for(int i = 0; i < n; ++i)
+			for (int i = 0; i < n; ++i)
 			{
 				int w = pb[iOffset];
 				int h = pb[iOffset + 1];
-				if((w < 0) || (h < 0)) { Debug.Assert(false); return null; }
+				if ((w < 0) || (h < 0)) { Debug.Assert(false); return null; }
 
 				int cb = MemUtil.BytesToInt32(pb, iOffset + 8);
-				if(cb <= 0) return null; // Data must have header (even BMP)
+				if (cb <= 0) return null; // Data must have header (even BMP)
 
 				int p = MemUtil.BytesToInt32(pb, iOffset + 12);
-				if(p < cbDir) return null;
-				if((p + cb) > pb.Length) return null;
+				if (p < cbDir) return null;
+				if ((p + cb) > pb.Length) return null;
 
 				try
 				{
@@ -259,7 +259,7 @@ namespace KeePassLib.Utility
 					GfxImage img = new GfxImage(pbImage, w, h);
 					l.Add(img);
 				}
-				catch(Exception) { Debug.Assert(false); return null; }
+				catch (Exception) { Debug.Assert(false); return null; }
 
 				iOffset += SizeICONDIRENTRY;
 			}
@@ -270,7 +270,7 @@ namespace KeePassLib.Utility
 		private static int GetBitsPerPixel(PixelFormat f)
 		{
 			int bpp = 0;
-			switch(f)
+			switch (f)
 			{
 				case PixelFormat.Format1bppIndexed:
 					bpp = 1;
@@ -336,16 +336,16 @@ namespace KeePassLib.Utility
 		public static Image ScaleImage(Image img, int w, int h,
 			ScaleTransformFlags f)
 		{
-			if(img == null) throw new ArgumentNullException("img");
-			if(w < 0) throw new ArgumentOutOfRangeException("w");
-			if(h < 0) throw new ArgumentOutOfRangeException("h");
+			if (img == null) throw new ArgumentNullException("img");
+			if (w < 0) throw new ArgumentOutOfRangeException("w");
+			if (h < 0) throw new ArgumentOutOfRangeException("h");
 
 			bool bUIIcon = ((f & ScaleTransformFlags.UIIcon) !=
 				ScaleTransformFlags.None);
 
 			// We must return a Bitmap object for UIUtil.CreateScaledImage
 			Bitmap bmp = new Bitmap(w, h, PixelFormat.Format32bppArgb);
-			using(Graphics g = Graphics.FromImage(bmp))
+			using (Graphics g = Graphics.FromImage(bmp))
 			{
 				g.Clear(Color.Transparent);
 
@@ -356,9 +356,9 @@ namespace KeePassLib.Utility
 				int hSrc = img.Height;
 
 				InterpolationMode im = InterpolationMode.HighQualityBicubic;
-				if((wSrc > 0) && (hSrc > 0))
+				if ((wSrc > 0) && (hSrc > 0))
 				{
-					if(bUIIcon && ((w % wSrc) == 0) && ((h % hSrc) == 0))
+					if (bUIIcon && ((w % wSrc) == 0) && ((h % hSrc) == 0))
 						im = InterpolationMode.NearestNeighbor;
 					// else if((w < wSrc) && (h < hSrc))
 					//	im = InterpolationMode.HighQualityBilinear;
@@ -384,16 +384,16 @@ namespace KeePassLib.Utility
 			// when shrinking images, do not apply a -0.5 offset,
 			// otherwise the image is cropped on the bottom/right
 			// side; this applies to all interpolation modes
-			if(rDest.Width > rSource.Width)
+			if (rDest.Width > rSource.Width)
 				rSource.X = rSource.X - 0.5f;
-			if(rDest.Height > rSource.Height)
+			if (rDest.Height > rSource.Height)
 				rSource.Y = rSource.Y - 0.5f;
 
 			// When shrinking, apply a +0.5 offset, such that the
 			// scaled image is less cropped on the bottom/right side
-			if(rDest.Width < rSource.Width)
+			if (rDest.Width < rSource.Width)
 				rSource.X = rSource.X + 0.5f;
-			if(rDest.Height < rSource.Height)
+			if (rDest.Height < rSource.Height)
 				rSource.Y = rSource.Y + 0.5f;
 		}
 
@@ -403,7 +403,7 @@ namespace KeePassLib.Utility
 			Bitmap bmp = new Bitmap(1024, vIcons.Length * (256 + 12),
 				PixelFormat.Format32bppArgb);
 
-			using(Graphics g = Graphics.FromImage(bmp))
+			using (Graphics g = Graphics.FromImage(bmp))
 			{
 				g.Clear(Color.White);
 
@@ -412,15 +412,15 @@ namespace KeePassLib.Utility
 				int x;
 				int y = 8;
 
-				foreach(Image imgIcon in vIcons)
+				foreach (Image imgIcon in vIcons)
 				{
-					if(imgIcon == null) { Debug.Assert(false); continue; }
+					if (imgIcon == null) { Debug.Assert(false); continue; }
 
 					x = 128;
 
-					foreach(int q in v)
+					foreach (int q in v)
 					{
-						using(Image img = ScaleImage(imgIcon, q, q,
+						using (Image img = ScaleImage(imgIcon, q, q,
 							ScaleTransformFlags.UIIcon))
 						{
 							g.DrawImageUnscaled(img, x, y);
@@ -441,7 +441,7 @@ namespace KeePassLib.Utility
 
 		internal static void SetHighQuality(Graphics g)
 		{
-			if(g == null) { Debug.Assert(false); return; }
+			if (g == null) { Debug.Assert(false); return; }
 
 			g.CompositingQuality = CompositingQuality.HighQuality;
 			g.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -451,10 +451,10 @@ namespace KeePassLib.Utility
 
 		internal static string ImageToDataUri(Image img)
 		{
-			if(img == null) { Debug.Assert(false); return string.Empty; }
+			if (img == null) { Debug.Assert(false); return string.Empty; }
 
 			byte[] pb = null;
-			using(MemoryStream ms = new MemoryStream())
+			using (MemoryStream ms = new MemoryStream())
 			{
 				img.Save(ms, ImageFormat.Png);
 				pb = ms.ToArray();
@@ -466,18 +466,18 @@ namespace KeePassLib.Utility
 		internal static ulong HashImage64(Image img)
 		{
 			Bitmap bmp = (img as Bitmap);
-			if(bmp == null) { Debug.Assert(false); return 0; }
+			if (bmp == null) { Debug.Assert(false); return 0; }
 
 			BitmapData bd = null;
 			try
 			{
 				int w = bmp.Width, h = bmp.Height;
-				if((w <= 0) || (h <= 0)) { Debug.Assert(false); return 0; }
+				if ((w <= 0) || (h <= 0)) { Debug.Assert(false); return 0; }
 
 				bd = bmp.LockBits(new Rectangle(0, 0, w, h),
 					ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
-				if(bd.Stride != (w * 4)) { Debug.Assert(false); return 0; }
+				if (bd.Stride != (w * 4)) { Debug.Assert(false); return 0; }
 
 				Debug.Assert(Marshal.SizeOf(typeof(int)) == 4);
 				int cp = w * h;
@@ -488,10 +488,10 @@ namespace KeePassLib.Utility
 
 				return MemUtil.Hash64(v, 0, v.Length);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 			finally
 			{
-				if(bd != null) bmp.UnlockBits(bd);
+				if (bd != null) bmp.UnlockBits(bd);
 			}
 
 			return 0;
@@ -499,27 +499,27 @@ namespace KeePassLib.Utility
 
 		private static void NormalizeOrientation(Image img)
 		{
-			if(img == null) { Debug.Assert(false); return; }
+			if (img == null) { Debug.Assert(false); return; }
 
 			try
 			{
 				int[] v = img.PropertyIdList;
-				if(v == null) { Debug.Assert(false); return; }
-				if(Array.IndexOf<int>(v, ExifOrientation) < 0) return;
+				if (v == null) { Debug.Assert(false); return; }
+				if (Array.IndexOf<int>(v, ExifOrientation) < 0) return;
 
 				PropertyItem pi = img.GetPropertyItem(ExifOrientation);
-				if(pi == null) { Debug.Assert(false); return; }
-				if(pi.Type != ExifTypeUInt16) { Debug.Assert(false); return; }
+				if (pi == null) { Debug.Assert(false); return; }
+				if (pi.Type != ExifTypeUInt16) { Debug.Assert(false); return; }
 
 				byte[] pb = pi.Value;
-				if(pb == null) { Debug.Assert(false); return; }
-				if(pb.Length != 2) { Debug.Assert(false); return; }
+				if (pb == null) { Debug.Assert(false); return; }
+				if (pb.Length != 2) { Debug.Assert(false); return; }
 
 				// Exif supports both LE and BE; use arch.-dep. BitConverter
 				ushort u = BitConverter.ToUInt16(pb, 0);
 				bool bRemoveProp = true;
 
-				switch(u)
+				switch (u)
 				{
 					case ExifOrientationTL:
 						bRemoveProp = false;
@@ -551,9 +551,9 @@ namespace KeePassLib.Utility
 						break;
 				}
 
-				if(bRemoveProp) img.RemovePropertyItem(ExifOrientation);
+				if (bRemoveProp) img.RemovePropertyItem(ExifOrientation);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		// Compatible with System.Drawing.FontConverter
@@ -561,7 +561,7 @@ namespace KeePassLib.Utility
 		{
 			string str;
 
-			switch(gu)
+			switch (gu)
 			{
 				case GraphicsUnit.Display: str = "display"; break;
 				case GraphicsUnit.Document: str = "doc"; break;

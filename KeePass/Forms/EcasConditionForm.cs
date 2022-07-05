@@ -61,9 +61,9 @@ namespace KeePass.Forms
 			Debug.Assert(!m_lblParamHint.AutoSize); // For RTL support
 			m_lblParamHint.Text = KPRes.ParamDescHelp;
 
-			foreach(EcasConditionProvider cp in Program.EcasPool.ConditionProviders)
+			foreach (EcasConditionProvider cp in Program.EcasPool.ConditionProviders)
 			{
-				foreach(EcasConditionType t in cp.Conditions)
+				foreach (EcasConditionType t in cp.Conditions)
 					m_cmbConditions.Items.Add(t.Name);
 			}
 
@@ -88,7 +88,7 @@ namespace KeePass.Forms
 
 		private void OnBtnOK(object sender, EventArgs e)
 		{
-			if(!UpdateDataEx(m_conditionInOut, true, EcasTypeDxMode.Selection))
+			if (!UpdateDataEx(m_conditionInOut, true, EcasTypeDxMode.Selection))
 			{
 				this.DialogResult = DialogResult.None;
 				return;
@@ -103,7 +103,7 @@ namespace KeePass.Forms
 
 		private void OnConditionsSelectedIndexChanged(object sender, EventArgs e)
 		{
-			if(m_bBlockTypeSelectionHandler) return;
+			if (m_bBlockTypeSelectionHandler) return;
 
 			UpdateDataEx(m_condition, true, EcasTypeDxMode.ParamsTag);
 			UpdateDataEx(m_condition, false, EcasTypeDxMode.None);

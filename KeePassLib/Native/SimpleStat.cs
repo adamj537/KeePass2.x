@@ -35,7 +35,7 @@ namespace KeePassLib.Native
 
 		private SimpleStat(object oPermissions, long nUserId, long nGroupId)
 		{
-			if(oPermissions == null) throw new ArgumentNullException("oPermissions");
+			if (oPermissions == null) throw new ArgumentNullException("oPermissions");
 
 			m_oPermissions = oPermissions;
 			m_nUserId = nUserId;
@@ -48,55 +48,55 @@ namespace KeePassLib.Native
 			{
 				Type tUfsi, tUfi;
 				object oUfi = GetUnixFileInfo(strFilePath, out tUfsi, out tUfi);
-				if(oUfi == null) return null;
+				if (oUfi == null) return null;
 
 				PropertyInfo piPerm = tUfsi.GetProperty("FileAccessPermissions",
 					BindingFlags.Public | BindingFlags.Instance);
-				if(piPerm == null) { Debug.Assert(false); return null; }
+				if (piPerm == null) { Debug.Assert(false); return null; }
 				Debug.Assert(piPerm.PropertyType.IsEnum);
 
 				PropertyInfo piUser = tUfsi.GetProperty("OwnerUserId",
 					BindingFlags.Public | BindingFlags.Instance);
-				if(piUser == null) { Debug.Assert(false); return null; }
+				if (piUser == null) { Debug.Assert(false); return null; }
 				Debug.Assert(piUser.PropertyType == typeof(long));
 
 				PropertyInfo piGroup = tUfsi.GetProperty("OwnerGroupId",
 					BindingFlags.Public | BindingFlags.Instance);
-				if(piGroup == null) { Debug.Assert(false); return null; }
+				if (piGroup == null) { Debug.Assert(false); return null; }
 				Debug.Assert(piGroup.PropertyType == typeof(long));
 
 				return new SimpleStat(piPerm.GetValue(oUfi, null),
 					(long)piUser.GetValue(oUfi, null),
 					(long)piGroup.GetValue(oUfi, null));
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return null;
 		}
 
 		public static void Set(string strFilePath, SimpleStat s)
 		{
-			if(s == null) { Debug.Assert(false); return; }
+			if (s == null) { Debug.Assert(false); return; }
 
 			try
 			{
 				Type tUfsi, tUfi;
 				object oUfi = GetUnixFileInfo(strFilePath, out tUfsi, out tUfi);
-				if(oUfi == null) return;
+				if (oUfi == null) return;
 
 				PropertyInfo piPerm = tUfsi.GetProperty("FileAccessPermissions",
 					BindingFlags.Public | BindingFlags.Instance);
-				if(piPerm == null) { Debug.Assert(false); return; }
+				if (piPerm == null) { Debug.Assert(false); return; }
 
 				piPerm.SetValue(oUfi, s.m_oPermissions, null);
 
 				MethodInfo miOwner = tUfsi.GetMethod("SetOwner",
 					new Type[] { typeof(long), typeof(long) });
-				if(miOwner == null) { Debug.Assert(false); return; }
+				if (miOwner == null) { Debug.Assert(false); return; }
 
 				miOwner.Invoke(oUfi, new object[] { s.m_nUserId, s.m_nGroupId });
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private static bool GetTypes(out Type tUfsi, out Type tUfi)
@@ -106,12 +106,12 @@ namespace KeePassLib.Native
 
 			try
 			{
-				if(!NativeLib.IsUnix()) return false;
+				if (!NativeLib.IsUnix()) return false;
 
 				string strVer = typeof(XmlNode).Assembly.GetName().Version.ToString();
 				string strPosix = "Mono.Posix, Version=" + strVer;
 				Assembly asmPosix = Assembly.Load(strPosix);
-				if(asmPosix == null) { Debug.Assert(false); return false; }
+				if (asmPosix == null) { Debug.Assert(false); return false; }
 
 				tUfsi = asmPosix.GetType("Mono.Unix.UnixFileSystemInfo", false);
 				tUfi = asmPosix.GetType("Mono.Unix.UnixFileInfo", false);
@@ -120,22 +120,22 @@ namespace KeePassLib.Native
 				Debug.Assert(b);
 				return b;
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return false;
 		}
 
 		private static object GetUnixFileInfo(string strFilePath, Type tUfi)
 		{
-			if(string.IsNullOrEmpty(strFilePath)) { Debug.Assert(false); return null; }
+			if (string.IsNullOrEmpty(strFilePath)) { Debug.Assert(false); return null; }
 
 			try
 			{
-				if(!File.Exists(strFilePath)) { Debug.Assert(false); return null; }
+				if (!File.Exists(strFilePath)) { Debug.Assert(false); return null; }
 
 				return Activator.CreateInstance(tUfi, strFilePath);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return null;
 		}
@@ -143,7 +143,7 @@ namespace KeePassLib.Native
 		private static object GetUnixFileInfo(string strFilePath,
 			out Type tUfsi, out Type tUfi)
 		{
-			if(!GetTypes(out tUfsi, out tUfi)) return null;
+			if (!GetTypes(out tUfsi, out tUfi)) return null;
 			return GetUnixFileInfo(strFilePath, tUfi);
 		}
 	}

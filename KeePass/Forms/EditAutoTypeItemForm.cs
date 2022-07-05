@@ -76,7 +76,7 @@ namespace KeePass.Forms
 		public void InitEx(AutoTypeConfig atConfig, int iAssocIndex, bool bEditSequenceOnly,
 			string strDefaultSeq, ProtectedStringDictionary vStringDict)
 		{
-			Debug.Assert(atConfig != null); if(atConfig == null) throw new ArgumentNullException("atConfig");
+			Debug.Assert(atConfig != null); if (atConfig == null) throw new ArgumentNullException("atConfig");
 
 			m_atConfig = atConfig;
 			m_iAssocIndex = iAssocIndex;
@@ -87,15 +87,15 @@ namespace KeePass.Forms
 
 		private void OnFormLoad(object sender, EventArgs e)
 		{
-			Debug.Assert(m_atConfig != null); if(m_atConfig == null) throw new InvalidOperationException();
-			Debug.Assert(m_vStringDict != null); if(m_vStringDict == null) throw new InvalidOperationException();
+			Debug.Assert(m_atConfig != null); if (m_atConfig == null) throw new InvalidOperationException();
+			Debug.Assert(m_vStringDict != null); if (m_vStringDict == null) throw new InvalidOperationException();
 
 			GlobalWindowManager.AddWindow(this);
 
 			m_ctxKeySeq.Attach(m_rbKeySeq, this);
 			m_ctxKeyCodes.Attach(m_rtbPlaceholders, this);
 
-			if(!m_bEditSequenceOnly)
+			if (!m_bEditSequenceOnly)
 			{
 				BannerFactory.CreateBannerEx(this, m_bannerImage,
 					Properties.Resources.B48x48_KCMSystem, KPRes.ConfigureAutoTypeItem,
@@ -121,7 +121,7 @@ namespace KeePass.Forms
 			// m_strOriginalWindowHint = m_lblTargetWindowInfo.Text;
 
 			bool bRtl = Program.Translation.Properties.RightToLeft;
-			if(bRtl)
+			if (bRtl)
 			{
 				// https://sourceforge.net/p/keepass/discussion/329220/thread/f98dece5/
 				m_rbKeySeq.RightToLeft = RightToLeft.No;
@@ -131,20 +131,20 @@ namespace KeePass.Forms
 			InitPlaceholdersBox(bRtl);
 
 			string strInitSeq = m_atConfig.DefaultSequence;
-			if(m_iAssocIndex >= 0)
+			if (m_iAssocIndex >= 0)
 			{
 				AutoTypeAssociation asInit = m_atConfig.GetAt(m_iAssocIndex);
 				m_cmbWindow.Text = asInit.WindowName;
 
-				if(!m_bEditSequenceOnly) strInitSeq = asInit.Sequence;
+				if (!m_bEditSequenceOnly) strInitSeq = asInit.Sequence;
 			}
-			else if(m_bEditSequenceOnly)
+			else if (m_bEditSequenceOnly)
 				m_cmbWindow.Text = "(" + KPRes.Default + ")";
 			else strInitSeq = string.Empty;
 
 			bool bSetDefault = false;
 			m_bBlockUpdates = true;
-			if(strInitSeq.Length > 0) m_rbSeqCustom.Checked = true;
+			if (strInitSeq.Length > 0) m_rbSeqCustom.Checked = true;
 			else
 			{
 				m_rbSeqDefault.Checked = true;
@@ -152,15 +152,15 @@ namespace KeePass.Forms
 			}
 			m_bBlockUpdates = false;
 
-			if(bSetDefault) m_rbKeySeq.Text = m_strDefaultSeq;
+			if (bSetDefault) m_rbKeySeq.Text = m_strDefaultSeq;
 			else m_rbKeySeq.Text = strInitSeq;
 
 			try
 			{
-				if(NativeLib.IsUnix()) PopulateWindowsListUnix();
+				if (NativeLib.IsUnix()) PopulateWindowsListUnix();
 				else PopulateWindowsListWin();
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			EnableControlsEx();
 		}
@@ -230,11 +230,11 @@ namespace KeePass.Forms
 			rb.Append("{" + PwDefs.NotesField + "}");
 
 			bool bCustomInitialized = false, bFirst = true;
-			foreach(KeyValuePair<string, ProtectedString> kvp in m_vStringDict)
+			foreach (KeyValuePair<string, ProtectedString> kvp in m_vStringDict)
 			{
-				if(!PwDefs.IsStandardField(kvp.Key))
+				if (!PwDefs.IsStandardField(kvp.Key))
 				{
-					if(!bCustomInitialized)
+					if (!bCustomInitialized)
 					{
 						rb.AppendLine();
 						rb.AppendLine();
@@ -243,7 +243,7 @@ namespace KeePass.Forms
 						bCustomInitialized = true;
 					}
 
-					if(!bFirst) rb.Append(" ");
+					if (!bFirst) rb.Append(" ");
 					rb.Append("{" + PwDefs.AutoTypeStringPrefix + kvp.Key + "}");
 					bFirst = false;
 				}
@@ -260,12 +260,12 @@ namespace KeePass.Forms
 			rb.AppendLine();
 			rb.AppendLine(KPRes.SpecialKeys, FontStyle.Bold, null, null, strSfx, null);
 			bFirst = true;
-			foreach(string strNav in vSpecialKeyCodes)
+			foreach (string strNav in vSpecialKeyCodes)
 			{
-				if(strNav == VkcBreak) { rb.AppendLine(); rb.AppendLine(); bFirst = true; }
+				if (strNav == VkcBreak) { rb.AppendLine(); rb.AppendLine(); bFirst = true; }
 				else
 				{
-					if(!bFirst) rb.Append(" ");
+					if (!bFirst) rb.Append(" ");
 					rb.Append("{" + strNav + "}");
 					bFirst = false;
 				}
@@ -275,28 +275,28 @@ namespace KeePass.Forms
 			rb.AppendLine();
 			rb.AppendLine(KPRes.OtherPlaceholders, FontStyle.Bold, null, null, strSfx, null);
 			bFirst = true;
-			foreach(string strPH in vSpecialPlaceholders)
+			foreach (string strPH in vSpecialPlaceholders)
 			{
-				if(strPH == VkcBreak) { rb.AppendLine(); rb.AppendLine(); bFirst = true; }
+				if (strPH == VkcBreak) { rb.AppendLine(); rb.AppendLine(); bFirst = true; }
 				else
 				{
-					if(!bFirst) rb.Append(" ");
+					if (!bFirst) rb.Append(" ");
 					rb.Append("{" + strPH + "}");
 					bFirst = false;
 				}
 			}
 
-			if(SprEngine.FilterPlaceholderHints.Count > 0)
+			if (SprEngine.FilterPlaceholderHints.Count > 0)
 			{
 				rb.AppendLine();
 				rb.AppendLine();
 				rb.AppendLine(KPRes.PluginProvided, FontStyle.Bold, null, null, strSfx, null);
 				bFirst = true;
-				foreach(string strP in SprEngine.FilterPlaceholderHints)
+				foreach (string strP in SprEngine.FilterPlaceholderHints)
 				{
-					if(string.IsNullOrEmpty(strP)) continue;
+					if (string.IsNullOrEmpty(strP)) continue;
 
-					if(!bFirst) rb.Append(" ");
+					if (!bFirst) rb.Append(" ");
 					rb.Append(strP);
 					bFirst = false;
 				}
@@ -310,21 +310,21 @@ namespace KeePass.Forms
 		private void OnFormShown(object sender, EventArgs e)
 		{
 			// Focusing doesn't work in OnFormLoad
-			if(m_cmbWindow.Enabled)
+			if (m_cmbWindow.Enabled)
 				UIUtil.SetFocus(m_cmbWindow, this, true);
-			else if(m_rbKeySeq.Enabled)
+			else if (m_rbKeySeq.Enabled)
 				UIUtil.SetFocus(m_rbKeySeq, this, true);
 			else UIUtil.SetFocus(m_btnOK, this, true);
 		}
 
 		private void OnFormClosed(object sender, FormClosedEventArgs e)
 		{
-			lock(m_objDialogSync) { m_bDialogClosed = true; }
+			lock (m_objDialogSync) { m_bDialogClosed = true; }
 
 			m_cmbWindow.OrderedImageList = null;
-			foreach(Image img in m_vWndImages)
+			foreach (Image img in m_vWndImages)
 			{
-				if(img != null) img.Dispose();
+				if (img != null) img.Dispose();
 			}
 			m_vWndImages.Clear();
 
@@ -332,7 +332,7 @@ namespace KeePass.Forms
 			m_ctxKeySeq.Detach();
 
 #if DEBUG
-			lock(m_oWndTasksSync) { Debug.Assert(m_dWndTasks.Count == 0); }
+			lock (m_oWndTasksSync) { Debug.Assert(m_dWndTasks.Count == 0); }
 #endif
 
 			GlobalWindowManager.RemoveWindow(this);
@@ -341,14 +341,14 @@ namespace KeePass.Forms
 		private void OnBtnOK(object sender, EventArgs e)
 		{
 			EnableControlsEx();
-			Debug.Assert(m_btnOK.Enabled); if(!m_btnOK.Enabled) return;
+			Debug.Assert(m_btnOK.Enabled); if (!m_btnOK.Enabled) return;
 
 			string strNewSeq = (m_rbSeqCustom.Checked ? m_rbKeySeq.Text : string.Empty);
 
-			if(!m_bEditSequenceOnly)
+			if (!m_bEditSequenceOnly)
 			{
 				AutoTypeAssociation atAssoc;
-				if(m_iAssocIndex >= 0) atAssoc = m_atConfig.GetAt(m_iAssocIndex);
+				if (m_iAssocIndex >= 0) atAssoc = m_atConfig.GetAt(m_iAssocIndex);
 				else
 				{
 					atAssoc = new AutoTypeAssociation();
@@ -372,7 +372,7 @@ namespace KeePass.Forms
 
 		private void EnableControlsEx()
 		{
-			if(m_bBlockUpdates) return;
+			if (m_bBlockUpdates) return;
 			m_bBlockUpdates = true;
 
 			// string strItemName = m_cmbWindow.Text;
@@ -475,13 +475,13 @@ namespace KeePass.Forms
 			string str = (rtb.Text ?? string.Empty);
 			int iOffset = 0;
 
-			while(iOffset < str.Length)
+			while (iOffset < str.Length)
 			{
 				int iStart = str.IndexOf('{', iOffset);
-				if(iStart < iOffset) break;
+				if (iStart < iOffset) break;
 
 				int iEnd = str.IndexOf('}', iStart);
-				if(iEnd <= iStart) { Debug.Assert(false); break; }
+				if (iEnd <= iStart) { Debug.Assert(false); break; }
 
 				rtb.Select(iStart, iEnd - iStart + 1);
 				UIUtil.RtfSetSelectionLink(rtb);
@@ -494,14 +494,14 @@ namespace KeePass.Forms
 
 		private void OnPlaceholdersLinkClicked(object sender, LinkClickedEventArgs e)
 		{
-			if(!m_rbSeqCustom.Checked) m_rbSeqCustom.Checked = true;
+			if (!m_rbSeqCustom.Checked) m_rbSeqCustom.Checked = true;
 
 			int nSelStart = m_rbKeySeq.SelectionStart;
 			int nSelLength = m_rbKeySeq.SelectionLength;
 			string strText = m_rbKeySeq.Text;
 			string strUrl = e.LinkText;
 
-			if(nSelLength > 0)
+			if (nSelLength > 0)
 				strText = strText.Remove(nSelStart, nSelLength);
 
 			m_rbKeySeq.Text = strText.Insert(nSelStart, strUrl);
@@ -549,14 +549,14 @@ namespace KeePass.Forms
 		private void PopulateWindowsListWin()
 		{
 			Dictionary<IntPtr, bool> dWnds = new Dictionary<IntPtr, bool>();
-			NativeMethods.EnumWindowsProc procEnum = delegate(IntPtr hWnd,
+			NativeMethods.EnumWindowsProc procEnum = delegate (IntPtr hWnd,
 				IntPtr lParam)
 			{
 				try
 				{
-					if(hWnd != IntPtr.Zero) dWnds[hWnd] = true;
+					if (hWnd != IntPtr.Zero) dWnds[hWnd] = true;
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 
 				return true;
 			};
@@ -569,14 +569,14 @@ namespace KeePass.Forms
 			// because calling FindWindowEx in a loop is less reliable (and
 			// by additionally using EnumWindows we at least get all desktop
 			// windows for sure)
-			if(WinUtil.IsAtLeastWindows8)
+			if (WinUtil.IsAtLeastWindows8)
 			{
 				int nMax = (dWnds.Count * 2) + 2;
 				IntPtr h = NativeMethods.FindWindowEx(IntPtr.Zero, IntPtr.Zero,
 					null, null);
-				for(int i = 0; i < nMax; ++i)
+				for (int i = 0; i < nMax; ++i)
 				{
-					if(h == IntPtr.Zero) break;
+					if (h == IntPtr.Zero) break;
 
 					dWnds[h] = true;
 
@@ -584,7 +584,7 @@ namespace KeePass.Forms
 				}
 			}
 
-			foreach(KeyValuePair<IntPtr, bool> kvp in dWnds)
+			foreach (KeyValuePair<IntPtr, bool> kvp in dWnds)
 				ThreadPool.QueueUserWorkItem(new WaitCallback(
 					EditAutoTypeItemForm.EvalWindowProc),
 					new PwlwInfo(this, kvp.Key));
@@ -596,14 +596,14 @@ namespace KeePass.Forms
 		{
 #if DEBUG
 			string strTaskID = Guid.NewGuid().ToString();
-			lock(m_oWndTasksSync) { m_dWndTasks[strTaskID] = @"<<<UNDEFINED>>>"; }
+			lock (m_oWndTasksSync) { m_dWndTasks[strTaskID] = @"<<<UNDEFINED>>>"; }
 #endif
 
 			try
 			{
 				PwlwInfo pInfo = (objState as PwlwInfo);
 				IntPtr hWnd = pInfo.WindowHandle;
-				if(hWnd == IntPtr.Zero) { Debug.Assert(false); return; }
+				if (hWnd == IntPtr.Zero) { Debug.Assert(false); return; }
 
 				uint uSmtoFlags = (NativeMethods.SMTO_NORMAL |
 					NativeMethods.SMTO_ABORTIFHUNG);
@@ -611,33 +611,33 @@ namespace KeePass.Forms
 				IntPtr pSmto = NativeMethods.SendMessageTimeout(hWnd,
 					NativeMethods.WM_GETTEXTLENGTH, IntPtr.Zero, IntPtr.Zero,
 					uSmtoFlags, 2000, ref pLen);
-				if(pSmto == IntPtr.Zero) return;
+				if (pSmto == IntPtr.Zero) return;
 
 				string strName = NativeMethods.GetWindowText(hWnd, true);
-				if(string.IsNullOrEmpty(strName)) return;
+				if (string.IsNullOrEmpty(strName)) return;
 
 #if DEBUG
 				Debug.Assert(strName.Length <= pLen.ToInt64());
-				lock(m_oWndTasksSync) { m_dWndTasks[strTaskID] = strName; }
+				lock (m_oWndTasksSync) { m_dWndTasks[strTaskID] = strName; }
 #endif
 
-				if((NativeMethods.GetWindowStyle(hWnd) &
+				if ((NativeMethods.GetWindowStyle(hWnd) &
 					NativeMethods.WS_VISIBLE) == 0) return;
-				if(NativeMethods.IsTaskBar(hWnd)) return;
+				if (NativeMethods.IsTaskBar(hWnd)) return;
 
 				Image img = UIUtil.GetWindowImage(hWnd, true);
 
-				if(pInfo.Form.InvokeRequired)
+				if (pInfo.Form.InvokeRequired)
 					pInfo.Form.Invoke(new AddWindowProcDelegate(
 						EditAutoTypeItemForm.AddWindowProc), new object[] {
 						pInfo.Form, hWnd, strName, img });
 				else AddWindowProc(pInfo.Form, hWnd, strName, img);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 #if DEBUG
 			finally
 			{
-				lock(m_oWndTasksSync) { m_dWndTasks.Remove(strTaskID); }
+				lock (m_oWndTasksSync) { m_dWndTasks.Remove(strTaskID); }
 			}
 #endif
 		}
@@ -647,47 +647,47 @@ namespace KeePass.Forms
 		private static void AddWindowProc(EditAutoTypeItemForm f, IntPtr h,
 			string strWndName, Image img)
 		{
-			if(f == null) { Debug.Assert(false); return; }
-			if(h == IntPtr.Zero) { Debug.Assert(false); return; }
+			if (f == null) { Debug.Assert(false); return; }
+			if (h == IntPtr.Zero) { Debug.Assert(false); return; }
 
 			try
 			{
-				if(!AutoType.IsValidAutoTypeWindow(h, false)) return;
+				if (!AutoType.IsValidAutoTypeWindow(h, false)) return;
 
-				lock(f.m_objDialogSync)
+				lock (f.m_objDialogSync)
 				{
-					if(!f.m_bDialogClosed)
+					if (!f.m_bDialogClosed)
 					{
 						f.m_vWndImages.Add(img);
 						f.m_cmbWindow.Items.Add(strWndName);
 					}
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private void PopulateWindowsListUnix()
 		{
 			string strWindows = NativeMethods.RunXDoTool(
 				@"search --onlyvisible --name '.+' getwindowname %@");
-			if(string.IsNullOrEmpty(strWindows)) return;
+			if (string.IsNullOrEmpty(strWindows)) return;
 
 			strWindows = StrUtil.NormalizeNewLines(strWindows, false);
 			string[] vWindows = strWindows.Split(new char[] { '\n' });
 
 			List<string> vListed = new List<string>();
-			for(int i = 0; i < vWindows.Length; ++i)
+			for (int i = 0; i < vWindows.Length; ++i)
 			{
 				string str = vWindows[i].Trim();
 
 				bool bValid = true;
-				foreach(Form f in Application.OpenForms)
+				foreach (Form f in Application.OpenForms)
 				{
-					if(IsOwnWindow(f, str)) { bValid = false; break; }
+					if (IsOwnWindow(f, str)) { bValid = false; break; }
 				}
-				if(!bValid) continue;
+				if (!bValid) continue;
 
-				if((str.Length > 0) && (vListed.IndexOf(str) < 0))
+				if ((str.Length > 0) && (vListed.IndexOf(str) < 0))
 				{
 					m_cmbWindow.Items.Add(str);
 					vListed.Add(str);
@@ -697,13 +697,13 @@ namespace KeePass.Forms
 
 		private static bool IsOwnWindow(Control cRoot, string strText)
 		{
-			if(cRoot == null) { Debug.Assert(false); return false; }
-			if(cRoot.Text.Trim() == strText) return true;
+			if (cRoot == null) { Debug.Assert(false); return false; }
+			if (cRoot.Text.Trim() == strText) return true;
 
-			foreach(Control cSub in cRoot.Controls)
+			foreach (Control cSub in cRoot.Controls)
 			{
-				if(cSub == cRoot) { Debug.Assert(false); continue; }
-				if(IsOwnWindow(cSub, strText)) return true;
+				if (cSub == cRoot) { Debug.Assert(false); continue; }
+				if (IsOwnWindow(cSub, strText)) return true;
 			}
 
 			return false;

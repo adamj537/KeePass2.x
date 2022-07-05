@@ -68,13 +68,13 @@ namespace KeePass.UI
 			{
 				CreateParams cp = base.CreateParams;
 
-				if(!Program.DesignMode)
+				if (!Program.DesignMode)
 				{
 					// Mono throws an exception when trying to get the
 					// Multiline property while constructing the object
-					if(!MonoWorkarounds.IsRequired())
+					if (!MonoWorkarounds.IsRequired())
 					{
-						if(this.Multiline) cp.Style |= NativeMethods.ES_WANTRETURN;
+						if (this.Multiline) cp.Style |= NativeMethods.ES_WANTRETURN;
 					}
 				}
 
@@ -97,7 +97,7 @@ namespace KeePass.UI
 
 		public CustomRichTextBoxEx() : base()
 		{
-			if(Program.DesignMode) return;
+			if (Program.DesignMode) return;
 
 			// We cannot use EnableAutoDragDrop, because moving some text
 			// using drag&drop can remove the selected text from the box
@@ -117,10 +117,10 @@ namespace KeePass.UI
 		protected override void OnHandleCreated(EventArgs e)
 		{
 			base.OnHandleCreated(e);
-			if(Program.DesignMode) return;
+			if (Program.DesignMode) return;
 
 			// The following operations should not recreate the handle
-			if(m_csAutoProps.TryEnter())
+			if (m_csAutoProps.TryEnter())
 			{
 				// Workaround for .NET bug:
 				// AutoWordSelection remembers the value of the property
@@ -131,7 +131,7 @@ namespace KeePass.UI
 				// style is toggled instead of turned off (the internal value
 				// is updated correctly)
 				bool bAutoWord = this.AutoWordSelection; // Internal, no message
-				if(!bAutoWord) // Only 'false' needs workaround
+				if (!bAutoWord) // Only 'false' needs workaround
 				{
 					// Ensure control style is on (currently we're in a
 					// random state, as it could be set to false multiple
@@ -150,13 +150,13 @@ namespace KeePass.UI
 
 		private static bool IsPasteCommand(KeyEventArgs e)
 		{
-			if(e == null) { Debug.Assert(false); return false; }
+			if (e == null) { Debug.Assert(false); return false; }
 
 			// Also check for modifier keys being up;
 			// https://sourceforge.net/p/keepass/bugs/1185/
-			if((e.KeyCode == Keys.V) && e.Control && !e.Alt) // e.Shift arb.
+			if ((e.KeyCode == Keys.V) && e.Control && !e.Alt) // e.Shift arb.
 				return true;
-			if((e.KeyCode == Keys.Insert) && e.Shift && !e.Alt) // e.Control arb.
+			if ((e.KeyCode == Keys.Insert) && e.Shift && !e.Alt) // e.Control arb.
 				return true;
 
 			return false;
@@ -164,9 +164,9 @@ namespace KeePass.UI
 
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
-			if(UIUtil.HandleCommonKeyEvent(e, true, this)) return;
+			if (UIUtil.HandleCommonKeyEvent(e, true, this)) return;
 
-			if(m_bSimpleTextOnly && IsPasteCommand(e))
+			if (m_bSimpleTextOnly && IsPasteCommand(e))
 			{
 				UIUtil.SetHandled(e, true);
 
@@ -175,26 +175,26 @@ namespace KeePass.UI
 			}
 
 			// Return == Enter
-			if(m_bCtrlEnterAccepts && e.Control && (e.KeyCode == Keys.Return))
+			if (m_bCtrlEnterAccepts && e.Control && (e.KeyCode == Keys.Return))
 			{
 				UIUtil.SetHandled(e, true);
 				Debug.Assert(this.Multiline);
 
 				Control p = this;
 				Form f;
-				while(true)
+				while (true)
 				{
 					f = (p as Form);
-					if(f != null) break;
+					if (f != null) break;
 
 					Control pParent = p.Parent;
-					if((pParent == null) || (pParent == p)) break;
+					if ((pParent == null) || (pParent == p)) break;
 					p = pParent;
 				}
-				if(f != null)
+				if (f != null)
 				{
 					IButtonControl btn = f.AcceptButton;
-					if(btn != null) btn.PerformClick();
+					if (btn != null) btn.PerformClick();
 					else { Debug.Assert(false); }
 				}
 				else { Debug.Assert(false); }
@@ -202,29 +202,29 @@ namespace KeePass.UI
 				return;
 			}
 
-			if(HandleAltX(e, true)) return;
+			if (HandleAltX(e, true)) return;
 
 			base.OnKeyDown(e);
 		}
 
 		protected override void OnKeyUp(KeyEventArgs e)
 		{
-			if(UIUtil.HandleCommonKeyEvent(e, false, this)) return;
+			if (UIUtil.HandleCommonKeyEvent(e, false, this)) return;
 
-			if(m_bSimpleTextOnly && IsPasteCommand(e))
+			if (m_bSimpleTextOnly && IsPasteCommand(e))
 			{
 				UIUtil.SetHandled(e, true);
 				return;
 			}
 
 			// Return == Enter
-			if(m_bCtrlEnterAccepts && e.Control && (e.KeyCode == Keys.Return))
+			if (m_bCtrlEnterAccepts && e.Control && (e.KeyCode == Keys.Return))
 			{
 				UIUtil.SetHandled(e, true);
 				return;
 			}
 
-			if(HandleAltX(e, false)) return;
+			if (HandleAltX(e, false)) return;
 
 			base.OnKeyUp(e);
 		}
@@ -233,13 +233,13 @@ namespace KeePass.UI
 		{
 			try
 			{
-				if(!m_bSimpleTextOnly) Paste();
-				else if(ClipboardUtil.ContainsData(DataFormats.UnicodeText))
+				if (!m_bSimpleTextOnly) Paste();
+				else if (ClipboardUtil.ContainsData(DataFormats.UnicodeText))
 					Paste(DataFormats.GetFormat(DataFormats.UnicodeText));
-				else if(ClipboardUtil.ContainsData(DataFormats.Text))
+				else if (ClipboardUtil.ContainsData(DataFormats.Text))
 					Paste(DataFormats.GetFormat(DataFormats.Text));
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		// https://www.fileformat.info/tip/microsoft/enter_unicode.htm
@@ -247,13 +247,13 @@ namespace KeePass.UI
 		private bool HandleAltX(KeyEventArgs e, bool bDown)
 		{
 			// Rich text boxes of Windows already support Alt+X
-			if(!NativeLib.IsUnix()) return false;
+			if (!NativeLib.IsUnix()) return false;
 
-			if(!e.Control && e.Alt && (e.KeyCode == Keys.X)) { }
+			if (!e.Control && e.Alt && (e.KeyCode == Keys.X)) { }
 			else return false;
 
 			UIUtil.SetHandled(e, true);
-			if(!bDown) return true;
+			if (!bDown) return true;
 
 			try
 			{
@@ -261,46 +261,46 @@ namespace KeePass.UI
 				int iSel = this.SelectionStart;
 				Debug.Assert(this.SelectionLength == strSel.Length);
 
-				if(e.Shift) // Character -> code
+				if (e.Shift) // Character -> code
 				{
 					string strChar = strSel;
-					if(strSel.Length >= 2) // Work with leftmost character
+					if (strSel.Length >= 2) // Work with leftmost character
 					{
-						if(char.IsSurrogatePair(strSel, 0))
+						if (char.IsSurrogatePair(strSel, 0))
 							strChar = strSel.Substring(0, 2);
 						else strChar = strSel.Substring(0, 1);
 					}
-					else if(strSel.Length == 0) // Work with char. to the left
+					else if (strSel.Length == 0) // Work with char. to the left
 					{
 						int p = iSel - 1;
 						string strText = this.Text;
-						if((p < 0) || (p >= strText.Length)) return true;
+						if ((p < 0) || (p >= strText.Length)) return true;
 
 						char ch = strText[p];
 
-						if(!char.IsSurrogate(ch)) strChar = new string(ch, 1);
-						else if(p >= 1)
+						if (!char.IsSurrogate(ch)) strChar = new string(ch, 1);
+						else if (p >= 1)
 						{
-							if(char.IsSurrogatePair(strText, p - 1))
+							if (char.IsSurrogatePair(strText, p - 1))
 								strChar = strText.Substring(p - 1, 2);
 						}
 					}
 					else // strSel.Length == 1
 					{
-						if(char.IsSurrogate(strSel[0]))
+						if (char.IsSurrogate(strSel[0]))
 						{
 							Debug.Assert(false); // Half surrogate
 							return true;
 						}
 					}
-					if(strChar.Length == 0) { Debug.Assert(false); return true; }
+					if (strChar.Length == 0) { Debug.Assert(false); return true; }
 
 					int uc = char.ConvertToUtf32(strChar, 0);
 					string strRep = Convert.ToString(uc, 16).ToUpperInvariant();
 
-					if(strSel.Length >= 2)
+					if (strSel.Length >= 2)
 						this.Select(iSel, strChar.Length);
-					else if(strSel.Length == 0)
+					else if (strSel.Length == 0)
 					{
 						this.Select(iSel - strChar.Length, strChar.Length);
 						iSel -= strChar.Length;
@@ -314,44 +314,44 @@ namespace KeePass.UI
 					const int ccHexMax = 6; // See e.g. WordPad
 
 					string strHex = strSel;
-					if(strSel.Length == 0)
+					if (strSel.Length == 0)
 					{
 						int p = iSel - 1;
 						string strText = this.Text;
-						while((p >= 0) && (p < strText.Length))
+						while ((p >= 0) && (p < strText.Length))
 						{
 							char ch = strText[p];
-							if(((ch >= '0') && (ch <= '9')) ||
+							if (((ch >= '0') && (ch <= '9')) ||
 								((ch >= 'a') && (ch <= 'f')) ||
 								((ch >= 'A') && (ch <= 'F')))
 							{
 								strHex = (new string(ch, 1)) + strHex;
-								if(strHex.Length == ccHexMax) break;
+								if (strHex.Length == ccHexMax) break;
 							}
 							else break;
 
 							--p;
 						}
 					}
-					if((strHex.Length == 0) || !StrUtil.IsHexString(strHex, true))
+					if ((strHex.Length == 0) || !StrUtil.IsHexString(strHex, true))
 						return true;
 
 					string strHexTr = strHex.TrimStart('0');
-					if(strHexTr.Length > ccHexMax) return true;
+					if (strHexTr.Length > ccHexMax) return true;
 
 					uint uc = Convert.ToUInt32(strHexTr, 16);
-					if(uc > ucMax) return true;
+					if (uc > ucMax) return true;
 
 					string strRep = char.ConvertFromUtf32((int)uc);
-					if(string.IsNullOrEmpty(strRep)) { Debug.Assert(false); return true; }
-					if(char.IsControl(strRep, 0) && (strRep[0] != '\t')) return true;
+					if (string.IsNullOrEmpty(strRep)) { Debug.Assert(false); return true; }
+					if (char.IsControl(strRep, 0) && (strRep[0] != '\t')) return true;
 
-					if(strSel.Length == 0)
+					if (strSel.Length == 0)
 						this.Select(iSel - strHex.Length, strHex.Length);
 					this.SelectedText = strRep;
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return true;
 		}
@@ -361,7 +361,7 @@ namespace KeePass.UI
 			Keys k = (keyData & Keys.KeyCode);
 
 			Debug.Assert(Keys.Return == Keys.Enter);
-			if((k == Keys.Return) && ((keyData & (Keys.Control | Keys.Alt)) ==
+			if ((k == Keys.Return) && ((keyData & (Keys.Control | Keys.Alt)) ==
 				Keys.None) && this.Multiline)
 				return false; // New line in rich text box
 
@@ -371,53 +371,53 @@ namespace KeePass.UI
 		protected override bool ProcessCmdKey(ref Message m, Keys keyData)
 		{
 			bool bDown;
-			if(!NativeMethods.GetKeyMessageState(ref m, out bDown))
+			if (!NativeMethods.GetKeyMessageState(ref m, out bDown))
 				return base.ProcessCmdKey(ref m, keyData);
 
 			try
 			{
-				if(!m_bSimpleTextOnly && this.ShortcutsEnabled &&
+				if (!m_bSimpleTextOnly && this.ShortcutsEnabled &&
 					this.RichTextShortcutsEnabled && !this.ReadOnly)
 				{
 					bool bHandled = true;
 
-					switch(keyData)
+					switch (keyData)
 					{
 						case (Keys.Control | Keys.B): // Without Shift
-							if(bDown) UIUtil.RtfToggleSelectionFormat(this, FontStyle.Bold);
+							if (bDown) UIUtil.RtfToggleSelectionFormat(this, FontStyle.Bold);
 							break;
 						case (Keys.Control | Keys.I): // Without Shift
-							if(bDown) UIUtil.RtfToggleSelectionFormat(this, FontStyle.Italic);
+							if (bDown) UIUtil.RtfToggleSelectionFormat(this, FontStyle.Italic);
 							break;
 						case (Keys.Control | Keys.U): // Without Shift
-							if(bDown) UIUtil.RtfToggleSelectionFormat(this, FontStyle.Underline);
+							if (bDown) UIUtil.RtfToggleSelectionFormat(this, FontStyle.Underline);
 							break;
 
 						// The following keyboard shortcuts are implemented
 						// by the rich text box on Windows, but not by Mono;
 						// https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.textboxbase.shortcutsenabled
 						case (Keys.Control | Keys.L): // Without Shift
-							if(bDown) this.SelectionAlignment = HorizontalAlignment.Left;
+							if (bDown) this.SelectionAlignment = HorizontalAlignment.Left;
 							break;
 						case (Keys.Control | Keys.E): // Without Shift
-							if(bDown) this.SelectionAlignment = HorizontalAlignment.Center;
+							if (bDown) this.SelectionAlignment = HorizontalAlignment.Center;
 							break;
 						case (Keys.Control | Keys.R): // Without Shift
-							if(bDown) this.SelectionAlignment = HorizontalAlignment.Right;
+							if (bDown) this.SelectionAlignment = HorizontalAlignment.Right;
 							break;
 
 						default: bHandled = false; break;
 					}
 
-					if(bHandled)
+					if (bHandled)
 					{
-						if(MonoWorkarounds.IsRequired(100002))
+						if (MonoWorkarounds.IsRequired(100002))
 							OnTextChanged(EventArgs.Empty);
 						return true;
 					}
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return base.ProcessCmdKey(ref m, keyData);
 		}
@@ -669,10 +669,10 @@ namespace KeePass.UI
 
 		private void MonoRedrawOnScroll()
 		{
-			if(!m_bForceRedrawOnScroll.HasValue)
+			if (!m_bForceRedrawOnScroll.HasValue)
 				m_bForceRedrawOnScroll = MonoWorkarounds.IsRequired(1366);
 
-			if(m_bForceRedrawOnScroll.Value) Invalidate();
+			if (m_bForceRedrawOnScroll.Value) Invalidate();
 		}
 
 		protected override void OnLinkClicked(LinkClickedEventArgs e)
@@ -680,7 +680,7 @@ namespace KeePass.UI
 			try
 			{
 				string str = e.LinkText;
-				if(string.IsNullOrEmpty(str)) { Debug.Assert(false); return; }
+				if (string.IsNullOrEmpty(str)) { Debug.Assert(false); return; }
 
 				// Open the URL if no handler has been associated with
 				// the LinkClicked event;
@@ -690,9 +690,9 @@ namespace KeePass.UI
 				FieldInfo fi = typeof(RichTextBox).GetField(strEv,
 					BindingFlags.NonPublic | BindingFlags.Static);
 				object oEv = ((fi != null) ? fi.GetValue(null) : null);
-				if(oEv != null)
+				if (oEv != null)
 				{
-					if(this.Events[oEv] == null) // No event handler associated
+					if (this.Events[oEv] == null) // No event handler associated
 					{
 						WinUtil.OpenUrl(str, null);
 						return;
@@ -700,7 +700,7 @@ namespace KeePass.UI
 				}
 				else { Debug.Assert(false); }
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			base.OnLinkClicked(e);
 		}

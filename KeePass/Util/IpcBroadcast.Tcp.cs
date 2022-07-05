@@ -69,7 +69,7 @@ namespace KeePass.Util
 			List<string> lLocks = UrlUtil.GetFilePaths(UrlUtil.GetTempPath(),
 				strPrefix + "*" + IpcTcpSuffix, SearchOption.TopDirectoryOnly);
 
-			foreach(string strLock in lLocks)
+			foreach (string strLock in lLocks)
 			{
 				try
 				{
@@ -77,23 +77,23 @@ namespace KeePass.Util
 					ushort uPort = ushort.Parse(strName.Substring(strPrefix.Length,
 						strName.Length - strPrefix.Length - IpcTcpSuffix.Length),
 						NumberFormatInfo.InvariantInfo);
-					if((uPort < (uint)IpcTcpPortMin) || (uPort >= (uint)IpcTcpPortMaxExcl))
+					if ((uPort < (uint)IpcTcpPortMin) || (uPort >= (uint)IpcTcpPortMaxExcl))
 					{
 						Debug.Assert(false);
 						continue;
 					}
 
-					using(TcpClient tc = new TcpClient())
+					using (TcpClient tc = new TcpClient())
 					{
 						tc.Connect(IPAddress.Loopback, (int)uPort);
-						using(NetworkStream s = tc.GetStream())
+						using (NetworkStream s = tc.GetStream())
 						{
 							byte[] pb = TcpCreateMessage(puID, msg, lParam); // Timestamped
 							s.Write(pb, 0, pb.Length);
 						}
 					}
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 		}
 
@@ -105,14 +105,14 @@ namespace KeePass.Util
 
 		private static void TcpStopServer()
 		{
-			if(g_tl == null) return;
+			if (g_tl == null) return;
 
-			try { if(g_strLockFile != null) File.Delete(g_strLockFile); }
-			catch(Exception) { Debug.Assert(false); }
+			try { if (g_strLockFile != null) File.Delete(g_strLockFile); }
+			catch (Exception) { Debug.Assert(false); }
 			g_strLockFile = null;
 
 			try { g_tl.Stop(); } // Throws an exception in the thread
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 			g_tl = null;
 		}
 
@@ -124,10 +124,10 @@ namespace KeePass.Util
 			//	try { Thread.ResetAbort(); }
 			//	catch(Exception) { Debug.Assert(false); }
 			// }
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				Debug.Assert(false);
-				if(Program.CommandLineArgs[AppDefs.CommandLineOptions.Debug] != null)
+				if (Program.CommandLineArgs[AppDefs.CommandLineOptions.Debug] != null)
 				{
 					Console.WriteLine("Exception in IpcBroadcast.TcpThreadProc:");
 					Console.WriteLine(ex.Message);
@@ -139,7 +139,7 @@ namespace KeePass.Util
 		{
 			TcpListener tl = null;
 			int iPort = 0;
-			for(int i = 0; i < (IpcTcpPortMaxExcl - IpcTcpPortMin); ++i)
+			for (int i = 0; i < (IpcTcpPortMaxExcl - IpcTcpPortMin); ++i)
 			{
 				try
 				{
@@ -151,9 +151,9 @@ namespace KeePass.Util
 					tl.Start();
 					break;
 				}
-				catch(Exception) { tl = null; }
+				catch (Exception) { tl = null; }
 			}
-			if(tl == null) { Debug.Assert(false); return; }
+			if (tl == null) { Debug.Assert(false); return; }
 			g_tl = tl;
 
 			NumberFormatInfo nfi = NumberFormatInfo.InvariantInfo;
@@ -164,37 +164,37 @@ namespace KeePass.Util
 
 			try
 			{
-				while(true)
+				while (true)
 				{
-					using(TcpClient tc = tl.AcceptTcpClient())
+					using (TcpClient tc = tl.AcceptTcpClient())
 					{
 						try
 						{
-							using(NetworkStream s = tc.GetStream())
+							using (NetworkStream s = tc.GetStream())
 							{
-								using(BinaryReader br = new BinaryReader(s))
+								using (BinaryReader br = new BinaryReader(s))
 								{
 									TcpProcessMessage(br);
 								}
 							}
 						}
-						catch(Exception) { Debug.Assert(false); }
+						catch (Exception) { Debug.Assert(false); }
 					}
 
-					for(int i = g_lOldMsgs.Count - 1; i >= 0; --i)
+					for (int i = g_lOldMsgs.Count - 1; i >= 0; --i)
 					{
-						if((DateTime.UtcNow - g_lOldMsgs[i].Value).TotalMilliseconds >
+						if ((DateTime.UtcNow - g_lOldMsgs[i].Value).TotalMilliseconds >
 							IpcTcpTtlMs)
 							g_lOldMsgs.RemoveAt(i);
 					}
 				}
 			}
-			catch(SocketException exS)
+			catch (SocketException exS)
 			{
 				// Stopped by main thread
 				Debug.Assert(exS.SocketErrorCode == SocketError.Interrupted);
 			}
-			catch(InvalidOperationException) { } // AcceptTcpClient fails at exit
+			catch (InvalidOperationException) { } // AcceptTcpClient fails at exit
 		}
 
 		private static byte[] TcpCreateMessage(PwUuid puID, Program.AppMessage msg,
@@ -222,33 +222,33 @@ namespace KeePass.Util
 
 		private static void TcpProcessMessage(BinaryReader br)
 		{
-			if(br.ReadByte() != 1) { Debug.Assert(false); return; }
+			if (br.ReadByte() != 1) { Debug.Assert(false); return; }
 
 			int cb = MemUtil.BytesToInt32(br.ReadBytes(4));
-			if((cb <= 0) || (cb > IpcTcpMsgSizeMax)) { Debug.Assert(false); return; }
+			if ((cb <= 0) || (cb > IpcTcpMsgSizeMax)) { Debug.Assert(false); return; }
 
 			byte[] pbEnc = br.ReadBytes(cb);
-			if((pbEnc == null) || (pbEnc.Length != cb)) { Debug.Assert(false); return; }
+			if ((pbEnc == null) || (pbEnc.Length != cb)) { Debug.Assert(false); return; }
 
 			const int cbID = (int)PwUuid.UuidSize;
 
 			byte[] pb = CryptoUtil.UnprotectData(pbEnc, IpcTcpOptEnt,
 				DataProtectionScope.CurrentUser);
-			if((pb == null) || (pb.Length != (cbID + 8 + 4 + 4)))
+			if ((pb == null) || (pb.Length != (cbID + 8 + 4 + 4)))
 			{
 				Debug.Assert(false);
 				return;
 			}
 
 			PwUuid puID = new PwUuid(MemUtil.Mid(pb, 0, cbID));
-			foreach(KeyValuePair<PwUuid, DateTime> kvp in g_lOldMsgs)
+			foreach (KeyValuePair<PwUuid, DateTime> kvp in g_lOldMsgs)
 			{
-				if(puID.Equals(kvp.Key)) { Debug.Assert(false); return; }
+				if (puID.Equals(kvp.Key)) { Debug.Assert(false); return; }
 			}
 
 			DateTime dtNow = DateTime.UtcNow, dtMsg = DateTime.FromBinary(
 				MemUtil.BytesToInt64(pb, cbID));
-			if((dtNow - dtMsg).TotalMilliseconds > IpcTcpTtlMs)
+			if ((dtNow - dtMsg).TotalMilliseconds > IpcTcpTtlMs)
 			{
 				Debug.Assert(false);
 				return;
@@ -260,10 +260,10 @@ namespace KeePass.Util
 			int lParam = MemUtil.BytesToInt32(pb, cbID + 8 + 4);
 			MainForm mf = Program.MainForm;
 
-			VoidDelegate f = delegate()
+			VoidDelegate f = delegate ()
 			{
 				try { mf.ProcessAppMessage(new IntPtr(iMsg), new IntPtr(lParam)); }
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			};
 			mf.Invoke(f);
 		}

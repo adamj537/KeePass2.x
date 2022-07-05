@@ -69,21 +69,21 @@ namespace KeePassLib.Serialization
 
 		public FileTransactionEx(IOConnectionInfo iocBaseFile, bool bTransacted)
 		{
-			if(iocBaseFile == null) throw new ArgumentNullException("iocBaseFile");
+			if (iocBaseFile == null) throw new ArgumentNullException("iocBaseFile");
 
 			m_bTransacted = bTransacted;
 
 			m_iocBase = iocBaseFile.CloneDeep();
-			if(m_iocBase.IsLocalFile())
+			if (m_iocBase.IsLocalFile())
 				m_iocBase.Path = UrlUtil.GetShortestAbsolutePath(m_iocBase.Path);
 
 			string strPath = m_iocBase.Path;
 
-			if(m_iocBase.IsLocalFile())
+			if (m_iocBase.IsLocalFile())
 			{
 				try
 				{
-					if(File.Exists(strPath))
+					if (File.Exists(strPath))
 					{
 						// Symbolic links are realized via reparse points;
 						// https://msdn.microsoft.com/en-us/library/windows/desktop/aa365503.aspx
@@ -93,7 +93,7 @@ namespace KeePassLib.Serialization
 						// would delete/replace the symbolic link instead of
 						// writing to its target
 						FileAttributes fa = File.GetAttributes(strPath);
-						if((long)(fa & FileAttributes.ReparsePoint) != 0)
+						if ((long)(fa & FileAttributes.ReparsePoint) != 0)
 							m_bTransacted = false;
 					}
 					else
@@ -109,28 +109,28 @@ namespace KeePassLib.Serialization
 						m_bTransacted = false;
 					}
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 
 #if !KeePassUAP
 			// Prevent transactions for FTP URLs under .NET 4.0 in order to
 			// avoid/workaround .NET bug 621450:
 			// https://connect.microsoft.com/VisualStudio/feedback/details/621450/problem-renaming-file-on-ftp-server-using-ftpwebrequest-in-net-framework-4-0-vs2010-only
-			if(strPath.StartsWith("ftp:", StrUtil.CaseIgnoreCmp) &&
+			if (strPath.StartsWith("ftp:", StrUtil.CaseIgnoreCmp) &&
 				(Environment.Version.Major >= 4) && !NativeLib.IsUnix())
 				m_bTransacted = false;
 #endif
 
-			foreach(KeyValuePair<string, bool> kvp in g_dEnabled)
+			foreach (KeyValuePair<string, bool> kvp in g_dEnabled)
 			{
-				if(strPath.StartsWith(kvp.Key, StrUtil.CaseIgnoreCmp))
+				if (strPath.StartsWith(kvp.Key, StrUtil.CaseIgnoreCmp))
 				{
 					m_bTransacted = kvp.Value;
 					break;
 				}
 			}
 
-			if(m_bTransacted)
+			if (m_bTransacted)
 			{
 				m_iocTemp = m_iocBase.CloneDeep();
 				m_iocTemp.Path += StrTempSuffix;
@@ -154,37 +154,37 @@ namespace KeePassLib.Serialization
 		private void Dispose(bool bDisposing)
 		{
 			m_iocBase = null;
-			if(!bDisposing) return;
+			if (!bDisposing) return;
 
 			try
 			{
-				foreach(IOConnectionInfo ioc in m_lToDelete)
+				foreach (IOConnectionInfo ioc in m_lToDelete)
 				{
-					if(IOConnection.FileExists(ioc, false))
+					if (IOConnection.FileExists(ioc, false))
 						IOConnection.DeleteFile(ioc);
 				}
 
 				m_lToDelete.Clear();
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		public Stream OpenWrite()
 		{
-			if(m_iocBase == null) { Debug.Assert(false); throw new ObjectDisposedException(null); }
+			if (m_iocBase == null) { Debug.Assert(false); throw new ObjectDisposedException(null); }
 
-			if(!m_bTransacted) m_bMadeUnhidden |= UrlUtil.UnhideFile(m_iocTemp.Path);
+			if (!m_bTransacted) m_bMadeUnhidden |= UrlUtil.UnhideFile(m_iocTemp.Path);
 
 			return IOConnection.OpenWrite(m_iocTemp);
 		}
 
 		public void CommitWrite()
 		{
-			if(m_iocBase == null) { Debug.Assert(false); throw new ObjectDisposedException(null); }
+			if (m_iocBase == null) { Debug.Assert(false); throw new ObjectDisposedException(null); }
 
-			if(!m_bTransacted)
+			if (!m_bTransacted)
 			{
-				if(m_bMadeUnhidden) UrlUtil.HideFile(m_iocTemp.Path, true);
+				if (m_bMadeUnhidden) UrlUtil.HideFile(m_iocTemp.Path, true);
 			}
 			else CommitWriteTransaction();
 
@@ -193,9 +193,9 @@ namespace KeePassLib.Serialization
 
 		private void CommitWriteTransaction()
 		{
-			if(g_bExtraSafe)
+			if (g_bExtraSafe)
 			{
-				if(!IOConnection.FileExists(m_iocTemp))
+				if (!IOConnection.FileExists(m_iocTemp))
 					throw new FileNotFoundException(m_iocTemp.Path +
 						MessageService.NewLine + KLRes.FileSaveFailed);
 			}
@@ -216,7 +216,7 @@ namespace KeePassLib.Serialization
 			SimpleStat sStat = null;
 
 			bool bBaseExists = IOConnection.FileExists(m_iocBase);
-			if(bBaseExists && m_iocBase.IsLocalFile())
+			if (bBaseExists && m_iocBase.IsLocalFile())
 			{
 				// FileAttributes faBase = FileAttributes.Normal;
 				try
@@ -224,26 +224,26 @@ namespace KeePassLib.Serialization
 #if !KeePassUAP
 					FileAttributes faBase = File.GetAttributes(m_iocBase.Path);
 					bEfsEncrypted = ((long)(faBase & FileAttributes.Encrypted) != 0);
-					try { if(bEfsEncrypted) File.Decrypt(m_iocBase.Path); } // For TxF
-					catch(Exception) { Debug.Assert(false); }
+					try { if (bEfsEncrypted) File.Decrypt(m_iocBase.Path); } // For TxF
+					catch (Exception) { Debug.Assert(false); }
 #endif
 					otCreation = File.GetCreationTimeUtc(m_iocBase.Path);
 					sStat = SimpleStat.Get(m_iocBase.Path);
 #if !KeePassUAP
 					// May throw with Mono
 					FileSecurity sec = File.GetAccessControl(m_iocBase.Path, acs);
-					if(sec != null) pbSec = sec.GetSecurityDescriptorBinaryForm();
+					if (sec != null) pbSec = sec.GetSecurityDescriptorBinaryForm();
 #endif
 				}
-				catch(Exception) { Debug.Assert(NativeLib.IsUnix()); }
+				catch (Exception) { Debug.Assert(NativeLib.IsUnix()); }
 
 				// if((long)(faBase & FileAttributes.ReadOnly) != 0)
 				//	throw new UnauthorizedAccessException();
 			}
 
-			if(!TxfMove())
+			if (!TxfMove())
 			{
-				if(bBaseExists) IOConnection.DeleteFile(m_iocBase);
+				if (bBaseExists) IOConnection.DeleteFile(m_iocBase);
 				IOConnection.RenameFile(m_iocTemp, m_iocBase);
 			}
 			else { Debug.Assert(pbSec != null); } // TxF success => NTFS => has ACL
@@ -254,16 +254,16 @@ namespace KeePassLib.Serialization
 				// date with year 1601, and Unix times start in 1970,
 				// so testing for 1971 should ensure validity;
 				// https://msdn.microsoft.com/en-us/library/system.io.file.getcreationtimeutc.aspx
-				if(otCreation.HasValue && (otCreation.Value.Year >= 1971))
+				if (otCreation.HasValue && (otCreation.Value.Year >= 1971))
 					File.SetCreationTimeUtc(m_iocBase.Path, otCreation.Value);
 
-				if(sStat != null) SimpleStat.Set(m_iocBase.Path, sStat);
+				if (sStat != null) SimpleStat.Set(m_iocBase.Path, sStat);
 
 #if !KeePassUAP
-				if(bEfsEncrypted)
+				if (bEfsEncrypted)
 				{
 					try { File.Encrypt(m_iocBase.Path); }
-					catch(Exception) { Debug.Assert(false); }
+					catch (Exception) { Debug.Assert(false); }
 				}
 
 				// File.SetAccessControl(m_iocBase.Path, secPrev);
@@ -272,7 +272,7 @@ namespace KeePassLib.Serialization
 				// indirection is required;
 				// https://sourceforge.net/p/keepass/bugs/1738/
 				// https://msdn.microsoft.com/en-us/library/system.io.file.setaccesscontrol.aspx
-				if((pbSec != null) && (pbSec.Length != 0))
+				if ((pbSec != null) && (pbSec.Length != 0))
 				{
 					FileSecurity sec = new FileSecurity();
 					sec.SetSecurityDescriptorBinaryForm(pbSec, acs);
@@ -281,24 +281,24 @@ namespace KeePassLib.Serialization
 				}
 #endif
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
-			if(bMadeUnhidden) UrlUtil.HideFile(m_iocBase.Path, true);
+			if (bMadeUnhidden) UrlUtil.HideFile(m_iocBase.Path, true);
 		}
 
 		// For plugins
 		public static void Configure(string strPrefix, bool? obTransacted)
 		{
-			if(string.IsNullOrEmpty(strPrefix)) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strPrefix)) { Debug.Assert(false); return; }
 
-			if(obTransacted.HasValue)
+			if (obTransacted.HasValue)
 				g_dEnabled[strPrefix] = obTransacted.Value;
 			else g_dEnabled.Remove(strPrefix);
 		}
 
 		private static bool TxfIsSupported(char chDriveLetter)
 		{
-			if(chDriveLetter == '\0') return false;
+			if (chDriveLetter == '\0') return false;
 
 			try
 			{
@@ -309,7 +309,7 @@ namespace KeePassLib.Serialization
 				uint uSerial = 0, cchMaxComp = 0, uFlags = 0;
 				StringBuilder sbFileSystem = new StringBuilder(cch + 1);
 
-				if(!NativeMethods.GetVolumeInformation(strRoot, sbName, (uint)cch,
+				if (!NativeMethods.GetVolumeInformation(strRoot, sbName, (uint)cch,
 					ref uSerial, ref cchMaxComp, ref uFlags, sbFileSystem, (uint)cch))
 				{
 					Debug.Assert(false, (new Win32Exception()).Message);
@@ -318,7 +318,7 @@ namespace KeePassLib.Serialization
 
 				return ((uFlags & NativeMethods.FILE_SUPPORTS_TRANSACTIONS) != 0);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return false;
 		}
@@ -327,9 +327,9 @@ namespace KeePassLib.Serialization
 		{
 			try
 			{
-				if(NativeLib.IsUnix()) return;
-				if(!m_iocBase.IsLocalFile()) return;
-				if(TxfIsUnusable()) return;
+				if (NativeLib.IsUnix()) return;
+				if (!m_iocBase.IsLocalFile()) return;
+				if (TxfIsUnusable()) return;
 
 				string strID = StrUtil.AlphaNumericOnly(Convert.ToBase64String(
 					CryptoRandom.Instance.GetRandomBytes(16)));
@@ -340,22 +340,22 @@ namespace KeePassLib.Serialization
 
 				char chB = UrlUtil.GetDriveLetter(m_iocBase.Path);
 				char chT = UrlUtil.GetDriveLetter(strTemp);
-				if(!TxfIsSupported(chB)) return;
-				if((chT != chB) && !TxfIsSupported(chT)) return;
+				if (!TxfIsSupported(chB)) return;
+				if ((chT != chB) && !TxfIsSupported(chT)) return;
 
 				m_iocTxfMidFallback = m_iocTemp;
 				m_iocTemp = IOConnectionInfo.FromPath(strTemp);
 
 				m_lToDelete.Add(m_iocTemp);
 			}
-			catch(Exception) { Debug.Assert(false); m_iocTxfMidFallback = null; }
+			catch (Exception) { Debug.Assert(false); m_iocTxfMidFallback = null; }
 		}
 
 		private bool TxfMove()
 		{
-			if(m_iocTxfMidFallback == null) return false;
+			if (m_iocTxfMidFallback == null) return false;
 
-			if(TxfMoveWithTx()) return true;
+			if (TxfMoveWithTx()) return true;
 
 			// Move the temporary file onto the base file's drive first,
 			// such that it cannot happen that both the base file and
@@ -363,8 +363,8 @@ namespace KeePassLib.Serialization
 			const uint f = (NativeMethods.MOVEFILE_COPY_ALLOWED |
 				NativeMethods.MOVEFILE_REPLACE_EXISTING);
 			bool b = NativeMethods.MoveFileEx(m_iocTemp.Path, m_iocTxfMidFallback.Path, f);
-			if(b) b = NativeMethods.MoveFileEx(m_iocTxfMidFallback.Path, m_iocBase.Path, f);
-			if(!b) throw new Win32Exception();
+			if (b) b = NativeMethods.MoveFileEx(m_iocTxfMidFallback.Path, m_iocBase.Path, f);
+			if (!b) throw new Win32Exception();
 
 			Debug.Assert(!File.Exists(m_iocTemp.Path));
 			Debug.Assert(!File.Exists(m_iocTxfMidFallback.Path));
@@ -381,17 +381,17 @@ namespace KeePassLib.Serialization
 					StrUtil.AlphaNumericOnly(Convert.ToBase64String(
 					CryptoRandom.Instance.GetRandomBytes(16)));
 				const int mchTx = NativeMethods.MAX_TRANSACTION_DESCRIPTION_LENGTH;
-				if(strTx.Length >= mchTx) strTx = strTx.Substring(0, mchTx - 1);
+				if (strTx.Length >= mchTx) strTx = strTx.Substring(0, mchTx - 1);
 
 				hTx = NativeMethods.CreateTransaction(IntPtr.Zero,
 					IntPtr.Zero, 0, 0, 0, 0, strTx);
-				if(hTx.ToInt64() == NativeMethods.INVALID_HANDLE_VALUE)
+				if (hTx.ToInt64() == NativeMethods.INVALID_HANDLE_VALUE)
 				{
 					Debug.Assert(false, (new Win32Exception()).Message);
 					return false;
 				}
 
-				if(!NativeMethods.MoveFileTransacted(m_iocTemp.Path, m_iocBase.Path,
+				if (!NativeMethods.MoveFileTransacted(m_iocTemp.Path, m_iocBase.Path,
 					IntPtr.Zero, IntPtr.Zero, (NativeMethods.MOVEFILE_COPY_ALLOWED |
 					NativeMethods.MOVEFILE_REPLACE_EXISTING), hTx))
 				{
@@ -399,7 +399,7 @@ namespace KeePassLib.Serialization
 					return false;
 				}
 
-				if(!NativeMethods.CommitTransaction(hTx))
+				if (!NativeMethods.CommitTransaction(hTx))
 				{
 					Debug.Assert(false, (new Win32Exception()).Message);
 					return false;
@@ -408,13 +408,13 @@ namespace KeePassLib.Serialization
 				Debug.Assert(!File.Exists(m_iocTemp.Path));
 				return true;
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 			finally
 			{
-				if(hTx.ToInt64() != NativeMethods.INVALID_HANDLE_VALUE)
+				if (hTx.ToInt64() != NativeMethods.INVALID_HANDLE_VALUE)
 				{
-					try { if(!NativeMethods.CloseHandle(hTx)) { Debug.Assert(false); } }
-					catch(Exception) { Debug.Assert(false); }
+					try { if (!NativeMethods.CloseHandle(hTx)) { Debug.Assert(false); } }
+					catch (Exception) { Debug.Assert(false); }
 				}
 			}
 
@@ -438,7 +438,7 @@ namespace KeePassLib.Serialization
 				// if(strReleaseId == "1903") return true;
 				// if(strReleaseId == "1909") return true;
 
-				if(strReleaseId != "1809") return false;
+				if (strReleaseId != "1809") return false;
 
 				// On Windows 10 1809, OneDrive crashes if the file is
 				// in a OneDrive folder;
@@ -447,62 +447,62 @@ namespace KeePassLib.Serialization
 
 				string strFile = m_iocBase.Path;
 
-				GFunc<string, string, bool> fMatch = delegate(string strRoot, string strSfx)
+				GFunc<string, string, bool> fMatch = delegate (string strRoot, string strSfx)
 				{
-					if(string.IsNullOrEmpty(strRoot)) return false;
+					if (string.IsNullOrEmpty(strRoot)) return false;
 					string strPfx = UrlUtil.EnsureTerminatingSeparator(
 						strRoot, false) + strSfx;
 					return strFile.StartsWith(strPfx, StrUtil.CaseIgnoreCmp);
 				};
-				GFunc<string, string, bool> fMatchEnv = delegate(string strEnv, string strSfx)
+				GFunc<string, string, bool> fMatchEnv = delegate (string strEnv, string strSfx)
 				{
 					return fMatch(Environment.GetEnvironmentVariable(strEnv), strSfx);
 				};
 
 				string strKnown = NativeMethods.GetKnownFolderPath(
 					NativeMethods.FOLDERID_SkyDrive);
-				if(fMatch(strKnown, string.Empty)) return true;
+				if (fMatch(strKnown, string.Empty)) return true;
 
-				if(fMatchEnv("USERPROFILE", "OneDrive\\")) return true;
-				if(fMatchEnv("OneDrive", string.Empty)) return true;
-				if(fMatchEnv("OneDriveCommercial", string.Empty)) return true;
-				if(fMatchEnv("OneDriveConsumer", string.Empty)) return true;
+				if (fMatchEnv("USERPROFILE", "OneDrive\\")) return true;
+				if (fMatchEnv("OneDrive", string.Empty)) return true;
+				if (fMatchEnv("OneDriveCommercial", string.Empty)) return true;
+				if (fMatchEnv("OneDriveConsumer", string.Empty)) return true;
 
-				using(RegistryKey kAccs = Registry.CurrentUser.OpenSubKey(
+				using (RegistryKey kAccs = Registry.CurrentUser.OpenSubKey(
 					"Software\\Microsoft\\OneDrive\\Accounts", false))
 				{
 					string[] vAccs = (((kAccs != null) ? kAccs.GetSubKeyNames() :
 						null) ?? new string[0]);
 
-					foreach(string strAcc in vAccs)
+					foreach (string strAcc in vAccs)
 					{
-						if(string.IsNullOrEmpty(strAcc)) { Debug.Assert(false); continue; }
+						if (string.IsNullOrEmpty(strAcc)) { Debug.Assert(false); continue; }
 
-						using(RegistryKey kTenants = kAccs.OpenSubKey(
+						using (RegistryKey kTenants = kAccs.OpenSubKey(
 							strAcc + "\\Tenants", false))
 						{
 							string[] vTenants = (((kTenants != null) ?
 								kTenants.GetSubKeyNames() : null) ?? new string[0]);
 
-							foreach(string strT in vTenants)
+							foreach (string strT in vTenants)
 							{
-								if(string.IsNullOrEmpty(strT)) { Debug.Assert(false); continue; }
+								if (string.IsNullOrEmpty(strT)) { Debug.Assert(false); continue; }
 
-								using(RegistryKey kT = kTenants.OpenSubKey(strT, false))
+								using (RegistryKey kT = kTenants.OpenSubKey(strT, false))
 								{
 									string[] vPaths = (((kT != null) ?
 										kT.GetValueNames() : null) ?? new string[0]);
 
-									foreach(string strPath in vPaths)
+									foreach (string strPath in vPaths)
 									{
-										if((strPath == null) || (strPath.Length < 4) ||
+										if ((strPath == null) || (strPath.Length < 4) ||
 											(strPath[1] != ':'))
 										{
 											Debug.Assert(false);
 											continue;
 										}
 
-										if(fMatch(strPath, string.Empty)) return true;
+										if (fMatch(strPath, string.Empty)) return true;
 									}
 								}
 							}
@@ -510,7 +510,7 @@ namespace KeePassLib.Serialization
 					}
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return false;
 		}
@@ -524,18 +524,18 @@ namespace KeePassLib.Serialization
 				List<FileInfo> l = UrlUtil.GetFileInfos(di, StrTxfTempPrefix +
 					"*" + StrTxfTempSuffix, SearchOption.TopDirectoryOnly);
 
-				foreach(FileInfo fi in l)
+				foreach (FileInfo fi in l)
 				{
-					if(fi == null) { Debug.Assert(false); continue; }
-					if(!fi.Name.StartsWith(StrTxfTempPrefix, StrUtil.CaseIgnoreCmp) ||
+					if (fi == null) { Debug.Assert(false); continue; }
+					if (!fi.Name.StartsWith(StrTxfTempPrefix, StrUtil.CaseIgnoreCmp) ||
 						!fi.Name.EndsWith(StrTxfTempSuffix, StrUtil.CaseIgnoreCmp))
 						continue;
 
-					if((DateTime.UtcNow - fi.LastWriteTimeUtc).TotalDays > 1.0)
+					if ((DateTime.UtcNow - fi.LastWriteTimeUtc).TotalDays > 1.0)
 						fi.Delete();
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 	}
 }

@@ -82,7 +82,7 @@ namespace KeePass.Forms
 
 		public void InitEx(string strDataDesc, byte[] pbData)
 		{
-			if(strDataDesc != null) m_strDataDesc = strDataDesc;
+			if (strDataDesc != null) m_strDataDesc = strDataDesc;
 
 			m_pbData = pbData;
 		}
@@ -103,7 +103,7 @@ namespace KeePass.Forms
 		private void OnFormLoad(object sender, EventArgs e)
 		{
 			Debug.Assert(m_pbData != null);
-			if(m_pbData == null) throw new InvalidOperationException();
+			if (m_pbData == null) throw new InvalidOperationException();
 
 			m_bInitializing = true;
 
@@ -113,7 +113,7 @@ namespace KeePass.Forms
 			this.DoubleBuffered = true;
 
 			string strTitle = KPRes.DataViewerKP;
-			if(m_strDataDesc.Length > 0)
+			if (m_strDataDesc.Length > 0)
 				strTitle = m_strDataDesc + " - " + strTitle;
 			this.Text = strTitle;
 
@@ -125,7 +125,7 @@ namespace KeePass.Forms
 
 			m_tslEncoding.Text = KPRes.Encoding + ":";
 
-			foreach(StrEncodingInfo seiEnum in StrUtil.Encodings)
+			foreach (StrEncodingInfo seiEnum in StrUtil.Encodings)
 			{
 				m_tscEncoding.Items.Add(seiEnum.Name);
 			}
@@ -134,7 +134,7 @@ namespace KeePass.Forms
 				m_pbData, out m_uStartOffset);
 
 			int iSel = 0;
-			if(seiGuess != null)
+			if (seiGuess != null)
 				iSel = Math.Max(m_tscEncoding.FindStringExact(seiGuess.Name), 0);
 			m_tscEncoding.SelectedIndex = iSel;
 
@@ -145,7 +145,7 @@ namespace KeePass.Forms
 
 			m_tscZoom.Items.Add(m_strZoomAuto);
 			int[] vZooms = new int[] { 10, 25, 50, 75, 100, 125, 150, 200, 400 };
-			foreach(int iZoom in vZooms)
+			foreach (int iZoom in vZooms)
 				m_tscZoom.Items.Add(iZoom.ToString() + "%");
 			m_tscZoom.SelectedIndex = 0;
 
@@ -163,13 +163,13 @@ namespace KeePass.Forms
 
 			m_bdc = BinaryDataClassifier.Classify(m_strDataDesc, m_pbData);
 
-			if((m_bdc == BinaryDataClass.Text) || (m_bdc == BinaryDataClass.RichText))
+			if ((m_bdc == BinaryDataClass.Text) || (m_bdc == BinaryDataClass.RichText))
 				m_tscViewers.SelectedIndex = 1;
-			else if(m_bdc == BinaryDataClass.Image) m_tscViewers.SelectedIndex = 2;
-			else if(m_bdc == BinaryDataClass.WebDocument) m_tscViewers.SelectedIndex = 3;
+			else if (m_bdc == BinaryDataClass.Image) m_tscViewers.SelectedIndex = 2;
+			else if (m_bdc == BinaryDataClass.WebDocument) m_tscViewers.SelectedIndex = 3;
 			else m_tscViewers.SelectedIndex = 0;
 
-			if(this.DvfInit != null)
+			if (this.DvfInit != null)
 				this.DvfInit(this, new DvfContextEventArgs(this, m_pbData,
 					m_strDataDesc, m_tscViewers));
 
@@ -184,13 +184,13 @@ namespace KeePass.Forms
 			try
 			{
 				string strLink = e.LinkText;
-				if(string.IsNullOrEmpty(strLink)) { Debug.Assert(false); return; }
+				if (string.IsNullOrEmpty(strLink)) { Debug.Assert(false); return; }
 
 				string strViewer = m_tscViewers.Text;
 				bool bTextViewer = ((strViewer == m_strViewerHex) ||
 					(strViewer == m_strViewerText));
 
-				if((strLink == m_strDataExpand) && bTextViewer)
+				if ((strLink == m_strDataExpand) && bTextViewer)
 				{
 					m_bDataExpanded = true;
 
@@ -201,7 +201,7 @@ namespace KeePass.Forms
 				}
 				else WinUtil.OpenUrl(strLink, null);
 			}
-			catch(Exception) { } // ScrollToCaret might throw (but still works)
+			catch (Exception) { } // ScrollToCaret might throw (but still works)
 		}
 
 		private string BinaryDataToString(bool bReplaceNulls, out bool bDecodedStringValid)
@@ -216,10 +216,10 @@ namespace KeePass.Forms
 
 				bDecodedStringValid = StrUtil.IsValid(str);
 
-				if(bReplaceNulls) str = StrUtil.ReplaceNulls(str);
+				if (bReplaceNulls) str = StrUtil.ReplaceNulls(str);
 				return str;
 			}
-			catch(Exception) { bDecodedStringValid = false; }
+			catch (Exception) { bDecodedStringValid = false; }
 
 			return string.Empty;
 		}
@@ -227,22 +227,22 @@ namespace KeePass.Forms
 		private void SetRtbData(string strData, bool bRtf, bool bFixedFont,
 			bool bLinkify)
 		{
-			if(strData == null) { Debug.Assert(false); strData = string.Empty; }
+			if (strData == null) { Debug.Assert(false); strData = string.Empty; }
 
 			m_rtbText.Clear(); // Clear formatting (esp. induced by Unicode)
 
-			if(bFixedFont) FontUtil.AssignDefaultMono(m_rtbText, false);
+			if (bFixedFont) FontUtil.AssignDefaultMono(m_rtbText, false);
 			else FontUtil.AssignDefault(m_rtbText);
 
-			if(bRtf) m_rtbText.Rtf = StrUtil.RtfFix(strData);
+			if (bRtf) m_rtbText.Rtf = StrUtil.RtfFix(strData);
 			else m_rtbText.Text = strData;
 
-			if(bLinkify) UIUtil.RtfLinkifyUrls(m_rtbText);
+			if (bLinkify) UIUtil.RtfLinkifyUrls(m_rtbText);
 
-			if(!bRtf)
+			if (!bRtf)
 			{
 				Font f = (bFixedFont ? FontUtil.MonoFont : FontUtil.DefaultFont);
-				if(f != null)
+				if (f != null)
 				{
 					m_rtbText.SelectAll();
 					m_rtbText.SelectionFont = f;
@@ -264,51 +264,51 @@ namespace KeePass.Forms
 			int iMaxAddrWidth = Convert.ToString(Math.Max(cbData - 1, 0), 16).Length;
 
 			int cbDataUp = cbData;
-			if((cbDataUp % cbLine) != 0)
+			if ((cbDataUp % cbLine) != 0)
 				cbDataUp = cbDataUp + cbLine - (cbDataUp % cbLine);
 			Debug.Assert(((cbDataUp % cbLine) == 0) && (cbDataUp >= cbData));
 
 			StringBuilder sb = new StringBuilder();
-			for(int i = 0; i < cbDataUp; ++i)
+			for (int i = 0; i < cbDataUp; ++i)
 			{
-				if((i % cbLine) == 0)
+				if ((i % cbLine) == 0)
 				{
 					sb.Append(Convert.ToString(i, 16).ToUpper().PadLeft(
 						iMaxAddrWidth, '0'));
 					sb.Append(": ");
 				}
 
-				if(i < cbData)
+				if (i < cbData)
 				{
 					byte bt = m_pbData[i];
 					byte btHigh = (byte)(bt >> 4);
 					byte btLow = (byte)(bt & 0x0F);
-					if(btHigh >= 10) sb.Append((char)('A' + btHigh - 10));
+					if (btHigh >= 10) sb.Append((char)('A' + btHigh - 10));
 					else sb.Append((char)('0' + btHigh));
-					if(btLow >= 10) sb.Append((char)('A' + btLow - 10));
+					if (btLow >= 10) sb.Append((char)('A' + btLow - 10));
 					else sb.Append((char)('0' + btLow));
 				}
 				else sb.Append("  ");
 
-				if(((i + 1) % cbGrp) == 0)
+				if (((i + 1) % cbGrp) == 0)
 					sb.Append(' ');
 
-				if(((i + 1) % cbLine) == 0)
+				if (((i + 1) % cbLine) == 0)
 				{
 					sb.Append(' ');
 					int iStart = i - cbLine + 1;
 					int iEndExcl = Math.Min(iStart + cbLine, cbData);
-					for(int j = iStart; j < iEndExcl; ++j)
+					for (int j = iStart; j < iEndExcl; ++j)
 						sb.Append(StrUtil.ByteToSafeChar(m_pbData[j]));
 					sb.AppendLine();
 				}
 			}
 
-			if(cbData < m_pbData.Length) sb.AppendLine(m_strDataExpand);
+			if (cbData < m_pbData.Length) sb.AppendLine(m_strDataExpand);
 
 			SetRtbData(sb.ToString(), false, true, false);
 
-			if(cbData < m_pbData.Length) LinkifyExpandLink();
+			if (cbData < m_pbData.Length) LinkifyExpandLink();
 		}
 
 		private void UpdateTextView()
@@ -322,19 +322,19 @@ namespace KeePass.Forms
 			bool bShorten = (!bValid && !bRtf && !m_bDataExpanded &&
 				(strData.Length > ccInvMax));
 
-			if(bShorten)
+			if (bShorten)
 				strData = strData.Substring(0, ccInvMax) + MessageService.NewLine +
 					m_strDataExpand + MessageService.NewLine;
 
 			SetRtbData(strData, bRtf, false, true);
 
-			if(bShorten) LinkifyExpandLink();
+			if (bShorten) LinkifyExpandLink();
 		}
 
 		private void LinkifyExpandLink()
 		{
 			int i = m_rtbText.Text.LastIndexOf(m_strDataExpand);
-			if(i < 0) { Debug.Assert(false); return; }
+			if (i < 0) { Debug.Assert(false); return; }
 
 			m_rtbText.Select(i, m_strDataExpand.Length);
 			UIUtil.RtfSetSelectionLink(m_rtbText);
@@ -343,37 +343,37 @@ namespace KeePass.Forms
 
 		private void UpdateVisibility(string strViewer, bool bMakeVisible)
 		{
-			if(string.IsNullOrEmpty(strViewer)) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strViewer)) { Debug.Assert(false); return; }
 
-			if(!bMakeVisible) // Hide all except strViewer
+			if (!bMakeVisible) // Hide all except strViewer
 			{
-				if((strViewer != m_strViewerHex) && (strViewer != m_strViewerText))
+				if ((strViewer != m_strViewerHex) && (strViewer != m_strViewerText))
 					m_rtbText.Visible = false;
-				if(strViewer != m_strViewerImage)
+				if (strViewer != m_strViewerImage)
 				{
 					m_picBox.Visible = false;
 					m_pnlImageViewer.Visible = false;
 				}
-				if(strViewer != m_strViewerWeb)
+				if (strViewer != m_strViewerWeb)
 					m_webBrowser.Visible = false;
 			}
 			else // Show strViewer
 			{
-				if((strViewer == m_strViewerHex) || (strViewer == m_strViewerText))
+				if ((strViewer == m_strViewerHex) || (strViewer == m_strViewerText))
 					m_rtbText.Visible = true;
-				else if(strViewer == m_strViewerImage)
+				else if (strViewer == m_strViewerImage)
 				{
 					m_pnlImageViewer.Visible = true;
 					m_picBox.Visible = true;
 				}
-				else if(strViewer == m_strViewerWeb)
+				else if (strViewer == m_strViewerWeb)
 					m_webBrowser.Visible = true;
 			}
 		}
 
 		private void UpdateDataView()
 		{
-			if(m_bInitializing) return;
+			if (m_bInitializing) return;
 
 			string strViewer = m_tscViewers.Text;
 			bool bText = ((strViewer == m_strViewerText) ||
@@ -388,27 +388,27 @@ namespace KeePass.Forms
 
 			try
 			{
-				if(this.DvfUpdating != null)
+				if (this.DvfUpdating != null)
 				{
 					DvfContextEventArgs args = new DvfContextEventArgs(this,
 						m_pbData, m_strDataDesc, m_tscViewers);
 					this.DvfUpdating(this, args);
-					if(args.Cancel) return;
+					if (args.Cancel) return;
 				}
 
-				if(strViewer == m_strViewerHex)
+				if (strViewer == m_strViewerHex)
 					UpdateHexView();
-				else if(strViewer == m_strViewerText)
+				else if (strViewer == m_strViewerText)
 					UpdateTextView();
-				else if(strViewer == m_strViewerImage)
+				else if (strViewer == m_strViewerImage)
 				{
-					if(m_img == null) m_img = GfxUtil.LoadImage(m_pbData);
+					if (m_img == null) m_img = GfxUtil.LoadImage(m_pbData);
 					UpdateImageView();
 				}
-				else if(strViewer == m_strViewerWeb)
+				else if (strViewer == m_strViewerWeb)
 				{
 					string strData = string.Empty;
-					if(m_bdc == BinaryDataClass.WebDocument)
+					if (m_bdc == BinaryDataClass.WebDocument)
 					{
 						bool bValid;
 						strData = BinaryDataToString(false, out bValid);
@@ -416,7 +416,7 @@ namespace KeePass.Forms
 					UIUtil.SetWebBrowserDocument(m_webBrowser, strData);
 				}
 			}
-			catch(Exception) { Debug.Assert(strViewer == m_strViewerImage); }
+			catch (Exception) { Debug.Assert(strViewer == m_strViewerImage); }
 
 			UpdateVisibility(strViewer, true);
 		}
@@ -438,16 +438,16 @@ namespace KeePass.Forms
 
 		private void UpdateImageView()
 		{
-			if(m_img == null) return;
+			if (m_img == null) return;
 
 			string strZoom = m_tscZoom.Text;
-			if(string.IsNullOrEmpty(strZoom) || (strZoom == m_strZoomAuto))
+			if (string.IsNullOrEmpty(strZoom) || (strZoom == m_strZoomAuto))
 			{
 				m_pnlImageViewer.AutoScroll = false;
 				m_picBox.Dock = DockStyle.Fill;
 				m_picBox.Image = m_img;
 
-				if((m_img.Width > m_picBox.ClientSize.Width) ||
+				if ((m_img.Width > m_picBox.ClientSize.Width) ||
 					(m_img.Height > m_picBox.ClientSize.Height))
 				{
 					m_picBox.SizeMode = PictureBoxSizeMode.Zoom;
@@ -457,10 +457,10 @@ namespace KeePass.Forms
 				return;
 			}
 
-			if(!strZoom.EndsWith("%")) { Debug.Assert(false); return; }
+			if (!strZoom.EndsWith("%")) { Debug.Assert(false); return; }
 
 			int iZoom;
-			if(!int.TryParse(strZoom.Substring(0, strZoom.Length - 1), out iZoom))
+			if (!int.TryParse(strZoom.Substring(0, strZoom.Length - 1), out iZoom))
 			{
 				Debug.Assert(false);
 				return;
@@ -473,23 +473,23 @@ namespace KeePass.Forms
 			int dy = (m_img.Height * iZoom) / 100;
 
 			float fScrollX = 0.5f, fScrollY = 0.5f;
-			if(m_pnlImageViewer.AutoScroll)
+			if (m_pnlImageViewer.AutoScroll)
 			{
 				Point ptOffset = m_pnlImageViewer.AutoScrollPosition;
 				Size sz = m_picBox.ClientSize;
 
-				if(sz.Width > cliW)
+				if (sz.Width > cliW)
 				{
 					fScrollX = Math.Abs((float)ptOffset.X / (float)(sz.Width - cliW));
-					if(fScrollX < 0.0f) { Debug.Assert(false); fScrollX = 0.0f; }
-					if(fScrollX > 1.0f) { Debug.Assert(false); fScrollX = 1.0f; }
+					if (fScrollX < 0.0f) { Debug.Assert(false); fScrollX = 0.0f; }
+					if (fScrollX > 1.0f) { Debug.Assert(false); fScrollX = 1.0f; }
 				}
 
-				if(sz.Height > cliH)
+				if (sz.Height > cliH)
 				{
 					fScrollY = Math.Abs((float)ptOffset.Y / (float)(sz.Height - cliH));
-					if(fScrollY < 0.0f) { Debug.Assert(false); fScrollY = 0.0f; }
-					if(fScrollY > 1.0f) { Debug.Assert(false); fScrollY = 1.0f; }
+					if (fScrollY < 0.0f) { Debug.Assert(false); fScrollY = 0.0f; }
+					if (fScrollY > 1.0f) { Debug.Assert(false); fScrollY = 1.0f; }
 				}
 			}
 			m_pnlImageViewer.AutoScroll = false;
@@ -498,14 +498,14 @@ namespace KeePass.Forms
 			m_picBox.SizeMode = PictureBoxSizeMode.AutoSize;
 
 			int x = 0, y = 0;
-			if(dx < cliW) x = (cliW - dx) / 2;
-			if(dy < cliH) y = (cliH - dy) / 2;
+			if (dx < cliW) x = (cliW - dx) / 2;
+			if (dy < cliH) y = (cliH - dy) / 2;
 
 			m_picBox.Location = new Point(x, y);
 
-			if((dx == m_img.Width) && (dy == m_img.Height))
+			if ((dx == m_img.Width) && (dy == m_img.Height))
 				m_picBox.Image = m_img;
-			else if((m_imgResized != null) && (m_imgResized.Width == dx) &&
+			else if ((m_imgResized != null) && (m_imgResized.Width == dx) &&
 				(m_imgResized.Height == dy))
 				m_picBox.Image = m_imgResized;
 			else
@@ -515,26 +515,26 @@ namespace KeePass.Forms
 				m_imgResized = GfxUtil.ScaleImage(m_img, dx, dy);
 				m_picBox.Image = m_imgResized;
 
-				if(imgToDispose != null) imgToDispose.Dispose();
+				if (imgToDispose != null) imgToDispose.Dispose();
 			}
 
 			m_pnlImageViewer.AutoScroll = true;
 
 			int sx = 0, sy = 0;
-			if(dx > cliW) sx = (int)(fScrollX * (float)(dx - cliW));
-			if(dy > cliH) sy = (int)(fScrollY * (float)(dy - cliH));
+			if (dx > cliW) sx = (int)(fScrollX * (float)(dx - cliW));
+			if (dy > cliH) sy = (int)(fScrollY * (float)(dy - cliH));
 			try { m_pnlImageViewer.AutoScrollPosition = new Point(sx, sy); }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private void OnFormClosing(object sender, FormClosingEventArgs e)
 		{
-			if(this.DvfRelease != null)
+			if (this.DvfRelease != null)
 			{
 				DvfContextEventArgs args = new DvfContextEventArgs(this,
 					m_pbData, m_strDataDesc, m_tscViewers);
 				this.DvfRelease(sender, args);
-				if(args.Cancel)
+				if (args.Cancel)
 				{
 					e.Cancel = true;
 					return;
@@ -542,7 +542,7 @@ namespace KeePass.Forms
 			}
 
 			string strRect = UIUtil.GetWindowScreenRect(this);
-			if(strRect != m_strInitialFormRect) // Don't overwrite ""
+			if (strRect != m_strInitialFormRect) // Don't overwrite ""
 				Program.Config.UI.DataViewerRect = strRect;
 		}
 
@@ -551,8 +551,8 @@ namespace KeePass.Forms
 			m_picBox.MouseWheel -= this.OnPicBoxMouseWheel;
 
 			m_picBox.Image = null;
-			if(m_img != null) { m_img.Dispose(); m_img = null; }
-			if(m_imgResized != null) { m_imgResized.Dispose(); m_imgResized = null; }
+			if (m_img != null) { m_img.Dispose(); m_img = null; }
+			if (m_imgResized != null) { m_imgResized.Dispose(); m_imgResized = null; }
 
 			m_ctxText.Detach();
 			GlobalWindowManager.RemoveWindow(this);
@@ -561,28 +561,28 @@ namespace KeePass.Forms
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
 			bool bDown;
-			if(!NativeMethods.GetKeyMessageState(ref msg, out bDown))
+			if (!NativeMethods.GetKeyMessageState(ref msg, out bDown))
 				return base.ProcessCmdKey(ref msg, keyData);
 
-			if(keyData == Keys.Escape) // No modifiers
+			if (keyData == Keys.Escape) // No modifiers
 			{
-				if(bDown) Close();
+				if (bDown) Close();
 				return true;
 			}
 
 			Keys kc = (keyData & Keys.KeyCode);
 			bool bCtrl = ((keyData & Keys.Control) != Keys.None);
 
-			if(bCtrl && m_tscZoom.Visible)
+			if (bCtrl && m_tscZoom.Visible)
 			{
-				if((kc == Keys.Add) || (kc == Keys.Subtract))
+				if ((kc == Keys.Add) || (kc == Keys.Subtract))
 				{
-					if(bDown) PerformZoom((kc == Keys.Add) ? 1 : -1);
+					if (bDown) PerformZoom((kc == Keys.Add) ? 1 : -1);
 					return true;
 				}
-				if((kc == Keys.Oemplus) || (kc == Keys.OemMinus))
+				if ((kc == Keys.Oemplus) || (kc == Keys.OemMinus))
 				{
-					if(bDown) PerformZoom((kc == Keys.Oemplus) ? 1 : -1);
+					if (bDown) PerformZoom((kc == Keys.Oemplus) ? 1 : -1);
 					return true;
 				}
 			}
@@ -597,28 +597,28 @@ namespace KeePass.Forms
 
 		private void PerformZoom(int d)
 		{
-			if(!m_tscZoom.Visible) { Debug.Assert(false); return; }
+			if (!m_tscZoom.Visible) { Debug.Assert(false); return; }
 
 			int iCur = m_tscZoom.SelectedIndex, cMax = m_tscZoom.Items.Count;
-			if((iCur < 0) || (iCur >= cMax)) { Debug.Assert(false); return; }
+			if ((iCur < 0) || (iCur >= cMax)) { Debug.Assert(false); return; }
 
 			int iAuto = m_tscZoom.Items.IndexOf(m_strZoomAuto);
-			if((iAuto < 0) || (iAuto >= cMax)) { Debug.Assert(false); return; }
+			if ((iAuto < 0) || (iAuto >= cMax)) { Debug.Assert(false); return; }
 
-			if(iCur == iAuto)
+			if (iCur == iAuto)
 			{
 				iCur = GetNearestFixedZoomItemIndex();
-				if((iCur < 0) || (iCur >= cMax)) { Debug.Assert(false); return; }
+				if ((iCur < 0) || (iCur >= cMax)) { Debug.Assert(false); return; }
 			}
 
 			int iNew = Math.Min(Math.Max(iCur + d, 0), cMax - 1);
-			if((iNew != iCur) && (iNew != iAuto)) m_tscZoom.SelectedIndex = iNew;
+			if ((iNew != iCur) && (iNew != iAuto)) m_tscZoom.SelectedIndex = iNew;
 		}
 
 		private void OnPicBoxMouseWheel(object sender, MouseEventArgs e)
 		{
-			if(e == null) { Debug.Assert(false); return; }
-			if((Control.ModifierKeys & Keys.Control) == Keys.None) return;
+			if (e == null) { Debug.Assert(false); return; }
+			if ((Control.ModifierKeys & Keys.Control) == Keys.None) return;
 
 			int d = e.Delta / 120; // See Control.MouseWheel event
 			PerformZoom(d);
@@ -636,16 +636,16 @@ namespace KeePass.Forms
 
 		private int GetNearestFixedZoomItemIndex()
 		{
-			if(m_img == null) { Debug.Assert(false); return -1; }
+			if (m_img == null) { Debug.Assert(false); return -1; }
 
 			int iW = m_img.Width, iH = m_img.Height;
-			if((iW <= 0) || (iH <= 0)) { Debug.Assert(false); return -1; }
+			if ((iW <= 0) || (iH <= 0)) { Debug.Assert(false); return -1; }
 
 			int cW = m_picBox.ClientSize.Width, cH = m_picBox.ClientSize.Height;
-			if((cW <= 0) || (cH <= 0)) { Debug.Assert(false); return -1; }
+			if ((cW <= 0) || (cH <= 0)) { Debug.Assert(false); return -1; }
 
 			int z = 100;
-			if((iW > cW) || (iH > cH))
+			if ((iW > cW) || (iH > cH))
 			{
 				int zW = (int)Math.Round(100.0 * (double)cW / (double)iW);
 				int zH = (int)Math.Round(100.0 * (double)cH / (double)iH);
@@ -654,19 +654,19 @@ namespace KeePass.Forms
 
 			int dMin = int.MaxValue;
 			int iBest = -1;
-			for(int i = 0; i < m_tscZoom.Items.Count; ++i)
+			for (int i = 0; i < m_tscZoom.Items.Count; ++i)
 			{
 				string str = (m_tscZoom.Items[i] as string);
-				if(string.IsNullOrEmpty(str)) { Debug.Assert(false); continue; }
+				if (string.IsNullOrEmpty(str)) { Debug.Assert(false); continue; }
 
-				if(!str.EndsWith("%")) continue;
+				if (!str.EndsWith("%")) continue;
 				str = str.Substring(0, str.Length - 1);
 
 				int zItem = 0;
-				if(!int.TryParse(str, out zItem)) { Debug.Assert(false); continue; }
+				if (!int.TryParse(str, out zItem)) { Debug.Assert(false); continue; }
 
 				int d = Math.Abs(z - zItem);
-				if(d < dMin) { iBest = i; dMin = d; }
+				if (d < dMin) { iBest = i; dMin = d; }
 			}
 
 			return iBest;

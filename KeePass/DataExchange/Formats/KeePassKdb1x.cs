@@ -54,7 +54,7 @@ namespace KeePass.DataExchange.Formats
 
 		public override bool TryBeginImport()
 		{
-			if(NativeLib.IsUnix())
+			if (NativeLib.IsUnix())
 			{
 				MessageService.ShowWarning(KPRes.KeePassLibCNotWindows,
 					KPRes.KeePassLibCNotWindowsHint);
@@ -62,7 +62,7 @@ namespace KeePass.DataExchange.Formats
 			}
 
 			Exception exLib;
-			if(!KdbFile.IsLibraryInstalled(out exLib))
+			if (!KdbFile.IsLibraryInstalled(out exLib))
 			{
 				MessageService.ShowWarning(KPRes.KeePassLibCNotFound,
 					KPRes.KdbKeePassLibC, exLib);
@@ -109,9 +109,9 @@ namespace KeePass.DataExchange.Formats
 				sOutput.Write(pbKdb, 0, pbKdb.Length);
 				MemUtil.ZeroByteArray(pbKdb);
 			}
-			catch(Exception exKdb)
+			catch (Exception exKdb)
 			{
-				if(slLogger != null) slLogger.SetText(exKdb.Message, LogStatusType.Error);
+				if (slLogger != null) slLogger.SetText(exKdb.Message, LogStatusType.Error);
 
 				return false;
 			}

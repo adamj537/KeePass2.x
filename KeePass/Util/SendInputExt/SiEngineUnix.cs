@@ -44,18 +44,18 @@ namespace KeePass.Util.SendInputExt
 		public override void SendKeyImpl(int iVKey, bool? obExtKey, bool? obDown)
 		{
 			SiCode si = SiCodes.Get(iVKey, obExtKey);
-			if(si == null)
+			if (si == null)
 			{
 				char ch = SiCodes.VKeyToChar(iVKey);
-				if(ch != char.MinValue) SendCharImpl(ch, obDown);
+				if (ch != char.MinValue) SendCharImpl(ch, obDown);
 				return;
 			}
 
 			string strXKeySym = si.XKeySym;
-			if(string.IsNullOrEmpty(strXKeySym)) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strXKeySym)) { Debug.Assert(false); return; }
 
 			string strVerb = "key";
-			if(obDown.HasValue) strVerb = (obDown.Value ? "keydown" : "keyup");
+			if (obDown.HasValue) strVerb = (obDown.Value ? "keydown" : "keyup");
 
 			RunXDoTool(strVerb, strXKeySym);
 		}
@@ -64,18 +64,18 @@ namespace KeePass.Util.SendInputExt
 		{
 			string strVerb = (bDown ? "keydown" : "keyup");
 
-			if((kMod & Keys.Shift) != Keys.None)
+			if ((kMod & Keys.Shift) != Keys.None)
 				RunXDoTool(strVerb, "shift");
-			if((kMod & Keys.Control) != Keys.None)
+			if ((kMod & Keys.Control) != Keys.None)
 				RunXDoTool(strVerb, "ctrl");
-			if((kMod & Keys.Alt) != Keys.None)
+			if ((kMod & Keys.Alt) != Keys.None)
 				RunXDoTool(strVerb, "alt");
 		}
 
 		public override void SendCharImpl(char ch, bool? obDown)
 		{
 			string strVerb = "key";
-			if(obDown.HasValue) strVerb = (obDown.Value ? "keydown" : "keyup");
+			if (obDown.HasValue) strVerb = (obDown.Value ? "keydown" : "keyup");
 
 			RunXDoTool(strVerb, SiCodes.CharToXKeySym(ch));
 		}
@@ -94,16 +94,16 @@ namespace KeePass.Util.SendInputExt
 				"Shift_L", "Shift_R", "Control_L", "Control_R",
 				"Alt_L", "Alt_R", "Super_L", "Super_R", "Meta_L", "Meta_R"
 			};
-			foreach(string strMod in vMods)
+			foreach (string strMod in vMods)
 				RunXDoTool("keyup", strMod);
 		}
 
 		private static void RunXDoTool(string strVerb, string strParam)
 		{
-			if(string.IsNullOrEmpty(strVerb)) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strVerb)) { Debug.Assert(false); return; }
 
 			string str = strVerb;
-			if(!string.IsNullOrEmpty(strParam))
+			if (!string.IsNullOrEmpty(strParam))
 				str += " " + strParam;
 
 			NativeMethods.RunXDoTool(str);

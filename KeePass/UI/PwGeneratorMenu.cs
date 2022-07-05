@@ -57,11 +57,11 @@ namespace KeePass.UI
 		public PwGeneratorMenu(Button btnHost, ToolTip tt, object oTarget,
 			GFunc<PwEntry> fGetContextEntry, PwDatabase pdContext, bool bMultipleValues)
 		{
-			if(btnHost == null) { Debug.Assert(false); return; }
+			if (btnHost == null) { Debug.Assert(false); return; }
 			Debug.Assert(btnHost.Image == null);
 			Debug.Assert(btnHost.Text == string.Empty);
 			Debug.Assert(btnHost.TextImageRelation == TextImageRelation.Overlay);
-			if(oTarget == null) { Debug.Assert(false); return; }
+			if (oTarget == null) { Debug.Assert(false); return; }
 			Debug.Assert((oTarget is PwInputControlGroup) || (oTarget is TextBoxBase));
 
 			m_imgHost = UIUtil.CreateDropDownImage(Properties.Resources.B16x16_Key_New);
@@ -83,7 +83,7 @@ namespace KeePass.UI
 		{
 			DisposeContextMenu();
 
-			if(m_btnHost != null)
+			if (m_btnHost != null)
 			{
 				UIUtil.DisposeButtonImage(m_btnHost, ref m_imgHost);
 
@@ -95,9 +95,9 @@ namespace KeePass.UI
 
 		private bool IsMultipleValues(ProtectedString ps)
 		{
-			if(!m_bMultipleValues) return false;
+			if (!m_bMultipleValues) return false;
 
-			if(ps == null) { Debug.Assert(false); return false; }
+			if (ps == null) { Debug.Assert(false); return false; }
 			return ps.Equals(MultipleValuesEx.CueProtectedString, false);
 		}
 
@@ -108,16 +108,16 @@ namespace KeePass.UI
 			ProtectedString ps = GetPassword();
 
 			GFunc<string, Image, EventHandler, object, ToolStripMenuItem> fAdd =
-				delegate(string strText, Image img, EventHandler ehClick,
+				delegate (string strText, Image img, EventHandler ehClick,
 				object oTag)
 			{
 				string str = StrUtil.EncodeMenuText(strText ?? string.Empty);
 				str = StrUtil.AddAccelerator(str, lAvailKeys);
 
 				ToolStripMenuItem tsmi = new ToolStripMenuItem(str);
-				if(img != null) tsmi.Image = img;
-				if(ehClick != null) tsmi.Click += ehClick;
-				if(oTag != null) tsmi.Tag = oTag;
+				if (img != null) tsmi.Image = img;
+				if (ehClick != null) tsmi.Click += ehClick;
+				if (oTag != null) tsmi.Tag = oTag;
 
 				l.Add(tsmi);
 				return tsmi;
@@ -130,7 +130,7 @@ namespace KeePass.UI
 
 			ToolStripMenuItem tsmiDerive = fAdd(GenDeriveFromPrevious,
 				Properties.Resources.B16x16_CompFile, this.OnGenDeriveFromPrevious, null);
-			if(IsMultipleValues(ps)) tsmiDerive.Enabled = false;
+			if (IsMultipleValues(ps)) tsmiDerive.Enabled = false;
 
 			fAdd(GenAuto, Properties.Resources.B16x16_FileNew, this.OnGenAuto, null);
 
@@ -138,14 +138,14 @@ namespace KeePass.UI
 				(ulong)AceUIFlags.HideBuiltInPwGenPrfInEntryDlg) != 0);
 			bool bFirst = true;
 
-			foreach(PwProfile prf in PwGeneratorUtil.GetAllProfiles(true))
+			foreach (PwProfile prf in PwGeneratorUtil.GetAllProfiles(true))
 			{
-				if(prf == null) { Debug.Assert(false); continue; }
+				if (prf == null) { Debug.Assert(false); continue; }
 
-				if(bHideBuiltIn && PwGeneratorUtil.IsBuiltInProfile(prf.Name))
+				if (bHideBuiltIn && PwGeneratorUtil.IsBuiltInProfile(prf.Name))
 					continue;
 
-				if(bFirst)
+				if (bFirst)
 				{
 					l.Add(new ToolStripSeparator());
 					bFirst = false;
@@ -170,7 +170,7 @@ namespace KeePass.UI
 
 		private void DisposeContextMenu()
 		{
-			if(m_ctx != null)
+			if (m_ctx != null)
 			{
 				m_ctx.Dispose();
 				m_ctx = null;
@@ -179,7 +179,7 @@ namespace KeePass.UI
 
 		private void OnHostBtnClick(object sender, EventArgs e)
 		{
-			if(m_btnHost == null) { Debug.Assert(false); return; }
+			if (m_btnHost == null) { Debug.Assert(false); return; }
 
 			ConstructContextMenu();
 			m_ctx.ShowEx(m_btnHost);
@@ -188,10 +188,10 @@ namespace KeePass.UI
 		private ProtectedString GetPassword()
 		{
 			PwInputControlGroup icg = (m_oTarget as PwInputControlGroup);
-			if(icg != null) return icg.GetPasswordEx();
+			if (icg != null) return icg.GetPasswordEx();
 
 			TextBoxBase tb = (m_oTarget as TextBoxBase);
-			if(tb != null) return new ProtectedString(false, tb.Text);
+			if (tb != null) return new ProtectedString(false, tb.Text);
 
 			Debug.Assert(false); // Unknown target type
 			return null;
@@ -199,17 +199,17 @@ namespace KeePass.UI
 
 		private void SetPassword(ProtectedString ps)
 		{
-			if(ps == null) { Debug.Assert(false); return; }
+			if (ps == null) { Debug.Assert(false); return; }
 
 			PwInputControlGroup icg = (m_oTarget as PwInputControlGroup);
-			if(icg != null)
+			if (icg != null)
 			{
 				icg.SetPassword(ps, true);
 				return;
 			}
 
 			TextBoxBase tb = (m_oTarget as TextBoxBase);
-			if(tb != null)
+			if (tb != null)
 			{
 				tb.Text = ps.ReadString();
 				return;
@@ -220,7 +220,7 @@ namespace KeePass.UI
 
 		private void GenerateAndSetPassword(PwProfile prf)
 		{
-			if(prf == null) { Debug.Assert(false); return; }
+			if (prf == null) { Debug.Assert(false); return; }
 
 			byte[] pbEntropy = EntropyForm.CollectEntropyIfEnabled(prf);
 			PwEntry pe = ((m_fGetContextEntry != null) ? m_fGetContextEntry() : null);
@@ -233,13 +233,13 @@ namespace KeePass.UI
 		{
 			PwProfile prf = null;
 			ProtectedString ps = (GetPassword() ?? ProtectedString.Empty);
-			if(!ps.IsEmpty && !IsMultipleValues(ps))
+			if (!ps.IsEmpty && !IsMultipleValues(ps))
 				prf = PwProfile.DeriveFromPassword(ps);
 
 			PwGeneratorForm pgf = new PwGeneratorForm();
 			pgf.InitEx(prf, true, false);
 
-			if(pgf.ShowDialog() == DialogResult.OK)
+			if (pgf.ShowDialog() == DialogResult.OK)
 				GenerateAndSetPassword(pgf.SelectedProfile);
 
 			UIUtil.DestroyForm(pgf);
@@ -248,7 +248,7 @@ namespace KeePass.UI
 		private void OnGenDeriveFromPrevious(object sender, EventArgs e)
 		{
 			ProtectedString ps = GetPassword();
-			if(ps == null) { Debug.Assert(false); return; }
+			if (ps == null) { Debug.Assert(false); return; }
 
 			GenerateAndSetPassword(PwProfile.DeriveFromPassword(ps));
 		}
@@ -261,7 +261,7 @@ namespace KeePass.UI
 		private void OnGenProfile(object sender, EventArgs e)
 		{
 			ToolStripItem tsi = (sender as ToolStripItem);
-			if(tsi == null) { Debug.Assert(false); return; }
+			if (tsi == null) { Debug.Assert(false); return; }
 
 			GenerateAndSetPassword(tsi.Tag as PwProfile);
 		}

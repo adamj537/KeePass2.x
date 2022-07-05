@@ -53,11 +53,11 @@ namespace KeePass.Forms
 
 		public void StartLogging(string strOperation, bool bWriteOperationToLog)
 		{
-			if(strOperation != null)
+			if (strOperation != null)
 			{
 				this.Text = PwDefs.ShortProductName + " - " + strOperation;
-				
-				if(bWriteOperationToLog)
+
+				if (bWriteOperationToLog)
 					this.SetText(strOperation, LogStatusType.Info);
 			}
 
@@ -84,7 +84,7 @@ namespace KeePass.Forms
 
 		public bool SetProgress(uint uPercent)
 		{
-			if(uPercent != m_uLastPercent)
+			if (uPercent != m_uLastPercent)
 			{
 				m_pbProgress.Value = (int)uPercent;
 				m_uLastPercent = uPercent;
@@ -97,14 +97,14 @@ namespace KeePass.Forms
 
 		public bool SetText(string strNewText, LogStatusType lsType)
 		{
-			if(strNewText != null)
+			if (strNewText != null)
 			{
 				m_lvMessages.Items.Add(strNewText, (int)lsType);
 				m_lvMessages.EnsureVisible(m_lvMessages.Items.Count - 1);
 			}
 
-			if(lsType == LogStatusType.Warning) ++uWarnings;
-			else if(lsType == LogStatusType.Error) ++uErrors;
+			if (lsType == LogStatusType.Warning) ++uWarnings;
+			else if (lsType == LogStatusType.Error) ++uErrors;
 
 			ProcessResize();
 			Application.DoEvents();
@@ -130,7 +130,7 @@ namespace KeePass.Forms
 
 			this.Icon = AppIcons.Default;
 			this.Text = PwDefs.ShortProductName;
-			
+
 			m_pbProgress.Minimum = 0;
 			m_pbProgress.Maximum = 100;
 
@@ -156,9 +156,9 @@ namespace KeePass.Forms
 
 		private void OnBtnCancel(object sender, EventArgs e)
 		{
-			if(m_bCloseMode)
+			if (m_bCloseMode)
 			{
-				if(m_bIsModal) this.DialogResult = DialogResult.Cancel;
+				if (m_bIsModal) this.DialogResult = DialogResult.Cancel;
 				else Close();
 			}
 			else
@@ -171,7 +171,7 @@ namespace KeePass.Forms
 		private void OnMessagesSelectedIndexChanged(object sender, EventArgs e)
 		{
 			ListView.SelectedListViewItemCollection slvic = m_lvMessages.SelectedItems;
-			if(slvic.Count == 0)
+			if (slvic.Count == 0)
 			{
 				m_tbDetails.Text = string.Empty;
 				return;
@@ -182,7 +182,7 @@ namespace KeePass.Forms
 
 		private void OnFormClosed(object sender, FormClosedEventArgs e)
 		{
-			if(m_ilIcons != null)
+			if (m_ilIcons != null)
 			{
 				m_lvMessages.SmallImageList = null;
 				m_ilIcons.Dispose();

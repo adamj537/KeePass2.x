@@ -40,18 +40,18 @@ namespace KeePassLib.Collections
 
 		public static PwObjectPool FromGroupRecursive(PwGroup pgRoot, bool bEntries)
 		{
-			if(pgRoot == null) throw new ArgumentNullException("pgRoot");
+			if (pgRoot == null) throw new ArgumentNullException("pgRoot");
 
 			PwObjectPool p = new PwObjectPool();
 
-			if(!bEntries) p.m_dict[pgRoot.Uuid] = pgRoot;
-			GroupHandler gh = delegate(PwGroup pg)
+			if (!bEntries) p.m_dict[pgRoot.Uuid] = pgRoot;
+			GroupHandler gh = delegate (PwGroup pg)
 			{
 				p.m_dict[pg.Uuid] = pg;
 				return true;
 			};
 
-			EntryHandler eh = delegate(PwEntry pe)
+			EntryHandler eh = delegate (PwEntry pe)
 			{
 				p.m_dict[pe.Uuid] = pe;
 				return true;
@@ -71,9 +71,9 @@ namespace KeePassLib.Collections
 
 		public bool ContainsOnlyType(Type t)
 		{
-			foreach(KeyValuePair<PwUuid, IStructureItem> kvp in m_dict)
+			foreach (KeyValuePair<PwUuid, IStructureItem> kvp in m_dict)
 			{
-				if(kvp.Value.GetType() != t) return false;
+				if (kvp.Value.GetType() != t) return false;
 			}
 
 			return true;
@@ -95,7 +95,7 @@ namespace KeePassLib.Collections
 		{
 			PwObjectPoolEx p = new PwObjectPoolEx();
 
-			if(pg == null) { Debug.Assert(false); return p; }
+			if (pg == null) { Debug.Assert(false); return p; }
 
 			ulong uFreeId = 2; // 0 = "not found", 1 is a hole
 
@@ -109,12 +109,12 @@ namespace KeePassLib.Collections
 
 		private void AddGroupRec(PwGroup pg, ref ulong uFreeId)
 		{
-			if(pg == null) { Debug.Assert(false); return; }
+			if (pg == null) { Debug.Assert(false); return; }
 
 			ulong uId = uFreeId;
 
 			// Consecutive entries must have consecutive IDs
-			foreach(PwEntry pe in pg.Entries)
+			foreach (PwEntry pe in pg.Entries)
 			{
 				Debug.Assert(!m_dUuidToId.ContainsKey(pe.Uuid));
 				Debug.Assert(!m_dIdToItem.ContainsValue(pe));
@@ -126,7 +126,7 @@ namespace KeePassLib.Collections
 			++uId; // Make hole
 
 			// Consecutive groups must have consecutive IDs
-			foreach(PwGroup pgSub in pg.Groups)
+			foreach (PwGroup pgSub in pg.Groups)
 			{
 				Debug.Assert(!m_dUuidToId.ContainsKey(pgSub.Uuid));
 				Debug.Assert(!m_dIdToItem.ContainsValue(pgSub));
@@ -137,7 +137,7 @@ namespace KeePassLib.Collections
 			}
 			++uId; // Make hole
 
-			foreach(PwGroup pgSub in pg.Groups)
+			foreach (PwGroup pgSub in pg.Groups)
 			{
 				AddGroupRec(pgSub, ref uId);
 			}
@@ -147,7 +147,7 @@ namespace KeePassLib.Collections
 
 		public ulong GetIdByUuid(PwUuid pwUuid)
 		{
-			if(pwUuid == null) { Debug.Assert(false); return 0; }
+			if (pwUuid == null) { Debug.Assert(false); return 0; }
 
 			ulong uId;
 			m_dUuidToId.TryGetValue(pwUuid, out uId);
@@ -156,10 +156,10 @@ namespace KeePassLib.Collections
 
 		public IStructureItem GetItemByUuid(PwUuid pwUuid)
 		{
-			if(pwUuid == null) { Debug.Assert(false); return null; }
+			if (pwUuid == null) { Debug.Assert(false); return null; }
 
 			ulong uId;
-			if(!m_dUuidToId.TryGetValue(pwUuid, out uId)) return null;
+			if (!m_dUuidToId.TryGetValue(pwUuid, out uId)) return null;
 			Debug.Assert(uId != 0);
 
 			return GetItemById(uId);
@@ -218,11 +218,11 @@ namespace KeePassLib.Collections
 
 		public void Add(T t, DateTime dtLoc, PwObjectPoolEx pool)
 		{
-			if(t == null) { Debug.Assert(false); return; }
+			if (t == null) { Debug.Assert(false); return; }
 
 			m_l.Add(t);
 
-			if(dtLoc > m_dtLocationChanged)
+			if (dtLoc > m_dtLocationChanged)
 			{
 				m_dtLocationChanged = dtLoc;
 				m_poolAssoc = pool;

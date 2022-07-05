@@ -51,8 +51,8 @@ namespace KeePass.Forms
 			this.Icon = AppIcons.Default;
 
 			ProxyServerType pst = Program.Config.Integration.ProxyType;
-			if(pst == ProxyServerType.None) m_rbNoProxy.Checked = true;
-			else if(pst == ProxyServerType.Manual) m_rbManualProxy.Checked = true;
+			if (pst == ProxyServerType.None) m_rbNoProxy.Checked = true;
+			else if (pst == ProxyServerType.Manual) m_rbManualProxy.Checked = true;
 			else m_rbSystemProxy.Checked = true;
 
 			m_tbAddress.Text = Program.Config.Integration.ProxyAddress;
@@ -62,15 +62,15 @@ namespace KeePass.Forms
 			string strPassword = Program.Config.Integration.ProxyPassword;
 
 			ProxyAuthType pat = Program.Config.Integration.ProxyAuthType;
-			if(pat == ProxyAuthType.Auto)
+			if (pat == ProxyAuthType.Auto)
 			{
-				if((strUserName.Length > 0) || (strPassword.Length > 0))
+				if ((strUserName.Length > 0) || (strPassword.Length > 0))
 					pat = ProxyAuthType.Manual;
 				else pat = ProxyAuthType.Default;
 			}
 
-			if(pat == ProxyAuthType.None) m_rbAuthNone.Checked = true;
-			else if(pat == ProxyAuthType.Manual) m_rbAuthManual.Checked = true;
+			if (pat == ProxyAuthType.None) m_rbAuthNone.Checked = true;
+			else if (pat == ProxyAuthType.Manual) m_rbAuthManual.Checked = true;
 			else m_rbAuthDefault.Checked = true;
 
 			m_tbUser.Text = strUserName;
@@ -87,12 +87,12 @@ namespace KeePass.Forms
 		private void OnBtnOK(object sender, EventArgs e)
 		{
 			ProxyServerType pst = ProxyServerType.System;
-			if(m_rbNoProxy.Checked) pst = ProxyServerType.None;
-			else if(m_rbManualProxy.Checked) pst = ProxyServerType.Manual;
+			if (m_rbNoProxy.Checked) pst = ProxyServerType.None;
+			else if (m_rbManualProxy.Checked) pst = ProxyServerType.Manual;
 
 			ProxyAuthType pat = ProxyAuthType.Default;
-			if(m_rbAuthNone.Checked) pat = ProxyAuthType.None;
-			else if(m_rbAuthManual.Checked) pat = ProxyAuthType.Manual;
+			if (m_rbAuthNone.Checked) pat = ProxyAuthType.None;
+			else if (m_rbAuthManual.Checked) pat = ProxyAuthType.Manual;
 
 			AceIntegration ace = Program.Config.Integration;
 			ace.ProxyType = pst;
@@ -120,24 +120,24 @@ namespace KeePass.Forms
 			lAuthAll.AddRange(vAuthData);
 
 			bool bAddr = m_rbManualProxy.Checked;
-			foreach(Control cAddr in vAddr) { cAddr.Enabled = bAddr; }
+			foreach (Control cAddr in vAddr) { cAddr.Enabled = bAddr; }
 
-			if(m_rbNoProxy.Checked)
+			if (m_rbNoProxy.Checked)
 			{
-				foreach(Control c in lAuthAll) { c.Enabled = false; }
+				foreach (Control c in lAuthAll) { c.Enabled = false; }
 				m_grpAuth.Enabled = false;
 			}
 			else
 			{
 				m_grpAuth.Enabled = true;
-				if(m_rbAuthManual.Checked)
+				if (m_rbAuthManual.Checked)
 				{
-					foreach(Control c in lAuthAll) { c.Enabled = true; }
+					foreach (Control c in lAuthAll) { c.Enabled = true; }
 				}
 				else
 				{
-					foreach(Control cC in vAuthType) { cC.Enabled = true; }
-					foreach(Control cD in vAuthData) { cD.Enabled = false; }
+					foreach (Control cC in vAuthType) { cC.Enabled = true; }
+					foreach (Control cD in vAuthData) { cD.Enabled = false; }
 				}
 			}
 

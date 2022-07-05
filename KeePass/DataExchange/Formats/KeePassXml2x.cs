@@ -55,7 +55,7 @@ namespace KeePass.DataExchange.Formats
 			PwDatabase pd = (pwExportInfo.ContextDatabase ?? new PwDatabase());
 
 			PwObjectList<PwDeletedObject> vDel = null;
-			if(!pwExportInfo.ExportDeletedObjects)
+			if (!pwExportInfo.ExportDeletedObjects)
 			{
 				vDel = pd.DeletedObjects.CloneShallow();
 				pd.DeletedObjects.Clear();
@@ -65,7 +65,7 @@ namespace KeePass.DataExchange.Formats
 			kdb.Save(sOutput, pwExportInfo.DataGroup, KdbxFormat.PlainXml, slLogger);
 
 			// Restore deleted objects list
-			if(vDel != null) pd.DeletedObjects.Add(vDel);
+			if (vDel != null) pd.DeletedObjects.Add(vDel);
 
 			return true;
 		}

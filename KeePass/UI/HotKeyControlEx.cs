@@ -59,7 +59,7 @@ namespace KeePass.UI
 			get { return m_strTextNone; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strTextNone = value;
 				UpdateUI(m_k, m_k);
 			}
@@ -69,7 +69,7 @@ namespace KeePass.UI
 		public HotKeyControlEx()
 		{
 			m_clrNormalBack = this.BackColor;
-			if(Program.DesignMode) return;
+			if (Program.DesignMode) return;
 
 			this.ContextMenuStrip = new ContextMenuStrip(); // No context menu
 
@@ -90,7 +90,7 @@ namespace KeePass.UI
 			// base.OnKeyUp(e);
 			UIUtil.SetHandled(e, true);
 
-			if(Control.ModifierKeys == Keys.None)
+			if (Control.ModifierKeys == Keys.None)
 				UpdateUI(m_k, m_k); // Clear 'Invalid' when releasing all modifiers
 		}
 
@@ -111,7 +111,7 @@ namespace KeePass.UI
 			Keys k = (kUser & Keys.KeyCode);
 			Keys kMod = (kUser & (Keys.Control | Keys.Alt | Keys.Shift)); // Others unsupported
 
-			if(Array.IndexOf<Keys>(m_vModKeys, k) >= 0) return Keys.None;
+			if (Array.IndexOf<Keys>(m_vModKeys, k) >= 0) return Keys.None;
 
 			Keys[] vInv = new Keys[] {
 				Keys.None, Keys.Escape, Keys.Tab, Keys.CapsLock,
@@ -119,20 +119,20 @@ namespace KeePass.UI
 				Keys.F12, // Reserved for debugger, see RegisterHotKey API function
 				Keys.Scroll, Keys.NumLock
 			};
-			if(Array.IndexOf<Keys>(vInv, k) >= 0) return Keys.None;
+			if (Array.IndexOf<Keys>(vInv, k) >= 0) return Keys.None;
 
-			if((kMod == Keys.None) || (kMod == Keys.Shift))
+			if ((kMod == Keys.None) || (kMod == Keys.Shift))
 			{
-				if((k < Keys.F1) || (k > Keys.F24)) return Keys.None;
+				if ((k < Keys.F1) || (k > Keys.F24)) return Keys.None;
 			}
-			else if(kMod == Keys.Control)
+			else if (kMod == Keys.Control)
 			{
-				if((k == Keys.Back) || (k == Keys.Insert) || (k == Keys.Delete))
+				if ((k == Keys.Back) || (k == Keys.Insert) || (k == Keys.Delete))
 					return Keys.None;
 			}
-			else if(kMod == (Keys.Control | Keys.Alt))
+			else if (kMod == (Keys.Control | Keys.Alt))
 			{
-				if((k >= Keys.D0) && (k <= Keys.D9)) return Keys.None;
+				if ((k >= Keys.D0) && (k <= Keys.D9)) return Keys.None;
 			}
 
 			return (kMod | k);
@@ -140,7 +140,7 @@ namespace KeePass.UI
 
 		private void UpdateUI(Keys kUser, Keys kFixed)
 		{
-			if(Program.DesignMode) return;
+			if (Program.DesignMode) return;
 
 			try
 			{
@@ -148,15 +148,15 @@ namespace KeePass.UI
 				string strText = string.Empty;
 				bool bInvalid = false;
 
-				if(kUser == Keys.None)
+				if (kUser == Keys.None)
 					strText = m_strTextNone;
-				else if(kUser == kFixed)
+				else if (kUser == kFixed)
 					strText = UIUtil.GetKeysName(kFixed);
 				else
 				{
-					if((kUC == Keys.None) || (Array.IndexOf<Keys>(m_vModKeys, kUC) >= 0))
+					if ((kUC == Keys.None) || (Array.IndexOf<Keys>(m_vModKeys, kUC) >= 0))
 						strText = UIUtil.GetKeysName(kUser & Keys.Modifiers) + "+";
-					else if(kFixed == Keys.None)
+					else if (kFixed == Keys.None)
 					{
 						strText = KPRes.Invalid;
 						bInvalid = true;
@@ -164,16 +164,16 @@ namespace KeePass.UI
 					else strText = UIUtil.GetKeysName(kFixed);
 				}
 
-				if(UIUtil.ColorsEqual(m_clrNormalBack, Color.White))
+				if (UIUtil.ColorsEqual(m_clrNormalBack, Color.White))
 					this.BackColor = (bInvalid ? AppDefs.ColorEditError : m_clrNormalBack);
 
-				if(strText != this.Text) // Avoid flicker
+				if (strText != this.Text) // Avoid flicker
 				{
 					this.Text = strText;
 					Select(strText.Length, 0);
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 	}
 }

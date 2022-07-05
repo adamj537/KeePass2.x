@@ -66,9 +66,9 @@ namespace KeePass.Ecas
 		public EcasActionType(PwUuid uuidType, string strName, PwIcon pwIcon,
 			EcasParameter[] vParams, EcasActionExecute f)
 		{
-			if((uuidType == null) || PwUuid.Zero.Equals(uuidType))
+			if ((uuidType == null) || PwUuid.Zero.Equals(uuidType))
 				throw new ArgumentNullException("uuidType");
-			if(strName == null) throw new ArgumentNullException("strName");
+			if (strName == null) throw new ArgumentNullException("strName");
 			// if(vParams == null) throw new ArgumentNullException("vParams");
 			// if(f == null) throw new ArgumentNullException("f");
 

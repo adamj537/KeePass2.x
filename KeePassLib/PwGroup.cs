@@ -85,7 +85,7 @@ namespace KeePassLib
 			get { return m_uuid; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 				m_uuid = value;
 			}
 		}
@@ -116,7 +116,7 @@ namespace KeePassLib
 			get { return m_puPrevParentGroup; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 				m_puPrevParentGroup = value;
 			}
 		}
@@ -129,7 +129,7 @@ namespace KeePassLib
 			get { return m_strName; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 				m_strName = value;
 			}
 		}
@@ -142,7 +142,7 @@ namespace KeePassLib
 			get { return m_strNotes; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 				m_strNotes = value;
 			}
 		}
@@ -166,7 +166,7 @@ namespace KeePassLib
 			get { return m_pwCustomIconID; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 				m_pwCustomIconID = value;
 			}
 		}
@@ -275,7 +275,7 @@ namespace KeePassLib
 			get { return m_strDefaultAutoTypeSequence; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 				m_strDefaultAutoTypeSequence = value;
 			}
 		}
@@ -297,7 +297,7 @@ namespace KeePassLib
 			get { return m_pwLastTopVisibleEntry; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 				m_pwLastTopVisibleEntry = value;
 			}
 		}
@@ -307,7 +307,7 @@ namespace KeePassLib
 			get { StrUtil.NormalizeTags(m_lTags); return m_lTags; }
 			set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 				m_lTags = value;
 			}
 		}
@@ -324,7 +324,7 @@ namespace KeePassLib
 			get { return m_dCustomData; }
 			internal set
 			{
-				if(value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
+				if (value == null) { Debug.Assert(false); throw new ArgumentNullException("value"); }
 				m_dCustomData = value;
 			}
 		}
@@ -346,9 +346,9 @@ namespace KeePassLib
 		/// <param name="bSetTimes">Set creation, last access and last modification times to the current time.</param>
 		public PwGroup(bool bCreateNewUuid, bool bSetTimes)
 		{
-			if(bCreateNewUuid) m_uuid = new PwUuid(true);
+			if (bCreateNewUuid) m_uuid = new PwUuid(true);
 
-			if(bSetTimes)
+			if (bSetTimes)
 			{
 				DateTime dtNow = DateTime.UtcNow;
 				m_tCreation = dtNow;
@@ -367,9 +367,9 @@ namespace KeePassLib
 		/// <param name="pwIcon">Icon of the new group.</param>
 		public PwGroup(bool bCreateNewUuid, bool bSetTimes, string strName, PwIcon pwIcon)
 		{
-			if(bCreateNewUuid) m_uuid = new PwUuid(true);
+			if (bCreateNewUuid) m_uuid = new PwUuid(true);
 
-			if(bSetTimes)
+			if (bSetTimes)
 			{
 				DateTime dtNow = DateTime.UtcNow;
 				m_tCreation = dtNow;
@@ -378,7 +378,7 @@ namespace KeePassLib
 				m_tParentGroupLastMod = dtNow;
 			}
 
-			if(strName != null) m_strName = strName;
+			if (strName != null) m_strName = strName;
 
 			m_pwIcon = pwIcon;
 		}
@@ -448,10 +448,10 @@ namespace KeePassLib
 			pg.m_tParentGroupLastMod = m_tParentGroupLastMod;
 			// Do not assign m_pParentGroup
 
-			foreach(PwGroup pgSub in m_listGroups)
+			foreach (PwGroup pgSub in m_listGroups)
 				pg.AddGroup(pgSub.CloneStructure(), true);
 
-			foreach(PwEntry peSub in m_listEntries)
+			foreach (PwEntry peSub in m_listEntries)
 				pg.AddEntry(peSub.CloneStructure(), true);
 
 			return pg;
@@ -460,75 +460,75 @@ namespace KeePassLib
 		public bool EqualsGroup(PwGroup pg, PwCompareOptions pwOpt,
 			MemProtCmpMode mpCmpStr)
 		{
-			if(pg == null) { Debug.Assert(false); return false; }
+			if (pg == null) { Debug.Assert(false); return false; }
 
 			bool bIgnoreLastAccess = ((pwOpt & PwCompareOptions.IgnoreLastAccess) !=
 				PwCompareOptions.None);
 			bool bIgnoreLastMod = ((pwOpt & PwCompareOptions.IgnoreLastMod) !=
 				PwCompareOptions.None);
 
-			if(!m_uuid.Equals(pg.m_uuid)) return false;
-			if((pwOpt & PwCompareOptions.IgnoreParentGroup) == PwCompareOptions.None)
+			if (!m_uuid.Equals(pg.m_uuid)) return false;
+			if ((pwOpt & PwCompareOptions.IgnoreParentGroup) == PwCompareOptions.None)
 			{
-				if(m_pParentGroup != pg.m_pParentGroup) return false;
-				if(!bIgnoreLastMod && !TimeUtil.EqualsFloor(m_tParentGroupLastMod,
+				if (m_pParentGroup != pg.m_pParentGroup) return false;
+				if (!bIgnoreLastMod && !TimeUtil.EqualsFloor(m_tParentGroupLastMod,
 					pg.m_tParentGroupLastMod))
 					return false;
-				if(!m_puPrevParentGroup.Equals(pg.m_puPrevParentGroup))
+				if (!m_puPrevParentGroup.Equals(pg.m_puPrevParentGroup))
 					return false;
 			}
 
-			if(m_strName != pg.m_strName) return false;
-			if(m_strNotes != pg.m_strNotes) return false;
+			if (m_strName != pg.m_strName) return false;
+			if (m_strNotes != pg.m_strNotes) return false;
 
-			if(m_pwIcon != pg.m_pwIcon) return false;
-			if(!m_pwCustomIconID.Equals(pg.m_pwCustomIconID)) return false;
+			if (m_pwIcon != pg.m_pwIcon) return false;
+			if (!m_pwCustomIconID.Equals(pg.m_pwCustomIconID)) return false;
 
-			if(!TimeUtil.EqualsFloor(m_tCreation, pg.m_tCreation)) return false;
-			if(!bIgnoreLastMod && !TimeUtil.EqualsFloor(m_tLastMod, pg.m_tLastMod)) return false;
-			if(!bIgnoreLastAccess && !TimeUtil.EqualsFloor(m_tLastAccess, pg.m_tLastAccess)) return false;
-			if(!TimeUtil.EqualsFloor(m_tExpire, pg.m_tExpire)) return false;
-			if(m_bExpires != pg.m_bExpires) return false;
-			if(!bIgnoreLastAccess && (m_uUsageCount != pg.m_uUsageCount)) return false;
+			if (!TimeUtil.EqualsFloor(m_tCreation, pg.m_tCreation)) return false;
+			if (!bIgnoreLastMod && !TimeUtil.EqualsFloor(m_tLastMod, pg.m_tLastMod)) return false;
+			if (!bIgnoreLastAccess && !TimeUtil.EqualsFloor(m_tLastAccess, pg.m_tLastAccess)) return false;
+			if (!TimeUtil.EqualsFloor(m_tExpire, pg.m_tExpire)) return false;
+			if (m_bExpires != pg.m_bExpires) return false;
+			if (!bIgnoreLastAccess && (m_uUsageCount != pg.m_uUsageCount)) return false;
 
 			// if(m_bIsExpanded != pg.m_bIsExpanded) return false;
 
-			if(m_strDefaultAutoTypeSequence != pg.m_strDefaultAutoTypeSequence) return false;
+			if (m_strDefaultAutoTypeSequence != pg.m_strDefaultAutoTypeSequence) return false;
 
-			if(m_bEnableAutoType.HasValue != pg.m_bEnableAutoType.HasValue) return false;
-			if(m_bEnableAutoType.HasValue)
+			if (m_bEnableAutoType.HasValue != pg.m_bEnableAutoType.HasValue) return false;
+			if (m_bEnableAutoType.HasValue)
 			{
-				if(m_bEnableAutoType.Value != pg.m_bEnableAutoType.Value) return false;
+				if (m_bEnableAutoType.Value != pg.m_bEnableAutoType.Value) return false;
 			}
-			if(m_bEnableSearching.HasValue != pg.m_bEnableSearching.HasValue) return false;
-			if(m_bEnableSearching.HasValue)
+			if (m_bEnableSearching.HasValue != pg.m_bEnableSearching.HasValue) return false;
+			if (m_bEnableSearching.HasValue)
 			{
-				if(m_bEnableSearching.Value != pg.m_bEnableSearching.Value) return false;
+				if (m_bEnableSearching.Value != pg.m_bEnableSearching.Value) return false;
 			}
 
-			if(!m_pwLastTopVisibleEntry.Equals(pg.m_pwLastTopVisibleEntry)) return false;
+			if (!m_pwLastTopVisibleEntry.Equals(pg.m_pwLastTopVisibleEntry)) return false;
 
 			// The Tags property normalizes
-			if(!MemUtil.ListsEqual<string>(this.Tags, pg.Tags)) return false;
+			if (!MemUtil.ListsEqual<string>(this.Tags, pg.Tags)) return false;
 
-			if(!m_dCustomData.Equals(pg.m_dCustomData)) return false;
+			if (!m_dCustomData.Equals(pg.m_dCustomData)) return false;
 
-			if((pwOpt & PwCompareOptions.PropertiesOnly) == PwCompareOptions.None)
+			if ((pwOpt & PwCompareOptions.PropertiesOnly) == PwCompareOptions.None)
 			{
-				if(m_listEntries.UCount != pg.m_listEntries.UCount) return false;
-				for(uint u = 0; u < m_listEntries.UCount; ++u)
+				if (m_listEntries.UCount != pg.m_listEntries.UCount) return false;
+				for (uint u = 0; u < m_listEntries.UCount; ++u)
 				{
 					PwEntry peA = m_listEntries.GetAt(u);
 					PwEntry peB = pg.m_listEntries.GetAt(u);
-					if(!peA.EqualsEntry(peB, pwOpt, mpCmpStr)) return false;
+					if (!peA.EqualsEntry(peB, pwOpt, mpCmpStr)) return false;
 				}
 
-				if(m_listGroups.UCount != pg.m_listGroups.UCount) return false;
-				for(uint u = 0; u < m_listGroups.UCount; ++u)
+				if (m_listGroups.UCount != pg.m_listGroups.UCount) return false;
+				for (uint u = 0; u < m_listGroups.UCount; ++u)
 				{
 					PwGroup pgA = m_listGroups.GetAt(u);
 					PwGroup pgB = pg.m_listGroups.GetAt(u);
-					if(!pgA.EqualsGroup(pgB, pwOpt, mpCmpStr)) return false;
+					if (!pgA.EqualsGroup(pgB, pwOpt, mpCmpStr)) return false;
 				}
 			}
 
@@ -546,9 +546,9 @@ namespace KeePassLib
 		public void AssignProperties(PwGroup pgTemplate, bool bOnlyIfNewer,
 			bool bAssignLocationChanged)
 		{
-			Debug.Assert(pgTemplate != null); if(pgTemplate == null) throw new ArgumentNullException("pgTemplate");
+			Debug.Assert(pgTemplate != null); if (pgTemplate == null) throw new ArgumentNullException("pgTemplate");
 
-			if(bOnlyIfNewer && (TimeUtil.Compare(pgTemplate.m_tLastMod, m_tLastMod,
+			if (bOnlyIfNewer && (TimeUtil.Compare(pgTemplate.m_tLastMod, m_tLastMod,
 				true) < 0))
 				return;
 
@@ -556,7 +556,7 @@ namespace KeePassLib
 			Debug.Assert(m_uuid.Equals(pgTemplate.m_uuid));
 			m_uuid = pgTemplate.m_uuid;
 
-			if(bAssignLocationChanged)
+			if (bAssignLocationChanged)
 			{
 				m_tParentGroupLastMod = pgTemplate.m_tParentGroupLastMod;
 				m_puPrevParentGroup = pgTemplate.m_puPrevParentGroup;
@@ -611,16 +611,16 @@ namespace KeePassLib
 			m_tLastAccess = DateTime.UtcNow;
 			++m_uUsageCount;
 
-			if(bModified) m_tLastMod = m_tLastAccess;
+			if (bModified) m_tLastMod = m_tLastAccess;
 
-			if(this.Touched != null)
+			if (this.Touched != null)
 				this.Touched(this, new ObjectTouchedEventArgs(this,
 					bModified, bTouchParents));
-			if(PwGroup.GroupTouched != null)
+			if (PwGroup.GroupTouched != null)
 				PwGroup.GroupTouched(this, new ObjectTouchedEventArgs(this,
 					bModified, bTouchParents));
 
-			if(bTouchParents && (m_pParentGroup != null))
+			if (bTouchParents && (m_pParentGroup != null))
 				m_pParentGroup.Touch(bModified, true);
 		}
 
@@ -637,13 +637,13 @@ namespace KeePassLib
 		/// <param name="uNumEntries">Number of entries.</param>
 		public void GetCounts(bool bRecursive, out uint uNumGroups, out uint uNumEntries)
 		{
-			if(bRecursive)
+			if (bRecursive)
 			{
 				uint uTotalGroups = m_listGroups.UCount;
 				uint uTotalEntries = m_listEntries.UCount;
 				uint uSubGroupCount, uSubEntryCount;
 
-				foreach(PwGroup pg in m_listGroups)
+				foreach (PwGroup pg in m_listGroups)
 				{
 					pg.GetCounts(true, out uSubGroupCount, out uSubEntryCount);
 
@@ -687,7 +687,7 @@ namespace KeePassLib
 		{
 			bool bRet = false;
 
-			switch(tm)
+			switch (tm)
 			{
 				case TraversalMethod.None:
 					bRet = true;
@@ -705,22 +705,22 @@ namespace KeePassLib
 
 		private bool PreOrderTraverseTree(GroupHandler groupHandler, EntryHandler entryHandler)
 		{
-			if(entryHandler != null)
+			if (entryHandler != null)
 			{
-				foreach(PwEntry pe in m_listEntries)
+				foreach (PwEntry pe in m_listEntries)
 				{
-					if(!entryHandler(pe)) return false;
+					if (!entryHandler(pe)) return false;
 				}
 			}
 
-			foreach(PwGroup pg in m_listGroups)
+			foreach (PwGroup pg in m_listGroups)
 			{
-				if(groupHandler != null)
+				if (groupHandler != null)
 				{
-					if(!groupHandler(pg)) return false;
+					if (!groupHandler(pg)) return false;
 				}
 
-				if(!pg.PreOrderTraverseTree(groupHandler, entryHandler))
+				if (!pg.PreOrderTraverseTree(groupHandler, entryHandler))
 					return false;
 			}
 
@@ -735,11 +735,11 @@ namespace KeePassLib
 		{
 			LinkedList<PwGroup> list = new LinkedList<PwGroup>();
 
-			foreach(PwGroup pg in m_listGroups)
+			foreach (PwGroup pg in m_listGroups)
 			{
 				list.AddLast(pg);
 
-				if(pg.Groups.UCount != 0)
+				if (pg.Groups.UCount != 0)
 					LinearizeGroupRecursive(list, pg, 1);
 			}
 
@@ -748,13 +748,13 @@ namespace KeePassLib
 
 		private void LinearizeGroupRecursive(LinkedList<PwGroup> list, PwGroup pg, ushort uLevel)
 		{
-			Debug.Assert(pg != null); if(pg == null) return;
+			Debug.Assert(pg != null); if (pg == null) return;
 
-			foreach(PwGroup pwg in pg.Groups)
+			foreach (PwGroup pwg in pg.Groups)
 			{
 				list.AddLast(pwg);
 
-				if(pwg.Groups.UCount != 0)
+				if (pwg.Groups.UCount != 0)
 					LinearizeGroupRecursive(list, pwg, (ushort)(uLevel + 1));
 			}
 		}
@@ -768,12 +768,12 @@ namespace KeePassLib
 		/// <returns>Flat list of all entries.</returns>
 		public static LinkedList<PwEntry> GetFlatEntryList(LinkedList<PwGroup> flatGroupList)
 		{
-			Debug.Assert(flatGroupList != null); if(flatGroupList == null) return null;
+			Debug.Assert(flatGroupList != null); if (flatGroupList == null) return null;
 
 			LinkedList<PwEntry> list = new LinkedList<PwEntry>();
-			foreach(PwGroup pg in flatGroupList)
+			foreach (PwGroup pg in flatGroupList)
 			{
-				foreach(PwEntry pe in pg.Entries)
+				foreach (PwEntry pe in pg.Entries)
 					list.AddLast(pe);
 			}
 
@@ -791,13 +791,13 @@ namespace KeePassLib
 		{
 			Debug.Assert(strFieldName != null);
 
-			EntryHandler eh = delegate(PwEntry pe)
+			EntryHandler eh = delegate (PwEntry pe)
 			{
 				// Enable protection of current string
 				pe.Strings.EnableProtection(strFieldName, bEnable);
 
 				// Do the same for all history items
-				foreach(PwEntry peHistory in pe.History)
+				foreach (PwEntry peHistory in pe.History)
 				{
 					peHistory.Strings.EnableProtection(strFieldName, bEnable);
 				}
@@ -813,13 +813,13 @@ namespace KeePassLib
 			List<string> l = new List<string>();
 
 			PwGroup pg = this;
-			while(pg != null)
+			while (pg != null)
 			{
 				l.AddRange(pg.Tags);
 				pg = pg.m_pParentGroup;
 			}
 
-			if(bNormalize) StrUtil.NormalizeTags(l);
+			if (bNormalize) StrUtil.NormalizeTags(l);
 			return l;
 		}
 
@@ -838,26 +838,26 @@ namespace KeePassLib
 			Dictionary<string, bool> d = new Dictionary<string, bool>();
 
 			GroupHandler gh = null;
-			if(bGroupTags)
+			if (bGroupTags)
 			{
-				gh = delegate(PwGroup pg)
+				gh = delegate (PwGroup pg)
 				{
-					foreach(string strTag in pg.Tags) d[strTag] = true;
+					foreach (string strTag in pg.Tags) d[strTag] = true;
 					return true;
 				};
 			}
 
-			EntryHandler eh = delegate(PwEntry pe)
+			EntryHandler eh = delegate (PwEntry pe)
 			{
-				foreach(string strTag in pe.Tags) d[strTag] = true;
+				foreach (string strTag in pe.Tags) d[strTag] = true;
 				return true;
 			};
 
-			if(gh != null) gh(this);
+			if (gh != null) gh(this);
 			TraverseTree(TraversalMethod.PreOrder, gh, eh);
 
 			List<string> l = new List<string>(d.Keys);
-			if(bSort) l.Sort(StrUtil.CompareNaturally);
+			if (bSort) l.Sort(StrUtil.CompareNaturally);
 
 			return l;
 		}
@@ -868,23 +868,23 @@ namespace KeePassLib
 			Debug.Assert(!bSort); // Obsolete
 
 			IDictionary<string, uint> d;
-			if(!bSort) d = new Dictionary<string, uint>();
+			if (!bSort) d = new Dictionary<string, uint>();
 			else d = new SortedDictionary<string, uint>();
 
-			GroupHandler gh = delegate(PwGroup pg)
+			GroupHandler gh = delegate (PwGroup pg)
 			{
-				foreach(string strTag in pg.Tags)
+				foreach (string strTag in pg.Tags)
 				{
 					// For groups without entries
-					if(!d.ContainsKey(strTag)) d[strTag] = 0;
+					if (!d.ContainsKey(strTag)) d[strTag] = 0;
 				}
 
 				return true;
 			};
 
-			EntryHandler eh = delegate(PwEntry pe)
+			EntryHandler eh = delegate (PwEntry pe)
 			{
-				foreach(string strTag in pe.GetTagsInherited())
+				foreach (string strTag in pe.GetTagsInherited())
 				{
 					uint u;
 					d.TryGetValue(strTag, out u);
@@ -904,16 +904,16 @@ namespace KeePassLib
 		public void FindEntriesByTag(string strTag, PwObjectList<PwEntry> listStorage,
 			bool bSearchRecursive)
 		{
-			if(strTag == null) throw new ArgumentNullException("strTag");
+			if (strTag == null) throw new ArgumentNullException("strTag");
 
 			strTag = StrUtil.NormalizeTag(strTag);
-			if(string.IsNullOrEmpty(strTag)) return;
+			if (string.IsNullOrEmpty(strTag)) return;
 
-			EntryHandler eh = delegate(PwEntry pe)
+			EntryHandler eh = delegate (PwEntry pe)
 			{
-				foreach(string strEntryTag in pe.GetTagsInherited())
+				foreach (string strEntryTag in pe.GetTagsInherited())
 				{
-					if(strEntryTag == strTag)
+					if (strEntryTag == strTag)
 					{
 						listStorage.Add(pe);
 						break;
@@ -923,11 +923,11 @@ namespace KeePassLib
 				return true;
 			};
 
-			if(bSearchRecursive)
+			if (bSearchRecursive)
 				TraverseTree(TraversalMethod.PreOrder, null, eh);
 			else
 			{
-				foreach(PwEntry pe in m_listEntries) eh(pe);
+				foreach (PwEntry pe in m_listEntries) eh(pe);
 			}
 		}
 
@@ -940,22 +940,22 @@ namespace KeePassLib
 		public PwGroup FindGroup(PwUuid uuid, bool bSearchRecursive)
 		{
 			// Do not assert on PwUuid.Zero
-			if(m_uuid.Equals(uuid)) return this;
+			if (m_uuid.Equals(uuid)) return this;
 
-			if(bSearchRecursive)
+			if (bSearchRecursive)
 			{
 				PwGroup pgRec;
-				foreach(PwGroup pg in m_listGroups)
+				foreach (PwGroup pg in m_listGroups)
 				{
 					pgRec = pg.FindGroup(uuid, true);
-					if(pgRec != null) return pgRec;
+					if (pgRec != null) return pgRec;
 				}
 			}
 			else // Not recursive
 			{
-				foreach(PwGroup pg in m_listGroups)
+				foreach (PwGroup pg in m_listGroups)
 				{
-					if(pg.m_uuid.Equals(uuid))
+					if (pg.m_uuid.Equals(uuid))
 						return pg;
 				}
 			}
@@ -975,14 +975,14 @@ namespace KeePassLib
 		public IStructureItem FindObject(PwUuid uuid, bool bRecursive,
 			bool? bEntries)
 		{
-			if(bEntries.HasValue)
+			if (bEntries.HasValue)
 			{
-				if(bEntries.Value) return FindEntry(uuid, bRecursive);
+				if (bEntries.Value) return FindEntry(uuid, bRecursive);
 				else return FindGroup(uuid, bRecursive);
 			}
 
 			PwGroup pg = FindGroup(uuid, bRecursive);
-			if(pg != null) return pg;
+			if (pg != null) return pg;
 			return FindEntry(uuid, bRecursive);
 		}
 
@@ -995,14 +995,14 @@ namespace KeePassLib
 		/// it doesn't exist and shouldn't be created.</returns>
 		public PwGroup FindCreateGroup(string strName, bool bCreateIfNotFound)
 		{
-			Debug.Assert(strName != null); if(strName == null) throw new ArgumentNullException("strName");
+			Debug.Assert(strName != null); if (strName == null) throw new ArgumentNullException("strName");
 
-			foreach(PwGroup pg in m_listGroups)
+			foreach (PwGroup pg in m_listGroups)
 			{
-				if(pg.Name == strName) return pg;
+				if (pg.Name == strName) return pg;
 			}
 
-			if(!bCreateIfNotFound) return null;
+			if (!bCreateIfNotFound) return null;
 
 			PwGroup pgNew = new PwGroup(true, true, strName, PwIcon.Folder);
 			AddGroup(pgNew, true);
@@ -1017,18 +1017,18 @@ namespace KeePassLib
 		/// <returns>Returns reference to found entry, otherwise <c>null</c>.</returns>
 		public PwEntry FindEntry(PwUuid uuid, bool bSearchRecursive)
 		{
-			foreach(PwEntry pe in m_listEntries)
+			foreach (PwEntry pe in m_listEntries)
 			{
-				if(pe.Uuid.Equals(uuid)) return pe;
+				if (pe.Uuid.Equals(uuid)) return pe;
 			}
 
-			if(bSearchRecursive)
+			if (bSearchRecursive)
 			{
 				PwEntry peSub;
-				foreach(PwGroup pg in m_listGroups)
+				foreach (PwGroup pg in m_listGroups)
 				{
 					peSub = pg.FindEntry(uuid, true);
-					if(peSub != null) return peSub;
+					if (peSub != null) return peSub;
 				}
 			}
 
@@ -1055,14 +1055,14 @@ namespace KeePassLib
 		public string GetFullPath(string strSeparator, bool bIncludeTopMostGroup)
 		{
 			Debug.Assert(strSeparator != null);
-			if(strSeparator == null) throw new ArgumentNullException("strSeparator");
+			if (strSeparator == null) throw new ArgumentNullException("strSeparator");
 
 			string strPath = m_strName;
 
 			PwGroup pg = m_pParentGroup;
-			while(pg != null)
+			while (pg != null)
 			{
-				if(!bIncludeTopMostGroup && (pg.m_pParentGroup == null))
+				if (!bIncludeTopMostGroup && (pg.m_pParentGroup == null))
 					break;
 
 				strPath = pg.Name + strSeparator + strPath;
@@ -1081,42 +1081,42 @@ namespace KeePassLib
 		/// <param name="bRecursive">Recursive tree traversal.</param>
 		public void CreateNewItemUuids(bool bNewGroups, bool bNewEntries, bool bRecursive)
 		{
-			if(bNewGroups)
+			if (bNewGroups)
 			{
-				foreach(PwGroup pg in m_listGroups)
+				foreach (PwGroup pg in m_listGroups)
 					pg.Uuid = new PwUuid(true);
 			}
 
-			if(bNewEntries)
+			if (bNewEntries)
 			{
-				foreach(PwEntry pe in m_listEntries)
+				foreach (PwEntry pe in m_listEntries)
 					pe.SetUuid(new PwUuid(true), true);
 			}
 
-			if(bRecursive)
+			if (bRecursive)
 			{
-				foreach(PwGroup pg in m_listGroups)
+				foreach (PwGroup pg in m_listGroups)
 					pg.CreateNewItemUuids(bNewGroups, bNewEntries, true);
 			}
 		}
 
 		public void TakeOwnership(bool bTakeSubGroups, bool bTakeEntries, bool bRecursive)
 		{
-			if(bTakeSubGroups)
+			if (bTakeSubGroups)
 			{
-				foreach(PwGroup pg in m_listGroups)
+				foreach (PwGroup pg in m_listGroups)
 					pg.ParentGroup = this;
 			}
 
-			if(bTakeEntries)
+			if (bTakeEntries)
 			{
-				foreach(PwEntry pe in m_listEntries)
+				foreach (PwEntry pe in m_listEntries)
 					pe.ParentGroup = this;
 			}
 
-			if(bRecursive)
+			if (bRecursive)
 			{
-				foreach(PwGroup pg in m_listGroups)
+				foreach (PwGroup pg in m_listGroups)
 					pg.TakeOwnership(bTakeSubGroups, bTakeEntries, true);
 			}
 		}
@@ -1136,10 +1136,10 @@ namespace KeePassLib
 		public PwGroup FindCreateSubTree(string strTree, char[] vSeparators,
 			bool bAllowCreate)
 		{
-			if(vSeparators == null) { Debug.Assert(false); vSeparators = new char[0]; }
+			if (vSeparators == null) { Debug.Assert(false); vSeparators = new char[0]; }
 
 			string[] v = new string[vSeparators.Length];
-			for(int i = 0; i < vSeparators.Length; ++i)
+			for (int i = 0; i < vSeparators.Length; ++i)
 				v[i] = new string(vSeparators[i], 1);
 
 			return FindCreateSubTree(strTree, v, bAllowCreate);
@@ -1148,21 +1148,21 @@ namespace KeePassLib
 		public PwGroup FindCreateSubTree(string strTree, string[] vSeparators,
 			bool bAllowCreate)
 		{
-			Debug.Assert(strTree != null); if(strTree == null) return this;
-			if(strTree.Length == 0) return this;
+			Debug.Assert(strTree != null); if (strTree == null) return this;
+			if (strTree.Length == 0) return this;
 
 			string[] vGroups = strTree.Split(vSeparators, StringSplitOptions.None);
-			if((vGroups == null) || (vGroups.Length == 0)) return this;
+			if ((vGroups == null) || (vGroups.Length == 0)) return this;
 
 			PwGroup pgContainer = this;
-			for(int nGroup = 0; nGroup < vGroups.Length; ++nGroup)
+			for (int nGroup = 0; nGroup < vGroups.Length; ++nGroup)
 			{
-				if(string.IsNullOrEmpty(vGroups[nGroup])) continue;
+				if (string.IsNullOrEmpty(vGroups[nGroup])) continue;
 
 				bool bFound = false;
-				foreach(PwGroup pg in pgContainer.Groups)
+				foreach (PwGroup pg in pgContainer.Groups)
 				{
-					if(pg.Name == vGroups[nGroup])
+					if (pg.Name == vGroups[nGroup])
 					{
 						pgContainer = pg;
 						bFound = true;
@@ -1170,9 +1170,9 @@ namespace KeePassLib
 					}
 				}
 
-				if(!bFound)
+				if (!bFound)
 				{
-					if(!bAllowCreate) return null;
+					if (!bAllowCreate) return null;
 
 					PwGroup pg = new PwGroup(true, true, vGroups[nGroup], PwIcon.Folder);
 					pgContainer.AddGroup(pg, true);
@@ -1193,7 +1193,7 @@ namespace KeePassLib
 			PwGroup pg = m_pParentGroup;
 			uint d = 0;
 
-			while(pg != null)
+			while (pg != null)
 			{
 				pg = pg.m_pParentGroup;
 				++d;
@@ -1204,10 +1204,10 @@ namespace KeePassLib
 
 		private uint GetHeight()
 		{
-			if(m_listGroups.UCount == 0) return 0;
+			if (m_listGroups.UCount == 0) return 0;
 
 			uint h = 0;
-			foreach(PwGroup pgSub in m_listGroups)
+			foreach (PwGroup pgSub in m_listGroups)
 			{
 				h = Math.Max(h, pgSub.GetHeight());
 			}
@@ -1217,10 +1217,10 @@ namespace KeePassLib
 
 		public string GetAutoTypeSequenceInherited()
 		{
-			if(m_strDefaultAutoTypeSequence.Length > 0)
+			if (m_strDefaultAutoTypeSequence.Length > 0)
 				return m_strDefaultAutoTypeSequence;
 
-			if(m_pParentGroup != null)
+			if (m_pParentGroup != null)
 				return m_pParentGroup.GetAutoTypeSequenceInherited();
 
 			return string.Empty;
@@ -1228,9 +1228,9 @@ namespace KeePassLib
 
 		public bool GetAutoTypeEnabledInherited()
 		{
-			if(m_bEnableAutoType.HasValue) return m_bEnableAutoType.Value;
+			if (m_bEnableAutoType.HasValue) return m_bEnableAutoType.Value;
 
-			if(m_pParentGroup != null)
+			if (m_pParentGroup != null)
 				return m_pParentGroup.GetAutoTypeEnabledInherited();
 
 			return DefaultAutoTypeEnabled;
@@ -1238,9 +1238,9 @@ namespace KeePassLib
 
 		public bool GetSearchingEnabledInherited()
 		{
-			if(m_bEnableSearching.HasValue) return m_bEnableSearching.Value;
+			if (m_bEnableSearching.HasValue) return m_bEnableSearching.Value;
 
-			if(m_pParentGroup != null)
+			if (m_pParentGroup != null)
 				return m_pParentGroup.GetSearchingEnabledInherited();
 
 			return DefaultSearchingEnabled;
@@ -1256,10 +1256,10 @@ namespace KeePassLib
 		/// subgroups.</returns>
 		public PwObjectList<PwGroup> GetGroups(bool bRecursive)
 		{
-			if(!bRecursive) return m_listGroups;
+			if (!bRecursive) return m_listGroups;
 
 			PwObjectList<PwGroup> list = m_listGroups.CloneShallow();
-			foreach(PwGroup pgSub in m_listGroups)
+			foreach (PwGroup pgSub in m_listGroups)
 			{
 				list.Add(pgSub.GetGroups(true));
 			}
@@ -1271,14 +1271,14 @@ namespace KeePassLib
 		{
 			PwObjectList<PwEntry> l = new PwObjectList<PwEntry>();
 
-			GroupHandler gh = delegate(PwGroup pg)
+			GroupHandler gh = delegate (PwGroup pg)
 			{
 				l.Add(pg.Entries);
 				return true;
 			};
 
 			gh(this);
-			if(bIncludeSubGroupEntries)
+			if (bIncludeSubGroupEntries)
 				PreOrderTraverseTree(gh, null);
 
 			Debug.Assert(l.UCount == GetEntriesCount(bIncludeSubGroupEntries));
@@ -1297,16 +1297,16 @@ namespace KeePassLib
 		{
 			List<IStructureItem> list = new List<IStructureItem>();
 
-			if(!bEntries.HasValue || !bEntries.Value)
+			if (!bEntries.HasValue || !bEntries.Value)
 			{
 				PwObjectList<PwGroup> lGroups = GetGroups(bRecursive);
-				foreach(PwGroup pg in lGroups) list.Add(pg);
+				foreach (PwGroup pg in lGroups) list.Add(pg);
 			}
 
-			if(!bEntries.HasValue || bEntries.Value)
+			if (!bEntries.HasValue || bEntries.Value)
 			{
 				PwObjectList<PwEntry> lEntries = GetEntries(bRecursive);
-				foreach(PwEntry pe in lEntries) list.Add(pe);
+				foreach (PwEntry pe in lEntries) list.Add(pe);
 			}
 
 			return list;
@@ -1315,9 +1315,9 @@ namespace KeePassLib
 		public bool IsContainedIn(PwGroup pgContainer)
 		{
 			PwGroup pgCur = m_pParentGroup;
-			while(pgCur != null)
+			while (pgCur != null)
 			{
-				if(pgCur == pgContainer) return true;
+				if (pgCur == pgContainer) return true;
 
 				pgCur = pgCur.m_pParentGroup;
 			}
@@ -1349,19 +1349,19 @@ namespace KeePassLib
 		public void AddGroup(PwGroup subGroup, bool bTakeOwnership,
 			bool bUpdateLocationChangedOfSub)
 		{
-			if(subGroup == null) throw new ArgumentNullException("subGroup");
+			if (subGroup == null) throw new ArgumentNullException("subGroup");
 
 			CheckCanAddGroup(subGroup);
 			m_listGroups.Add(subGroup);
 
-			if(bTakeOwnership) subGroup.ParentGroup = this;
+			if (bTakeOwnership) subGroup.ParentGroup = this;
 
-			if(bUpdateLocationChangedOfSub) subGroup.LocationChanged = DateTime.UtcNow;
+			if (bUpdateLocationChangedOfSub) subGroup.LocationChanged = DateTime.UtcNow;
 		}
 
 		internal bool CanAddGroup(PwGroup pgSub)
 		{
-			if(pgSub == null) { Debug.Assert(false); return false; }
+			if (pgSub == null) { Debug.Assert(false); return false; }
 
 			uint dCur = GetDepth(), hSub = pgSub.GetHeight();
 			return ((dCur + hSub + 1) <= MaxDepth);
@@ -1369,7 +1369,7 @@ namespace KeePassLib
 
 		internal void CheckCanAddGroup(PwGroup pgSub)
 		{
-			if(!CanAddGroup(pgSub))
+			if (!CanAddGroup(pgSub))
 			{
 				Debug.Assert(false);
 				throw new InvalidOperationException(KLRes.StructsTooDeep);
@@ -1400,24 +1400,24 @@ namespace KeePassLib
 		public void AddEntry(PwEntry pe, bool bTakeOwnership,
 			bool bUpdateLocationChangedOfEntry)
 		{
-			if(pe == null) throw new ArgumentNullException("pe");
+			if (pe == null) throw new ArgumentNullException("pe");
 
 			m_listEntries.Add(pe);
 
 			// Do not remove the entry from its previous parent group,
 			// only assign it to the new one
-			if(bTakeOwnership) pe.ParentGroup = this;
+			if (bTakeOwnership) pe.ParentGroup = this;
 
-			if(bUpdateLocationChangedOfEntry) pe.LocationChanged = DateTime.UtcNow;
+			if (bUpdateLocationChangedOfEntry) pe.LocationChanged = DateTime.UtcNow;
 		}
 
 		public void SortSubGroups(bool bRecursive)
 		{
 			m_listGroups.Sort(new PwGroupComparer());
 
-			if(bRecursive)
+			if (bRecursive)
 			{
-				foreach(PwGroup pgSub in m_listGroups)
+				foreach (PwGroup pgSub in m_listGroups)
 					pgSub.SortSubGroups(true);
 			}
 		}
@@ -1426,14 +1426,14 @@ namespace KeePassLib
 		{
 			DateTime dtNow = DateTime.UtcNow;
 
-			foreach(PwEntry pe in m_listEntries)
+			foreach (PwEntry pe in m_listEntries)
 			{
 				PwDeletedObject pdo = new PwDeletedObject(pe.Uuid, dtNow);
 				pdContext.DeletedObjects.Add(pdo);
 			}
 			m_listEntries.Clear();
 
-			foreach(PwGroup pg in m_listGroups)
+			foreach (PwGroup pg in m_listGroups)
 			{
 				pg.DeleteAllObjects(pdContext);
 
@@ -1447,7 +1447,7 @@ namespace KeePassLib
 		{
 			List<PwGroup> l = new List<PwGroup>();
 
-			if(!GetSearchingEnabledInherited()) l.Add(this);
+			if (!GetSearchingEnabledInherited()) l.Add(this);
 			else GetTopSearchSkippedGroupsRec(l);
 
 			return l;
@@ -1455,14 +1455,14 @@ namespace KeePassLib
 
 		private void GetTopSearchSkippedGroupsRec(List<PwGroup> l)
 		{
-			if(m_bEnableSearching.HasValue && !m_bEnableSearching.Value)
+			if (m_bEnableSearching.HasValue && !m_bEnableSearching.Value)
 			{
 				l.Add(this);
 				return;
 			}
 			else { Debug.Assert(GetSearchingEnabledInherited()); }
 
-			foreach(PwGroup pgSub in m_listGroups)
+			foreach (PwGroup pgSub in m_listGroups)
 				pgSub.GetTopSearchSkippedGroupsRec(l);
 		}
 
@@ -1473,16 +1473,16 @@ namespace KeePassLib
 			m_tCreation = dt;
 			m_tLastAccess = dt;
 
-			if(!bRecursive) return;
+			if (!bRecursive) return;
 
-			GroupHandler gh = delegate(PwGroup pg)
+			GroupHandler gh = delegate (PwGroup pg)
 			{
 				pg.m_tCreation = dt;
 				pg.m_tLastAccess = dt;
 				return true;
 			};
 
-			EntryHandler eh = delegate(PwEntry pe)
+			EntryHandler eh = delegate (PwEntry pe)
 			{
 				pe.CreationTime = dt;
 				pe.LastAccessTime = dt;
@@ -1506,24 +1506,24 @@ namespace KeePassLib
 
 		internal string[] CollectEntryStrings(GFunc<PwEntry, string> f, bool bSort)
 		{
-			if(f == null) { Debug.Assert(false); return new string[0]; }
+			if (f == null) { Debug.Assert(false); return new string[0]; }
 
 			Dictionary<string, bool> d = new Dictionary<string, bool>();
 
-			EntryHandler eh = delegate(PwEntry pe)
+			EntryHandler eh = delegate (PwEntry pe)
 			{
 				string str = f(pe);
-				if(str != null) d[str] = true;
+				if (str != null) d[str] = true;
 
 				return true;
 			};
 			TraverseTree(TraversalMethod.PreOrder, null, eh);
 
 			string[] v = new string[d.Count];
-			if(d.Count != 0)
+			if (d.Count != 0)
 			{
 				d.Keys.CopyTo(v, 0);
-				if(bSort) Array.Sort<string>(v, StrUtil.CaseIgnoreComparer);
+				if (bSort) Array.Sort<string>(v, StrUtil.CaseIgnoreComparer);
 			}
 
 			return v;
@@ -1535,29 +1535,29 @@ namespace KeePassLib
 			{
 				Dictionary<string, bool> d = new Dictionary<string, bool>();
 
-				Action<string> fAdd = delegate(string str)
+				Action<string> fAdd = delegate (string str)
 				{
-					if(!string.IsNullOrEmpty(str)) d[str] = true;
+					if (!string.IsNullOrEmpty(str)) d[str] = true;
 				};
 
-				if(bWithStd)
+				if (bWithStd)
 				{
 					fAdd(PwDefs.DefaultAutoTypeSequence);
 					fAdd(PwDefs.DefaultAutoTypeSequenceTan);
 				}
 
-				GroupHandler gh = delegate(PwGroup pg)
+				GroupHandler gh = delegate (PwGroup pg)
 				{
 					fAdd(pg.DefaultAutoTypeSequence);
 					return true;
 				};
 
-				EntryHandler eh = delegate(PwEntry pe)
+				EntryHandler eh = delegate (PwEntry pe)
 				{
 					AutoTypeConfig c = pe.AutoType;
 
 					fAdd(c.DefaultSequence);
-					foreach(AutoTypeAssociation a in c.Associations)
+					foreach (AutoTypeAssociation a in c.Associations)
 					{
 						fAdd(a.Sequence);
 					}
@@ -1569,7 +1569,7 @@ namespace KeePassLib
 				TraverseTree(TraversalMethod.PreOrder, gh, eh);
 
 				string[] v = new string[d.Count];
-				if(d.Count != 0)
+				if (d.Count != 0)
 				{
 					d.Keys.CopyTo(v, 0);
 					Array.Sort<string>(v, StrUtil.CaseIgnoreComparer);
@@ -1577,7 +1577,7 @@ namespace KeePassLib
 
 				return v;
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return new string[0];
 		}

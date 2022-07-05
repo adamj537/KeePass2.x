@@ -52,12 +52,12 @@ namespace KeePass.DataExchange.Formats
 		{
 			byte[] pb = MemUtil.Read(sInput);
 
-			if(ImportOld(pwStorage, pb)) return;
+			if (ImportOld(pwStorage, pb)) return;
 
 			XmlDocument d = XmlUtilEx.CreateXmlDocument();
-			using(MemoryStream ms = new MemoryStream(pb, false))
+			using (MemoryStream ms = new MemoryStream(pb, false))
 			{
-				using(StreamReader sr = new StreamReader(ms, StrUtil.Utf8, true))
+				using (StreamReader sr = new StreamReader(ms, StrUtil.Utf8, true))
 				{
 					d.Load(sr);
 				}
@@ -66,11 +66,11 @@ namespace KeePass.DataExchange.Formats
 			XmlNode xmlRoot = d.DocumentElement;
 			Debug.Assert(xmlRoot.Name == "data");
 
-			foreach(XmlNode xmlChild in xmlRoot.ChildNodes)
+			foreach (XmlNode xmlChild in xmlRoot.ChildNodes)
 			{
-				if(xmlChild.Name == ElemGroup)
+				if (xmlChild.Name == ElemGroup)
 					ReadGroup(xmlChild, pwStorage.RootGroup, pwStorage);
-				else if(xmlChild.Name == ElemEntry)
+				else if (xmlChild.Name == ElemEntry)
 					ReadEntry(xmlChild, pwStorage.RootGroup, pwStorage);
 				else { Debug.Assert(false); }
 			}
@@ -83,9 +83,9 @@ namespace KeePass.DataExchange.Formats
 			XmlDocument dAnsi = XmlUtilEx.CreateXmlDocument();
 			try
 			{
-				using(MemoryStream ms = new MemoryStream(pb, false))
+				using (MemoryStream ms = new MemoryStream(pb, false))
 				{
-					using(StreamReader sr = new StreamReader(ms, Encoding.Default, true))
+					using (StreamReader sr = new StreamReader(ms, Encoding.Default, true))
 					{
 						dAnsi.Load(sr);
 
@@ -93,12 +93,12 @@ namespace KeePass.DataExchange.Formats
 
 						// Version 2 has three "ver_*" attributes,
 						// version 3 has a "version" attribute
-						if(xmlRoot.Attributes["ver_major"] == null)
+						if (xmlRoot.Attributes["ver_major"] == null)
 							return false;
 					}
 				}
 			}
-			catch(Exception) { Debug.Assert(false); return false; }
+			catch (Exception) { Debug.Assert(false); return false; }
 
 			PwAgentXml2.Import(pwStorage, dAnsi);
 			return true;
@@ -111,13 +111,13 @@ namespace KeePass.DataExchange.Formats
 
 			ReadDate(pg, xmlNode.Attributes["dateModified"], true, true, false);
 
-			foreach(XmlNode xmlChild in xmlNode)
+			foreach (XmlNode xmlChild in xmlNode)
 			{
-				if(xmlChild.Name == "title")
+				if (xmlChild.Name == "title")
 					pg.Name = XmlUtil.SafeInnerText(xmlChild);
-				else if(xmlChild.Name == ElemGroup)
+				else if (xmlChild.Name == ElemGroup)
 					ReadGroup(xmlChild, pg, pwStorage);
-				else if(xmlChild.Name == ElemEntry)
+				else if (xmlChild.Name == ElemEntry)
 					ReadEntry(xmlChild, pg, pwStorage);
 				else { Debug.Assert(false); }
 			}
@@ -130,27 +130,27 @@ namespace KeePass.DataExchange.Formats
 
 			ReadDate(pe, xmlNode.Attributes["dateModified"], true, true, false);
 
-			foreach(XmlNode xmlChild in xmlNode)
+			foreach (XmlNode xmlChild in xmlNode)
 			{
 				string str = XmlUtil.SafeInnerText(xmlChild);
 
-				if(xmlChild.Name == "title")
+				if (xmlChild.Name == "title")
 					ImportUtil.AppendToField(pe, PwDefs.TitleField, str, pwStorage);
-				else if(xmlChild.Name == "userId")
+				else if (xmlChild.Name == "userId")
 					ImportUtil.AppendToField(pe, PwDefs.UserNameField, str, pwStorage);
-				else if(xmlChild.Name == "password")
+				else if (xmlChild.Name == "password")
 					ImportUtil.AppendToField(pe, PwDefs.PasswordField, str, pwStorage);
-				else if(xmlChild.Name == "note")
+				else if (xmlChild.Name == "note")
 					ImportUtil.AppendToField(pe, PwDefs.NotesField, str, pwStorage);
-				else if(xmlChild.Name == "link")
+				else if (xmlChild.Name == "link")
 					ImportUtil.AppendToField(pe, PwDefs.UrlField, str, pwStorage);
-				else if(xmlChild.Name == "dateAdded")
+				else if (xmlChild.Name == "dateAdded")
 					ReadDate(pe, xmlChild, true, false, false);
-				else if(xmlChild.Name == "dateModified")
+				else if (xmlChild.Name == "dateModified")
 					ReadDate(pe, xmlChild, false, true, false);
-				else if(xmlChild.Name == "dateExpires")
+				else if (xmlChild.Name == "dateExpires")
 					ReadDate(pe, xmlChild, false, false, true);
-				else if(xmlChild.Name == "attachment")
+				else if (xmlChild.Name == "attachment")
 					ReadAttachment(xmlChild, pe);
 				else { Debug.Assert(false); }
 			}
@@ -162,10 +162,10 @@ namespace KeePass.DataExchange.Formats
 			XmlNode xnValue = xmlNode.SelectSingleNode("fileBytes");
 
 			string strName = XmlUtil.SafeInnerText(xnName);
-			if(strName.Length == 0) { Debug.Assert(false); strName = Guid.NewGuid().ToString(); }
+			if (strName.Length == 0) { Debug.Assert(false); strName = Guid.NewGuid().ToString(); }
 
 			string strValue = XmlUtil.SafeInnerText(xnValue);
-			if(strValue.Length == 0) { Debug.Assert(false); return; }
+			if (strValue.Length == 0) { Debug.Assert(false); return; }
 
 			pe.Binaries.Set(strName, new ProtectedBinary(false,
 				Convert.FromBase64String(strValue)));
@@ -174,27 +174,27 @@ namespace KeePass.DataExchange.Formats
 		private static void ReadDate(ITimeLogger tl, XmlNode xn,
 			bool bSetCreation, bool bSetLastMod, bool bSetExpiry)
 		{
-			if(tl == null) { Debug.Assert(false); return; }
-			if(xn == null) { Debug.Assert(false); return; }
+			if (tl == null) { Debug.Assert(false); return; }
+			if (xn == null) { Debug.Assert(false); return; }
 
 			try
 			{
 				XmlAttribute xa = (xn as XmlAttribute);
 				string str = ((xa != null) ? xa.Value : xn.InnerText);
-				if(string.IsNullOrEmpty(str)) return; // No assert
+				if (string.IsNullOrEmpty(str)) return; // No assert
 
 				DateTime dt = TimeUtil.ToUtc(XmlConvert.ToDateTime(
 					str, XmlDateTimeSerializationMode.Utc), true);
 
-				if(bSetCreation) tl.CreationTime = dt;
-				if(bSetLastMod) tl.LastModificationTime = dt;
-				if(bSetExpiry)
+				if (bSetCreation) tl.CreationTime = dt;
+				if (bSetLastMod) tl.LastModificationTime = dt;
+				if (bSetExpiry)
 				{
 					tl.Expires = true;
 					tl.ExpiryTime = dt;
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 	}
 }

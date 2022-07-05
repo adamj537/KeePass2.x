@@ -58,23 +58,23 @@ namespace KeePassLib.Native
 		{
 			get
 			{
-				if(g_ouMonoVersion.HasValue) return g_ouMonoVersion.Value;
+				if (g_ouMonoVersion.HasValue) return g_ouMonoVersion.Value;
 
 				ulong uVersion = 0;
 				try
 				{
 					Type t = Type.GetType("Mono.Runtime");
-					if(t != null)
+					if (t != null)
 					{
 						MethodInfo mi = t.GetMethod("GetDisplayName",
 							BindingFlags.NonPublic | BindingFlags.Static);
-						if(mi != null)
+						if (mi != null)
 						{
 							string strName = (mi.Invoke(null, null) as string);
-							if(!string.IsNullOrEmpty(strName))
+							if (!string.IsNullOrEmpty(strName))
 							{
 								Match m = Regex.Match(strName, "\\d+(\\.\\d+)+");
-								if(m.Success)
+								if (m.Success)
 									uVersion = StrUtil.ParseVersion(m.Value);
 								else { Debug.Assert(false); }
 							}
@@ -83,7 +83,7 @@ namespace KeePassLib.Native
 						else { Debug.Assert(false); }
 					}
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 
 				g_ouMonoVersion = uVersion;
 				return uVersion;
@@ -113,7 +113,7 @@ namespace KeePassLib.Native
 		private static bool? g_bIsUnix = null;
 		public static bool IsUnix()
 		{
-			if(g_bIsUnix.HasValue) return g_bIsUnix.Value;
+			if (g_bIsUnix.HasValue) return g_bIsUnix.Value;
 
 			PlatformID p = GetPlatformID();
 
@@ -130,7 +130,7 @@ namespace KeePassLib.Native
 		private static PlatformID? g_platID = null;
 		public static PlatformID GetPlatformID()
 		{
-			if(g_platID.HasValue) return g_platID.Value;
+			if (g_platID.HasValue) return g_platID.Value;
 
 #if KeePassUAP
 			g_platID = EnvironmentExt.OSVersion.Platform;
@@ -140,9 +140,9 @@ namespace KeePassLib.Native
 
 #if (!KeePassLibSD && !KeePassUAP)
 			// Mono returns PlatformID.Unix on MacOS, workaround this
-			if(g_platID.Value == PlatformID.Unix)
+			if (g_platID.Value == PlatformID.Unix)
 			{
-				if((RunConsoleApp("uname", null) ?? string.Empty).Trim().Equals(
+				if ((RunConsoleApp("uname", null) ?? string.Empty).Trim().Equals(
 					"Darwin", StrUtil.CaseIgnoreCmp))
 					g_platID = PlatformID.MacOSX;
 			}
@@ -154,10 +154,10 @@ namespace KeePassLib.Native
 		private static DesktopType? g_tDesktop = null;
 		public static DesktopType GetDesktopType()
 		{
-			if(!g_tDesktop.HasValue)
+			if (!g_tDesktop.HasValue)
 			{
 				DesktopType t = DesktopType.None;
-				if(!IsUnix()) t = DesktopType.Windows;
+				if (!IsUnix()) t = DesktopType.Windows;
 				else
 				{
 					try
@@ -168,31 +168,31 @@ namespace KeePassLib.Native
 							"GDMSESSION") ?? string.Empty).Trim();
 						StringComparison sc = StrUtil.CaseIgnoreCmp;
 
-						if(strXdg.Equals("Unity", sc))
+						if (strXdg.Equals("Unity", sc))
 							t = DesktopType.Unity;
-						else if(strXdg.Equals("LXDE", sc))
+						else if (strXdg.Equals("LXDE", sc))
 							t = DesktopType.Lxde;
-						else if(strXdg.Equals("XFCE", sc))
+						else if (strXdg.Equals("XFCE", sc))
 							t = DesktopType.Xfce;
-						else if(strXdg.Equals("MATE", sc))
+						else if (strXdg.Equals("MATE", sc))
 							t = DesktopType.Mate;
-						else if(strXdg.Equals("X-Cinnamon", sc)) // Mint 18.3
+						else if (strXdg.Equals("X-Cinnamon", sc)) // Mint 18.3
 							t = DesktopType.Cinnamon;
-						else if(strXdg.Equals("Pantheon", sc)) // Elementary OS
+						else if (strXdg.Equals("Pantheon", sc)) // Elementary OS
 							t = DesktopType.Pantheon;
-						else if(strXdg.Equals("KDE", sc) || // Mint 16, Kubuntu 17.10
+						else if (strXdg.Equals("KDE", sc) || // Mint 16, Kubuntu 17.10
 							strGdm.Equals("kde-plasma", sc)) // Ubuntu 12.04
 							t = DesktopType.Kde;
-						else if(strXdg.Equals("GNOME", sc))
+						else if (strXdg.Equals("GNOME", sc))
 						{
-							if(strGdm.Equals("cinnamon", sc)) // Mint 13
+							if (strGdm.Equals("cinnamon", sc)) // Mint 13
 								t = DesktopType.Cinnamon;
 							else t = DesktopType.Gnome; // Fedora 27
 						}
-						else if(strXdg.Equals("ubuntu:GNOME", sc))
+						else if (strXdg.Equals("ubuntu:GNOME", sc))
 							t = DesktopType.Gnome;
 					}
-					catch(Exception) { Debug.Assert(false); }
+					catch (Exception) { Debug.Assert(false); }
 				}
 
 				g_tDesktop = t;
@@ -204,7 +204,7 @@ namespace KeePassLib.Native
 		private static bool? g_obWayland = null;
 		internal static bool IsWayland()
 		{
-			if(!g_obWayland.HasValue)
+			if (!g_obWayland.HasValue)
 			{
 				bool b = false;
 				try
@@ -213,7 +213,7 @@ namespace KeePassLib.Native
 					b = ((Environment.GetEnvironmentVariable("XDG_SESSION_TYPE") ??
 						string.Empty).Trim().Equals("wayland", StrUtil.CaseIgnoreCmp));
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 
 				g_obWayland = b;
 			}
@@ -239,12 +239,12 @@ namespace KeePassLib.Native
 		public static string RunConsoleApp(string strAppPath, string strParams,
 			string strStdInput, AppRunFlags f)
 		{
-			if(strAppPath == null) throw new ArgumentNullException("strAppPath");
-			if(strAppPath.Length == 0) throw new ArgumentException("strAppPath");
+			if (strAppPath == null) throw new ArgumentNullException("strAppPath");
+			if (strAppPath.Length == 0) throw new ArgumentException("strAppPath");
 
 			bool bStdOut = ((f & AppRunFlags.GetStdOutput) != AppRunFlags.None);
 
-			RunProcessDelegate fnRun = delegate()
+			RunProcessDelegate fnRun = delegate ()
 			{
 				Process pToDispose = null;
 				try
@@ -252,19 +252,19 @@ namespace KeePassLib.Native
 					ProcessStartInfo psi = new ProcessStartInfo();
 
 					psi.FileName = strAppPath;
-					if(!string.IsNullOrEmpty(strParams)) psi.Arguments = strParams;
+					if (!string.IsNullOrEmpty(strParams)) psi.Arguments = strParams;
 
 					psi.CreateNoWindow = true;
 					psi.WindowStyle = ProcessWindowStyle.Hidden;
 					psi.UseShellExecute = false;
 
 					psi.RedirectStandardOutput = bStdOut;
-					if(strStdInput != null) psi.RedirectStandardInput = true;
+					if (strStdInput != null) psi.RedirectStandardInput = true;
 
 					Process p = StartProcessEx(psi);
 					pToDispose = p;
 
-					if(strStdInput != null)
+					if (strStdInput != null)
 					{
 						EnsureNoBom(p.StandardInput);
 
@@ -273,18 +273,18 @@ namespace KeePassLib.Native
 					}
 
 					string strOutput = string.Empty;
-					if(bStdOut) strOutput = p.StandardOutput.ReadToEnd();
+					if (bStdOut) strOutput = p.StandardOutput.ReadToEnd();
 
-					if((f & AppRunFlags.WaitForExit) != AppRunFlags.None)
+					if ((f & AppRunFlags.WaitForExit) != AppRunFlags.None)
 						p.WaitForExit();
-					else if((f & AppRunFlags.GCKeepAlive) != AppRunFlags.None)
+					else if ((f & AppRunFlags.GCKeepAlive) != AppRunFlags.None)
 					{
 						pToDispose = null; // Thread disposes it
 
-						Thread th = new Thread(delegate()
+						Thread th = new Thread(delegate ()
 						{
 							try { p.WaitForExit(); p.Dispose(); }
-							catch(Exception) { Debug.Assert(false); }
+							catch (Exception) { Debug.Assert(false); }
 						});
 						th.Start();
 					}
@@ -292,33 +292,33 @@ namespace KeePassLib.Native
 					return strOutput;
 				}
 #if DEBUG
-				catch(ThreadAbortException) { }
-				catch(Win32Exception exW)
+				catch (ThreadAbortException) { }
+				catch (Win32Exception exW)
 				{
 					Debug.Assert((strAppPath == ClipboardU.XSel) &&
 						(exW.NativeErrorCode == 2)); // XSel not found
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 #else
 				catch(Exception) { }
 #endif
 				finally
 				{
-					try { if(pToDispose != null) pToDispose.Dispose(); }
-					catch(Exception) { Debug.Assert(false); }
+					try { if (pToDispose != null) pToDispose.Dispose(); }
+					catch (Exception) { Debug.Assert(false); }
 				}
 
 				return null;
 			};
 
-			if((f & AppRunFlags.DoEvents) != AppRunFlags.None)
+			if ((f & AppRunFlags.DoEvents) != AppRunFlags.None)
 			{
 				List<Form> lDisabledForms = new List<Form>();
-				if((f & AppRunFlags.DisableForms) != AppRunFlags.None)
+				if ((f & AppRunFlags.DisableForms) != AppRunFlags.None)
 				{
-					foreach(Form form in Application.OpenForms)
+					foreach (Form form in Application.OpenForms)
 					{
-						if(!form.Enabled) continue;
+						if (!form.Enabled) continue;
 
 						lDisabledForms.Add(form);
 						form.Enabled = false;
@@ -327,7 +327,7 @@ namespace KeePassLib.Native
 
 				IAsyncResult ar = fnRun.BeginInvoke(null, null);
 
-				while(!ar.AsyncWaitHandle.WaitOne(0))
+				while (!ar.AsyncWaitHandle.WaitOne(0))
 				{
 					Application.DoEvents();
 					Thread.Sleep(2);
@@ -335,7 +335,7 @@ namespace KeePassLib.Native
 
 				string strRet = fnRun.EndInvoke(ar);
 
-				for(int i = lDisabledForms.Count - 1; i >= 0; --i)
+				for (int i = lDisabledForms.Count - 1; i >= 0; --i)
 					lDisabledForms[i].Enabled = true;
 
 				return strRet;
@@ -346,36 +346,36 @@ namespace KeePassLib.Native
 
 		private static void EnsureNoBom(StreamWriter sw)
 		{
-			if(sw == null) { Debug.Assert(false); return; }
-			if(!MonoWorkarounds.IsRequired(1219)) return;
+			if (sw == null) { Debug.Assert(false); return; }
+			if (!MonoWorkarounds.IsRequired(1219)) return;
 
 			try
 			{
 				Encoding enc = sw.Encoding;
-				if(enc == null) { Debug.Assert(false); return; }
+				if (enc == null) { Debug.Assert(false); return; }
 				byte[] pbBom = enc.GetPreamble();
-				if((pbBom == null) || (pbBom.Length == 0)) return;
+				if ((pbBom == null) || (pbBom.Length == 0)) return;
 
 				// For Mono >= 4.0 (using Microsoft's reference source)
 				try
 				{
 					FieldInfo fi = typeof(StreamWriter).GetField("haveWrittenPreamble",
 						BindingFlags.Instance | BindingFlags.NonPublic);
-					if(fi != null)
+					if (fi != null)
 					{
 						fi.SetValue(sw, true);
 						return;
 					}
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 
 				// For Mono < 4.0
 				FieldInfo fiPD = typeof(StreamWriter).GetField("preamble_done",
 					BindingFlags.Instance | BindingFlags.NonPublic);
-				if(fiPD != null) fiPD.SetValue(sw, true);
+				if (fiPD != null) fiPD.SetValue(sw, true);
 				else { Debug.Assert(false); }
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 #endif
 
@@ -392,22 +392,22 @@ namespace KeePassLib.Native
 #if KeePassUAP
 			return false;
 #else
-			if(pbBuf256 == null) { Debug.Assert(false); return false; }
-			if(pbBuf256.Length != 32) { Debug.Assert(false); return false; }
-			if(pbKey256 == null) { Debug.Assert(false); return false; }
-			if(pbKey256.Length != 32) { Debug.Assert(false); return false; }
+			if (pbBuf256 == null) { Debug.Assert(false); return false; }
+			if (pbBuf256.Length != 32) { Debug.Assert(false); return false; }
+			if (pbKey256 == null) { Debug.Assert(false); return false; }
+			if (pbKey256.Length != 32) { Debug.Assert(false); return false; }
 
-			if(!g_bAllowNative) return false;
+			if (!g_bAllowNative) return false;
 
 			try
 			{
-				using(NativeBufferEx nbBuf = new NativeBufferEx(pbBuf256,
+				using (NativeBufferEx nbBuf = new NativeBufferEx(pbBuf256,
 					true, true, 16))
 				{
-					using(NativeBufferEx nbKey = new NativeBufferEx(pbKey256,
+					using (NativeBufferEx nbKey = new NativeBufferEx(pbKey256,
 						true, true, 16))
 					{
-						if(NativeMethods.TransformKey(nbBuf.Data, nbKey.Data, uRounds))
+						if (NativeMethods.TransformKey(nbBuf.Data, nbKey.Data, uRounds))
 						{
 							nbBuf.CopyTo(pbBuf256);
 							return true;
@@ -416,8 +416,8 @@ namespace KeePassLib.Native
 					}
 				}
 			}
-			catch(DllNotFoundException) { }
-			catch(Exception) { Debug.Assert(false); }
+			catch (DllNotFoundException) { }
+			catch (Exception) { Debug.Assert(false); }
 
 			return false;
 #endif
@@ -436,10 +436,10 @@ namespace KeePassLib.Native
 #if KeePassUAP
 			return false;
 #else
-			if(!g_bAllowNative) return false;
+			if (!g_bAllowNative) return false;
 
 			try { puRounds = NativeMethods.TransformKeyBenchmark(uTimeMs); }
-			catch(Exception) { return false; }
+			catch (Exception) { return false; }
 
 			return true;
 #endif
@@ -455,9 +455,9 @@ namespace KeePassLib.Native
 		// Cf. DecodeArgsToData
 		internal static string EncodeDataToArgs(string strData)
 		{
-			if(strData == null) { Debug.Assert(false); return string.Empty; }
+			if (strData == null) { Debug.Assert(false); return string.Empty; }
 
-			if(MonoWorkarounds.IsRequired(3471228285U) && IsUnix())
+			if (MonoWorkarounds.IsRequired(3471228285U) && IsUnix())
 			{
 				string str = strData;
 
@@ -485,22 +485,22 @@ namespace KeePassLib.Native
 
 			StringBuilder sb = new StringBuilder();
 			int i = 0;
-			while(i < strData.Length)
+			while (i < strData.Length)
 			{
 				char ch = strData[i++];
 
-				if(ch == '\\')
+				if (ch == '\\')
 				{
 					int cBackslashes = 1;
-					while((i < strData.Length) && (strData[i] == '\\'))
+					while ((i < strData.Length) && (strData[i] == '\\'))
 					{
 						++cBackslashes;
 						++i;
 					}
 
-					if(i == strData.Length)
+					if (i == strData.Length)
 						sb.Append('\\', cBackslashes); // Assume no quote follows
-					else if(strData[i] == '\"')
+					else if (strData[i] == '\"')
 					{
 						sb.Append('\\', (cBackslashes * 2) + 1);
 						sb.Append('\"');
@@ -508,7 +508,7 @@ namespace KeePassLib.Native
 					}
 					else sb.Append('\\', cBackslashes);
 				}
-				else if(ch == '\"') sb.Append("\\\"");
+				else if (ch == '\"') sb.Append("\\\"");
 				else sb.Append(ch);
 			}
 
@@ -518,11 +518,11 @@ namespace KeePassLib.Native
 		// Cf. EncodeDataToArgs
 		internal static string DecodeArgsToData(string strArgs)
 		{
-			if(strArgs == null) { Debug.Assert(false); return string.Empty; }
+			if (strArgs == null) { Debug.Assert(false); return string.Empty; }
 
 			Debug.Assert(StrUtil.Count(strArgs, "\"") == StrUtil.Count(strArgs, "\\\""));
 
-			if(MonoWorkarounds.IsRequired(3471228285U) && IsUnix())
+			if (MonoWorkarounds.IsRequired(3471228285U) && IsUnix())
 			{
 				string str = strArgs;
 
@@ -534,22 +534,22 @@ namespace KeePassLib.Native
 
 			StringBuilder sb = new StringBuilder();
 			int i = 0;
-			while(i < strArgs.Length)
+			while (i < strArgs.Length)
 			{
 				char ch = strArgs[i++];
 
-				if(ch == '\\')
+				if (ch == '\\')
 				{
 					int cBackslashes = 1;
-					while((i < strArgs.Length) && (strArgs[i] == '\\'))
+					while ((i < strArgs.Length) && (strArgs[i] == '\\'))
 					{
 						++cBackslashes;
 						++i;
 					}
 
-					if(i == strArgs.Length)
+					if (i == strArgs.Length)
 						sb.Append('\\', cBackslashes); // Assume no quote follows
-					else if(strArgs[i] == '\"')
+					else if (strArgs[i] == '\"')
 					{
 						Debug.Assert((cBackslashes & 1) == 1);
 						sb.Append('\\', (cBackslashes - 1) / 2);
@@ -572,8 +572,8 @@ namespace KeePassLib.Native
 		internal static void StartProcess(string strFile, string strArgs)
 		{
 			ProcessStartInfo psi = new ProcessStartInfo();
-			if(!string.IsNullOrEmpty(strFile)) psi.FileName = strFile;
-			if(!string.IsNullOrEmpty(strArgs)) psi.Arguments = strArgs;
+			if (!string.IsNullOrEmpty(strFile)) psi.FileName = strFile;
+			if (!string.IsNullOrEmpty(strArgs)) psi.Arguments = strArgs;
 			psi.UseShellExecute = true;
 
 			StartProcess(psi);
@@ -583,16 +583,16 @@ namespace KeePassLib.Native
 		{
 			Process p = StartProcessEx(psi);
 
-			try { if(p != null) p.Dispose(); }
-			catch(Exception) { Debug.Assert(false); }
+			try { if (p != null) p.Dispose(); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		internal static Process StartProcessEx(ProcessStartInfo psi)
 		{
-			if(psi == null) { Debug.Assert(false); return null; }
+			if (psi == null) { Debug.Assert(false); return null; }
 
 			string strFileOrg = psi.FileName;
-			if(string.IsNullOrEmpty(strFileOrg)) { Debug.Assert(false); return null; }
+			if (string.IsNullOrEmpty(strFileOrg)) { Debug.Assert(false); return null; }
 			string strArgsOrg = psi.Arguments;
 
 			Process p;
@@ -618,9 +618,9 @@ namespace KeePassLib.Native
 				"file:", "ftp:", "ftps:", "http:", "https:",
 				"mailto:", "scp:", "sftp:"
 			};
-			foreach(string strPfx in vUrlEncSchemes)
+			foreach (string strPfx in vUrlEncSchemes)
 			{
-				if(strFile.StartsWith(strPfx, StrUtil.CaseIgnoreCmp))
+				if (strFile.StartsWith(strPfx, StrUtil.CaseIgnoreCmp))
 				{
 					Debug.Assert(string.IsNullOrEmpty(strArgs));
 
@@ -631,11 +631,11 @@ namespace KeePassLib.Native
 				}
 			}
 
-			if(IsUnix())
+			if (IsUnix())
 			{
-				if(MonoWorkarounds.IsRequired(19836) && string.IsNullOrEmpty(strArgs))
+				if (MonoWorkarounds.IsRequired(19836) && string.IsNullOrEmpty(strArgs))
 				{
-					if(Regex.IsMatch(strFile, "^[a-zA-Z][a-zA-Z0-9\\+\\-\\.]*:",
+					if (Regex.IsMatch(strFile, "^[a-zA-Z][a-zA-Z0-9\\+\\-\\.]*:",
 						RegexOptions.Singleline) ||
 						strFile.EndsWith(".html", StrUtil.CaseIgnoreCmp))
 					{
@@ -649,7 +649,7 @@ namespace KeePassLib.Native
 				// Mono's Process.Start method replaces '\\' by '/',
 				// which may cause a different file to be executed;
 				// therefore, we refuse to start such files
-				if(strFile.Contains("\\") && MonoWorkarounds.IsRequired(190417))
+				if (strFile.Contains("\\") && MonoWorkarounds.IsRequired(190417))
 					throw new ArgumentException(KLRes.PathBackslash);
 
 				strFile = strFile.Replace("\\", "\\\\"); // If WA not required

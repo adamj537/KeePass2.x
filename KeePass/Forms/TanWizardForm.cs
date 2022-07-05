@@ -54,20 +54,20 @@ namespace KeePass.Forms
 
 		private void OnFormLoad(object sender, EventArgs e)
 		{
-			if(m_pwDatabase == null) { Debug.Assert(false); throw new InvalidOperationException(); }
-			if(m_pgStorage == null) { Debug.Assert(false); throw new InvalidOperationException(); }
+			if (m_pwDatabase == null) { Debug.Assert(false); throw new InvalidOperationException(); }
+			if (m_pgStorage == null) { Debug.Assert(false); throw new InvalidOperationException(); }
 
 			GlobalWindowManager.AddWindow(this);
 
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				KeePass.Properties.Resources.B48x48_Wizard, KPRes.TanWizard,
 				KPRes.TanWizardDesc);
-			
+
 			this.Icon = AppIcons.Default;
 			this.Text = KPRes.TanWizard;
 
 			Debug.Assert(!m_lblToGroup.AutoSize); // For RTL support
-			if(!string.IsNullOrEmpty(m_pgStorage.Name))
+			if (!string.IsNullOrEmpty(m_pgStorage.Name))
 				m_lblToGroup.Text += ": " + StrUtil.EncodeMenuText(
 					m_pgStorage.Name) + ".";
 			else
@@ -109,11 +109,11 @@ namespace KeePass.Forms
 			bool bSetIndex = m_cbNumberTans.Checked;
 			string strTanChars = m_tbTanChars.Text;
 
-			for(int i = 0; i < strText.Length; ++i)
+			for (int i = 0; i < strText.Length; ++i)
 			{
 				char ch = strText[i];
 
-				if(strTanChars.IndexOf(ch) >= 0)
+				if (strTanChars.IndexOf(ch) >= 0)
 					sb.Append(ch);
 				else
 				{
@@ -122,12 +122,12 @@ namespace KeePass.Forms
 				}
 			}
 
-			if(sb.Length > 0) AddTan(sb.ToString(), bSetIndex, ref nTanIndex);
+			if (sb.Length > 0) AddTan(sb.ToString(), bSetIndex, ref nTanIndex);
 		}
 
 		private void AddTan(string strTan, bool bSetIndex, ref int nTanIndex)
 		{
-			if(strTan.Length == 0) return;
+			if (strTan.Length == 0) return;
 
 			PwEntry pe = new PwEntry(true, true);
 			pe.Strings.Set(PwDefs.TitleField, new ProtectedString(
@@ -136,7 +136,7 @@ namespace KeePass.Forms
 			pe.Strings.Set(PwDefs.PasswordField, new ProtectedString(
 				m_pwDatabase.MemoryProtection.ProtectPassword, strTan));
 
-			if(bSetIndex && (nTanIndex >= 0))
+			if (bSetIndex && (nTanIndex >= 0))
 			{
 				Debug.Assert(PwDefs.TanIndexField == PwDefs.UserNameField);
 

@@ -76,9 +76,9 @@ namespace KeePass.DataExchange.Formats
 			XmlElement xmlRoot = doc.DocumentElement;
 			Debug.Assert(xmlRoot.Name == ElemRoot);
 
-			foreach(XmlNode xmlChild in xmlRoot.ChildNodes)
+			foreach (XmlNode xmlChild in xmlRoot.ChildNodes)
 			{
-				if(xmlChild.Name.Equals(ElemCategory, StrUtil.CaseIgnoreCmp))
+				if (xmlChild.Name.Equals(ElemCategory, StrUtil.CaseIgnoreCmp))
 					ImportCategory(xmlChild, pwStorage.RootGroup, pwStorage);
 				else { Debug.Assert(false); }
 			}
@@ -88,16 +88,16 @@ namespace KeePass.DataExchange.Formats
 			PwDatabase pwStorage)
 		{
 			string strName = ReadNameAttrib(xmlNode);
-			if(string.IsNullOrEmpty(strName)) strName = KPRes.Group;
+			if (string.IsNullOrEmpty(strName)) strName = KPRes.Group;
 
 			PwGroup pg = new PwGroup(true, true, strName, PwIcon.Folder);
 			pgContainer.AddGroup(pg, true);
 
-			foreach(XmlNode xmlChild in xmlNode.ChildNodes)
+			foreach (XmlNode xmlChild in xmlNode.ChildNodes)
 			{
-				if(xmlChild.Name.Equals(ElemEntry, StrUtil.CaseIgnoreCmp))
+				if (xmlChild.Name.Equals(ElemEntry, StrUtil.CaseIgnoreCmp))
 					ImportEntry(xmlChild, pg, pwStorage);
-				else if(xmlChild.Name.Equals(ElemCategory, StrUtil.CaseIgnoreCmp))
+				else if (xmlChild.Name.Equals(ElemCategory, StrUtil.CaseIgnoreCmp))
 					ImportCategory(xmlChild, pg, pwStorage);
 				else { Debug.Assert(false); }
 			}
@@ -108,25 +108,25 @@ namespace KeePass.DataExchange.Formats
 			PwEntry pe = new PwEntry(true, true);
 
 			string strTitle = ReadNameAttrib(xmlNode);
-			if(!string.IsNullOrEmpty(strTitle))
+			if (!string.IsNullOrEmpty(strTitle))
 				pe.Strings.Set(PwDefs.TitleField, new ProtectedString(
 					pwStorage.MemoryProtection.ProtectTitle, strTitle));
 
-			foreach(XmlNode xmlChild in xmlNode)
+			foreach (XmlNode xmlChild in xmlNode)
 			{
-				if(xmlChild.Name.Equals(ElemField, StrUtil.CaseIgnoreCmp))
+				if (xmlChild.Name.Equals(ElemField, StrUtil.CaseIgnoreCmp))
 				{
 					string strName = ReadNameAttrib(xmlChild);
-					if(string.IsNullOrEmpty(strName)) continue;
+					if (string.IsNullOrEmpty(strName)) continue;
 
 					string strValue = XmlUtil.SafeInnerText(xmlChild);
 
 					string strKpName = ImportUtil.MapNameToStandardField(strName, true);
-					if(string.IsNullOrEmpty(strKpName)) strKpName = strName;
+					if (string.IsNullOrEmpty(strKpName)) strKpName = strName;
 
 					ImportUtil.AppendToField(pe, strKpName, strValue, pwStorage);
 				}
-				else if(xmlChild.Name.Equals(ElemNotes, StrUtil.CaseIgnoreCmp))
+				else if (xmlChild.Name.Equals(ElemNotes, StrUtil.CaseIgnoreCmp))
 					ImportUtil.AppendToField(pe, PwDefs.NotesField,
 						XmlUtil.SafeInnerText(xmlChild), pwStorage);
 				else { Debug.Assert(false); }
@@ -138,18 +138,18 @@ namespace KeePass.DataExchange.Formats
 
 		private static string ReadNameAttrib(XmlNode xmlNode)
 		{
-			if(xmlNode == null) { Debug.Assert(false); return string.Empty; }
+			if (xmlNode == null) { Debug.Assert(false); return string.Empty; }
 
 			try
 			{
-				if(xmlNode.Attributes.GetNamedItem(AttribData) != null) // 1.7
+				if (xmlNode.Attributes.GetNamedItem(AttribData) != null) // 1.7
 					return (xmlNode.Attributes[AttribData].Value ?? string.Empty);
-				if(xmlNode.Attributes.GetNamedItem(AttribName) != null) // 2006
+				if (xmlNode.Attributes.GetNamedItem(AttribName) != null) // 2006
 					return (xmlNode.Attributes[AttribName].Value ?? string.Empty);
 
 				Debug.Assert(false);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return string.Empty;
 		}

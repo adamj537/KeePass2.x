@@ -103,29 +103,29 @@ namespace KeePass.App.Configuration
 
 		private static void GetConfigPaths()
 		{
-			if(g_strGlobalConfigFile == null)
+			if (g_strGlobalConfigFile == null)
 			{
 				Assembly asm = Assembly.GetExecutingAssembly();
-				if(asm == null) { Debug.Assert(false); return; }
+				if (asm == null) { Debug.Assert(false); return; }
 
 #if !KeePassLibSD
 				string strFile = null;
 
 				try { strFile = asm.Location; }
-				catch(Exception) { }
+				catch (Exception) { }
 
-				if(string.IsNullOrEmpty(strFile))
+				if (string.IsNullOrEmpty(strFile))
 					strFile = UrlUtil.FileUrlToPath(asm.GetName().CodeBase);
 #else
 				string strFile = UrlUtil.FileUrlToPath(asm.GetName().CodeBase);
 #endif
-				if(string.IsNullOrEmpty(strFile)) { Debug.Assert(false); strFile = string.Empty; }
+				if (string.IsNullOrEmpty(strFile)) { Debug.Assert(false); strFile = string.Empty; }
 
-				if(!string.IsNullOrEmpty(g_strBaseName))
+				if (!string.IsNullOrEmpty(g_strBaseName))
 					strFile = UrlUtil.GetFileDirectory(strFile, true, false) + g_strBaseName;
 				else
 				{
-					if(strFile.EndsWith(".exe", StrUtil.CaseIgnoreCmp) ||
+					if (strFile.EndsWith(".exe", StrUtil.CaseIgnoreCmp) ||
 						strFile.EndsWith(".dll", StrUtil.CaseIgnoreCmp))
 						strFile = strFile.Substring(0, strFile.Length - 4);
 				}
@@ -134,7 +134,7 @@ namespace KeePass.App.Configuration
 				g_strEnforcedConfigFile = strFile + g_strFileEnfSuffix;
 			}
 
-			if(g_strUserConfigFile == null)
+			if (g_strUserConfigFile == null)
 			{
 				string strBaseName = (!string.IsNullOrEmpty(g_strBaseName) ?
 					g_strBaseName : PwDefs.ShortProductName);
@@ -145,7 +145,7 @@ namespace KeePass.App.Configuration
 					strUserDir = Environment.GetFolderPath(
 						Environment.SpecialFolder.ApplicationData);
 				}
-				catch(Exception)
+				catch (Exception)
 				{
 					strUserDir = UrlUtil.GetFileDirectory(UrlUtil.FileUrlToPath(
 						Assembly.GetExecutingAssembly().GetName().CodeBase), true, false);
@@ -158,7 +158,7 @@ namespace KeePass.App.Configuration
 					strUserDirLocal = Environment.GetFolderPath(
 						Environment.SpecialFolder.LocalApplicationData);
 				}
-				catch(Exception) { strUserDirLocal = strUserDir; }
+				catch (Exception) { strUserDirLocal = strUserDir; }
 				strUserDirLocal = UrlUtil.EnsureTerminatingSeparator(strUserDirLocal, false);
 
 				g_strAppDataDir = strUserDir + strBaseName;
@@ -168,7 +168,7 @@ namespace KeePass.App.Configuration
 
 				string strLocalOvr = Program.CommandLineArgs[
 					AppDefs.CommandLineOptions.ConfigPathLocal];
-				if(!string.IsNullOrEmpty(strLocalOvr))
+				if (!string.IsNullOrEmpty(strLocalOvr))
 				{
 					string strWD = UrlUtil.EnsureTerminatingSeparator(
 						WinUtil.GetWorkingDirectory(), false);
@@ -184,15 +184,15 @@ namespace KeePass.App.Configuration
 
 		private static void EnsureDirOfFileExists(string strFile)
 		{
-			if(string.IsNullOrEmpty(strFile)) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strFile)) { Debug.Assert(false); return; }
 
 			try
 			{
 				string strDir = UrlUtil.GetFileDirectory(strFile, false, true);
-				if(!Directory.Exists(strDir))
+				if (!Directory.Exists(strDir))
 					Directory.CreateDirectory(strDir);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private static XmlDocument LoadEnforcedConfigFile()
@@ -204,7 +204,7 @@ namespace KeePass.App.Configuration
 			g_xdEnforced = null;
 			try
 			{
-				if(!File.Exists(g_strEnforcedConfigFile)) return null;
+				if (!File.Exists(g_strEnforcedConfigFile)) return null;
 
 				XmlDocument xd = XmlUtilEx.CreateXmlDocument();
 				xd.Load(g_strEnforcedConfigFile);
@@ -212,7 +212,7 @@ namespace KeePass.App.Configuration
 				g_xdEnforced = xd;
 				return xd;
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				FileDialogsEx.ShowConfigError(g_strEnforcedConfigFile,
 					ex.Message, false, false);
@@ -230,18 +230,18 @@ namespace KeePass.App.Configuration
 		private static AppConfigEx LoadConfigFileEx(string strFilePath,
 			XmlDocument xdEnforced)
 		{
-			if(string.IsNullOrEmpty(strFilePath)) { Debug.Assert(false); return null; }
+			if (string.IsNullOrEmpty(strFilePath)) { Debug.Assert(false); return null; }
 
 			AppConfigEx tConfig = null;
 			try
 			{
-				if(!File.Exists(strFilePath)) return null;
+				if (!File.Exists(strFilePath)) return null;
 
 				XmlSerializerEx xs = new XmlSerializerEx(typeof(AppConfigEx));
 
-				if(xdEnforced == null)
+				if (xdEnforced == null)
 				{
-					using(FileStream fs = new FileStream(strFilePath,
+					using (FileStream fs = new FileStream(strFilePath,
 						FileMode.Open, FileAccess.Read, FileShare.Read))
 					{
 						tConfig = (AppConfigEx)xs.Deserialize(fs);
@@ -257,23 +257,23 @@ namespace KeePass.App.Configuration
 					XmlUtil.MergeElements(xd.DocumentElement, xdEnforced.DocumentElement,
 						"/" + xd.DocumentElement.Name, null, ctx);
 
-					using(MemoryStream msW = new MemoryStream())
+					using (MemoryStream msW = new MemoryStream())
 					{
 						xd.Save(msW);
 
-						using(MemoryStream msR = new MemoryStream(msW.ToArray(), false))
+						using (MemoryStream msR = new MemoryStream(msW.ToArray(), false))
 						{
 							tConfig = (AppConfigEx)xs.Deserialize(msR);
 						}
 					}
 				}
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				FileDialogsEx.ShowConfigError(strFilePath, ex.Message, false, true);
 			}
 
-			if(tConfig != null) tConfig.OnLoad();
+			if (tConfig != null) tConfig.OnLoad();
 			return tConfig;
 		}
 
@@ -290,14 +290,14 @@ namespace KeePass.App.Configuration
 			XmlDocument xdEnforced = LoadEnforcedConfigFile();
 
 			AppConfigEx cfgGlobal = LoadConfigFileEx(g_strGlobalConfigFile, xdEnforced);
-			if((cfgGlobal != null) && !cfgGlobal.Meta.PreferUserConfiguration)
+			if ((cfgGlobal != null) && !cfgGlobal.Meta.PreferUserConfiguration)
 				return cfgGlobal; // Do not show error for corrupted local configuration
 
 			AppConfigEx cfgUser = LoadConfigFileEx(g_strUserConfigFile, xdEnforced);
 
-			if((cfgGlobal == null) && (cfgUser == null))
+			if ((cfgGlobal == null) && (cfgUser == null))
 			{
-				if(xdEnforced != null)
+				if (xdEnforced != null)
 				{
 					// Create an empty configuration file and merge it with
 					// the enforced configuration; this ensures that merge
@@ -309,18 +309,18 @@ namespace KeePass.App.Configuration
 							StrUtil.Utf8);
 
 						AppConfigEx cfg = LoadConfigFileEx(strFile, xdEnforced);
-						if(cfg != null) return cfg;
+						if (cfg != null) return cfg;
 						Debug.Assert(false);
 					}
-					catch(Exception) { Debug.Assert(false); }
+					catch (Exception) { Debug.Assert(false); }
 				}
 
 				AppConfigEx cfgNew = new AppConfigEx();
 				cfgNew.OnLoad(); // Create defaults
 				return cfgNew;
 			}
-			if((cfgGlobal != null) && (cfgUser == null)) return cfgGlobal;
-			if((cfgGlobal == null) && (cfgUser != null)) return cfgUser;
+			if ((cfgGlobal != null) && (cfgUser == null)) return cfgGlobal;
+			if ((cfgGlobal == null) && (cfgUser != null)) return cfgUser;
 
 			cfgUser.Meta.PreferUserConfiguration = cfgGlobal.Meta.PreferUserConfiguration;
 			return (cfgGlobal.Meta.PreferUserConfiguration ? cfgUser : cfgGlobal);
@@ -328,7 +328,7 @@ namespace KeePass.App.Configuration
 
 		private static bool SaveConfigFileEx(AppConfigEx tConfig, string strFilePath)
 		{
-			if(string.IsNullOrEmpty(strFilePath)) { Debug.Assert(false); return false; }
+			if (string.IsNullOrEmpty(strFilePath)) { Debug.Assert(false); return false; }
 
 			tConfig.OnSavePre();
 
@@ -341,12 +341,12 @@ namespace KeePass.App.Configuration
 			{
 				IOConnectionInfo iocPath = IOConnectionInfo.FromPath(strFilePath);
 
-				using(FileTransactionEx ft = new FileTransactionEx(iocPath,
+				using (FileTransactionEx ft = new FileTransactionEx(iocPath,
 					Program.Config.Application.UseTransactedConfigWrites))
 				{
-					using(Stream s = ft.OpenWrite())
+					using (Stream s = ft.OpenWrite())
 					{
-						using(XmlWriter xw = XmlUtilEx.CreateXmlWriter(s))
+						using (XmlWriter xw = XmlUtilEx.CreateXmlWriter(s))
 						{
 							XmlSerializerEx xs = new XmlSerializerEx(typeof(AppConfigEx));
 							xs.Serialize(xw, tConfig);
@@ -356,7 +356,7 @@ namespace KeePass.App.Configuration
 					ft.CommitWrite();
 				}
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				FileDialogsEx.ShowConfigError(strFilePath, ex.Message, true, false);
 				bResult = false;
@@ -370,24 +370,24 @@ namespace KeePass.App.Configuration
 
 		public static bool Save(AppConfigEx tConfig)
 		{
-			if(tConfig == null) { Debug.Assert(false); return false; }
-			if(!tConfig.Application.ConfigSave) return false;
+			if (tConfig == null) { Debug.Assert(false); return false; }
+			if (!tConfig.Application.ConfigSave) return false;
 
 			GetConfigPaths();
 
-			if(tConfig.Meta.PreferUserConfiguration)
+			if (tConfig.Meta.PreferUserConfiguration)
 			{
 				EnsureDirOfFileExists(g_strUserConfigFile);
-				if(SaveConfigFileEx(tConfig, g_strUserConfigFile)) return true;
+				if (SaveConfigFileEx(tConfig, g_strUserConfigFile)) return true;
 
-				if(SaveConfigFileEx(tConfig, g_strGlobalConfigFile)) return true;
+				if (SaveConfigFileEx(tConfig, g_strGlobalConfigFile)) return true;
 			}
 			else // Prefer global
 			{
-				if(SaveConfigFileEx(tConfig, g_strGlobalConfigFile)) return true;
+				if (SaveConfigFileEx(tConfig, g_strGlobalConfigFile)) return true;
 
 				EnsureDirOfFileExists(g_strUserConfigFile);
-				if(SaveConfigFileEx(tConfig, g_strUserConfigFile)) return true;
+				if (SaveConfigFileEx(tConfig, g_strUserConfigFile)) return true;
 			}
 
 			return false;
@@ -395,7 +395,7 @@ namespace KeePass.App.Configuration
 
 		internal static string TryCreateBackup(string strFilePath)
 		{
-			if(string.IsNullOrEmpty(strFilePath)) { Debug.Assert(false); return null; }
+			if (string.IsNullOrEmpty(strFilePath)) { Debug.Assert(false); return null; }
 
 			try
 			{
@@ -407,7 +407,7 @@ namespace KeePass.App.Configuration
 				File.Copy(strFilePath, strBackupPath, true);
 				return strBackupPath;
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return null;
 		}

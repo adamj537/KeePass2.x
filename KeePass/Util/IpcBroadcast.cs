@@ -44,9 +44,9 @@ namespace KeePass.Util
 		public static void Send(Program.AppMessage msg, int lParam,
 			bool bWaitWithTimeout)
 		{
-			if(!NativeLib.IsUnix()) // Windows
+			if (!NativeLib.IsUnix()) // Windows
 			{
-				if(bWaitWithTimeout)
+				if (bWaitWithTimeout)
 				{
 					IntPtr pResult = IntPtr.Zero;
 					NativeMethods.SendMessageTimeout((IntPtr)NativeMethods.HWND_BROADCAST,
@@ -86,21 +86,21 @@ namespace KeePass.Util
 		private static string g_strUserID = null;
 		internal static string GetUserID()
 		{
-			if(g_strUserID != null) return g_strUserID;
+			if (g_strUserID != null) return g_strUserID;
 
 			string strID = (Environment.UserName ?? string.Empty) + " @ " +
 				(Environment.MachineName ?? string.Empty);
 			byte[] pbID = StrUtil.Utf8.GetBytes(strID);
 
 			byte[] pbHash;
-			using(SHA1Managed h = new SHA1Managed())
+			using (SHA1Managed h = new SHA1Managed())
 			{
 				pbHash = h.ComputeHash(pbID);
 			}
 
 			string strShort = Convert.ToBase64String(pbHash);
 			strShort = StrUtil.AlphaNumericOnly(strShort);
-			if(strShort.Length > 8) strShort = strShort.Substring(0, 8);
+			if (strShort.Length > 8) strShort = strShort.Substring(0, 8);
 
 			g_strUserID = strShort;
 			return strShort;
@@ -110,7 +110,7 @@ namespace KeePass.Util
 		{
 			StopServer();
 
-			if(!NativeLib.IsUnix()) return; // Windows
+			if (!NativeLib.IsUnix()) return; // Windows
 
 			// IDictionary dOpt = new Hashtable();
 			// dOpt["portName"] = GetPortName();
@@ -128,7 +128,7 @@ namespace KeePass.Util
 
 		public static void StopServer()
 		{
-			if(!NativeLib.IsUnix()) return; // Windows
+			if (!NativeLib.IsUnix()) return; // Windows
 
 			// if(m_chClient != null)
 			// {

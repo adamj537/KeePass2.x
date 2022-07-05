@@ -53,7 +53,7 @@ namespace KeePass.DataExchange.Formats
 		public override void Import(PwDatabase pwStorage, Stream sInput,
 			IStatusLogger slLogger)
 		{
-			using(XmlReader xr = XmlUtilEx.CreateXmlReader(sInput))
+			using (XmlReader xr = XmlUtilEx.CreateXmlReader(sInput))
 			{
 				XPathDocument xpDoc = new XPathDocument(xr);
 				XPathNavigator xpNav = xpDoc.CreateNavigator();
@@ -66,7 +66,7 @@ namespace KeePass.DataExchange.Formats
 		private static void ImportLogins(XPathNavigator xpNav, PwDatabase pd)
 		{
 			XPathNodeIterator it = xpNav.Select("/root/Database/Logins/Login");
-			while(it.MoveNext())
+			while (it.MoveNext())
 			{
 				PwEntry pe = new PwEntry(true, true);
 				pd.RootGroup.AddEntry(pe, true);
@@ -82,12 +82,12 @@ namespace KeePass.DataExchange.Formats
 				SetTimes(pe, xpLogin);
 
 				string strID = xpLogin.GetAttribute("ID", string.Empty);
-				if(string.IsNullOrEmpty(strID)) continue;
+				if (string.IsNullOrEmpty(strID)) continue;
 
 				XPathNavigator xpAccLogin = xpNav.SelectSingleNode(
 					@"/root/Database/Accounts/Account/LoginLinks/Login[@SourceLoginID='" +
 					strID + @"']/../..");
-				if(xpAccLogin == null) { Debug.Assert(false); }
+				if (xpAccLogin == null) { Debug.Assert(false); }
 				else
 				{
 					Debug.Assert(xpAccLogin.Name == "Account");
@@ -110,7 +110,7 @@ namespace KeePass.DataExchange.Formats
 		private static void ImportMemos(XPathNavigator xpNav, PwDatabase pd)
 		{
 			XPathNodeIterator it = xpNav.Select("/root/Database/SecureMemos/SecureMemo");
-			while(it.MoveNext())
+			while (it.MoveNext())
 			{
 				PwEntry pe = new PwEntry(true, true);
 				pd.RootGroup.AddEntry(pe, true);
@@ -134,7 +134,7 @@ namespace KeePass.DataExchange.Formats
 					pe.Binaries.Set(KPRes.Notes + ".rtf", new ProtectedBinary(
 						false, StrUtil.Utf8.GetBytes(strMemoRtf)));
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 		}
 
@@ -142,12 +142,12 @@ namespace KeePass.DataExchange.Formats
 		{
 			DateTime dt;
 			string strTime = (xpNode.GetAttribute("CreatedDate", string.Empty));
-			if(DateTime.TryParse(strTime, out dt))
+			if (DateTime.TryParse(strTime, out dt))
 				pe.CreationTime = TimeUtil.ToUtc(dt, true);
 			else { Debug.Assert(false); }
 
 			strTime = (xpNode.GetAttribute("ModifiedDate", string.Empty));
-			if(DateTime.TryParse(strTime, out dt))
+			if (DateTime.TryParse(strTime, out dt))
 				pe.LastModificationTime = TimeUtil.ToUtc(dt, true);
 			else { Debug.Assert(false); }
 		}

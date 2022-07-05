@@ -79,8 +79,8 @@ namespace KeePass.Native
 		internal const int VK_CONTROL = 0x11;
 		internal const int VK_MENU = 0x12;
 		internal const int VK_CAPITAL = 0x14; // Caps Lock
-		// internal const int VK_ESCAPE = 0x1B;
-		// internal const int VK_SPACE = 0x20;
+											  // internal const int VK_ESCAPE = 0x1B;
+											  // internal const int VK_SPACE = 0x20;
 		internal const int VK_NUMLOCK = 0x90;
 		internal const int VK_LSHIFT = 0xA0;
 		internal const int VK_RSHIFT = 0xA1;

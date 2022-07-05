@@ -39,9 +39,9 @@ namespace KeePass.DataExchange
 			get
 			{
 				List<FileFormatProvider> l = new List<FileFormatProvider>();
-				foreach(FileFormatProvider p in m_lFormats)
+				foreach (FileFormatProvider p in m_lFormats)
 				{
-					if(p.SupportsImport) l.Add(p);
+					if (p.SupportsImport) l.Add(p);
 				}
 				return l;
 			}
@@ -52,9 +52,9 @@ namespace KeePass.DataExchange
 			get
 			{
 				List<FileFormatProvider> l = new List<FileFormatProvider>();
-				foreach(FileFormatProvider p in m_lFormats)
+				foreach (FileFormatProvider p in m_lFormats)
 				{
-					if(p.SupportsExport) l.Add(p);
+					if (p.SupportsExport) l.Add(p);
 				}
 				return l;
 			}
@@ -142,10 +142,10 @@ namespace KeePass.DataExchange
 
 #if DEBUG
 			// Ensure name uniqueness
-			for(int i = 0; i < l.Count; ++i)
+			for (int i = 0; i < l.Count; ++i)
 			{
 				FileFormatProvider pi = l[i];
-				for(int j = i + 1; j < l.Count; ++j)
+				for (int j = i + 1; j < l.Count; ++j)
 				{
 					FileFormatProvider pj = l[j];
 					Debug.Assert(!string.Equals(pi.FormatName, pj.FormatName, StrUtil.CaseIgnoreCmp));
@@ -155,14 +155,14 @@ namespace KeePass.DataExchange
 				}
 			}
 
-			foreach(FileFormatProvider p in l)
+			foreach (FileFormatProvider p in l)
 			{
 				Type t = p.GetType();
 				Debug.Assert(t.IsNotPublic);
 				Debug.Assert(t.IsSealed || l.Exists(px => px.GetType().IsSubclassOf(t)));
 
 				string strExts = p.DefaultExtension;
-				if(!string.IsNullOrEmpty(strExts))
+				if (!string.IsNullOrEmpty(strExts))
 				{
 					Debug.Assert(!strExts.StartsWith("."));
 					Debug.Assert(strExts.ToLower() == strExts);
@@ -187,34 +187,34 @@ namespace KeePass.DataExchange
 
 		public void Add(FileFormatProvider p)
 		{
-			if(p == null) { Debug.Assert(false); throw new ArgumentNullException("p"); }
+			if (p == null) { Debug.Assert(false); throw new ArgumentNullException("p"); }
 
 			m_lFormats.Add(p);
 		}
 
 		public bool Remove(FileFormatProvider p)
 		{
-			if(p == null) { Debug.Assert(false); throw new ArgumentNullException("p"); }
+			if (p == null) { Debug.Assert(false); throw new ArgumentNullException("p"); }
 
 			return m_lFormats.Remove(p);
 		}
 
 		public FileFormatProvider Find(string strName)
 		{
-			if(string.IsNullOrEmpty(strName)) return null;
+			if (string.IsNullOrEmpty(strName)) return null;
 
 			// Format and display names may differ (e.g. the Generic
 			// CSV Importer has different names)
 
-			foreach(FileFormatProvider p in m_lFormats)
+			foreach (FileFormatProvider p in m_lFormats)
 			{
-				if(string.Equals(strName, p.DisplayName, StrUtil.CaseIgnoreCmp))
+				if (string.Equals(strName, p.DisplayName, StrUtil.CaseIgnoreCmp))
 					return p;
 			}
 
-			foreach(FileFormatProvider p in m_lFormats)
+			foreach (FileFormatProvider p in m_lFormats)
 			{
-				if(string.Equals(strName, p.FormatName, StrUtil.CaseIgnoreCmp))
+				if (string.Equals(strName, p.FormatName, StrUtil.CaseIgnoreCmp))
 					return p;
 			}
 

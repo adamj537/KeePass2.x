@@ -93,11 +93,11 @@ namespace TrlUtil
 			UpdateControlTree();
 
 			UpdatePreviewForm();
-			if(m_prev != null) m_prev.Show();
+			if (m_prev != null) m_prev.Show();
 			else { Debug.Assert(false); }
 
 			try { this.DoubleBuffered = true; }
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			UpdateUIState();
 		}
@@ -125,7 +125,7 @@ namespace TrlUtil
 
 			m_trl.StringTables.Clear();
 
-			GFunc<string, KPStringTable> fAddST = delegate(string strName)
+			GFunc<string, KPStringTable> fAddST = delegate (string strName)
 			{
 				KPStringTable kpst = new KPStringTable();
 				kpst.Name = strName;
@@ -133,7 +133,7 @@ namespace TrlUtil
 				return kpst;
 			};
 
-			GAction<KPStringTable, ToolStrip, string> fAddMI = delegate(
+			GAction<KPStringTable, ToolStrip, string> fAddMI = delegate (
 				KPStringTable kpst, ToolStrip ts, string strGroupName)
 			{
 				ListViewGroup g = new ListViewGroup(strGroupName);
@@ -185,11 +185,11 @@ namespace TrlUtil
 			ListViewGroup lvg = new ListViewGroup(strGroupName);
 			m_lvStrings.Groups.Add(lvg);
 
-			foreach(string strKey in vKeyNames)
+			foreach (string strKey in vKeyNames)
 			{
 				PropertyInfo pi = tRes.GetProperty(strKey);
 				MethodInfo mi = pi.GetGetMethod();
-				if(mi.ReturnType != typeof(string))
+				if (mi.ReturnType != typeof(string))
 				{
 					MessageBox.Show(this, "Return type is not string:\r\n" +
 						strKey, TuDefs.ProductName + ": Fatal Error!",
@@ -198,7 +198,7 @@ namespace TrlUtil
 				}
 
 				string strEng = (mi.Invoke(null, null) as string);
-				if(strEng == null)
+				if (strEng == null)
 				{
 					MessageBox.Show(this, "English string is null:\r\n" +
 						strKey, TuDefs.ProductName + ": Fatal Error!",
@@ -227,9 +227,9 @@ namespace TrlUtil
 		private void TrlAddMenuItems(KPStringTable kpst, ListViewGroup grp,
 			ToolStripItemCollection tsic)
 		{
-			foreach(ToolStripItem tsi in tsic)
+			foreach (ToolStripItem tsi in tsic)
 			{
-				if((tsi.Text.Length != 0) && (!tsi.Text.StartsWith("<") ||
+				if ((tsi.Text.Length != 0) && (!tsi.Text.StartsWith("<") ||
 					!tsi.Text.EndsWith(">")))
 				{
 					KPStringTableItem kpstItem = new KPStringTableItem();
@@ -250,17 +250,17 @@ namespace TrlUtil
 				}
 
 				ToolStripMenuItem tsmi = (tsi as ToolStripMenuItem);
-				if(tsmi != null) TrlAddMenuItems(kpst, grp, tsmi.DropDownItems);
+				if (tsmi != null) TrlAddMenuItems(kpst, grp, tsmi.DropDownItems);
 			}
 		}
 
 		private void UpdateStringTableUI()
 		{
-			foreach(ListViewItem lvi in m_lvStrings.Items)
+			foreach (ListViewItem lvi in m_lvStrings.Items)
 			{
 				KPStringTableItem kpstItem = (lvi.Tag as KPStringTableItem);
 				Debug.Assert(kpstItem != null);
-				if(kpstItem == null) continue;
+				if (kpstItem == null) continue;
 
 				lvi.SubItems[2].Text = kpstItem.Value;
 			}
@@ -283,10 +283,10 @@ namespace TrlUtil
 			m_tbFind.Enabled = bTrlTab;
 
 			string str = TuDefs.ProductName + " " + PwDefs.VersionString;
-			if(!string.IsNullOrEmpty(m_strFile))
+			if (!string.IsNullOrEmpty(m_strFile))
 			{
 				string strFile = UrlUtil.GetFileName(m_strFile);
-				if(!string.IsNullOrEmpty(strFile))
+				if (!string.IsNullOrEmpty(strFile))
 					str = strFile + " - " + str;
 			}
 			this.Text = str;
@@ -299,7 +299,7 @@ namespace TrlUtil
 
 		private void SetCurrentFile(string strFilePath)
 		{
-			if(strFilePath == null) { Debug.Assert(false); strFilePath = string.Empty; }
+			if (strFilePath == null) { Debug.Assert(false); strFilePath = string.Empty; }
 
 			m_strFile = strFilePath;
 			Program.Config.Application.LastUsedFile = IOConnectionInfo.FromPath(strFilePath);
@@ -309,13 +309,13 @@ namespace TrlUtil
 
 		private static void InitFileDialog(FileDialogEx dlg)
 		{
-			if(dlg == null) { Debug.Assert(false); return; }
+			if (dlg == null) { Debug.Assert(false); return; }
 
 			IOConnectionInfo ioDir = Program.Config.Application.LastUsedFile;
-			if(!string.IsNullOrEmpty(ioDir.Path) && ioDir.IsLocalFile())
+			if (!string.IsNullOrEmpty(ioDir.Path) && ioDir.IsLocalFile())
 			{
 				string strDir = UrlUtil.GetFileDirectory(ioDir.Path, false, true);
-				if(Directory.Exists(strDir)) dlg.InitialDirectory = strDir;
+				if (Directory.Exists(strDir)) dlg.InitialDirectory = strDir;
 			}
 		}
 
@@ -325,7 +325,7 @@ namespace TrlUtil
 				m_strFileFilter, 1, null, false, string.Empty);
 			InitFileDialog(ofd);
 
-			if(ofd.ShowDialog() != DialogResult.OK) return;
+			if (ofd.ShowDialog() != DialogResult.OK) return;
 
 			KPTranslation kpTrl = null;
 			try
@@ -333,7 +333,7 @@ namespace TrlUtil
 				XmlSerializerEx xs = new XmlSerializerEx(typeof(KPTranslation));
 				kpTrl = KPTranslation.Load(ofd.FileName, xs);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				MessageBox.Show(this, ex.Message, TuDefs.ProductName,
 					MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -343,19 +343,19 @@ namespace TrlUtil
 			SetCurrentFile(ofd.FileName);
 
 			StringBuilder sbUnusedText = new StringBuilder();
-			if(kpTrl.UnusedText.Length > 0)
+			if (kpTrl.UnusedText.Length > 0)
 			{
-				if(kpTrl.UnusedText.EndsWith("\r") || kpTrl.UnusedText.EndsWith("\n"))
+				if (kpTrl.UnusedText.EndsWith("\r") || kpTrl.UnusedText.EndsWith("\n"))
 					sbUnusedText.Append(kpTrl.UnusedText);
 				else sbUnusedText.AppendLine(kpTrl.UnusedText);
 			}
 
 			m_trl.Properties = kpTrl.Properties;
-			foreach(KPStringTable kpstNew in kpTrl.StringTables)
+			foreach (KPStringTable kpstNew in kpTrl.StringTables)
 			{
-				foreach(KPStringTable kpstInto in m_trl.StringTables)
+				foreach (KPStringTable kpstInto in m_trl.StringTables)
 				{
-					if(kpstInto.Name == kpstNew.Name)
+					if (kpstInto.Name == kpstNew.Name)
 						MergeInStringTable(kpstInto, kpstNew, sbUnusedText);
 				}
 			}
@@ -374,21 +374,21 @@ namespace TrlUtil
 			UpdateStringTableUI();
 			UpdateStatusImages(null);
 			UpdatePreviewForm();
-			if(m_tabMain.SelectedTab == m_tabValidation)
+			if (m_tabMain.SelectedTab == m_tabValidation)
 				PerformValidation(null);
 		}
 
 		private void MergeInStringTable(KPStringTable tbInto, KPStringTable tbSource,
 			StringBuilder sbUnusedText)
 		{
-			foreach(KPStringTableItem kpSrc in tbSource.Strings)
+			foreach (KPStringTableItem kpSrc in tbSource.Strings)
 			{
 				bool bHasAssigned = false;
-				foreach(KPStringTableItem kpDst in tbInto.Strings)
+				foreach (KPStringTableItem kpDst in tbInto.Strings)
 				{
-					if(kpSrc.Name == kpDst.Name)
+					if (kpSrc.Name == kpDst.Name)
 					{
-						if(kpSrc.Value.Length > 0)
+						if (kpSrc.Value.Length > 0)
 						{
 							kpDst.Value = kpSrc.Value;
 							bHasAssigned = true;
@@ -396,10 +396,10 @@ namespace TrlUtil
 					}
 				}
 
-				if(!bHasAssigned)
+				if (!bHasAssigned)
 				{
 					string strTrimmed = kpSrc.Value.Trim();
-					if(strTrimmed.Length > 0) sbUnusedText.AppendLine(strTrimmed);
+					if (strTrimmed.Length > 0) sbUnusedText.AppendLine(strTrimmed);
 				}
 			}
 		}
@@ -427,36 +427,36 @@ namespace TrlUtil
 
 		private void UpdateStatusImages(TreeNodeCollection vtn)
 		{
-			if(vtn == null) vtn = m_tvControls.Nodes;
+			if (vtn == null) vtn = m_tvControls.Nodes;
 
-			foreach(TreeNode tn in vtn)
+			foreach (TreeNode tn in vtn)
 			{
 				KPFormCustomization kpfc = (tn.Tag as KPFormCustomization);
 				KPControlCustomization kpcc = (tn.Tag as KPControlCustomization);
 
-				if(kpfc != null)
+				if (kpfc != null)
 				{
 					tn.ImageIndex = m_inxWindow;
 					tn.SelectedImageIndex = m_inxWindow;
 				}
-				else if(kpcc != null)
+				else if (kpcc != null)
 				{
 					int iCurrentImage = tn.ImageIndex, iNewImage;
 
-					if(Array.IndexOf<string>(m_vEmpty, kpcc.TextEnglish) >= 0)
+					if (Array.IndexOf<string>(m_vEmpty, kpcc.TextEnglish) >= 0)
 						iNewImage = ((kpcc.Text.Length == 0) ? m_inxOk : m_inxWarning);
-					else if((kpcc.TextEnglish.Length > 0) && (kpcc.Text.Length > 0))
+					else if ((kpcc.TextEnglish.Length > 0) && (kpcc.Text.Length > 0))
 						iNewImage = m_inxOk;
-					else if((kpcc.TextEnglish.Length > 0) && (kpcc.Text.Length == 0))
+					else if ((kpcc.TextEnglish.Length > 0) && (kpcc.Text.Length == 0))
 						iNewImage = m_inxMissing;
-					else if((kpcc.TextEnglish.Length == 0) && (kpcc.Text.Length == 0))
+					else if ((kpcc.TextEnglish.Length == 0) && (kpcc.Text.Length == 0))
 						iNewImage = m_inxOk;
-					else if((kpcc.TextEnglish.Length == 0) && (kpcc.Text.Length > 0))
+					else if ((kpcc.TextEnglish.Length == 0) && (kpcc.Text.Length > 0))
 						iNewImage = m_inxWarning;
 					else
 						iNewImage = m_inxWarning;
 
-					if(iNewImage != iCurrentImage)
+					if (iNewImage != iCurrentImage)
 					{
 						tn.ImageIndex = iNewImage;
 						tn.SelectedImageIndex = iNewImage;
@@ -464,13 +464,13 @@ namespace TrlUtil
 				}
 				else { Debug.Assert(false); }
 
-				if(tn.Nodes != null) UpdateStatusImages(tn.Nodes);
+				if (tn.Nodes != null) UpdateStatusImages(tn.Nodes);
 			}
 		}
 
 		private void OnFileSave(object sender, EventArgs e)
 		{
-			if(string.IsNullOrEmpty(m_strFile))
+			if (string.IsNullOrEmpty(m_strFile))
 			{
 				OnFileSaveAs(sender, e);
 				return;
@@ -486,7 +486,7 @@ namespace TrlUtil
 				m_bModified = false;
 				PerformValidation(m_strFile);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				MessageBox.Show(this, ex.Message, TuDefs.ProductName,
 					MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -514,14 +514,14 @@ namespace TrlUtil
 
 		private void OnFormClosing(object sender, FormClosingEventArgs e)
 		{
-			if(m_bModified)
+			if (m_bModified)
 			{
-				if(MessageService.AskYesNo("Save changes before closing the file?",
+				if (MessageService.AskYesNo("Save changes before closing the file?",
 					TuDefs.ProductName))
 					OnFileSave(sender, e);
 				else m_bModified = false;
 			}
-			if(m_bModified) e.Cancel = true;
+			if (m_bModified) e.Cancel = true;
 		}
 
 		private void OnFileExit(object sender, EventArgs e)
@@ -533,7 +533,7 @@ namespace TrlUtil
 		{
 			ListView.SelectedListViewItemCollection lvsic =
 				m_lvStrings.SelectedItems;
-			if(lvsic.Count != 1)
+			if (lvsic.Count != 1)
 			{
 				m_tbStrEng.Text = string.Empty;
 				m_tbStrTrl.Text = string.Empty;
@@ -542,7 +542,7 @@ namespace TrlUtil
 
 			KPStringTableItem kpstItem = (lvsic[0].Tag as KPStringTableItem);
 			Debug.Assert(kpstItem != null);
-			if(kpstItem == null) return;
+			if (kpstItem == null) return;
 
 			UIUtil.SetMultilineText(m_tbStrEng, lvsic[0].SubItems[1].Text);
 			m_tbStrTrl.Text = lvsic[0].SubItems[2].Text;
@@ -550,16 +550,16 @@ namespace TrlUtil
 
 		private void OnStrKeyDown(object sender, KeyEventArgs e)
 		{
-			if(e.KeyCode == Keys.Return) // Return == Enter
+			if (e.KeyCode == Keys.Return) // Return == Enter
 			{
 				UIUtil.SetHandled(e, true);
 
 				ListView.SelectedListViewItemCollection lvsic =
 					m_lvStrings.SelectedItems;
-				if(lvsic.Count != 1) return;
+				if (lvsic.Count != 1) return;
 
 				KPStringTableItem kpstItem = (lvsic[0].Tag as KPStringTableItem);
-				if(kpstItem == null)
+				if (kpstItem == null)
 				{
 					Debug.Assert(false);
 					return;
@@ -569,7 +569,7 @@ namespace TrlUtil
 				UpdateStringTableUI();
 
 				int iIndex = lvsic[0].Index;
-				if(iIndex < m_lvStrings.Items.Count - 1)
+				if (iIndex < m_lvStrings.Items.Count - 1)
 				{
 					lvsic[0].Selected = false;
 					UIUtil.SetFocusedItem(m_lvStrings, m_lvStrings.Items[
@@ -582,7 +582,7 @@ namespace TrlUtil
 
 		private void OnStrKeyUp(object sender, KeyEventArgs e)
 		{
-			if(e.KeyCode == Keys.Return) // Return == Enter
+			if (e.KeyCode == Keys.Return) // Return == Enter
 				UIUtil.SetHandled(e, true);
 		}
 
@@ -592,7 +592,7 @@ namespace TrlUtil
 				m_tbNameEng.Text + ".lngx", m_strFileFilter, 1, "lngx", string.Empty);
 			InitFileDialog(sfd);
 
-			if(sfd.ShowDialog() != DialogResult.OK) return;
+			if (sfd.ShowDialog() != DialogResult.OK) return;
 
 			SetCurrentFile(sfd.FileName);
 
@@ -616,7 +616,7 @@ namespace TrlUtil
 
 			m_grpControl.Enabled = (kpcc != null);
 
-			if(kpcc == null)
+			if (kpcc == null)
 			{
 				m_tbCtrlEngText.Text = string.Empty;
 				m_tbCtrlTrlText.Text = string.Empty;
@@ -641,7 +641,7 @@ namespace TrlUtil
 		private void OnCtrlTrlTextChanged(object sender, EventArgs e)
 		{
 			string strText = StrUtil.SafeXmlString(m_tbCtrlTrlText.Text);
-			if((m_kpccLast != null) && (m_kpccLast.Text != strText))
+			if ((m_kpccLast != null) && (m_kpccLast.Text != strText))
 			{
 				m_kpccLast.Text = strText;
 				m_bModified = true;
@@ -653,7 +653,7 @@ namespace TrlUtil
 
 		private void OnLayoutXTextChanged(object sender, EventArgs e)
 		{
-			if(m_kpccLast != null)
+			if (m_kpccLast != null)
 			{
 				m_kpccLast.Layout.SetControlRelativeValue(
 					KpccLayout.LayoutParameterEx.X, m_tbLayoutX.Text);
@@ -664,7 +664,7 @@ namespace TrlUtil
 
 		private void OnLayoutYTextChanged(object sender, EventArgs e)
 		{
-			if(m_kpccLast != null)
+			if (m_kpccLast != null)
 			{
 				m_kpccLast.Layout.SetControlRelativeValue(
 					KpccLayout.LayoutParameterEx.Y, m_tbLayoutY.Text);
@@ -675,7 +675,7 @@ namespace TrlUtil
 
 		private void OnLayoutWidthTextChanged(object sender, EventArgs e)
 		{
-			if(m_kpccLast != null)
+			if (m_kpccLast != null)
 			{
 				m_kpccLast.Layout.SetControlRelativeValue(
 					KpccLayout.LayoutParameterEx.Width, m_tbLayoutW.Text);
@@ -686,7 +686,7 @@ namespace TrlUtil
 
 		private void OnLayoutHeightTextChanged(object sender, EventArgs e)
 		{
-			if(m_kpccLast != null)
+			if (m_kpccLast != null)
 			{
 				m_kpccLast.Layout.SetControlRelativeValue(
 					KpccLayout.LayoutParameterEx.Height, m_tbLayoutH.Text);
@@ -697,38 +697,38 @@ namespace TrlUtil
 
 		private void OnCtrlTrlTextKeyDown(object sender, KeyEventArgs e)
 		{
-			if(e.KeyCode == Keys.Return) // Return == Enter
+			if (e.KeyCode == Keys.Return) // Return == Enter
 			{
 				UIUtil.SetHandled(e, true);
 
 				TreeNode tn = m_tvControls.SelectedNode;
-				if(tn == null) return;
+				if (tn == null) return;
 
 				try
 				{
 					TreeNode tnNew = tn.NextNode;
-					if(tnNew != null) m_tvControls.SelectedNode = tnNew;
+					if (tnNew != null) m_tvControls.SelectedNode = tnNew;
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 		}
 
 		private void OnCtrlTrlTextKeyUp(object sender, KeyEventArgs e)
 		{
-			if(e.KeyCode == Keys.Return) // Return == Enter
+			if (e.KeyCode == Keys.Return) // Return == Enter
 				UIUtil.SetHandled(e, true);
 		}
 
 		private void UpdatePreviewForm()
 		{
 			TreeNode tn = m_tvControls.SelectedNode;
-			if(tn == null) return;
-			if(tn.Parent != null) tn = tn.Parent;
+			if (tn == null) return;
+			if (tn.Parent != null) tn = tn.Parent;
 			string strFormName = tn.Text;
 
-			foreach(KPFormCustomization kpfc in m_trl.Forms)
+			foreach (KPFormCustomization kpfc in m_trl.Forms)
 			{
-				if(kpfc.FullName.EndsWith(strFormName))
+				if (kpfc.FullName.EndsWith(strFormName))
 				{
 					UpdatePreviewForm(kpfc);
 					break;
@@ -740,16 +740,16 @@ namespace TrlUtil
 
 		private void UpdatePreviewForm(KPFormCustomization kpfc)
 		{
-			if(m_prev == null) { Debug.Assert(false); return; }
+			if (m_prev == null) { Debug.Assert(false); return; }
 
 			List<TabControl> lTabControls = new List<TabControl>();
 
 			m_prev.SuspendLayout();
 
-			m_prev.CopyForm(kpfc.FormEnglish, delegate(Control c)
+			m_prev.CopyForm(kpfc.FormEnglish, delegate (Control c)
 			{
 				TabControl tc = (c as TabControl);
-				if(tc != null) lTabControls.Add(tc);
+				if (tc != null) lTabControls.Add(tc);
 			});
 			kpfc.ApplyTo(m_prev);
 
@@ -758,9 +758,9 @@ namespace TrlUtil
 
 			m_prev.ResumeLayout();
 
-			foreach(TabControl tc in lTabControls)
+			foreach (TabControl tc in lTabControls)
 			{
-				tc.SelectedIndexChanged += delegate(object sender, EventArgs e)
+				tc.SelectedIndexChanged += delegate (object sender, EventArgs e)
 				{
 					m_prev.ShowAccelerators();
 				};
@@ -790,10 +790,10 @@ namespace TrlUtil
 				"|All Files (*.*)|*.*", 1, strFileExt, false,
 				AppDefs.FileDialogContext.Import);
 
-			if(ofd.ShowDialog() != DialogResult.OK) return;
+			if (ofd.ShowDialog() != DialogResult.OK) return;
 
 			try { f(m_trl, IOConnectionInfo.FromPath(ofd.FileName)); }
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				MessageBox.Show(this, ex.Message, TuDefs.ProductName,
 					MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -807,32 +807,32 @@ namespace TrlUtil
 		private void PerformQuickFind()
 		{
 			string str = m_tbFind.Text;
-			if(string.IsNullOrEmpty(str)) return;
+			if (string.IsNullOrEmpty(str)) return;
 
 			bool bResult = true;
-			if(m_tabMain.SelectedTab == m_tabStrings)
+			if (m_tabMain.SelectedTab == m_tabStrings)
 				bResult = PerformQuickFindStrings(str);
-			else if(m_tabMain.SelectedTab == m_tabDialogs)
+			else if (m_tabMain.SelectedTab == m_tabDialogs)
 				bResult = PerformQuickFindDialogs(str);
 
-			if(!bResult) m_tbFind.BackColor = AppDefs.ColorEditError;
+			if (!bResult) m_tbFind.BackColor = AppDefs.ColorEditError;
 		}
 
 		private bool PerformQuickFindStrings(string strFind)
 		{
 			int nItems = m_lvStrings.Items.Count;
-			if(nItems == 0) return false;
+			if (nItems == 0) return false;
 
 			ListViewItem lviStart = m_lvStrings.FocusedItem;
 			int iOffset = ((lviStart != null) ? (lviStart.Index + 1) : 0);
 
-			for(int i = 0; i < nItems; ++i)
+			for (int i = 0; i < nItems; ++i)
 			{
 				int j = ((iOffset + i) % nItems);
 				ListViewItem lvi = m_lvStrings.Items[j];
-				foreach(ListViewItem.ListViewSubItem lvsi in lvi.SubItems)
+				foreach (ListViewItem.ListViewSubItem lvsi in lvi.SubItems)
 				{
-					if(lvsi.Text.IndexOf(strFind, StrUtil.CaseIgnoreCmp) >= 0)
+					if (lvsi.Text.IndexOf(strFind, StrUtil.CaseIgnoreCmp) >= 0)
 					{
 						UIUtil.SetFocusedItem(m_lvStrings, lvi, false);
 						m_lvStrings.SelectedItems.Clear();
@@ -855,11 +855,11 @@ namespace TrlUtil
 
 			int iOffset = vNodes.IndexOf(m_tvControls.SelectedNode) + 1;
 
-			for(int i = 0; i < vNodes.Count; ++i)
+			for (int i = 0; i < vNodes.Count; ++i)
 			{
 				int j = ((iOffset + i) % vNodes.Count);
 
-				if(vValues[j].IndexOf(strFind, StrUtil.CaseIgnoreCmp) >= 0)
+				if (vValues[j].IndexOf(strFind, StrUtil.CaseIgnoreCmp) >= 0)
 				{
 					m_tvControls.SelectedNode = vNodes[j];
 					return true;
@@ -872,16 +872,16 @@ namespace TrlUtil
 		private void GetControlTreeItems(TreeNodeCollection tnBase,
 			List<TreeNode> vNodes, List<string> vValues)
 		{
-			foreach(TreeNode tn in tnBase)
+			foreach (TreeNode tn in tnBase)
 			{
 				KPFormCustomization kpfc = (tn.Tag as KPFormCustomization);
 				KPControlCustomization kpcc = (tn.Tag as KPControlCustomization);
 
 				vNodes.Add(tn);
-				if(kpfc != null)
+				if (kpfc != null)
 					vValues.Add(kpfc.Window.Name + "©" + kpfc.Window.TextEnglish +
 						"©" + kpfc.Window.Text);
-				else if(kpcc != null)
+				else if (kpcc != null)
 					vValues.Add(kpcc.Name + "©" + kpcc.TextEnglish + "©" + kpcc.Text);
 				else vValues.Add(tn.Text);
 
@@ -891,7 +891,7 @@ namespace TrlUtil
 
 		private void OnFindKeyDown(object sender, KeyEventArgs e)
 		{
-			if(e.KeyCode == Keys.Return) // Return == Enter
+			if (e.KeyCode == Keys.Return) // Return == Enter
 			{
 				UIUtil.SetHandled(e, true);
 				PerformQuickFind();
@@ -900,7 +900,7 @@ namespace TrlUtil
 
 		private void OnFindKeyUp(object sender, KeyEventArgs e)
 		{
-			if(e.KeyCode == Keys.Return) // Return == Enter
+			if (e.KeyCode == Keys.Return) // Return == Enter
 				UIUtil.SetHandled(e, true);
 		}
 
@@ -913,9 +913,9 @@ namespace TrlUtil
 		{
 			UpdateUIState();
 
-			if(m_uBlockTabAuto != 0) return;
+			if (m_uBlockTabAuto != 0) return;
 
-			if(m_tabMain.SelectedTab == m_tabValidation)
+			if (m_tabMain.SelectedTab == m_tabValidation)
 				PerformValidation(null);
 		}
 
@@ -938,22 +938,22 @@ namespace TrlUtil
 
 		private void OnEditNextUntrl(object sender, EventArgs e)
 		{
-			if(m_tabMain.SelectedTab == m_tabStrings)
+			if (m_tabMain.SelectedTab == m_tabStrings)
 			{
 				int nItems = m_lvStrings.Items.Count;
-				if(nItems == 0) { Debug.Assert(false); return; }
+				if (nItems == 0) { Debug.Assert(false); return; }
 
 				ListViewItem lviStart = m_lvStrings.FocusedItem;
 				int iOffset = ((lviStart != null) ? (lviStart.Index + 1) : 0);
 
-				for(int i = 0; i < nItems; ++i)
+				for (int i = 0; i < nItems; ++i)
 				{
 					int j = ((iOffset + i) % nItems);
 					ListViewItem lvi = m_lvStrings.Items[j];
 					KPStringTableItem kpstItem = (lvi.Tag as KPStringTableItem);
-					if(kpstItem == null) { Debug.Assert(false); continue; }
+					if (kpstItem == null) { Debug.Assert(false); continue; }
 
-					if(string.IsNullOrEmpty(kpstItem.Value) &&
+					if (string.IsNullOrEmpty(kpstItem.Value) &&
 						!string.IsNullOrEmpty(kpstItem.ValueEnglish))
 					{
 						m_lvStrings.EnsureVisible(j);
@@ -963,7 +963,7 @@ namespace TrlUtil
 					}
 				}
 			}
-			else if(m_tabMain.SelectedTab == m_tabDialogs)
+			else if (m_tabMain.SelectedTab == m_tabDialogs)
 			{
 				List<TreeNode> vNodes = new List<TreeNode>();
 				List<string> vValues = new List<string>();
@@ -971,24 +971,24 @@ namespace TrlUtil
 
 				int iOffset = vNodes.IndexOf(m_tvControls.SelectedNode) + 1;
 
-				for(int i = 0; i < vNodes.Count; ++i)
+				for (int i = 0; i < vNodes.Count; ++i)
 				{
 					int j = ((iOffset + i) % vNodes.Count);
 					TreeNode tn = vNodes[j];
 
 					string strEng = null, strText = null;
 					KPControlCustomization kpcc = (tn.Tag as KPControlCustomization);
-					if(kpcc != null)
+					if (kpcc != null)
 					{
 						strEng = kpcc.TextEnglish;
 						strText = kpcc.Text;
 					}
 
-					if(string.IsNullOrEmpty(strEng) || (Array.IndexOf<string>(
+					if (string.IsNullOrEmpty(strEng) || (Array.IndexOf<string>(
 						m_vEmpty, strEng) >= 0))
 						strText = "Dummy";
 
-					if(string.IsNullOrEmpty(strText))
+					if (string.IsNullOrEmpty(strText))
 					{
 						m_tvControls.SelectedNode = tn;
 						UIUtil.SetFocus(m_tbCtrlTrlText, this);
@@ -1046,26 +1046,26 @@ namespace TrlUtil
 			bool bRtl = m_trl.Properties.RightToLeft;
 			string np = MessageService.NewParagraph;
 
-			foreach(KPStringTable kpst in m_trl.StringTables)
+			foreach (KPStringTable kpst in m_trl.StringTables)
 			{
-				foreach(KPStringTableItem kpi in kpst.Strings)
+				foreach (KPStringTableItem kpi in kpst.Strings)
 				{
 					string strEn = kpi.ValueEnglish;
 					string strTrl = kpi.Value;
-					if(string.IsNullOrEmpty(strEn) || string.IsNullOrEmpty(strTrl)) continue;
+					if (string.IsNullOrEmpty(strEn) || string.IsNullOrEmpty(strTrl)) continue;
 
 					string strLoc = np + "(string table item '" + kpst.Name +
 						"." + kpi.Name + "').";
 
 					// Check case-sensitive words
-					foreach(string strWord in vCaseSensWords)
+					foreach (string strWord in vCaseSensWords)
 					{
 						bool bWordEn = (strEn.IndexOf(strWord) >= 0);
-						if(!bWordEn)
+						if (!bWordEn)
 						{
 							Debug.Assert(strEn.IndexOf(strWord, StrUtil.CaseIgnoreCmp) < 0);
 						}
-						if(bWordEn && (strTrl.IndexOf(strWord) < 0))
+						if (bWordEn && (strTrl.IndexOf(strWord) < 0))
 							lErrors.Add("The English string" + np + "\"" + strEn + "\"" + np +
 								"contains the case-sensitive word '" + strWord +
 								"', but the translated string does not:" + np +
@@ -1075,7 +1075,7 @@ namespace TrlUtil
 					// Check 3 dots
 					bool bEllEn = (strEn.EndsWith("...") || strEn.EndsWith(@"…"));
 					bool bEllTrl = (strTrl.EndsWith("...") || strTrl.EndsWith(@"…"));
-					if(bEllEn && !bEllTrl && !bRtl) // Check doesn't support RTL
+					if (bEllEn && !bEllTrl && !bRtl) // Check doesn't support RTL
 						lErrors.Add("The English string" + np + "\"" + strEn + "\"" + np +
 							"ends with 3 dots, but the translated string does not:" +
 							np + "\"" + strTrl + "\"" + strLoc);
@@ -1094,46 +1094,46 @@ namespace TrlUtil
 				AccelKeysCheck.Validate(m_trl, lErrors);
 
 				uint uUntrlStr = 0;
-				foreach(KPStringTable kpst in m_trl.StringTables)
+				foreach (KPStringTable kpst in m_trl.StringTables)
 				{
-					foreach(KPStringTableItem kpi in kpst.Strings)
+					foreach (KPStringTableItem kpi in kpst.Strings)
 					{
-						if(string.IsNullOrEmpty(kpi.Value) &&
+						if (string.IsNullOrEmpty(kpi.Value) &&
 							!string.IsNullOrEmpty(kpi.ValueEnglish))
 							++uUntrlStr;
 					}
 				}
-				if(uUntrlStr != 0)
+				if (uUntrlStr != 0)
 					lErrors.Add("There are " + uUntrlStr.ToString() +
 						" untranslated strings on the 'String Tables' tab.");
 
 				uint uUntrlCtrl = 0;
-				Action<KPControlCustomization> fCheckCtrl = delegate(
+				Action<KPControlCustomization> fCheckCtrl = delegate (
 					KPControlCustomization kpcc)
 				{
-					if(string.IsNullOrEmpty(kpcc.TextEnglish) ||
+					if (string.IsNullOrEmpty(kpcc.TextEnglish) ||
 						(Array.IndexOf<string>(m_vEmpty, kpcc.TextEnglish) >= 0))
 						return;
-					if(string.IsNullOrEmpty(kpcc.Text)) ++uUntrlCtrl;
+					if (string.IsNullOrEmpty(kpcc.Text)) ++uUntrlCtrl;
 				};
-				foreach(KPFormCustomization kpfc in m_trl.Forms)
+				foreach (KPFormCustomization kpfc in m_trl.Forms)
 				{
 					fCheckCtrl(kpfc.Window);
-					foreach(KPControlCustomization kpcc in kpfc.Controls)
+					foreach (KPControlCustomization kpcc in kpfc.Controls)
 						fCheckCtrl(kpcc);
 				}
-				if(uUntrlCtrl != 0)
+				if (uUntrlCtrl != 0)
 					lErrors.Add("There are " + uUntrlCtrl.ToString() +
 						" untranslated texts on the 'Dialogs' tab.");
 
-				if(!string.IsNullOrEmpty(m_trl.UnusedText))
+				if (!string.IsNullOrEmpty(m_trl.UnusedText))
 					lErrors.Add("It is recommended to clear the 'Unused Text' tab.");
 			}
-			catch(Exception ex) { Debug.Assert(false); lErrors.Add(ex.Message); }
+			catch (Exception ex) { Debug.Assert(false); lErrors.Add(ex.Message); }
 
 			RichTextBuilder rb = new RichTextBuilder();
 
-			if(!string.IsNullOrEmpty(strFileSaved))
+			if (!string.IsNullOrEmpty(strFileSaved))
 			{
 				rb.AppendLine("File has been saved to:", FontStyle.Bold);
 				rb.AppendLine(strFileSaved);
@@ -1145,10 +1145,10 @@ namespace TrlUtil
 
 			string strSep = new string('=', 72);
 
-			foreach(string strError in lErrors)
+			foreach (string strError in lErrors)
 			{
 				string str = (strError ?? string.Empty).Trim();
-				if(str.Length == 0) { Debug.Assert(false); str = "<Unknown>."; }
+				if (str.Length == 0) { Debug.Assert(false); str = "<Unknown>."; }
 
 				rb.AppendLine();
 				rb.AppendLine(strSep);
@@ -1158,24 +1158,24 @@ namespace TrlUtil
 
 			rb.Build(m_rtbValidation);
 
-			if(!string.IsNullOrEmpty(strFileSaved))
+			if (!string.IsNullOrEmpty(strFileSaved))
 				UIUtil.RtfLinkifyText(m_rtbValidation, strFileSaved, false);
 
-			foreach(KPStringTable kpst in m_trl.StringTables)
+			foreach (KPStringTable kpst in m_trl.StringTables)
 			{
-				foreach(KPStringTableItem kpi in kpst.Strings)
+				foreach (KPStringTableItem kpi in kpst.Strings)
 					UIUtil.RtfLinkifyText(m_rtbValidation, kpst.Name + "." +
 						kpi.Name, false, true);
 			}
 
-			foreach(string str in m_dControls.Keys)
+			foreach (string str in m_dControls.Keys)
 				UIUtil.RtfLinkifyText(m_rtbValidation, str, false, true);
 
 			UIUtil.RtfLinkifyText(m_rtbValidation, m_tabUnusedText.Text, false, true);
 
 			m_rtbValidation.Select(0, 0);
 
-			if(m_tabMain.SelectedTab != m_tabValidation)
+			if (m_tabMain.SelectedTab != m_tabValidation)
 			{
 				++m_uBlockTabAuto;
 				m_tabMain.SelectedTab = m_tabValidation;
@@ -1188,12 +1188,12 @@ namespace TrlUtil
 			try
 			{
 				string str = e.LinkText;
-				if(string.IsNullOrEmpty(str)) { Debug.Assert(false); return; }
+				if (string.IsNullOrEmpty(str)) { Debug.Assert(false); return; }
 
-				if(str == m_strFile)
+				if (str == m_strFile)
 				{
 					string strDir = UrlUtil.GetFileDirectory(str, true, true);
-					if(!NativeLib.IsUnix() || (strDir.IndexOfAny(new char[] {
+					if (!NativeLib.IsUnix() || (strDir.IndexOfAny(new char[] {
 						'\\', '\"', '\'' }) < 0)) // Open safe paths only
 					{
 						ProcessStartInfo psi = new ProcessStartInfo();
@@ -1201,13 +1201,13 @@ namespace TrlUtil
 						psi.UseShellExecute = true;
 
 						Process p = Process.Start(psi);
-						if(p != null) p.Dispose();
+						if (p != null) p.Dispose();
 					}
 					return;
 				}
 
 				ListViewItem lvi;
-				if(m_dStrings.TryGetValue(str, out lvi))
+				if (m_dStrings.TryGetValue(str, out lvi))
 				{
 					UIUtil.SetFocusedItem(m_lvStrings, lvi, true);
 					lvi.EnsureVisible();
@@ -1217,11 +1217,11 @@ namespace TrlUtil
 				}
 
 				TreeNode tn;
-				if(m_dControls.TryGetValue(str, out tn))
+				if (m_dControls.TryGetValue(str, out tn))
 				{
 					m_tvControls.SelectedNode = tn;
 
-					if(tn.Parent != null) tn.Parent.EnsureVisible();
+					if (tn.Parent != null) tn.Parent.EnsureVisible();
 					tn.EnsureVisible();
 
 					m_tabMain.SelectedTab = m_tabDialogs;
@@ -1229,7 +1229,7 @@ namespace TrlUtil
 					return;
 				}
 
-				if(str == m_tabUnusedText.Text)
+				if (str == m_tabUnusedText.Text)
 				{
 					m_tabMain.SelectedTab = m_tabUnusedText;
 					UIUtil.SetFocus(m_rtbUnusedText, this);
@@ -1238,12 +1238,12 @@ namespace TrlUtil
 
 				Debug.Assert(false);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private void OnFormClosed(object sender, FormClosedEventArgs e)
 		{
-			if(m_prev != null)
+			if (m_prev != null)
 			{
 				m_prev.Close();
 				m_prev.Dispose();

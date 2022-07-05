@@ -45,7 +45,7 @@ namespace KeePassLib.Cryptography.Cipher
 			get
 			{
 				PwUuid pu = g_uuidAes;
-				if(pu == null)
+				if (pu == null)
 				{
 					pu = new PwUuid(new byte[] {
 						0x31, 0xC1, 0xF2, 0xE6, 0xBF, 0x71, 0x43, 0x50,
@@ -73,23 +73,23 @@ namespace KeePassLib.Cryptography.Cipher
 
 		private static void ValidateArguments(Stream s, bool bEncrypt, byte[] pbKey, byte[] pbIV)
 		{
-			if(s == null) { Debug.Assert(false); throw new ArgumentNullException("s"); }
+			if (s == null) { Debug.Assert(false); throw new ArgumentNullException("s"); }
 
-			if(pbKey == null) { Debug.Assert(false); throw new ArgumentNullException("pbKey"); }
-			if(pbKey.Length != 32) { Debug.Assert(false); throw new ArgumentOutOfRangeException("pbKey"); }
+			if (pbKey == null) { Debug.Assert(false); throw new ArgumentNullException("pbKey"); }
+			if (pbKey.Length != 32) { Debug.Assert(false); throw new ArgumentOutOfRangeException("pbKey"); }
 
-			if(pbIV == null) { Debug.Assert(false); throw new ArgumentNullException("pbIV"); }
-			if(pbIV.Length != 16) { Debug.Assert(false); throw new ArgumentOutOfRangeException("pbIV"); }
+			if (pbIV == null) { Debug.Assert(false); throw new ArgumentNullException("pbIV"); }
+			if (pbIV.Length != 16) { Debug.Assert(false); throw new ArgumentOutOfRangeException("pbIV"); }
 
-			if(bEncrypt)
+			if (bEncrypt)
 			{
 				Debug.Assert(s.CanWrite);
-				if(!s.CanWrite) throw new ArgumentException("Stream must be writable!");
+				if (!s.CanWrite) throw new ArgumentException("Stream must be writable!");
 			}
 			else // Decrypt
 			{
 				Debug.Assert(s.CanRead);
-				if(!s.CanRead) throw new ArgumentException("Stream must be readable!");
+				if (!s.CanRead) throw new ArgumentException("Stream must be readable!");
 			}
 		}
 
@@ -101,7 +101,7 @@ namespace KeePassLib.Cryptography.Cipher
 			return StandardAesEngineExt.CreateStream(s, bEncrypt, pbKey, pbIV);
 #else
 			SymmetricAlgorithm a = CryptoUtil.CreateAes();
-			if(a.BlockSize != 128) // AES block size
+			if (a.BlockSize != 128) // AES block size
 			{
 				Debug.Assert(false);
 				a.BlockSize = 128;
@@ -111,9 +111,9 @@ namespace KeePassLib.Cryptography.Cipher
 			a.Padding = SaePaddingMode;
 
 			ICryptoTransform t;
-			if(bEncrypt) t = a.CreateEncryptor(pbKey, pbIV);
+			if (bEncrypt) t = a.CreateEncryptor(pbKey, pbIV);
 			else t = a.CreateDecryptor(pbKey, pbIV);
-			if(t == null) { Debug.Assert(false); throw new SecurityException("Unable to create AES transform!"); }
+			if (t == null) { Debug.Assert(false); throw new SecurityException("Unable to create AES transform!"); }
 
 			return new CryptoStreamEx(s, t, bEncrypt ? CryptoStreamMode.Write :
 				CryptoStreamMode.Read, a);

@@ -58,7 +58,7 @@ namespace KeePass.Util
 		{
 			get
 			{
-				if(m_strContentTag == null)
+				if (m_strContentTag == null)
 				{
 					// The tag should consist only of lower case letters
 					// and digits (for maximum compatibility); it can
@@ -72,7 +72,7 @@ namespace KeePass.Util
 					// tag that might then be deleted unintentionally
 					StringBuilder sb = new StringBuilder();
 					sb.Append(strL);
-					for(int i = strR.Length - 1; i >= 0; --i)
+					for (int i = strR.Length - 1; i >= 0; --i)
 						sb.Append(strR[i]); // Reverse
 
 					m_strContentTag = sb.ToString();
@@ -95,18 +95,18 @@ namespace KeePass.Util
 
 		internal void Clear(TempClearFlags f)
 		{
-			if((f & TempClearFlags.RegisteredFiles) != TempClearFlags.None)
+			if ((f & TempClearFlags.RegisteredFiles) != TempClearFlags.None)
 			{
 				List<string> lFailed = new List<string>();
 
-				foreach(string strFile in m_lFiles)
+				foreach (string strFile in m_lFiles)
 				{
 					try
 					{
-						if(File.Exists(strFile))
+						if (File.Exists(strFile))
 							File.Delete(strFile);
 					}
-					catch(Exception)
+					catch (Exception)
 					{
 						Debug.Assert(false);
 						lFailed.Add(strFile);
@@ -116,19 +116,19 @@ namespace KeePass.Util
 				m_lFiles = lFailed;
 			}
 
-			if((f & TempClearFlags.RegisteredDirectories) != TempClearFlags.None)
+			if ((f & TempClearFlags.RegisteredDirectories) != TempClearFlags.None)
 			{
 				List<KeyValuePair<string, bool>> lFailed =
 					new List<KeyValuePair<string, bool>>();
 
-				foreach(KeyValuePair<string, bool> kvp in m_lDirs)
+				foreach (KeyValuePair<string, bool> kvp in m_lDirs)
 				{
 					try
 					{
-						if(Directory.Exists(kvp.Key))
+						if (Directory.Exists(kvp.Key))
 							Directory.Delete(kvp.Key, kvp.Value);
 					}
-					catch(Exception)
+					catch (Exception)
 					{
 						Debug.Assert(false);
 						lFailed.Add(kvp);
@@ -138,7 +138,7 @@ namespace KeePass.Util
 				m_lDirs = lFailed;
 			}
 
-			if((f & TempClearFlags.ContentTaggedFiles) != TempClearFlags.None)
+			if ((f & TempClearFlags.ContentTaggedFiles) != TempClearFlags.None)
 				ClearContentAsync();
 		}
 
@@ -146,35 +146,35 @@ namespace KeePass.Util
 		{
 			try
 			{
-				while(Interlocked.Read(ref m_nThreads) > 0)
+				while (Interlocked.Read(ref m_nThreads) > 0)
 				{
 					Thread.Sleep(1);
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		public void Add(string strTempFile)
 		{
-			if(string.IsNullOrEmpty(strTempFile)) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strTempFile)) { Debug.Assert(false); return; }
 
 			m_lFiles.Add(strTempFile);
 		}
 
 		public void AddDirectory(string strTempDir, bool bRecursive)
 		{
-			if(string.IsNullOrEmpty(strTempDir)) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strTempDir)) { Debug.Assert(false); return; }
 
 			m_lDirs.Add(new KeyValuePair<string, bool>(strTempDir, bRecursive));
 		}
 
 		public void AddContent(string strFilePattern, bool bRecursive)
 		{
-			if(string.IsNullOrEmpty(strFilePattern)) { Debug.Assert(false); return; }
+			if (string.IsNullOrEmpty(strFilePattern)) { Debug.Assert(false); return; }
 
-			lock(m_oContentLocSync)
+			lock (m_oContentLocSync)
 			{
-				if(m_dContentLoc.ContainsKey(strFilePattern) && !bRecursive)
+				if (m_dContentLoc.ContainsKey(strFilePattern) && !bRecursive)
 					return; // Do not overwrite recursive with non-recursive
 
 				m_dContentLoc[strFilePattern] = bRecursive;
@@ -183,7 +183,7 @@ namespace KeePass.Util
 
 		public void AddWebBrowserPrintContent()
 		{
-			if(!NativeLib.IsUnix())
+			if (!NativeLib.IsUnix())
 			{
 				// MSHTML may create and forget temporary files under
 				// C:\\Users\\USER\\AppData\\Local\\Temp\\*.htm
@@ -202,10 +202,10 @@ namespace KeePass.Util
 			string strFile = Path.GetTempFileName();
 			m_lFiles.Add(strFile);
 
-			if(!bCreateEmptyFile)
+			if (!bCreateEmptyFile)
 			{
 				try { File.Delete(strFile); }
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 
 			return strFile;
@@ -213,12 +213,12 @@ namespace KeePass.Util
 
 		public string GetTempFileName(string strFileExt)
 		{
-			if(string.IsNullOrEmpty(strFileExt))
+			if (string.IsNullOrEmpty(strFileExt))
 				return GetTempFileName();
 
 			try
 			{
-				while(true)
+				while (true)
 				{
 					string str = UrlUtil.EnsureTerminatingSeparator(
 						UrlUtil.GetTempPath(), false);
@@ -231,24 +231,24 @@ namespace KeePass.Util
 
 					str += "." + strFileExt;
 
-					if(!File.Exists(str))
+					if (!File.Exists(str))
 					{
 						m_lFiles.Add(str);
 						return str;
 					}
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return GetTempFileName();
 		}
 
 		public bool Delete(string strTempFile)
 		{
-			if(string.IsNullOrEmpty(strTempFile)) { Debug.Assert(false); return false; }
+			if (string.IsNullOrEmpty(strTempFile)) { Debug.Assert(false); return false; }
 
 			int i = m_lFiles.IndexOf(strTempFile);
-			if(i < 0) { Debug.Assert(false); return false; }
+			if (i < 0) { Debug.Assert(false); return false; }
 
 			bool bResult = false;
 			try
@@ -258,21 +258,21 @@ namespace KeePass.Util
 				m_lFiles.RemoveAt(i);
 				bResult = true;
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return bResult;
 		}
 
 		private void ClearContentAsync()
 		{
-			lock(m_oContentLocSync)
+			lock (m_oContentLocSync)
 			{
-				if(m_dContentLoc.Count == 0) return;
+				if (m_dContentLoc.Count == 0) return;
 			}
 
 			Interlocked.Increment(ref m_nThreads); // Here, not in thread
 			try { ThreadPool.QueueUserWorkItem(this.ClearContentTh); }
-			catch(Exception)
+			catch (Exception)
 			{
 				Debug.Assert(false);
 				Interlocked.Decrement(ref m_nThreads);
@@ -286,7 +286,7 @@ namespace KeePass.Util
 				Debug.Assert(Interlocked.Read(ref m_nThreads) > 0);
 
 				string strTag = m_strContentTag;
-				if(string.IsNullOrEmpty(strTag)) { Debug.Assert(false); return; }
+				if (string.IsNullOrEmpty(strTag)) { Debug.Assert(false); return; }
 
 				UnicodeEncoding ue = new UnicodeEncoding(false, false, false);
 				byte[] pbTagA = StrUtil.Utf8.GetBytes(strTag);
@@ -295,13 +295,13 @@ namespace KeePass.Util
 				string strTempPath = UrlUtil.GetTempPath();
 
 				Dictionary<string, bool> dToDo;
-				lock(m_oContentLocSync)
+				lock (m_oContentLocSync)
 				{
 					dToDo = new Dictionary<string, bool>(m_dContentLoc);
 					m_dContentLoc.Clear();
 				}
 
-				foreach(KeyValuePair<string, bool> kvp in dToDo)
+				foreach (KeyValuePair<string, bool> kvp in dToDo)
 				{
 					bool bSuccess = false;
 					try
@@ -309,18 +309,18 @@ namespace KeePass.Util
 						bSuccess = ClearContentPriv(strTempPath, kvp.Key, kvp.Value,
 							pbTagA, pbTagW);
 					}
-					catch(Exception) { Debug.Assert(false); }
+					catch (Exception) { Debug.Assert(false); }
 
-					if(!bSuccess)
+					if (!bSuccess)
 					{
-						lock(m_oContentLocSync)
+						lock (m_oContentLocSync)
 						{
 							m_dContentLoc[kvp.Key] = kvp.Value; // Try again next time
 						}
 					}
 				}
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 			finally { Interlocked.Decrement(ref m_nThreads); }
 		}
 
@@ -331,23 +331,23 @@ namespace KeePass.Util
 				(bRecursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly));
 			bool bSuccess = true;
 
-			foreach(string strFile in lFiles)
+			foreach (string strFile in lFiles)
 			{
-				if(string.IsNullOrEmpty(strFile)) continue;
-				if((strFile == ".") || (strFile == "..")) continue;
+				if (string.IsNullOrEmpty(strFile)) continue;
+				if ((strFile == ".") || (strFile == "..")) continue;
 
 				try
 				{
 					byte[] pb = File.ReadAllBytes(strFile);
-					if(pb == null) { Debug.Assert(false); continue; }
+					if (pb == null) { Debug.Assert(false); continue; }
 
-					if((MemUtil.IndexOf(pb, pbTagA) >= 0) ||
+					if ((MemUtil.IndexOf(pb, pbTagA) >= 0) ||
 						(MemUtil.IndexOf(pb, pbTagW) >= 0))
 					{
 						File.Delete(strFile);
 					}
 				}
-				catch(Exception) { Debug.Assert(false); bSuccess = false; }
+				catch (Exception) { Debug.Assert(false); bSuccess = false; }
 			}
 
 			return bSuccess;

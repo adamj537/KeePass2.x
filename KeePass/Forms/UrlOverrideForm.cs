@@ -48,7 +48,7 @@ namespace KeePass.Forms
 
 		private void OnFormLoad(object sender, EventArgs e)
 		{
-			if(m_ovr == null) throw new InvalidOperationException();
+			if (m_ovr == null) throw new InvalidOperationException();
 
 			GlobalWindowManager.AddWindow(this);
 

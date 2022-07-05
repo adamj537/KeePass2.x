@@ -87,7 +87,7 @@ namespace KeePassLib.Keys
 		/// <param name="pKey">User key to add.</param>
 		public void AddUserKey(IUserKey pKey)
 		{
-			Debug.Assert(pKey != null); if(pKey == null) throw new ArgumentNullException("pKey");
+			Debug.Assert(pKey != null); if (pKey == null) throw new ArgumentNullException("pKey");
 
 			m_vUserKeys.Add(pKey);
 		}
@@ -99,7 +99,7 @@ namespace KeePassLib.Keys
 		/// <returns>Returns <c>true</c> if the key was removed successfully.</returns>
 		public bool RemoveUserKey(IUserKey pKey)
 		{
-			Debug.Assert(pKey != null); if(pKey == null) throw new ArgumentNullException("pKey");
+			Debug.Assert(pKey != null); if (pKey == null) throw new ArgumentNullException("pKey");
 
 			Debug.Assert(m_vUserKeys.IndexOf(pKey) >= 0);
 			return m_vUserKeys.Remove(pKey);
@@ -116,17 +116,17 @@ namespace KeePassLib.Keys
 		public bool ContainsType(Type tUserKeyType)
 		{
 			Debug.Assert(tUserKeyType != null);
-			if(tUserKeyType == null) throw new ArgumentNullException("tUserKeyType");
+			if (tUserKeyType == null) throw new ArgumentNullException("tUserKeyType");
 
-			foreach(IUserKey pKey in m_vUserKeys)
+			foreach (IUserKey pKey in m_vUserKeys)
 			{
-				if(pKey == null) { Debug.Assert(false); continue; }
+				if (pKey == null) { Debug.Assert(false); continue; }
 
 #if KeePassUAP
 				if(pKey.GetType() == tUserKeyType)
 					return true;
 #else
-				if(tUserKeyType.IsInstanceOfType(pKey))
+				if (tUserKeyType.IsInstanceOfType(pKey))
 					return true;
 #endif
 			}
@@ -143,17 +143,17 @@ namespace KeePassLib.Keys
 		public IUserKey GetUserKey(Type tUserKeyType)
 		{
 			Debug.Assert(tUserKeyType != null);
-			if(tUserKeyType == null) throw new ArgumentNullException("tUserKeyType");
+			if (tUserKeyType == null) throw new ArgumentNullException("tUserKeyType");
 
-			foreach(IUserKey pKey in m_vUserKeys)
+			foreach (IUserKey pKey in m_vUserKeys)
 			{
-				if(pKey == null) { Debug.Assert(false); continue; }
+				if (pKey == null) { Debug.Assert(false); continue; }
 
 #if KeePassUAP
 				if(pKey.GetType() == tUserKeyType)
 					return pKey;
 #else
-				if(tUserKeyType.IsInstanceOfType(pKey))
+				if (tUserKeyType.IsInstanceOfType(pKey))
 					return pKey;
 #endif
 			}
@@ -171,10 +171,10 @@ namespace KeePassLib.Keys
 
 			List<byte[]> lData = new List<byte[]>();
 			int cbData = 0;
-			foreach(IUserKey pKey in m_vUserKeys)
+			foreach (IUserKey pKey in m_vUserKeys)
 			{
 				ProtectedBinary b = pKey.KeyData;
-				if(b != null)
+				if (b != null)
 				{
 					byte[] pbKeyData = b.ReadData();
 					lData.Add(pbKeyData);
@@ -184,7 +184,7 @@ namespace KeePassLib.Keys
 
 			byte[] pbAllData = new byte[cbData];
 			int p = 0;
-			foreach(byte[] pbData in lData)
+			foreach (byte[] pbData in lData)
 			{
 				Array.Copy(pbData, 0, pbAllData, p, pbData.Length);
 				p += pbData.Length;
@@ -199,7 +199,7 @@ namespace KeePassLib.Keys
 
 		public bool EqualsValue(CompositeKey ckOther)
 		{
-			if(ckOther == null) throw new ArgumentNullException("ckOther");
+			if (ckOther == null) throw new ArgumentNullException("ckOther");
 
 			bool bEqual;
 			byte[] pbThis = CreateRawCompositeKey32();
@@ -218,9 +218,9 @@ namespace KeePassLib.Keys
 		public ProtectedBinary GenerateKey32(byte[] pbKeySeed32, ulong uNumRounds)
 		{
 			Debug.Assert(pbKeySeed32 != null);
-			if(pbKeySeed32 == null) throw new ArgumentNullException("pbKeySeed32");
+			if (pbKeySeed32 == null) throw new ArgumentNullException("pbKeySeed32");
 			Debug.Assert(pbKeySeed32.Length == 32);
-			if(pbKeySeed32.Length != 32) throw new ArgumentException("pbKeySeed32");
+			if (pbKeySeed32.Length != 32) throw new ArgumentException("pbKeySeed32");
 
 			AesKdf kdf = new AesKdf();
 			KdfParameters p = kdf.GetDefaultParameters();
@@ -235,7 +235,7 @@ namespace KeePassLib.Keys
 		/// </summary>
 		public ProtectedBinary GenerateKey32(KdfParameters p)
 		{
-			if(p == null) { Debug.Assert(false); throw new ArgumentNullException("p"); }
+			if (p == null) { Debug.Assert(false); throw new ArgumentNullException("p"); }
 
 			byte[] pbRaw32 = null, pbTrf32 = null;
 			ProtectedBinary pbRet = null;
@@ -243,18 +243,18 @@ namespace KeePassLib.Keys
 			try
 			{
 				pbRaw32 = CreateRawCompositeKey32();
-				if((pbRaw32 == null) || (pbRaw32.Length != 32))
-					{ Debug.Assert(false); return null; }
+				if ((pbRaw32 == null) || (pbRaw32.Length != 32))
+				{ Debug.Assert(false); return null; }
 
 				KdfEngine kdf = KdfPool.Get(p.KdfUuid);
-				if(kdf == null) // CryptographicExceptions are translated to "file corrupted"
+				if (kdf == null) // CryptographicExceptions are translated to "file corrupted"
 					throw new Exception(KLRes.UnknownKdf + MessageService.NewParagraph +
 						KLRes.FileNewVerOrPlgReq + MessageService.NewParagraph +
 						"UUID: " + p.KdfUuid.ToHexString() + ".");
 
 				pbTrf32 = kdf.Transform(pbRaw32, p);
-				if(pbTrf32 == null) { Debug.Assert(false); return null; }
-				if(pbTrf32.Length != 32)
+				if (pbTrf32 == null) { Debug.Assert(false); return null; }
+				if (pbTrf32.Length != 32)
 				{
 					Debug.Assert(false);
 					pbTrf32 = CryptoUtil.HashSha256(pbTrf32);
@@ -264,8 +264,8 @@ namespace KeePassLib.Keys
 			}
 			finally
 			{
-				if(pbRaw32 != null) MemUtil.ZeroByteArray(pbRaw32);
-				if(pbTrf32 != null) MemUtil.ZeroByteArray(pbTrf32);
+				if (pbRaw32 != null) MemUtil.ZeroByteArray(pbRaw32);
+				if (pbTrf32 != null) MemUtil.ZeroByteArray(pbTrf32);
 			}
 
 			return pbRet;
@@ -279,21 +279,21 @@ namespace KeePassLib.Keys
 
 		internal ProtectedBinary GenerateKey32Ex(KdfParameters p, IStatusLogger sl)
 		{
-			if(sl == null) return GenerateKey32(p);
+			if (sl == null) return GenerateKey32(p);
 
 			CkGkTaskInfo ti = new CkGkTaskInfo();
 
-			ThreadStart f = delegate()
+			ThreadStart f = delegate ()
 			{
-				if(ti == null) { Debug.Assert(false); return; }
+				if (ti == null) { Debug.Assert(false); return; }
 
 				try { ti.Key = GenerateKey32(p); }
-				catch(ThreadAbortException exAbort)
+				catch (ThreadAbortException exAbort)
 				{
 					ti.Error = ((exAbort != null) ? exAbort.Message : null);
 					Thread.ResetAbort();
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
 					Debug.Assert(false);
 					ti.Error = ((ex != null) ? ex.Message : null);
@@ -304,18 +304,18 @@ namespace KeePassLib.Keys
 			th.Start();
 
 			Debug.Assert(PwDefs.UIUpdateDelay >= 2);
-			while(!th.Join(PwDefs.UIUpdateDelay / 2))
+			while (!th.Join(PwDefs.UIUpdateDelay / 2))
 			{
-				if(!sl.ContinueWork())
+				if (!sl.ContinueWork())
 				{
 					try { th.Abort(); }
-					catch(Exception) { Debug.Assert(false); }
+					catch (Exception) { Debug.Assert(false); }
 
 					throw new OperationCanceledException();
 				}
 			}
 
-			if(!string.IsNullOrEmpty(ti.Error)) throw new Exception(ti.Error);
+			if (!string.IsNullOrEmpty(ti.Error)) throw new Exception(ti.Error);
 
 			Debug.Assert(ti.Key != null);
 			return ti.Key;
@@ -325,13 +325,13 @@ namespace KeePassLib.Keys
 		{
 			int nAccounts = 0;
 
-			foreach(IUserKey uKey in m_vUserKeys)
+			foreach (IUserKey uKey in m_vUserKeys)
 			{
-				if(uKey is KcpUserAccount)
+				if (uKey is KcpUserAccount)
 					++nAccounts;
 			}
 
-			if(nAccounts >= 2)
+			if (nAccounts >= 2)
 			{
 				Debug.Assert(false);
 				throw new InvalidOperationException();

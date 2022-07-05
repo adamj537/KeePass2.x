@@ -87,11 +87,11 @@ namespace KeePass.DataExchange.Formats
 			XmlElement xmlRoot = doc.DocumentElement;
 			Debug.Assert(xmlRoot.Name == ElemRoot);
 
-			foreach(XmlNode xmlChild in xmlRoot.ChildNodes)
+			foreach (XmlNode xmlChild in xmlRoot.ChildNodes)
 			{
-				if(xmlChild.Name == ElemData)
+				if (xmlChild.Name == ElemData)
 					LoadDataNode(xmlChild, pwStorage, slLogger);
-				else if(xmlChild.Name == ElemInfo) { }
+				else if (xmlChild.Name == ElemInfo) { }
 				else { Debug.Assert(false); }
 			}
 		}
@@ -100,7 +100,7 @@ namespace KeePass.DataExchange.Formats
 			IStatusLogger slLogger)
 		{
 			uint uCat = 0, uCount = (uint)xmlNode.ChildNodes.Count;
-			foreach(XmlNode xmlCategory in xmlNode.ChildNodes)
+			foreach (XmlNode xmlCategory in xmlNode.ChildNodes)
 			{
 				LoadCategoryNode(xmlCategory, pwStorage);
 				++uCat;
@@ -115,18 +115,18 @@ namespace KeePass.DataExchange.Formats
 
 			PwEntry pe = new PwEntry(true, true);
 
-			foreach(XmlNode xmlChild in xmlNode)
+			foreach (XmlNode xmlChild in xmlNode)
 			{
 				string strInner = XmlUtil.SafeInnerText(xmlChild);
-				if(strInner == ValueNoData) strInner = string.Empty;
+				if (strInner == ValueNoData) strInner = string.Empty;
 
-				if(xmlChild.Name == ElemCategory)
+				if (xmlChild.Name == ElemCategory)
 				{
 					// strInner may contain special characters, thus
 					// update the group name now
 					pg.Name = strInner;
 				}
-				else if(xmlChild.Name == ElemTitle)
+				else if (xmlChild.Name == ElemTitle)
 				{
 					AddEntryIfValid(pg, ref pe);
 
@@ -134,21 +134,21 @@ namespace KeePass.DataExchange.Formats
 					pe.Strings.Set(PwDefs.TitleField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectTitle, strInner));
 				}
-				else if(xmlChild.Name == ElemUserName)
+				else if (xmlChild.Name == ElemUserName)
 					pe.Strings.Set(PwDefs.UserNameField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectUserName, strInner));
-				else if(xmlChild.Name == ElemPassword1)
+				else if (xmlChild.Name == ElemPassword1)
 					pe.Strings.Set(PwDefs.PasswordField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectPassword, strInner));
-				else if(xmlChild.Name == ElemPassword2)
+				else if (xmlChild.Name == ElemPassword2)
 				{
-					if((strInner.Length > 0) && (strInner != ValueNone))
+					if ((strInner.Length > 0) && (strInner != ValueNone))
 						pe.Strings.Set(PwDefs.PasswordField + @" 2", new ProtectedString(
 							pwStorage.MemoryProtection.ProtectPassword, strInner));
 				}
-				else if(xmlChild.Name == ElemExpiry)
+				else if (xmlChild.Name == ElemExpiry)
 				{
-					if((strInner.Length > 0) && (strInner != ValueNever))
+					if ((strInner.Length > 0) && (strInner != ValueNever))
 					{
 						try
 						{
@@ -156,16 +156,16 @@ namespace KeePass.DataExchange.Formats
 							pe.ExpiryTime = TimeUtil.ToUtc(dt, false);
 							pe.Expires = true;
 						}
-						catch(Exception) { Debug.Assert(false); }
+						catch (Exception) { Debug.Assert(false); }
 					}
 				}
-				else if(xmlChild.Name == ElemUrl)
+				else if (xmlChild.Name == ElemUrl)
 					pe.Strings.Set(PwDefs.UrlField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectUrl, strInner));
-				else if(xmlChild.Name == ElemNotes)
+				else if (xmlChild.Name == ElemNotes)
 					pe.Strings.Set(PwDefs.NotesField, new ProtectedString(
 						pwStorage.MemoryProtection.ProtectNotes, strInner));
-				else if(xmlChild.Name == ElemCustom)
+				else if (xmlChild.Name == ElemCustom)
 					LoadCustomFields(xmlChild, pe, pwStorage);
 				else { Debug.Assert(false); }
 			}
@@ -177,8 +177,8 @@ namespace KeePass.DataExchange.Formats
 		{
 			try
 			{
-				if(pe == null) return;
-				if(pe.Strings.ReadSafe(PwDefs.TitleField).Length == 0) return;
+				if (pe == null) return;
+				if (pe.Strings.ReadSafe(PwDefs.TitleField).Length == 0) return;
 
 				pgContainer.AddEntry(pe, true);
 			}
@@ -190,13 +190,13 @@ namespace KeePass.DataExchange.Formats
 		{
 			string strKey = string.Empty;
 
-			foreach(XmlNode xn in xmlNode.ChildNodes)
+			foreach (XmlNode xn in xmlNode.ChildNodes)
 			{
-				if(xn.Name == ElemCustomName)
+				if (xn.Name == ElemCustomName)
 					strKey = XmlUtil.SafeInnerText(xn);
-				else if(xn.Name == ElemCustomValue)
+				else if (xn.Name == ElemCustomValue)
 				{
-					if(strKey.Length == 0) { Debug.Assert(false); continue; }
+					if (strKey.Length == 0) { Debug.Assert(false); continue; }
 
 					ImportUtil.AppendToField(pe, strKey, XmlUtil.SafeInnerText(xn),
 						pwStorage);

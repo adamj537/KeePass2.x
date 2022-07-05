@@ -50,29 +50,29 @@ namespace KeePass.DataExchange
 
 		public void SetDataHandler(string strColumn, CsvTableDataHandler<T> f)
 		{
-			if(strColumn == null) { Debug.Assert(false); return; }
+			if (strColumn == null) { Debug.Assert(false); return; }
 
 			m_dHandlers[strColumn] = f;
 		}
 
 		public void Read(CsvStreamReaderEx csr)
 		{
-			if(csr == null) { Debug.Assert(false); return; }
+			if (csr == null) { Debug.Assert(false); return; }
 
 			string[] vHeader;
-			while(true)
+			while (true)
 			{
 				vHeader = csr.ReadLine();
-				if(vHeader == null) return;
-				if(vHeader.Length == 0) continue;
-				if((vHeader.Length == 1) && (vHeader[0].Length == 0)) continue;
+				if (vHeader == null) return;
+				if (vHeader.Length == 0) continue;
+				if ((vHeader.Length == 1) && (vHeader[0].Length == 0)) continue;
 				break;
 			}
 
 			m_dColumns.Clear();
 
 			CsvTableDataHandler<T>[] vHandlers = new CsvTableDataHandler<T>[vHeader.Length];
-			for(int i = vHeader.Length - 1; i >= 0; --i)
+			for (int i = vHeader.Length - 1; i >= 0; --i)
 			{
 				string str = vHeader[i];
 
@@ -83,34 +83,34 @@ namespace KeePass.DataExchange
 				vHandlers[i] = f;
 			}
 
-			while(true)
+			while (true)
 			{
 				string[] vRow = csr.ReadLine();
-				if(vRow == null) break;
-				if(vRow.Length == 0) continue;
-				if((vRow.Length == 1) && (vRow[0].Length == 0)) continue;
+				if (vRow == null) break;
+				if (vRow.Length == 0) continue;
+				if ((vRow.Length == 1) && (vRow[0].Length == 0)) continue;
 
 				T t = ((m_fObjectNew != null) ? m_fObjectNew(vRow) : default(T));
 
 				Debug.Assert(vRow.Length == vHandlers.Length);
 				int m = Math.Min(vRow.Length, vHandlers.Length);
-				for(int i = 0; i < m; ++i)
+				for (int i = 0; i < m; ++i)
 				{
 					CsvTableDataHandler<T> f = vHandlers[i];
-					if(f != null) f(vRow[i], t, vRow);
+					if (f != null) f(vRow[i], t, vRow);
 				}
 
-				if(m_fObjectCommit != null) m_fObjectCommit(t, vRow);
+				if (m_fObjectCommit != null) m_fObjectCommit(t, vRow);
 			}
 		}
 
 		public string GetData(string[] vRow, string strColumn, string strDefault)
 		{
-			if(vRow == null) { Debug.Assert(false); return strDefault; }
-			if(strColumn == null) { Debug.Assert(false); return strDefault; }
+			if (vRow == null) { Debug.Assert(false); return strDefault; }
+			if (strColumn == null) { Debug.Assert(false); return strDefault; }
 
 			int i;
-			if(!m_dColumns.TryGetValue(strColumn, out i)) return strDefault;
+			if (!m_dColumns.TryGetValue(strColumn, out i)) return strDefault;
 
 			return ((i < vRow.Length) ? vRow[i] : strDefault);
 		}

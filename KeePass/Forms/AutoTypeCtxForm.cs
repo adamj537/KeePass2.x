@@ -85,7 +85,7 @@ namespace KeePass.Forms
 
 			UIUtil.SetExplorerTheme(m_lvItems, true);
 
-			if(m_ilIcons != null) m_lvItems.SmallImageList = m_ilIcons;
+			if (m_ilIcons != null) m_lvItems.SmallImageList = m_ilIcons;
 			else { Debug.Assert(false); m_ilIcons = new ImageList(); }
 
 			m_bCanShowPasswords = AppPolicy.Current.UnhidePasswords;
@@ -93,7 +93,7 @@ namespace KeePass.Forms
 			RecreateEntryList();
 
 			string strColWidths = Program.Config.UI.AutoTypeCtxColumnWidths;
-			if(strColWidths.Length > 0) UIUtil.SetColumnWidths(m_lvItems, strColWidths);
+			if (strColWidths.Length > 0) UIUtil.SetColumnWidths(m_lvItems, strColWidths);
 			m_strInitialColWidths = UIUtil.GetColumnWidths(m_lvItems);
 
 			ProcessResize();
@@ -105,16 +105,16 @@ namespace KeePass.Forms
 		private void OnFormClosed(object sender, FormClosedEventArgs e)
 		{
 			string strColWidths = UIUtil.GetColumnWidths(m_lvItems);
-			if(strColWidths != m_strInitialColWidths)
+			if (strColWidths != m_strInitialColWidths)
 				Program.Config.UI.AutoTypeCtxColumnWidths = strColWidths;
 
 			string strRect = UIUtil.GetWindowScreenRect(this);
-			if(strRect != m_strInitialFormRect) // Don't overwrite ""
+			if (strRect != m_strInitialFormRect) // Don't overwrite ""
 				Program.Config.UI.AutoTypeCtxRect = strRect;
 
 			DestroyToolsContextMenu();
 
-			if(m_ilIcons != null)
+			if (m_ilIcons != null)
 			{
 				m_lvItems.SmallImageList = null; // Detach event handlers
 				m_ilIcons.Dispose();
@@ -128,7 +128,7 @@ namespace KeePass.Forms
 		{
 			long lFlags = Program.Config.UI.AutoTypeCtxFlags;
 
-			if(!m_bCanShowPasswords)
+			if (!m_bCanShowPasswords)
 				lFlags &= ~(long)AceAutoTypeCtxFlags.ColPassword;
 
 			UIUtil.CreateEntryList(m_lvItems, m_lCtxs, (AceAutoTypeCtxFlags)lFlags,
@@ -137,12 +137,12 @@ namespace KeePass.Forms
 
 		private void ProcessResize()
 		{
-			if(m_lCtxs == null) return; // TrlUtil or design mode
+			if (m_lCtxs == null) return; // TrlUtil or design mode
 
 			string strSub = KPRes.AutoTypeEntrySelectionDescShort;
 			int n = m_lCtxs.Count;
-			if(n == 1) strSub = KPRes.SearchEntriesFound1 + ".";
-			else if(n <= 0)
+			if (n == 1) strSub = KPRes.SearchEntriesFound1 + ".";
+			else if (n <= 0)
 			{
 				strSub = KPRes.SearchEntriesFound + ".";
 				strSub = strSub.Replace(@"{PARAM}", "0");
@@ -156,7 +156,7 @@ namespace KeePass.Forms
 		private bool GetSelectedEntry()
 		{
 			ListView.SelectedListViewItemCollection slvic = m_lvItems.SelectedItems;
-			if(slvic.Count == 1)
+			if (slvic.Count == 1)
 			{
 				m_atcSel = (slvic[0].Tag as AutoTypeCtx);
 				return (m_atcSel != null);
@@ -167,9 +167,9 @@ namespace KeePass.Forms
 
 		private void ProcessItemSelection()
 		{
-			if(this.DialogResult == DialogResult.OK) return; // Already closing
+			if (this.DialogResult == DialogResult.OK) return; // Already closing
 
-			if(GetSelectedEntry()) this.DialogResult = DialogResult.OK;
+			if (GetSelectedEntry()) this.DialogResult = DialogResult.OK;
 		}
 
 		private void OnListItemActivate(object sender, EventArgs e)
@@ -192,9 +192,9 @@ namespace KeePass.Forms
 
 		private void DestroyToolsContextMenu()
 		{
-			if(m_ctxTools == null) return;
+			if (m_ctxTools == null) return;
 
-			foreach(ToolStripItem tsi in m_tsmiColumns.DropDownItems)
+			foreach (ToolStripItem tsi in m_tsmiColumns.DropDownItems)
 				tsi.Click -= this.OnToggleColumn;
 
 			m_tsmiColumns = null;
@@ -230,7 +230,7 @@ namespace KeePass.Forms
 				m_bCanShowPasswords));
 			tsmi.Tag = AceAutoTypeCtxFlags.ColPassword;
 			tsmi.Click += this.OnToggleColumn;
-			if(!m_bCanShowPasswords) tsmi.Enabled = false;
+			if (!m_bCanShowPasswords) tsmi.Enabled = false;
 			m_tsmiColumns.DropDownItems.Add(tsmi);
 
 			tsmi = new ToolStripMenuItem(KPRes.Url);
@@ -261,7 +261,7 @@ namespace KeePass.Forms
 		private void OnToggleColumn(object sender, EventArgs e)
 		{
 			ToolStripMenuItem tsmi = (sender as ToolStripMenuItem);
-			if(tsmi == null) { Debug.Assert(false); return; }
+			if (tsmi == null) { Debug.Assert(false); return; }
 
 			AceAutoTypeCtxFlags f = (AceAutoTypeCtxFlags)tsmi.Tag;
 			long lFlags = Program.Config.UI.AutoTypeCtxFlags;

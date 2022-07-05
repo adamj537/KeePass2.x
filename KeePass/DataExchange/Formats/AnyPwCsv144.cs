@@ -42,7 +42,7 @@ namespace KeePass.DataExchange.Formats
 		public override string FormatName { get { return "Any Password CSV"; } }
 		public override string DefaultExtension { get { return "csv"; } }
 		public override string ApplicationGroup { get { return KPRes.PasswordManagers; } }
-		
+
 		public override bool ImportAppendsToRootGroupOnly { get { return true; } }
 
 		public override void Import(PwDatabase pwStorage, Stream sInput,
@@ -55,9 +55,9 @@ namespace KeePass.DataExchange.Formats
 			string[] vLines = strData.Split(new char[] { '\r', '\n' },
 				StringSplitOptions.RemoveEmptyEntries);
 
-			foreach(string strLine in vLines)
+			foreach (string strLine in vLines)
 			{
-				if(strLine.Length > 5) ProcessCsvLine(strLine, pwStorage);
+				if (strLine.Length > 5) ProcessCsvLine(strLine, pwStorage);
 			}
 		}
 
@@ -65,7 +65,7 @@ namespace KeePass.DataExchange.Formats
 		{
 			List<string> list = ImportUtil.SplitCsvLine(strLine, ",");
 			Debug.Assert((list.Count == 6) || (list.Count == 7));
-			if(list.Count < 6) return;
+			if (list.Count < 6) return;
 			bool bIsPro = (list.Count >= 7); // Std exports 6 fields only
 
 			PwEntry pe = new PwEntry(true, true);
@@ -85,7 +85,7 @@ namespace KeePass.DataExchange.Formats
 				ParseCsvWord(list[3], false)));
 
 			int p = 3;
-			if(bIsPro)
+			if (bIsPro)
 				pe.Strings.Set(KPRes.Custom, new ProtectedString(false,
 					ParseCsvWord(list[++p], false)));
 
@@ -94,7 +94,7 @@ namespace KeePass.DataExchange.Formats
 				ParseCsvWord(list[++p], true)));
 
 			DateTime dt;
-			if(DateTime.TryParse(ParseCsvWord(list[++p], false), out dt))
+			if (DateTime.TryParse(ParseCsvWord(list[++p], false), out dt))
 				pe.CreationTime = pe.LastAccessTime = pe.LastModificationTime =
 					TimeUtil.ToUtc(dt, false);
 			else { Debug.Assert(false); }
@@ -104,12 +104,12 @@ namespace KeePass.DataExchange.Formats
 		{
 			string str = strWord.Trim();
 
-			if((str.Length >= 2) && str.StartsWith("\"") && str.EndsWith("\""))
+			if ((str.Length >= 2) && str.StartsWith("\"") && str.EndsWith("\""))
 				str = str.Substring(1, str.Length - 2);
 
 			str = str.Replace("\"\"", "\"");
 
-			if(bFixCodes)
+			if (bFixCodes)
 			{
 				str = str.Replace("<13>", string.Empty);
 				str = str.Replace("<10>", "\r\n");

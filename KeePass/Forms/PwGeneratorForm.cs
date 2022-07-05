@@ -77,7 +77,7 @@ namespace KeePass.Forms
 			// Set ShowInTaskbar immediately, not later, otherwise the form
 			// can disappear:
 			// https://sourceforge.net/p/keepass/discussion/329220/thread/c95b5644/
-			if(bForceInTaskbar) this.ShowInTaskbar = true;
+			if (bForceInTaskbar) this.ShowInTaskbar = true;
 		}
 
 		public PwGeneratorForm()
@@ -120,7 +120,7 @@ namespace KeePass.Forms
 			AccessibilityEx.SetName(m_btnProfileAdd, KPRes.ProfileSave);
 			AccessibilityEx.SetName(m_btnProfileRemove, KPRes.ProfileDelete);
 
-			using(RtlAwareResizeScope r = new RtlAwareResizeScope(
+			using (RtlAwareResizeScope r = new RtlAwareResizeScope(
 				m_cbUpperCase, m_cbLowerCase, m_cbDigits, m_cbMinus,
 				m_cbUnderline, m_cbSpace, m_cbSpecial, m_cbBrackets,
 				m_cbLatin1S, m_cbNoRepeat, m_cbExcludeLookAlike,
@@ -148,21 +148,21 @@ namespace KeePass.Forms
 			SetCharSetTT(m_cbLatin1S, PwCharSet.Latin1S, 4);
 
 			m_cmbCustomAlgo.Items.Add(NoCustomAlgo);
-			foreach(CustomPwGenerator pwg in Program.PwGeneratorPool)
+			foreach (CustomPwGenerator pwg in Program.PwGeneratorPool)
 			{
 				m_cmbCustomAlgo.Items.Add(pwg.Name);
 			}
 			SelectCustomGenerator((m_optInitial != null) ?
 				m_optInitial.CustomAlgorithmUuid : null, null);
-			if(m_optInitial != null)
+			if (m_optInitial != null)
 			{
 				CustomPwGenerator pwg = GetPwGenerator();
-				if(pwg != null) m_dictCustomOptions[pwg] = m_optInitial.CustomAlgorithmOptions;
+				if (pwg != null) m_dictCustomOptions[pwg] = m_optInitial.CustomAlgorithmOptions;
 			}
 
 			m_cmbProfiles.Items.Add(CustomMeta);
 
-			if(m_optInitial != null)
+			if (m_optInitial != null)
 			{
 				m_cmbProfiles.Items.Add(DeriveFromPrevious);
 				SetGenerationOptions(m_optInitial);
@@ -172,27 +172,27 @@ namespace KeePass.Forms
 
 			m_cmbProfiles.SelectedIndex = ((m_optInitial == null) ? 0 : 1);
 
-			foreach(PwProfile ppw in PwGeneratorUtil.GetAllProfiles(true))
+			foreach (PwProfile ppw in PwGeneratorUtil.GetAllProfiles(true))
 			{
 				m_cmbProfiles.Items.Add(ppw.Name);
 
-				if((ppw.GeneratorType == PasswordGeneratorType.Custom) &&
+				if ((ppw.GeneratorType == PasswordGeneratorType.Custom) &&
 					!string.IsNullOrEmpty(ppw.CustomAlgorithmUuid))
 				{
 					CustomPwGenerator pwg = Program.PwGeneratorPool.Find(new
 						PwUuid(Convert.FromBase64String(ppw.CustomAlgorithmUuid)));
-					if(pwg != null) m_dictCustomOptions[pwg] = ppw.CustomAlgorithmOptions;
+					if (pwg != null) m_dictCustomOptions[pwg] = ppw.CustomAlgorithmOptions;
 				}
 			}
-	
-			if(m_optInitial == null)
+
+			if (m_optInitial == null)
 			{
 				// int nIndex = m_cmbProfiles.FindString(Program.Config.PasswordGenerator.LastUsedProfile.Name);
 				// if(nIndex >= 0) m_cmbProfiles.SelectedIndex = nIndex;
 				SetGenerationOptions(Program.Config.PasswordGenerator.LastUsedProfile);
 			}
 
-			if(!m_bCanAccept)
+			if (!m_bCanAccept)
 			{
 				m_tabPreview.Text = KPRes.Generate;
 				m_lblPreview.Text = KPRes.GeneratedPasswords + ":";
@@ -233,12 +233,12 @@ namespace KeePass.Forms
 		private void SetCharSetTT(CheckBox cb, string strCharSet, int cLines)
 		{
 			int ccLine = (int)Math.Ceiling((double)strCharSet.Length / cLines);
-			if(ccLine <= 1) { Debug.Assert(false); ccLine = int.MaxValue; }
+			if (ccLine <= 1) { Debug.Assert(false); ccLine = int.MaxValue; }
 
 			StringBuilder sb = new StringBuilder();
-			for(int i = 0; i < strCharSet.Length; ++i)
+			for (int i = 0; i < strCharSet.Length; ++i)
 			{
-				if(((i % ccLine) == 0) && (i != 0))
+				if (((i % ccLine) == 0) && (i != 0))
 					sb.Append(MessageService.NewLine);
 				sb.Append(strCharSet[i]);
 			}
@@ -248,10 +248,10 @@ namespace KeePass.Forms
 
 		private void EnableControlsEx(bool bSwitchToCustomProfile)
 		{
-			if(m_uBlockUIUpdate != 0) return;
+			if (m_uBlockUIUpdate != 0) return;
 			++m_uBlockUIUpdate;
 
-			if(bSwitchToCustomProfile)
+			if (bSwitchToCustomProfile)
 				m_cmbProfiles.SelectedIndex = 0;
 
 			string strProfile = m_cmbProfiles.Text;
@@ -266,11 +266,11 @@ namespace KeePass.Forms
 			UIUtil.SetEnabledFast(m_rbPattern.Checked, m_tbPattern, m_cbPatternPermute);
 
 			m_cmbCustomAlgo.Enabled = m_rbCustom.Checked;
-			if(!m_rbCustom.Checked) m_btnCustomOpt.Enabled = false;
+			if (!m_rbCustom.Checked) m_btnCustomOpt.Enabled = false;
 			else
 			{
 				CustomPwGenerator pwg = GetPwGenerator();
-				if(pwg != null) m_btnCustomOpt.Enabled = pwg.SupportsOptions;
+				if (pwg != null) m_btnCustomOpt.Enabled = pwg.SupportsOptions;
 				else m_btnCustomOpt.Enabled = false;
 			}
 
@@ -307,26 +307,26 @@ namespace KeePass.Forms
 
 			opt.Name = m_cmbProfiles.Text;
 
-			if(m_rbStandardCharSet.Checked)
+			if (m_rbStandardCharSet.Checked)
 				opt.GeneratorType = PasswordGeneratorType.CharSet;
-			else if(m_rbPattern.Checked)
+			else if (m_rbPattern.Checked)
 				opt.GeneratorType = PasswordGeneratorType.Pattern;
-			else if(m_rbCustom.Checked)
+			else if (m_rbCustom.Checked)
 				opt.GeneratorType = PasswordGeneratorType.Custom;
 
 			opt.Length = (uint)m_numGenChars.Value;
 
 			opt.CharSet = new PwCharSet();
 
-			if(m_cbUpperCase.Checked) opt.CharSet.Add(PwCharSet.UpperCase);
-			if(m_cbLowerCase.Checked) opt.CharSet.Add(PwCharSet.LowerCase);
-			if(m_cbDigits.Checked) opt.CharSet.Add(PwCharSet.Digits);
-			if(m_cbSpecial.Checked) opt.CharSet.Add(PwCharSet.Special);
-			if(m_cbLatin1S.Checked) opt.CharSet.Add(PwCharSet.Latin1S);
-			if(m_cbMinus.Checked) opt.CharSet.Add('-');
-			if(m_cbUnderline.Checked) opt.CharSet.Add('_');
-			if(m_cbSpace.Checked) opt.CharSet.Add(' ');
-			if(m_cbBrackets.Checked) opt.CharSet.Add(PwCharSet.Brackets);
+			if (m_cbUpperCase.Checked) opt.CharSet.Add(PwCharSet.UpperCase);
+			if (m_cbLowerCase.Checked) opt.CharSet.Add(PwCharSet.LowerCase);
+			if (m_cbDigits.Checked) opt.CharSet.Add(PwCharSet.Digits);
+			if (m_cbSpecial.Checked) opt.CharSet.Add(PwCharSet.Special);
+			if (m_cbLatin1S.Checked) opt.CharSet.Add(PwCharSet.Latin1S);
+			if (m_cbMinus.Checked) opt.CharSet.Add('-');
+			if (m_cbUnderline.Checked) opt.CharSet.Add('_');
+			if (m_cbSpace.Checked) opt.CharSet.Add(' ');
+			if (m_cbBrackets.Checked) opt.CharSet.Add(PwCharSet.Brackets);
 
 			opt.CharSet.Add(m_tbCustomChars.Text);
 
@@ -336,7 +336,7 @@ namespace KeePass.Forms
 			CustomPwGenerator pwg = GetPwGenerator();
 			opt.CustomAlgorithmUuid = ((pwg != null) ? Convert.ToBase64String(
 				pwg.Uuid.UuidBytes) : string.Empty);
-			if((pwg != null) && m_dictCustomOptions.ContainsKey(pwg))
+			if ((pwg != null) && m_dictCustomOptions.ContainsKey(pwg))
 				opt.CustomAlgorithmOptions = (m_dictCustomOptions[pwg] ?? string.Empty);
 			else opt.CustomAlgorithmOptions = string.Empty;
 
@@ -394,20 +394,20 @@ namespace KeePass.Forms
 
 		private void OnProfilesSelectedIndexChanged(object sender, EventArgs e)
 		{
-			if(m_uBlockUIUpdate != 0) return;
+			if (m_uBlockUIUpdate != 0) return;
 
 			string strProfile = m_cmbProfiles.Text;
 
-			if(strProfile == CustomMeta) { } // Switch to custom -> nothing to do
-			else if(strProfile == DeriveFromPrevious)
+			if (strProfile == CustomMeta) { } // Switch to custom -> nothing to do
+			else if (strProfile == DeriveFromPrevious)
 				SetGenerationOptions(m_optInitial);
-			else if(strProfile == AutoGeneratedMeta)
+			else if (strProfile == AutoGeneratedMeta)
 				SetGenerationOptions(Program.Config.PasswordGenerator.AutoGeneratedPasswordsProfile);
 			else
 			{
-				foreach(PwProfile pwgo in PwGeneratorUtil.GetAllProfiles(false))
+				foreach (PwProfile pwgo in PwGeneratorUtil.GetAllProfiles(false))
 				{
-					if(pwgo.Name == strProfile)
+					if (pwgo.Name == strProfile)
 					{
 						SetGenerationOptions(pwgo);
 						break;
@@ -422,7 +422,7 @@ namespace KeePass.Forms
 		{
 			List<string> lNames = new List<string>();
 			lNames.Add(AutoGeneratedMeta);
-			foreach(PwProfile pwExisting in Program.Config.PasswordGenerator.UserProfiles)
+			foreach (PwProfile pwExisting in Program.Config.PasswordGenerator.UserProfiles)
 				lNames.Add(pwExisting.Name);
 
 			SingleLineEditForm slef = new SingleLineEditForm();
@@ -430,19 +430,19 @@ namespace KeePass.Forms
 				KPRes.ProfileSavePrompt, Properties.Resources.B48x48_KGPG_Gen,
 				string.Empty, lNames.ToArray());
 
-			if(slef.ShowDialog() == DialogResult.OK)
+			if (slef.ShowDialog() == DialogResult.OK)
 			{
 				string strProfile = slef.ResultString;
 
 				PwProfile pwCurrent = GetGenerationOptions();
 				pwCurrent.Name = strProfile;
 
-				if(strProfile.Equals(CustomMeta) || strProfile.Equals(DeriveFromPrevious) ||
+				if (strProfile.Equals(CustomMeta) || strProfile.Equals(DeriveFromPrevious) ||
 					(strProfile.Length == 0) || PwGeneratorUtil.IsBuiltInProfile(strProfile))
 				{
 					MessageService.ShowWarning(KPRes.FieldNameInvalid);
 				}
-				else if(strProfile == AutoGeneratedMeta)
+				else if (strProfile == AutoGeneratedMeta)
 				{
 					pwCurrent.Name = string.Empty;
 					Program.Config.PasswordGenerator.AutoGeneratedPasswordsProfile = pwCurrent;
@@ -453,15 +453,15 @@ namespace KeePass.Forms
 					List<PwProfile> lUser = Program.Config.PasswordGenerator.UserProfiles;
 
 					bool bExists = false;
-					for(int i = 0; i < lUser.Count; ++i)
+					for (int i = 0; i < lUser.Count; ++i)
 					{
-						if(lUser[i].Name.Equals(strProfile, StrUtil.CaseIgnoreCmp))
+						if (lUser[i].Name.Equals(strProfile, StrUtil.CaseIgnoreCmp))
 						{
 							lUser[i] = pwCurrent;
 
-							for(int j = 0; j < m_cmbProfiles.Items.Count; ++j)
+							for (int j = 0; j < m_cmbProfiles.Items.Count; ++j)
 							{
-								if(m_cmbProfiles.Items[j].ToString().Equals(strProfile,
+								if (m_cmbProfiles.Items[j].ToString().Equals(strProfile,
 									StrUtil.CaseIgnoreCmp))
 								{
 									++m_uBlockUIUpdate;
@@ -477,21 +477,21 @@ namespace KeePass.Forms
 						}
 					}
 
-					if(!bExists)
+					if (!bExists)
 					{
 						++m_uBlockUIUpdate;
 
 						List<PwProfile> lAll = PwGeneratorUtil.GetAllProfiles(false);
-						for(int c = 0; c < lAll.Count; ++c)
+						for (int c = 0; c < lAll.Count; ++c)
 							m_cmbProfiles.Items.RemoveAt(m_cmbProfiles.Items.Count - 1);
 
 						lUser.Add(pwCurrent);
 
 						int iNewSel = 0;
-						foreach(PwProfile pwAdd in PwGeneratorUtil.GetAllProfiles(true))
+						foreach (PwProfile pwAdd in PwGeneratorUtil.GetAllProfiles(true))
 						{
 							m_cmbProfiles.Items.Add(pwAdd.Name);
-							if(pwAdd.Name == strProfile)
+							if (pwAdd.Name == strProfile)
 								iNewSel = m_cmbProfiles.Items.Count - 1;
 						}
 
@@ -509,21 +509,21 @@ namespace KeePass.Forms
 		{
 			string strProfile = m_cmbProfiles.Text;
 
-			if((strProfile == CustomMeta) || (strProfile == DeriveFromPrevious) ||
+			if ((strProfile == CustomMeta) || (strProfile == DeriveFromPrevious) ||
 				(strProfile == AutoGeneratedMeta) || PwGeneratorUtil.IsBuiltInProfile(strProfile))
 				return;
 
 			m_cmbProfiles.SelectedIndex = 0;
-			for(int i = 0; i < m_cmbProfiles.Items.Count; ++i)
+			for (int i = 0; i < m_cmbProfiles.Items.Count; ++i)
 			{
-				if(strProfile == m_cmbProfiles.Items[i].ToString())
+				if (strProfile == m_cmbProfiles.Items[i].ToString())
 				{
 					m_cmbProfiles.Items.RemoveAt(i);
 
 					List<PwProfile> lUser = Program.Config.PasswordGenerator.UserProfiles;
-					for(int j = 0; j < lUser.Count; ++j)
+					for (int j = 0; j < lUser.Count; ++j)
 					{
-						if(lUser[j].Name == strProfile)
+						if (lUser[j].Name == strProfile)
 						{
 							lUser.RemoveAt(j);
 							break;
@@ -542,9 +542,9 @@ namespace KeePass.Forms
 
 		private void OnTabMainSelectedIndexChanged(object sender, EventArgs e)
 		{
-			if(m_uBlockUIUpdate != 0) return;
+			if (m_uBlockUIUpdate != 0) return;
 
-			if(m_tabMain.SelectedTab == m_tabPreview)
+			if (m_tabMain.SelectedTab == m_tabPreview)
 				GeneratePreviewPasswords();
 		}
 
@@ -558,12 +558,12 @@ namespace KeePass.Forms
 			PwProfile prf = GetGenerationOptions();
 
 			int n = MaxPreviewPasswords;
-			if((prf.GeneratorType == PasswordGeneratorType.Custom) &&
+			if ((prf.GeneratorType == PasswordGeneratorType.Custom) &&
 				string.IsNullOrEmpty(prf.CustomAlgorithmUuid))
 				n = 0;
 
 			byte[] pbUserEntropy = null;
-			if(!m_bCanAccept && (n != 0))
+			if (!m_bCanAccept && (n != 0))
 				pbUserEntropy = EntropyForm.CollectEntropyIfEnabled(prf);
 
 			PwEntry peContext = new PwEntry(true, true);
@@ -573,7 +573,7 @@ namespace KeePass.Forms
 			StringBuilder sbList = new StringBuilder();
 			bool bAcceptAlways = false;
 
-			for(int i = 0; i < n; ++i)
+			for (int i = 0; i < n; ++i)
 			{
 				Application.DoEvents();
 
@@ -582,7 +582,7 @@ namespace KeePass.Forms
 					prf, pbUserEntropy, peContext, pdContext, false,
 					ref bAcceptAlways, out strError);
 
-				if(!string.IsNullOrEmpty(strError))
+				if (!string.IsNullOrEmpty(strError))
 				{
 					sbList.Remove(0, sbList.Length);
 					sbList.AppendLine(strError);
@@ -602,7 +602,7 @@ namespace KeePass.Forms
 		private CustomPwGenerator GetPwGenerator()
 		{
 			string strAlgo = (m_cmbCustomAlgo.SelectedItem as string);
-			if(strAlgo == null) return null;
+			if (strAlgo == null) return null;
 
 			return Program.PwGeneratorPool.Find(strAlgo);
 		}
@@ -612,19 +612,19 @@ namespace KeePass.Forms
 			int iSel = 0;
 			try
 			{
-				if(string.IsNullOrEmpty(strUuid)) return;
+				if (string.IsNullOrEmpty(strUuid)) return;
 
 				PwUuid uuid = new PwUuid(Convert.FromBase64String(strUuid));
 				CustomPwGenerator pwg = Program.PwGeneratorPool.Find(uuid);
-				if(pwg == null) return;
+				if (pwg == null) return;
 
-				for(int i = 0; i < m_cmbCustomAlgo.Items.Count; ++i)
+				for (int i = 0; i < m_cmbCustomAlgo.Items.Count; ++i)
 				{
-					if((m_cmbCustomAlgo.Items[i] as string) == pwg.Name)
+					if ((m_cmbCustomAlgo.Items[i] as string) == pwg.Name)
 					{
 						iSel = i;
 
-						if(strCustomOptions != null)
+						if (strCustomOptions != null)
 							m_dictCustomOptions[pwg] = strCustomOptions;
 
 						break;
@@ -637,11 +637,11 @@ namespace KeePass.Forms
 		private void OnBtnCustomOpt(object sender, EventArgs e)
 		{
 			CustomPwGenerator pwg = GetPwGenerator();
-			if(pwg == null) { Debug.Assert(false); return; }
-			if(!pwg.SupportsOptions) { Debug.Assert(false); return; }
+			if (pwg == null) { Debug.Assert(false); return; }
+			if (!pwg.SupportsOptions) { Debug.Assert(false); return; }
 
 			string strCurOpt = string.Empty;
-			if(m_dictCustomOptions.ContainsKey(pwg))
+			if (m_dictCustomOptions.ContainsKey(pwg))
 				strCurOpt = (m_dictCustomOptions[pwg] ?? string.Empty);
 
 			m_dictCustomOptions[pwg] = pwg.GetOptions(strCurOpt);

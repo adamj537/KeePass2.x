@@ -59,7 +59,7 @@ namespace KeePass.DataExchange.Formats
 			string strContent = sr.ReadToEnd();
 			sr.Close();
 
-			if(strContent.IndexOf(@"<!DOCTYPE NETSCAPE-Bookmark-file-1>") < 0)
+			if (strContent.IndexOf(@"<!DOCTYPE NETSCAPE-Bookmark-file-1>") < 0)
 				throw new FormatException("Invalid DOCTYPE!");
 
 			strContent = strContent.Replace(@"<!DOCTYPE NETSCAPE-Bookmark-file-1>", string.Empty);
@@ -89,7 +89,7 @@ namespace KeePass.DataExchange.Formats
 				@"&gt;", @"&#39;", @"&quot;" };
 			Dictionary<string, string> dPreserve = new Dictionary<string, string>();
 			CryptoRandom cr = CryptoRandom.Instance;
-			foreach(string strPreserve in vPreserve)
+			foreach (string strPreserve in vPreserve)
 			{
 				string strCode = Convert.ToBase64String(cr.GetRandomBytes(16));
 				Debug.Assert(strCode.IndexOf('&') < 0);
@@ -98,20 +98,20 @@ namespace KeePass.DataExchange.Formats
 				strContent = strContent.Replace(strPreserve, strCode);
 			}
 			strContent = strContent.Replace(@"&", @"&amp;");
-			foreach(KeyValuePair<string, string> kvpPreserve in dPreserve)
+			foreach (KeyValuePair<string, string> kvpPreserve in dPreserve)
 			{
 				strContent = strContent.Replace(kvpPreserve.Value, kvpPreserve.Key);
 			}
 
 			// Terminate <DD>s
 			int iDD = -1;
-			while(true)
+			while (true)
 			{
 				iDD = strContent.IndexOf(@"<DD>", iDD + 1);
-				if(iDD < 0) break;
+				if (iDD < 0) break;
 
 				int iNextTag = strContent.IndexOf('<', iDD + 1);
-				if(iNextTag <= 0) { Debug.Assert(false); break; }
+				if (iNextTag <= 0) { Debug.Assert(false); break; }
 
 				strContent = strContent.Insert(iNextTag, @"</DD>");
 			}
@@ -126,21 +126,21 @@ namespace KeePass.DataExchange.Formats
 			msFixed.Close();
 
 			XmlNode xmlRoot = xmlDoc.DocumentElement;
-			foreach(XmlNode xmlChild in xmlRoot)
+			foreach (XmlNode xmlChild in xmlRoot)
 			{
-				if(xmlChild.Name == "META")
+				if (xmlChild.Name == "META")
 					ImportMeta(xmlChild, pwStorage);
 			}
 		}
 
 		private static void ImportMeta(XmlNode xmlNode, PwDatabase pwStorage)
 		{
-			foreach(XmlNode xmlChild in xmlNode)
+			foreach (XmlNode xmlChild in xmlNode)
 			{
-				if(xmlChild.Name == "DL")
+				if (xmlChild.Name == "DL")
 					ImportGroup(xmlChild, pwStorage, pwStorage.RootGroup);
-				else if(xmlChild.Name == "TITLE") { }
-				else if(xmlChild.Name == "H1") { }
+				else if (xmlChild.Name == "TITLE") { }
+				else if (xmlChild.Name == "H1") { }
 				else { Debug.Assert(false); }
 			}
 		}
@@ -151,9 +151,9 @@ namespace KeePass.DataExchange.Formats
 			PwGroup pgSub = pg;
 			PwEntry pe = null;
 
-			foreach(XmlNode xmlChild in xmlNode)
+			foreach (XmlNode xmlChild in xmlNode)
 			{
-				if(xmlChild.Name == "A")
+				if (xmlChild.Name == "A")
 				{
 					pe = new PwEntry(true, true);
 					pg.AddEntry(pe, true);
@@ -163,7 +163,7 @@ namespace KeePass.DataExchange.Formats
 						XmlUtil.SafeInnerText(xmlChild)));
 
 					XmlNode xnUrl = xmlChild.Attributes.GetNamedItem("HREF");
-					if((xnUrl != null) && (xnUrl.Value != null))
+					if ((xnUrl != null) && (xnUrl.Value != null))
 						pe.Strings.Set(PwDefs.UrlField, new ProtectedString(
 							pwStorage.MemoryProtection.ProtectUrl, xnUrl.Value));
 					else { Debug.Assert(false); }
@@ -174,27 +174,27 @@ namespace KeePass.DataExchange.Formats
 					ImportIcon(xmlChild, pe, pwStorage);
 
 					XmlNode xnTags = xmlChild.Attributes.GetNamedItem("TAGS");
-					if((xnTags != null) && (xnTags.Value != null))
+					if ((xnTags != null) && (xnTags.Value != null))
 						StrUtil.AddTags(pe.Tags, xnTags.Value.Split(','));
 				}
-				else if(xmlChild.Name == "DD")
+				else if (xmlChild.Name == "DD")
 				{
-					if(pe != null)
+					if (pe != null)
 						ImportUtil.AppendToField(pe, PwDefs.NotesField,
 							XmlUtil.SafeInnerText(xmlChild).Trim(), pwStorage);
 					else { Debug.Assert(false); }
 				}
-				else if(xmlChild.Name == "H3")
+				else if (xmlChild.Name == "H3")
 				{
 					string strGroup = XmlUtil.SafeInnerText(xmlChild);
-					if(strGroup.Length == 0) { Debug.Assert(false); pgSub = pg; }
+					if (strGroup.Length == 0) { Debug.Assert(false); pgSub = pg; }
 					else
 					{
 						pgSub = new PwGroup(true, true, strGroup, PwIcon.Folder);
 						pg.AddGroup(pgSub, true);
 					}
 				}
-				else if(xmlChild.Name == "DL")
+				else if (xmlChild.Name == "DL")
 					ImportGroup(xmlChild, pwStorage, pgSub);
 				else { Debug.Assert(false); }
 			}
@@ -203,25 +203,25 @@ namespace KeePass.DataExchange.Formats
 		private static void ImportIcon(XmlNode xn, PwEntry pe, PwDatabase pd)
 		{
 			XmlNode xnIcon = xn.Attributes.GetNamedItem("ICON");
-			if(xnIcon == null) return;
+			if (xnIcon == null) return;
 
 			string strIcon = xnIcon.Value;
-			if(!StrUtil.IsDataUri(strIcon)) { Debug.Assert(false); return; }
+			if (!StrUtil.IsDataUri(strIcon)) { Debug.Assert(false); return; }
 
 			try
 			{
 				byte[] pbImage = StrUtil.DataUriToData(strIcon);
-				if((pbImage == null) || (pbImage.Length == 0)) { Debug.Assert(false); return; }
+				if ((pbImage == null) || (pbImage.Length == 0)) { Debug.Assert(false); return; }
 
 				Image img = GfxUtil.LoadImage(pbImage);
-				if(img == null) { Debug.Assert(false); return; }
+				if (img == null) { Debug.Assert(false); return; }
 
 				byte[] pbPng;
 				int wMax = PwCustomIcon.MaxWidth;
 				int hMax = PwCustomIcon.MaxHeight;
-				if((img.Width <= wMax) && (img.Height <= hMax))
+				if ((img.Width <= wMax) && (img.Height <= hMax))
 				{
-					using(MemoryStream msPng = new MemoryStream())
+					using (MemoryStream msPng = new MemoryStream())
 					{
 						img.Save(msPng, ImageFormat.Png);
 						pbPng = msPng.ToArray();
@@ -229,9 +229,9 @@ namespace KeePass.DataExchange.Formats
 				}
 				else
 				{
-					using(Image imgSc = GfxUtil.ScaleImage(img, wMax, hMax))
+					using (Image imgSc = GfxUtil.ScaleImage(img, wMax, hMax))
 					{
-						using(MemoryStream msPng = new MemoryStream())
+						using (MemoryStream msPng = new MemoryStream())
 						{
 							imgSc.Save(msPng, ImageFormat.Png);
 							pbPng = msPng.ToArray();
@@ -242,7 +242,7 @@ namespace KeePass.DataExchange.Formats
 
 				PwUuid pwUuid = null;
 				int iEx = pd.GetCustomIconIndex(pbPng);
-				if(iEx >= 0) pwUuid = pd.CustomIcons[iEx].Uuid;
+				if (iEx >= 0) pwUuid = pd.CustomIcons[iEx].Uuid;
 				else
 				{
 					pwUuid = new PwUuid(true);
@@ -252,7 +252,7 @@ namespace KeePass.DataExchange.Formats
 				}
 				pe.CustomIconUuid = pwUuid;
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		// //////////////////////////////////////////////////////////////////
@@ -294,7 +294,7 @@ namespace KeePass.DataExchange.Formats
 			ExportData(sb, 0, ">", pg.Name, true, "</H3>", true);
 			ExportData(sb, uIndent, "<DL><p>", null, false, null, true);
 
-			foreach(PwGroup pgSub in pg.Groups)
+			foreach (PwGroup pgSub in pg.Groups)
 			{
 				ExportGroup(sb, pgSub, uIndent + 1, pd);
 			}
@@ -306,10 +306,10 @@ namespace KeePass.DataExchange.Formats
 			Debug.Assert(StrUtil.TagsToString(l, false) == "Tag 1;Tag 2");
 #endif
 
-			foreach(PwEntry pe in pg.Entries)
+			foreach (PwEntry pe in pg.Entries)
 			{
 				string strUrl = pe.Strings.ReadSafe(PwDefs.UrlField);
-				if(strUrl.Length == 0) continue;
+				if (strUrl.Length == 0) continue;
 
 				// Encode only when really required; '&' does not need
 				// to be encoded
@@ -321,14 +321,14 @@ namespace KeePass.DataExchange.Formats
 
 				ExportTimes(sb, pe);
 
-				if(!pe.CustomIconUuid.Equals(PwUuid.Zero) && (pd != null))
+				if (!pe.CustomIconUuid.Equals(PwUuid.Zero) && (pd != null))
 				{
 					try
 					{
 						Image imgIcon = pd.GetCustomIcon(pe.CustomIconUuid, 16, 16);
-						if(imgIcon != null)
+						if (imgIcon != null)
 						{
-							using(MemoryStream msIcon = new MemoryStream())
+							using (MemoryStream msIcon = new MemoryStream())
 							{
 								imgIcon.Save(msIcon, ImageFormat.Png);
 								byte[] pbIcon = msIcon.ToArray();
@@ -341,10 +341,10 @@ namespace KeePass.DataExchange.Formats
 						}
 						else { Debug.Assert(false); }
 					}
-					catch(Exception) { Debug.Assert(false); }
+					catch (Exception) { Debug.Assert(false); }
 				}
 
-				if(pe.Tags.Count > 0)
+				if (pe.Tags.Count > 0)
 				{
 					string strTags = StrUtil.TagsToString(pe.Tags, false);
 					strTags = strTags.Replace(';', ','); // Without space
@@ -353,12 +353,12 @@ namespace KeePass.DataExchange.Formats
 				}
 
 				string strTitle = pe.Strings.ReadSafe(PwDefs.TitleField);
-				if(strTitle.Length == 0) strTitle = strUrl;
+				if (strTitle.Length == 0) strTitle = strUrl;
 
 				ExportData(sb, 0, ">", strTitle, true, "</A>", true);
 
 				string strNotes = pe.Strings.ReadSafe(PwDefs.NotesField);
-				if(strNotes.Length > 0)
+				if (strNotes.Length > 0)
 					ExportData(sb, uIndent + 1, "<DD>", strNotes, true, null, true);
 			}
 
@@ -369,12 +369,12 @@ namespace KeePass.DataExchange.Formats
 			string strRawPrefix, string strData, bool bEncodeData,
 			string strRawSuffix, bool bNewLine)
 		{
-			if(uIndent > 0) sb.Append(new string(' ', 4 * (int)uIndent));
-			if(strRawPrefix != null) sb.Append(strRawPrefix);
+			if (uIndent > 0) sb.Append(new string(' ', 4 * (int)uIndent));
+			if (strRawPrefix != null) sb.Append(strRawPrefix);
 
-			if(strData != null)
+			if (strData != null)
 			{
-				if(bEncodeData)
+				if (bEncodeData)
 				{
 					// Apply HTML encodings except '\n' -> "<br />"
 					const string strNewLine = "899A13DDD6BA4B24BA2CA6C756E7B936";
@@ -388,14 +388,14 @@ namespace KeePass.DataExchange.Formats
 				else sb.Append(strData);
 			}
 
-			if(strRawSuffix != null) sb.Append(strRawSuffix);
+			if (strRawSuffix != null) sb.Append(strRawSuffix);
 
-			if(bNewLine) sb.AppendLine();
+			if (bNewLine) sb.AppendLine();
 		}
 
 		private static void ExportTimes(StringBuilder sb, ITimeLogger tl)
 		{
-			if(tl == null) { Debug.Assert(false); return; }
+			if (tl == null) { Debug.Assert(false); return; }
 
 			try
 			{
@@ -407,7 +407,7 @@ namespace KeePass.DataExchange.Formats
 				ExportData(sb, 0, " LAST_MODIFIED=\"", t.ToString(
 					NumberFormatInfo.InvariantInfo), false, "\"", false);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 	}
 }

@@ -37,7 +37,7 @@ namespace KeePass.UI
 			get { return m_strPrompt; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 
 				m_strPrompt = value;
 				Invalidate();
@@ -48,14 +48,14 @@ namespace KeePass.UI
 		{
 			base.WndProc(ref m);
 
-			if((m.Msg == WM_PAINT) && !this.Focused && (this.TextLength == 0) &&
+			if ((m.Msg == WM_PAINT) && !this.Focused && (this.TextLength == 0) &&
 				(m_strPrompt.Length > 0))
 			{
 				TextFormatFlags tff = (TextFormatFlags.EndEllipsis |
 					TextFormatFlags.NoPrefix | TextFormatFlags.Left |
 					TextFormatFlags.Top | TextFormatFlags.NoPadding);
 
-				using(Graphics g = this.CreateGraphics())
+				using (Graphics g = this.CreateGraphics())
 				{
 					Rectangle rect = this.ClientRectangle;
 					rect.Offset(1, 1);

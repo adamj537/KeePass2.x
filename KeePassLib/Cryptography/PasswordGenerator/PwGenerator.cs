@@ -52,7 +52,7 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 			CustomPwGeneratorPool pwAlgorithmPool)
 		{
 			Debug.Assert(pwProfile != null);
-			if(pwProfile == null) throw new ArgumentNullException("pwProfile");
+			if (pwProfile == null) throw new ArgumentNullException("pwProfile");
 
 			PwgError e = PwgError.Unknown;
 			CryptoRandomStream crs = null;
@@ -61,18 +61,18 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 			{
 				crs = CreateRandomStream(pbUserEntropy, out pbKey);
 
-				if(pwProfile.GeneratorType == PasswordGeneratorType.CharSet)
+				if (pwProfile.GeneratorType == PasswordGeneratorType.CharSet)
 					e = CharSetBasedGenerator.Generate(out psOut, pwProfile, crs);
-				else if(pwProfile.GeneratorType == PasswordGeneratorType.Pattern)
+				else if (pwProfile.GeneratorType == PasswordGeneratorType.Pattern)
 					e = PatternBasedGenerator.Generate(out psOut, pwProfile, crs);
-				else if(pwProfile.GeneratorType == PasswordGeneratorType.Custom)
+				else if (pwProfile.GeneratorType == PasswordGeneratorType.Custom)
 					e = GenerateCustom(out psOut, pwProfile, crs, pwAlgorithmPool);
 				else { Debug.Assert(false); psOut = ProtectedString.Empty; }
 			}
 			finally
 			{
-				if(crs != null) crs.Dispose();
-				if(pbKey != null) MemUtil.ZeroByteArray(pbKey);
+				if (crs != null) crs.Dispose();
+				if (pbKey != null) MemUtil.ZeroByteArray(pbKey);
 			}
 
 			return e;
@@ -85,9 +85,9 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 
 			// Mix in additional entropy
 			Debug.Assert(pbKey.Length >= 64);
-			if((pbAdditionalEntropy != null) && (pbAdditionalEntropy.Length > 0))
+			if ((pbAdditionalEntropy != null) && (pbAdditionalEntropy.Length > 0))
 			{
-				using(SHA512Managed h = new SHA512Managed())
+				using (SHA512Managed h = new SHA512Managed())
 				{
 					byte[] pbHash = h.ComputeHash(pbAdditionalEntropy);
 					MemUtil.XorArray(pbHash, 0, pbKey, 0, pbHash.Length);
@@ -101,7 +101,7 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 			CryptoRandomStream crsRandomSource)
 		{
 			uint cc = pwCharSet.Size;
-			if(cc == 0) return char.MinValue;
+			if (cc == 0) return char.MinValue;
 
 			uint i = (uint)crsRandomSource.GetRandomUInt64(cc);
 			return pwCharSet[i];
@@ -110,17 +110,17 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 		internal static bool PrepareCharSet(PwCharSet pwCharSet, PwProfile pwProfile)
 		{
 			uint cc = pwCharSet.Size;
-			for(uint i = 0; i < cc; ++i)
+			for (uint i = 0; i < cc; ++i)
 			{
 				char ch = pwCharSet[i];
-				if((ch == char.MinValue) || (ch == '\t') || (ch == '\r') ||
+				if ((ch == char.MinValue) || (ch == '\t') || (ch == '\r') ||
 					(ch == '\n') || char.IsSurrogate(ch))
 					return false;
 			}
 
-			if(pwProfile.ExcludeLookAlike) pwCharSet.Remove(PwCharSet.LookAlike);
+			if (pwProfile.ExcludeLookAlike) pwCharSet.Remove(PwCharSet.LookAlike);
 
-			if(!string.IsNullOrEmpty(pwProfile.ExcludeCharacters))
+			if (!string.IsNullOrEmpty(pwProfile.ExcludeCharacters))
 				pwCharSet.Remove(pwProfile.ExcludeCharacters);
 
 			return true;
@@ -128,10 +128,10 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 
 		internal static void Shuffle(char[] v, CryptoRandomStream crsRandomSource)
 		{
-			if(v == null) { Debug.Assert(false); return; }
-			if(crsRandomSource == null) { Debug.Assert(false); return; }
+			if (v == null) { Debug.Assert(false); return; }
+			if (crsRandomSource == null) { Debug.Assert(false); return; }
 
-			for(int i = v.Length - 1; i >= 1; --i)
+			for (int i = v.Length - 1; i >= 1; --i)
 			{
 				int j = (int)crsRandomSource.GetRandomUInt64((ulong)(i + 1));
 
@@ -148,18 +148,18 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 			psOut = ProtectedString.Empty;
 
 			Debug.Assert(pwProfile.GeneratorType == PasswordGeneratorType.Custom);
-			if(pwAlgorithmPool == null) return PwgError.UnknownAlgorithm;
+			if (pwAlgorithmPool == null) return PwgError.UnknownAlgorithm;
 
 			string strID = pwProfile.CustomAlgorithmUuid;
-			if(string.IsNullOrEmpty(strID)) return PwgError.UnknownAlgorithm;
+			if (string.IsNullOrEmpty(strID)) return PwgError.UnknownAlgorithm;
 
 			byte[] pbUuid = Convert.FromBase64String(strID);
 			PwUuid uuid = new PwUuid(pbUuid);
 			CustomPwGenerator pwg = pwAlgorithmPool.Find(uuid);
-			if(pwg == null) { Debug.Assert(false); return PwgError.UnknownAlgorithm; }
+			if (pwg == null) { Debug.Assert(false); return PwgError.UnknownAlgorithm; }
 
 			ProtectedString pwd = pwg.Generate(pwProfile.CloneDeep(), crs);
-			if(pwd == null) return PwgError.Unknown;
+			if (pwd == null) return PwgError.Unknown;
 
 			psOut = pwd;
 			return PwgError.Success;
@@ -167,11 +167,11 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 
 		internal static string ErrorToString(PwgError e, bool bHeader)
 		{
-			if(e == PwgError.Success) { Debug.Assert(false); return string.Empty; }
-			if((e == PwgError.Unknown) && bHeader) return KLRes.PwGenFailed;
+			if (e == PwgError.Success) { Debug.Assert(false); return string.Empty; }
+			if ((e == PwgError.Unknown) && bHeader) return KLRes.PwGenFailed;
 
 			string str = KLRes.UnknownError;
-			switch(e)
+			switch (e)
 			{
 				// case PwgError.Success:
 				//	break;
@@ -200,7 +200,7 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 					break;
 			}
 
-			if(bHeader)
+			if (bHeader)
 				str = KLRes.PwGenFailed + MessageService.NewParagraph + str;
 
 			return str;
@@ -209,10 +209,10 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 		internal static string ErrorToString(Exception ex, bool bHeader)
 		{
 			string str = KLRes.UnknownError;
-			if((ex != null) && !string.IsNullOrEmpty(ex.Message))
+			if ((ex != null) && !string.IsNullOrEmpty(ex.Message))
 				str = ex.Message;
 
-			if(bHeader)
+			if (bHeader)
 				str = KLRes.PwGenFailed + MessageService.NewParagraph + str;
 
 			return str;

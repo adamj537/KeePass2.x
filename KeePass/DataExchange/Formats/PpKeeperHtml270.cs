@@ -78,7 +78,7 @@ namespace KeePass.DataExchange.Formats
 				"<td nowrap align=\"(center|right)\" bgcolor=\"#[0-9a-fA-F]{6}\"><b>",
 				"<td nowrap bgcolor=\"#[0-9a-fA-F]{6}\"><b>"
 			};
-			foreach(string strRepl in vRepl)
+			foreach (string strRepl in vRepl)
 			{
 				strData = Regex.Replace(strData, strRepl, m_strStartTd);
 			}
@@ -87,21 +87,21 @@ namespace KeePass.DataExchange.Formats
 			int nOffset = 0;
 
 			PwEntry peHeader;
-			if(!ReadEntry(out peHeader, strData, ref nOffset, pwStorage))
+			if (!ReadEntry(out peHeader, strData, ref nOffset, pwStorage))
 			{
 				Debug.Assert(false);
 				return;
 			}
 
-			while((nOffset >= 0) && (nOffset < strData.Length))
+			while ((nOffset >= 0) && (nOffset < strData.Length))
 			{
 				PwEntry pe;
-				if(!ReadEntry(out pe, strData, ref nOffset, pwStorage))
+				if (!ReadEntry(out pe, strData, ref nOffset, pwStorage))
 				{
 					Debug.Assert(false);
 					break;
 				}
-				if(pe == null) break;
+				if (pe == null) break;
 
 				pwStorage.RootGroup.AddEntry(pe, true);
 			}
@@ -112,27 +112,27 @@ namespace KeePass.DataExchange.Formats
 		{
 			pe = new PwEntry(true, true);
 
-			if(!ReadString(strData, ref nOffset, m_strStartTd, m_strEndTd, pe, null, false))
+			if (!ReadString(strData, ref nOffset, m_strStartTd, m_strEndTd, pe, null, false))
 			{
 				pe = null;
 				return true;
 			}
-			if(!ReadString(strData, ref nOffset, m_strStartTd, m_strEndTd, pe,
+			if (!ReadString(strData, ref nOffset, m_strStartTd, m_strEndTd, pe,
 				PwDefs.TitleField, pd.MemoryProtection.ProtectTitle))
 				return false;
-			if(!ReadString(strData, ref nOffset, m_strStartTd, m_strEndTd, pe,
+			if (!ReadString(strData, ref nOffset, m_strStartTd, m_strEndTd, pe,
 				PwDefs.UserNameField, pd.MemoryProtection.ProtectUserName))
 				return false;
-			if(!ReadString(strData, ref nOffset, m_strStartTd, m_strEndTd, pe,
+			if (!ReadString(strData, ref nOffset, m_strStartTd, m_strEndTd, pe,
 				PwDefs.PasswordField, pd.MemoryProtection.ProtectPassword))
 				return false;
-			if(!ReadString(strData, ref nOffset, m_strStartTd, m_strEndTd, pe,
+			if (!ReadString(strData, ref nOffset, m_strStartTd, m_strEndTd, pe,
 				PwDefs.UrlField, pd.MemoryProtection.ProtectUrl))
 				return false;
-			if(!ReadString(strData, ref nOffset, m_strStartTd, m_strEndTd, pe,
+			if (!ReadString(strData, ref nOffset, m_strStartTd, m_strEndTd, pe,
 				PwDefs.NotesField, pd.MemoryProtection.ProtectNotes))
 				return false;
-			if(!ReadString(strData, ref nOffset, m_strStartTd, m_strEndTd, pe,
+			if (!ReadString(strData, ref nOffset, m_strStartTd, m_strEndTd, pe,
 				m_strModifiedField, false))
 				return false;
 
@@ -144,24 +144,24 @@ namespace KeePass.DataExchange.Formats
 			bool bProtect)
 		{
 			nOffset = strData.IndexOf(strStart, nOffset);
-			if(nOffset < 0) return false;
+			if (nOffset < 0) return false;
 
 			string strRawValue = StrUtil.GetStringBetween(strData, nOffset,
 				strStart, strEnd);
 
 			string strValue = strRawValue.Trim();
-			if(strValue == @"<br>") strValue = string.Empty;
+			if (strValue == @"<br>") strValue = string.Empty;
 			strValue = strValue.Replace("\r", string.Empty);
 			strValue = strValue.Replace("\n", string.Empty);
 			strValue = strValue.Replace(@"<br>", MessageService.NewLine);
 
-			if((strFieldName != null) && (strFieldName == m_strModifiedField))
+			if ((strFieldName != null) && (strFieldName == m_strModifiedField))
 			{
 				DateTime dt = ReadModified(strValue);
 				pe.CreationTime = dt;
 				pe.LastModificationTime = dt;
 			}
-			else if(strFieldName != null)
+			else if (strFieldName != null)
 				pe.Strings.Set(strFieldName, new ProtectedString(bProtect, strValue));
 
 			nOffset += strStart.Length + strRawValue.Length + strEnd.Length;
@@ -170,12 +170,12 @@ namespace KeePass.DataExchange.Formats
 
 		private static DateTime ReadModified(string strValue)
 		{
-			if(strValue == null) { Debug.Assert(false); return DateTime.UtcNow; }
-			if(strValue.StartsWith(m_strModifiedHdrStart)) return DateTime.UtcNow;
+			if (strValue == null) { Debug.Assert(false); return DateTime.UtcNow; }
+			if (strValue.StartsWith(m_strModifiedHdrStart)) return DateTime.UtcNow;
 
 			string[] vParts = strValue.Split(new char[] { ' ', ':', '/' },
 				StringSplitOptions.RemoveEmptyEntries);
-			if(vParts.Length != 6) { Debug.Assert(false); return DateTime.UtcNow; }
+			if (vParts.Length != 6) { Debug.Assert(false); return DateTime.UtcNow; }
 
 			try
 			{
@@ -183,7 +183,7 @@ namespace KeePass.DataExchange.Formats
 					int.Parse(vParts[1]), int.Parse(vParts[3]), int.Parse(vParts[4]),
 					int.Parse(vParts[5]), DateTimeKind.Local)).ToUniversalTime();
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return DateTime.UtcNow;
 		}

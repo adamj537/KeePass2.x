@@ -55,10 +55,10 @@ namespace KeePass.DataExchange.Formats
 
 			CsvStreamReaderEx csr = new CsvStreamReaderEx(str, opt);
 
-			while(true)
+			while (true)
 			{
 				string[] vLine = csr.ReadLine();
-				if(vLine == null) break;
+				if (vLine == null) break;
 
 				AddEntry(vLine, pwStorage);
 			}
@@ -66,9 +66,9 @@ namespace KeePass.DataExchange.Formats
 
 		private static void AddEntry(string[] vLine, PwDatabase pd)
 		{
-			if(vLine.Length != 4) { Debug.Assert(vLine.Length == 0); return; }
+			if (vLine.Length != 4) { Debug.Assert(vLine.Length == 0); return; }
 
-			if(vLine[0].Equals("name", StrUtil.CaseIgnoreCmp) &&
+			if (vLine[0].Equals("name", StrUtil.CaseIgnoreCmp) &&
 				vLine[1].Equals("url", StrUtil.CaseIgnoreCmp))
 				return;
 

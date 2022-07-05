@@ -36,15 +36,15 @@ namespace KeePass.UI
 
 		public RtlAwareResizeScope(params Control[] v)
 		{
-			if(v != null)
+			if (v != null)
 			{
-				foreach(Control c in v)
+				foreach (Control c in v)
 				{
-					if(c == null) { Debug.Assert(false); continue; }
+					if (c == null) { Debug.Assert(false); continue; }
 
 					try
 					{
-						if((c.RightToLeft == RightToLeft.Yes) &&
+						if ((c.RightToLeft == RightToLeft.Yes) &&
 							KPTranslation.IsRtlMoveChildsRequired(c.Parent))
 						{
 							int x = c.Location.X;
@@ -55,7 +55,7 @@ namespace KeePass.UI
 							m_lOrgW.Add(w);
 						}
 					}
-					catch(Exception) { Debug.Assert(false); }
+					catch (Exception) { Debug.Assert(false); }
 				}
 			}
 			else { Debug.Assert(false); }
@@ -69,9 +69,9 @@ namespace KeePass.UI
 
 		private void Dispose(bool bDisposing)
 		{
-			if(!bDisposing) { Debug.Assert(false); return; }
+			if (!bDisposing) { Debug.Assert(false); return; }
 
-			for(int i = 0; i < m_lControls.Count; ++i)
+			for (int i = 0; i < m_lControls.Count; ++i)
 			{
 				try
 				{
@@ -82,10 +82,10 @@ namespace KeePass.UI
 					int wNew = c.Width;
 
 					Debug.Assert(c.RightToLeft == RightToLeft.Yes);
-					if((wNew != wOrg) && (ptNew.X == xOrg))
+					if ((wNew != wOrg) && (ptNew.X == xOrg))
 						c.Location = new Point(xOrg + wOrg - wNew, ptNew.Y);
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 			}
 
 			m_lControls.Clear();

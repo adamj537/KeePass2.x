@@ -58,20 +58,20 @@ namespace KeePass.DataExchange.Formats
 
 			CsvStreamReaderEx csv = new CsvStreamReaderEx(strData, opt);
 
-			while(true)
+			while (true)
 			{
 				string[] v = csv.ReadLine();
-				if(v == null) break;
-				if(v.Length == 0) continue;
-				if(v[0].StartsWith("TurboPasswords CSV Export File")) continue;
-				if(v.Length < 24) { Debug.Assert(false); continue; }
-				if((v[0] == "Category") && (v[1] == "Type")) continue;
+				if (v == null) break;
+				if (v.Length == 0) continue;
+				if (v[0].StartsWith("TurboPasswords CSV Export File")) continue;
+				if (v.Length < 24) { Debug.Assert(false); continue; }
+				if ((v[0] == "Category") && (v[1] == "Type")) continue;
 
 				PwEntry pe = new PwEntry(true, true);
 
 				PwGroup pg;
 				string strGroup = v[0];
-				if(!dGroups.TryGetValue(strGroup, out pg))
+				if (!dGroups.TryGetValue(strGroup, out pg))
 				{
 					pg = new PwGroup(true, true, strGroup, PwIcon.Folder);
 					dGroups[string.Empty].AddGroup(pg, true);
@@ -81,27 +81,27 @@ namespace KeePass.DataExchange.Formats
 
 				string strType = v[1];
 
-				for(int f = 0; f < 6; ++f)
+				for (int f = 0; f < 6; ++f)
 				{
 					string strKey = v[2 + (2 * f)];
 					string strValue = v[2 + (2 * f) + 1];
-					if(strKey.Length == 0) strKey = PwDefs.NotesField;
-					if(strValue.Length == 0) continue;
+					if (strKey.Length == 0) strKey = PwDefs.NotesField;
+					if (strValue.Length == 0) continue;
 
-					if(strKey == "Description")
+					if (strKey == "Description")
 						strKey = PwDefs.TitleField;
-					else if(((strType == "Contact") || (strType == "Personal Info")) &&
+					else if (((strType == "Contact") || (strType == "Personal Info")) &&
 						(strKey == "Name"))
 						strKey = PwDefs.TitleField;
-					else if(((strType == "Membership") || (strType == "Insurance")) &&
+					else if (((strType == "Membership") || (strType == "Insurance")) &&
 						(strKey == "Company"))
 						strKey = PwDefs.TitleField;
-					else if(strKey == "SSN")
+					else if (strKey == "SSN")
 						strKey = PwDefs.UserNameField;
 					else
 					{
 						string strMapped = ImportUtil.MapNameToStandardField(strKey, false);
-						if(!string.IsNullOrEmpty(strMapped)) strKey = strMapped;
+						if (!string.IsNullOrEmpty(strMapped)) strKey = strMapped;
 					}
 
 					ImportUtil.AppendToField(pe, strKey, strValue, pwStorage);
@@ -109,7 +109,7 @@ namespace KeePass.DataExchange.Formats
 
 				ImportUtil.AppendToField(pe, PwDefs.NotesField, v[20], pwStorage,
 					"\r\n\r\n", false);
-				if(v[21].Length > 0)
+				if (v[21].Length > 0)
 					ImportUtil.AppendToField(pe, "Login URL", v[21], pwStorage, null, true);
 			}
 		}

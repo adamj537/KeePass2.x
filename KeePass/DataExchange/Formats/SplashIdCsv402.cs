@@ -41,7 +41,7 @@ namespace KeePass.DataExchange.Formats
 		public override string FormatName { get { return "SplashID CSV"; } }
 		public override string DefaultExtension { get { return "csv"; } }
 		public override string ApplicationGroup { get { return KPRes.PasswordManagers; } }
-		
+
 		public override bool ImportAppendsToRootGroupOnly { get { return false; } }
 
 		private const string StrHeader = "SplashID Export File";
@@ -51,7 +51,7 @@ namespace KeePass.DataExchange.Formats
 		{
 			get
 			{
-				if(m_vMappings != null) return m_vMappings;
+				if (m_vMappings != null) return m_vMappings;
 
 				m_vMappings = new SplashIdMapping[] {
 					new SplashIdMapping("Addresses", PwIcon.UserCommunication,
@@ -148,31 +148,31 @@ namespace KeePass.DataExchange.Formats
 
 			SortedDictionary<string, PwGroup> dictGroups =
 				new SortedDictionary<string, PwGroup>();
-			while(true)
+			while (true)
 			{
 				string[] vLine = csv.ReadLine();
-				if(vLine == null) break;
-				if(vLine.Length == 0) continue;
+				if (vLine == null) break;
+				if (vLine.Length == 0) continue;
 
-				if(vLine.Length == 1)
+				if (vLine.Length == 1)
 				{
 					Debug.Assert(vLine[0] == StrHeader);
 					continue;
 				}
 
 				// Support old version 3.4
-				if(vLine.Length == 9)
+				if (vLine.Length == 9)
 				{
 					string[] v = new string[13];
-					for(int i = 0; i < 7; ++i) v[i] = vLine[i];
-					for(int i = 7; i < 11; ++i) v[i] = string.Empty;
+					for (int i = 0; i < 7; ++i) v[i] = vLine[i];
+					for (int i = 7; i < 11; ++i) v[i] = string.Empty;
 					v[11] = vLine[7];
 					v[12] = vLine[8];
 
 					vLine = v;
 				}
 
-				if(vLine.Length == 13)
+				if (vLine.Length == 13)
 					ProcessCsvLine(vLine, pwStorage, dictGroups);
 				else { Debug.Assert(false); }
 			}
@@ -184,12 +184,12 @@ namespace KeePass.DataExchange.Formats
 			string strType = ParseCsvWord(vLine[0]);
 
 			string strGroupName = ParseCsvWord(vLine[12]); // + " - " + strType;
-			if(strGroupName.Length == 0) strGroupName = strType;
+			if (strGroupName.Length == 0) strGroupName = strType;
 
 			SplashIdMapping mp = null;
-			foreach(SplashIdMapping mpFind in SplashIdCsv402.SplashIdMappings)
+			foreach (SplashIdMapping mpFind in SplashIdCsv402.SplashIdMappings)
 			{
-				if(mpFind.TypeName == strType)
+				if (mpFind.TypeName == strType)
 				{
 					mp = mpFind;
 					break;
@@ -199,7 +199,7 @@ namespace KeePass.DataExchange.Formats
 			PwIcon pwIcon = ((mp != null) ? mp.Icon : PwIcon.Key);
 
 			PwGroup pg = null;
-			if(dictGroups.ContainsKey(strGroupName))
+			if (dictGroups.ContainsKey(strGroupName))
 				pg = dictGroups[strGroupName];
 			else
 			{
@@ -221,10 +221,10 @@ namespace KeePass.DataExchange.Formats
 
 			StrUtil.AddTags(pe.Tags, StrUtil.StringToTags(strType));
 
-			for(int iField = 0; iField < 9; ++iField)
+			for (int iField = 0; iField < 9; ++iField)
 			{
 				string strData = ParseCsvWord(vLine[iField + 1]);
-				if(strData.Length == 0) continue;
+				if (strData.Length == 0) continue;
 
 				string strLookup = ((mp != null) ? mp.FieldNames[iField] :
 					null);
@@ -238,7 +238,7 @@ namespace KeePass.DataExchange.Formats
 
 			DateTime? odt = TimeUtil.ParseUSTextDate(ParseCsvWord(vLine[10]),
 				DateTimeKind.Local);
-			if(odt.HasValue)
+			if (odt.HasValue)
 			{
 				DateTime dt = TimeUtil.ToUtc(odt.Value, false);
 				pe.LastAccessTime = dt;
@@ -248,7 +248,7 @@ namespace KeePass.DataExchange.Formats
 
 		private static string ParseCsvWord(string strWord)
 		{
-			if(strWord == null) { Debug.Assert(false); return string.Empty; }
+			if (strWord == null) { Debug.Assert(false); return string.Empty; }
 
 			string str = strWord;
 			str = str.Replace('\u000B', '\n'); // 0x0B = new line
@@ -279,16 +279,16 @@ namespace KeePass.DataExchange.Formats
 			public SplashIdMapping(string strTypeName, PwIcon pwIcon, string[] vFieldNames)
 			{
 				Debug.Assert(strTypeName != null);
-				if(strTypeName == null) throw new ArgumentNullException("strTypeName");
+				if (strTypeName == null) throw new ArgumentNullException("strTypeName");
 
 				Debug.Assert(vFieldNames != null);
-				if(vFieldNames == null) throw new ArgumentNullException("vFieldNames");
+				if (vFieldNames == null) throw new ArgumentNullException("vFieldNames");
 
 				m_strTypeName = strTypeName;
 				m_pwIcon = pwIcon;
 
 				int nMin = Math.Min(m_vFieldNames.Length, vFieldNames.Length);
-				for(int i = 0; i < nMin; ++i)
+				for (int i = 0; i < nMin; ++i)
 					m_vFieldNames[i] = vFieldNames[i];
 			}
 		}

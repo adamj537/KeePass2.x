@@ -45,10 +45,10 @@ namespace KeePass.DataExchange.Formats
 		public override void Import(PwDatabase pwStorage, Stream sInput,
 			IStatusLogger slLogger)
 		{
-			using(StreamReader sr = new StreamReader(sInput, StrUtil.Utf8, true))
+			using (StreamReader sr = new StreamReader(sInput, StrUtil.Utf8, true))
 			{
 				string str = sr.ReadToEnd();
-				if(string.IsNullOrEmpty(str)) { Debug.Assert(false); return; }
+				if (string.IsNullOrEmpty(str)) { Debug.Assert(false); return; }
 
 				CharStream cs = new CharStream(str);
 				JsonObject joRoot = new JsonObject(cs);
@@ -60,15 +60,15 @@ namespace KeePass.DataExchange.Formats
 
 		private static void ImportRecords(JsonObject[] v, PwDatabase pd)
 		{
-			if(v == null) { Debug.Assert(false); return; }
+			if (v == null) { Debug.Assert(false); return; }
 
 			Dictionary<string, PwGroup> dGroups = new Dictionary<string, PwGroup>();
 			string strGroupSep = MemUtil.ByteArrayToHexString(Guid.NewGuid().ToByteArray());
 			string strBackspCode = MemUtil.ByteArrayToHexString(Guid.NewGuid().ToByteArray());
 
-			foreach(JsonObject jo in v)
+			foreach (JsonObject jo in v)
 			{
-				if(jo == null) { Debug.Assert(false); continue; }
+				if (jo == null) { Debug.Assert(false); continue; }
 
 				PwEntry pe = new PwEntry(true, true);
 
@@ -84,17 +84,17 @@ namespace KeePass.DataExchange.Formats
 					jo.GetValue<string>("notes"), pd);
 
 				JsonObject joCustom = jo.GetValue<JsonObject>("custom_fields");
-				if(joCustom != null)
+				if (joCustom != null)
 				{
-					foreach(KeyValuePair<string, object> kvp in joCustom.Items)
+					foreach (KeyValuePair<string, object> kvp in joCustom.Items)
 					{
 						string strValue = (kvp.Value as string);
-						if(strValue == null) { Debug.Assert(false); continue; }
+						if (strValue == null) { Debug.Assert(false); continue; }
 
-						if(kvp.Key == "TFC:Keeper")
+						if (kvp.Key == "TFC:Keeper")
 						{
 							try { EntryUtil.ImportOtpAuth(pe, strValue, pd); }
-							catch(Exception) { Debug.Assert(false); }
+							catch (Exception) { Debug.Assert(false); }
 						}
 						else ImportUtil.AppendToField(pe, kvp.Key, strValue, pd);
 					}
@@ -102,19 +102,19 @@ namespace KeePass.DataExchange.Formats
 
 				PwGroup pg = null;
 				JsonObject[] vFolders = jo.GetValueArray<JsonObject>("folders");
-				if((vFolders != null) && (vFolders.Length >= 1))
+				if ((vFolders != null) && (vFolders.Length >= 1))
 				{
 					JsonObject joFolder = vFolders[0];
-					if(joFolder != null)
+					if (joFolder != null)
 					{
 						string strGroup = joFolder.GetValue<string>("folder");
-						if(!string.IsNullOrEmpty(strGroup))
+						if (!string.IsNullOrEmpty(strGroup))
 						{
 							strGroup = strGroup.Replace("\\\\", strBackspCode);
 							strGroup = strGroup.Replace("\\", strGroupSep);
 							strGroup = strGroup.Replace(strBackspCode, "\\");
 
-							if(!dGroups.TryGetValue(strGroup, out pg))
+							if (!dGroups.TryGetValue(strGroup, out pg))
 							{
 								pg = pd.RootGroup.FindCreateSubTree(strGroup,
 									new string[] { strGroupSep }, true);
@@ -125,7 +125,7 @@ namespace KeePass.DataExchange.Formats
 					}
 					else { Debug.Assert(false); }
 				}
-				if(pg == null) pg = pd.RootGroup;
+				if (pg == null) pg = pd.RootGroup;
 
 				pg.AddEntry(pe, true);
 			}

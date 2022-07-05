@@ -50,7 +50,7 @@ namespace KeePass.Native
 			get { return m_strDesc; }
 			set
 			{
-				if((value != null) && (value.Length >= NativeMethods.INFOTIPSIZE))
+				if ((value != null) && (value.Length >= NativeMethods.INFOTIPSIZE))
 				{
 					Debug.Assert(false);
 					m_strDesc = StrUtil.CompactString3Dots(value,
@@ -78,9 +78,9 @@ namespace KeePass.Native
 				CShellLink csl = new CShellLink();
 
 				IShellLinkW sl = (csl as IShellLinkW);
-				if(sl == null) { Debug.Assert(false); return null; }
+				if (sl == null) { Debug.Assert(false); return null; }
 				IPersistFile pf = (csl as IPersistFile);
-				if(pf == null) { Debug.Assert(false); return null; }
+				if (pf == null) { Debug.Assert(false); return null; }
 
 				pf.Load(strLnkFilePath, (int)(NativeMethods.STGM.Read |
 					NativeMethods.STGM.ShareDenyWrite));
@@ -104,7 +104,7 @@ namespace KeePass.Native
 
 				return r;
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return null;
 		}
@@ -116,21 +116,21 @@ namespace KeePass.Native
 				CShellLink csl = new CShellLink();
 
 				IShellLinkW sl = (csl as IShellLinkW);
-				if(sl == null) { Debug.Assert(false); return false; }
+				if (sl == null) { Debug.Assert(false); return false; }
 				IPersistFile pf = (csl as IPersistFile);
-				if(pf == null) { Debug.Assert(false); return false; }
+				if (pf == null) { Debug.Assert(false); return false; }
 
-				if(!string.IsNullOrEmpty(m_strPath))
+				if (!string.IsNullOrEmpty(m_strPath))
 					sl.SetPath(m_strPath);
-				if(!string.IsNullOrEmpty(m_strArgs))
+				if (!string.IsNullOrEmpty(m_strArgs))
 					sl.SetArguments(m_strArgs);
-				if(!string.IsNullOrEmpty(m_strDesc))
+				if (!string.IsNullOrEmpty(m_strDesc))
 					sl.SetDescription(m_strDesc);
 
 				pf.Save(strLnkFilePath, true);
 				return true;
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 
 			return false;
 		}

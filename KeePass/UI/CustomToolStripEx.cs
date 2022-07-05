@@ -44,7 +44,7 @@ namespace KeePass.UI
 #if DEBUG
 		~CustomToolStripEx()
 		{
-			if(m_csSizeAuto.TryEnter()) m_csSizeAuto.Exit();
+			if (m_csSizeAuto.TryEnter()) m_csSizeAuto.Exit();
 			else { Debug.Assert(false); } // Should have been unlocked
 		}
 #endif
@@ -54,7 +54,7 @@ namespace KeePass.UI
 			base.WndProc(ref m);
 
 			// Enable 'click through' behavior
-			if((m.Msg == NativeMethods.WM_MOUSEACTIVATE) &&
+			if ((m.Msg == NativeMethods.WM_MOUSEACTIVATE) &&
 				(m.Result == (IntPtr)NativeMethods.MA_ACTIVATEANDEAT))
 			{
 				m.Result = (IntPtr)NativeMethods.MA_ACTIVATE;
@@ -69,16 +69,16 @@ namespace KeePass.UI
 
 		protected override void OnSizeChanged(EventArgs e)
 		{
-			if(m_csSizeAuto.TryEnter())
+			if (m_csSizeAuto.TryEnter())
 			{
 				try
 				{
 					Size sz = this.Size;
 					// Ignore zero-size events (which can occur e.g. when
 					// the ToolStrip is being hidden)
-					if((sz.Width > 0) && (sz.Height > 0))
+					if ((sz.Width > 0) && (sz.Height > 0))
 					{
-						if((m_iLockedHeight > 0) && (sz.Height != m_iLockedHeight))
+						if ((m_iLockedHeight > 0) && (sz.Height != m_iLockedHeight))
 						{
 							base.OnSizeChanged(e);
 							this.Height = m_iLockedHeight;
@@ -87,7 +87,7 @@ namespace KeePass.UI
 						}
 					}
 				}
-				catch(Exception) { Debug.Assert(false); }
+				catch (Exception) { Debug.Assert(false); }
 				finally { m_csSizeAuto.Exit(); }
 			}
 

@@ -40,7 +40,7 @@ namespace KeePassLib.Cryptography.KeyDerivation
 
 		public KdfParameters(PwUuid puKdf)
 		{
-			if(puKdf == null) throw new ArgumentNullException("puKdf");
+			if (puKdf == null) throw new ArgumentNullException("puKdf");
 
 			m_puKdf = puKdf;
 			SetByteArray(ParamUuid, puKdf.UuidBytes);
@@ -62,10 +62,10 @@ namespace KeePassLib.Cryptography.KeyDerivation
 		public static KdfParameters DeserializeExt(byte[] pb)
 		{
 			VariantDictionary d = VariantDictionary.Deserialize(pb);
-			if(d == null) { Debug.Assert(false); return null; }
+			if (d == null) { Debug.Assert(false); return null; }
 
 			byte[] pbUuid = d.GetByteArray(ParamUuid);
-			if((pbUuid == null) || (pbUuid.Length != (int)PwUuid.UuidSize))
+			if ((pbUuid == null) || (pbUuid.Length != (int)PwUuid.UuidSize))
 			{
 				Debug.Assert(false);
 				return null;

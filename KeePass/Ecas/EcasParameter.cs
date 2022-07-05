@@ -30,7 +30,7 @@ namespace KeePass.Ecas
 		{
 			get
 			{
-				if(m_epvNone == null) m_epvNone = new EcasParameter[0];
+				if (m_epvNone == null) m_epvNone = new EcasParameter[0];
 				return m_epvNone;
 			}
 		}
@@ -41,7 +41,7 @@ namespace KeePass.Ecas
 			get { return m_strName; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				m_strName = value;
 			}
 		}
@@ -62,7 +62,7 @@ namespace KeePass.Ecas
 
 		public EcasParameter(string strName, EcasValueType t, EcasEnum eEnumValues)
 		{
-			if(strName == null) throw new ArgumentNullException("strName");
+			if (strName == null) throw new ArgumentNullException("strName");
 
 			m_strName = strName;
 			m_type = t;

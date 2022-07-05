@@ -29,21 +29,21 @@ namespace KeePass.Util.SendInputExt
 	{
 		public static void Obfuscate(List<SiEvent> l)
 		{
-			if(l == null) { Debug.Assert(false); return; }
+			if (l == null) { Debug.Assert(false); return; }
 
 			int n = l.Count;
-			if(n <= 1) return;
+			if (n <= 1) return;
 
 			bool[] vValid = new bool[n];
 			Keys kMod = Keys.None;
-			for(int i = 0; i < n; ++i)
+			for (int i = 0; i < n; ++i)
 			{
 				SiEvent si = l[i];
-				if(si.Type == SiEventType.KeyModifier)
+				if (si.Type == SiEventType.KeyModifier)
 				{
-					if(si.Down.HasValue)
+					if (si.Down.HasValue)
 					{
-						if(si.Down.Value)
+						if (si.Down.Value)
 						{
 							Debug.Assert((kMod & si.KeyModifier) == Keys.None);
 							kMod |= si.KeyModifier;
@@ -56,16 +56,16 @@ namespace KeePass.Util.SendInputExt
 					}
 					else { Debug.Assert(false); }
 				}
-				else if((si.Type == SiEventType.Char) && (kMod == Keys.None))
+				else if ((si.Type == SiEventType.Char) && (kMod == Keys.None))
 					vValid[i] = true;
 			}
 
 			int c = 0;
-			for(int i = n - 1; i >= -1; --i)
+			for (int i = n - 1; i >= -1; --i)
 			{
-				if((i == -1) || !vValid[i])
+				if ((i == -1) || !vValid[i])
 				{
-					if(c > 0)
+					if (c > 0)
 					{
 						ReplaceByMixedTransfer(l, i + 1, c);
 						c = 0;
@@ -88,12 +88,12 @@ namespace KeePass.Util.SendInputExt
 			// seed based on the string to be auto-typed.
 			Random r = new Random(GetRandomSeed(l, iOffset, nCount));
 
-			for(int i = 0; i < nCount; ++i)
+			for (int i = 0; i < nCount; ++i)
 			{
 				char ch = l[iOffset + i].Char;
 
 				SiEvent si = new SiEvent();
-				if(r.Next(0, 2) == 0)
+				if (r.Next(0, 2) == 0)
 				{
 					sbClip.Append(ch);
 
@@ -111,7 +111,7 @@ namespace KeePass.Util.SendInputExt
 
 			string strClip = sbClip.ToString();
 
-			if(strClip.Length > 0)
+			if (strClip.Length > 0)
 			{
 				SiEvent si = new SiEvent();
 				si.Type = SiEventType.ClipboardCopy;
@@ -142,7 +142,7 @@ namespace KeePass.Util.SendInputExt
 				si.Down = false;
 				lNew.Insert(3, si);
 
-				for(int i = 0; i < strClip.Length; ++i)
+				for (int i = 0; i < strClip.Length; ++i)
 				{
 					si = new SiEvent();
 					si.Type = SiEventType.Key;
@@ -161,12 +161,12 @@ namespace KeePass.Util.SendInputExt
 
 			unchecked
 			{
-				for(int i = 0; i < nCount; ++i)
+				for (int i = 0; i < nCount; ++i)
 					nSeed = nSeed * 13 + l[iOffset + i].Char;
 			}
 
 			// Prevent overflow (see .NET 2.0 Random class constructor)
-			if(nSeed == int.MinValue) nSeed = 13;
+			if (nSeed == int.MinValue) nSeed = 13;
 			return nSeed;
 		}
 	}

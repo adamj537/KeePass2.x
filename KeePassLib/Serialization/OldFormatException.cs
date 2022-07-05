@@ -44,7 +44,7 @@ namespace KeePassLib.Serialization
 				string str = KLRes.OldFormat + ((m_strFormat.Length > 0) ?
 					(@" (" + m_strFormat + @")") : string.Empty) + ".";
 
-				if(m_type == OldFormatType.KeePass1x)
+				if (m_type == OldFormatType.KeePass1x)
 					str += MessageService.NewParagraph + KLRes.KeePass1xHint;
 
 				return str;
@@ -53,12 +53,12 @@ namespace KeePassLib.Serialization
 
 		public OldFormatException(string strFormatName)
 		{
-			if(strFormatName != null) m_strFormat = strFormatName;
+			if (strFormatName != null) m_strFormat = strFormatName;
 		}
 
 		public OldFormatException(string strFormatName, OldFormatType t)
 		{
-			if(strFormatName != null) m_strFormat = strFormatName;
+			if (strFormatName != null) m_strFormat = strFormatName;
 
 			m_type = t;
 		}

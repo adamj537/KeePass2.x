@@ -53,7 +53,7 @@ namespace KeePassLib.Serialization
 		public BinaryReaderEx(Stream input, Encoding encoding,
 			string strReadExceptionText)
 		{
-			if(input == null) throw new ArgumentNullException("input");
+			if (input == null) throw new ArgumentNullException("input");
 
 			m_s = input;
 			// m_enc = encoding; // Not used yet
@@ -65,19 +65,19 @@ namespace KeePassLib.Serialization
 			try
 			{
 				byte[] pb = MemUtil.Read(m_s, nCount);
-				if((pb == null) || (pb.Length != nCount))
+				if ((pb == null) || (pb.Length != nCount))
 				{
-					if(!string.IsNullOrEmpty(m_strReadExcp))
+					if (!string.IsNullOrEmpty(m_strReadExcp))
 						throw new EndOfStreamException(m_strReadExcp);
 					else throw new EndOfStreamException();
 				}
 
-				if(m_sCopyTo != null) m_sCopyTo.Write(pb, 0, pb.Length);
+				if (m_sCopyTo != null) m_sCopyTo.Write(pb, 0, pb.Length);
 				return pb;
 			}
-			catch(Exception)
+			catch (Exception)
 			{
-				if(!string.IsNullOrEmpty(m_strReadExcp))
+				if (!string.IsNullOrEmpty(m_strReadExcp))
 					throw new IOException(m_strReadExcp);
 				else throw;
 			}

@@ -74,19 +74,19 @@ namespace KeePass.Forms
 		private void AddAceColumnTh(AceColumn c)
 		{
 			string strLvgName = KPRes.StandardFields;
-			if(c.Type == AceColumnType.CustomString)
+			if (c.Type == AceColumnType.CustomString)
 				strLvgName = KPRes.CustomFields;
-			else if(c.Type == AceColumnType.PluginExt)
+			else if (c.Type == AceColumnType.PluginExt)
 				strLvgName = KPRes.PluginProvided;
-			else if((c.Type == AceColumnType.Size) || (c.Type == AceColumnType.LastPasswordModTime))
+			else if ((c.Type == AceColumnType.Size) || (c.Type == AceColumnType.LastPasswordModTime))
 				strLvgName = KPRes.More;
 
 			ListViewGroup lvgContainer = null;
-			foreach(ListViewGroup lvg in m_lvColumns.Groups)
+			foreach (ListViewGroup lvg in m_lvColumns.Groups)
 			{
-				if(lvg.Header == strLvgName) { lvgContainer = lvg; break; }
+				if (lvg.Header == strLvgName) { lvgContainer = lvg; break; }
 			}
-			if(lvgContainer == null)
+			if (lvgContainer == null)
 			{
 				lvgContainer = new ListViewGroup(strLvgName);
 				m_lvColumns.Groups.Add(lvgContainer);
@@ -97,31 +97,31 @@ namespace KeePass.Forms
 
 			lvi.SubItems.Add(c.HideWithAsterisks ? KPRes.Yes : KPRes.No);
 
-			if(c.Type == AceColumnType.Password)
+			if (c.Type == AceColumnType.Password)
 				lvi.SubItems.Add(UIUtil.GetKeysName(Keys.Control | Keys.H));
-			else if(c.Type == AceColumnType.UserName)
+			else if (c.Type == AceColumnType.UserName)
 				lvi.SubItems.Add(UIUtil.GetKeysName(Keys.Control | Keys.J));
 			else lvi.SubItems.Add(string.Empty);
 
 			bool bChecked = false;
 			List<AceColumn> lCur = Program.Config.MainWindow.EntryListColumns;
-			foreach(AceColumn cCur in lCur)
+			foreach (AceColumn cCur in lCur)
 			{
-				if(cCur.Type != c.Type) continue;
+				if (cCur.Type != c.Type) continue;
 
-				if((c.Type != AceColumnType.CustomString) &&
+				if ((c.Type != AceColumnType.CustomString) &&
 					(c.Type != AceColumnType.PluginExt))
 				{
 					bChecked = true;
 					break;
 				}
-				else if((c.Type == AceColumnType.CustomString) &&
+				else if ((c.Type == AceColumnType.CustomString) &&
 					(cCur.CustomName == c.CustomName))
 				{
 					bChecked = true;
 					break;
 				}
-				else if((c.Type == AceColumnType.PluginExt) &&
+				else if ((c.Type == AceColumnType.PluginExt) &&
 					(cCur.CustomName == c.CustomName))
 				{
 					bChecked = true;
@@ -145,9 +145,9 @@ namespace KeePass.Forms
 			bool bHide = (colType == AceColumnType.Password); // Passwords hidden by default
 			int nWidth = -1;
 			List<AceColumn> lCur = Program.Config.MainWindow.EntryListColumns;
-			foreach(AceColumn cCur in lCur)
+			foreach (AceColumn cCur in lCur)
 			{
-				if(cCur.Type == colType)
+				if (cCur.Type == colType)
 				{
 					bHide = cCur.HideWithAsterisks;
 					nWidth = cCur.Width;
@@ -182,7 +182,7 @@ namespace KeePass.Forms
 
 			AddStdAceColumn(l, AceColumnType.CreationTime);
 			AddStdAceColumn(l, AceColumnType.LastModificationTime);
-			if((Program.Config.UI.UIFlags & (ulong)AceUIFlags.ShowLastAccessTime) != 0)
+			if ((Program.Config.UI.UIFlags & (ulong)AceUIFlags.ShowLastAccessTime) != 0)
 				AddStdAceColumn(l, AceColumnType.LastAccessTime);
 			AddStdAceColumn(l, AceColumnType.HistoryCount);
 
@@ -192,9 +192,9 @@ namespace KeePass.Forms
 			SortedDictionary<string, AceColumn> d =
 				new SortedDictionary<string, AceColumn>(StrUtil.CaseIgnoreComparer);
 			List<AceColumn> lCur = Program.Config.MainWindow.EntryListColumns;
-			foreach(AceColumn cCur in lCur)
+			foreach (AceColumn cCur in lCur)
 			{
-				if((cCur.Type == AceColumnType.CustomString) &&
+				if ((cCur.Type == AceColumnType.CustomString) &&
 					!d.ContainsKey(cCur.CustomName))
 				{
 					d[cCur.CustomName] = new AceColumn(AceColumnType.CustomString,
@@ -202,16 +202,16 @@ namespace KeePass.Forms
 				}
 			}
 
-			foreach(PwDocument pwDoc in Program.MainForm.DocumentManager.Documents)
+			foreach (PwDocument pwDoc in Program.MainForm.DocumentManager.Documents)
 			{
-				if(string.IsNullOrEmpty(pwDoc.LockedIoc.Path) && pwDoc.Database.IsOpen)
+				if (string.IsNullOrEmpty(pwDoc.LockedIoc.Path) && pwDoc.Database.IsOpen)
 				{
-					EntryHandler eh = delegate(PwEntry pe)
+					EntryHandler eh = delegate (PwEntry pe)
 					{
-						foreach(KeyValuePair<string, ProtectedString> kvp in pe.Strings)
+						foreach (KeyValuePair<string, ProtectedString> kvp in pe.Strings)
 						{
-							if(PwDefs.IsStandardField(kvp.Key)) continue;
-							if(d.ContainsKey(kvp.Key)) continue;
+							if (PwDefs.IsStandardField(kvp.Key)) continue;
+							if (d.ContainsKey(kvp.Key)) continue;
 
 							d[kvp.Key] = new AceColumn(AceColumnType.CustomString,
 								kvp.Key, kvp.Value.IsProtected, -1);
@@ -224,17 +224,17 @@ namespace KeePass.Forms
 				}
 			}
 
-			foreach(KeyValuePair<string, AceColumn> kvpCustom in d)
+			foreach (KeyValuePair<string, AceColumn> kvpCustom in d)
 			{
 				AddAceColumn(l, kvpCustom.Value);
 			}
 
 			d.Clear();
 			// Add active plugin columns (including those of uninstalled plugins)
-			foreach(AceColumn cCur in lCur)
+			foreach (AceColumn cCur in lCur)
 			{
-				if(cCur.Type != AceColumnType.PluginExt) continue;
-				if(d.ContainsKey(cCur.CustomName)) { Debug.Assert(false); continue; }
+				if (cCur.Type != AceColumnType.PluginExt) continue;
+				if (d.ContainsKey(cCur.CustomName)) { Debug.Assert(false); continue; }
 
 				d[cCur.CustomName] = new AceColumn(AceColumnType.PluginExt,
 					cCur.CustomName, cCur.HideWithAsterisks, cCur.Width);
@@ -242,15 +242,15 @@ namespace KeePass.Forms
 
 			// Add unused plugin columns
 			string[] vPlgExtNames = Program.ColumnProviderPool.GetColumnNames();
-			foreach(string strPlgName in vPlgExtNames)
+			foreach (string strPlgName in vPlgExtNames)
 			{
-				if(d.ContainsKey(strPlgName)) continue; // Do not overwrite
+				if (d.ContainsKey(strPlgName)) continue; // Do not overwrite
 
 				d[strPlgName] = new AceColumn(AceColumnType.PluginExt, strPlgName,
 					false, -1);
 			}
 
-			foreach(KeyValuePair<string, AceColumn> kvpExt in d)
+			foreach (KeyValuePair<string, AceColumn> kvpExt in d)
 			{
 				AddAceColumn(l, kvpExt.Value);
 			}
@@ -260,15 +260,15 @@ namespace KeePass.Forms
 
 		private void UpdateListEx(bool bGuiToInternal)
 		{
-			if(bGuiToInternal)
+			if (bGuiToInternal)
 			{
 			}
 			else // Internal to GUI
 			{
-				foreach(ListViewItem lvi in m_lvColumns.Items)
+				foreach (ListViewItem lvi in m_lvColumns.Items)
 				{
 					AceColumn c = (lvi.Tag as AceColumn);
-					if(c == null) { Debug.Assert(false); continue; }
+					if (c == null) { Debug.Assert(false); continue; }
 
 					string str = (c.HideWithAsterisks ? KPRes.Yes : KPRes.No);
 					lvi.SubItems[1].Text = str;
@@ -279,7 +279,7 @@ namespace KeePass.Forms
 		private void UpdateColumnPropInfo()
 		{
 			ListView.SelectedListViewItemCollection lvsic = m_lvColumns.SelectedItems;
-			if((lvsic == null) || (lvsic.Count != 1) || (lvsic[0] == null))
+			if ((lvsic == null) || (lvsic.Count != 1) || (lvsic[0] == null))
 			{
 				m_grpColumn.Text = KPRes.SelectedColumn + ": (" + KPRes.None + ")";
 				m_cbHide.Checked = false;
@@ -289,7 +289,7 @@ namespace KeePass.Forms
 			{
 				ListViewItem lvi = lvsic[0];
 				AceColumn c = (lvi.Tag as AceColumn);
-				if(c == null) { Debug.Assert(false); return; }
+				if (c == null) { Debug.Assert(false); return; }
 
 				m_grpColumn.Text = KPRes.SelectedColumn + ": " + c.GetDisplayName();
 				m_cbHide.Enabled = true;
@@ -312,12 +312,12 @@ namespace KeePass.Forms
 			List<AceColumn> lOld = new List<AceColumn>(l);
 
 			l.Clear();
-			foreach(ListViewItem lvi in m_lvColumns.Items)
+			foreach (ListViewItem lvi in m_lvColumns.Items)
 			{
-				if(!lvi.Checked) continue;
+				if (!lvi.Checked) continue;
 
 				AceColumn c = (lvi.Tag as AceColumn);
-				if(c == null) { Debug.Assert(false); continue; }
+				if (c == null) { Debug.Assert(false); continue; }
 
 				l.Add(c);
 			}
@@ -337,15 +337,15 @@ namespace KeePass.Forms
 
 		private void OnHideCheckedChanged(object sender, EventArgs e)
 		{
-			if(m_bIgnoreHideCheckEvent) return;
+			if (m_bIgnoreHideCheckEvent) return;
 
 			bool bChecked = m_cbHide.Checked;
-			foreach(ListViewItem lvi in m_lvColumns.SelectedItems)
+			foreach (ListViewItem lvi in m_lvColumns.SelectedItems)
 			{
 				AceColumn c = (lvi.Tag as AceColumn);
-				if(c == null) { Debug.Assert(false); continue; }
+				if (c == null) { Debug.Assert(false); continue; }
 
-				if((c.Type == AceColumnType.Password) && c.HideWithAsterisks &&
+				if ((c.Type == AceColumnType.Password) && c.HideWithAsterisks &&
 					!AppPolicy.Try(AppPolicyId.UnhidePasswords))
 				{
 					// Do not change c.HideWithAsterisks
@@ -386,46 +386,46 @@ namespace KeePass.Forms
 		private static string ComputeNewDisplayOrder(List<AceColumn> lNew,
 			List<AceColumn> lOld, string strOldOrder)
 		{
-			if((lNew == null) || (lOld == null)) { Debug.Assert(false); return string.Empty; }
-			if(string.IsNullOrEmpty(strOldOrder)) return string.Empty;
+			if ((lNew == null) || (lOld == null)) { Debug.Assert(false); return string.Empty; }
+			if (string.IsNullOrEmpty(strOldOrder)) return string.Empty;
 
 			List<AceColumnWithTag> lOldS = new List<AceColumnWithTag>();
 			try
 			{
 				int[] vOld = StrUtil.DeserializeIntArray(strOldOrder);
-				if((vOld == null) || (vOld.Length != lOld.Count))
+				if ((vOld == null) || (vOld.Length != lOld.Count))
 				{
 					Debug.Assert(false);
 					return string.Empty;
 				}
 
-				for(int i = 0; i < vOld.Length; ++i)
+				for (int i = 0; i < vOld.Length; ++i)
 				{
-					if(lOld[i] == null) { Debug.Assert(false); return string.Empty; }
+					if (lOld[i] == null) { Debug.Assert(false); return string.Empty; }
 					lOldS.Add(new AceColumnWithTag(lOld[i], vOld[i]));
 				}
 
 				lOldS.Sort(AceColumnWithTag.CompareByTags);
 			}
-			catch(Exception) { Debug.Assert(false); return string.Empty; }
+			catch (Exception) { Debug.Assert(false); return string.Empty; }
 
 			List<AceColumnWithTag> l = new List<AceColumnWithTag>();
-			foreach(AceColumn c in lNew)
+			foreach (AceColumn c in lNew)
 			{
-				if(c != null) l.Add(new AceColumnWithTag(c, 0));
+				if (c != null) l.Add(new AceColumnWithTag(c, 0));
 				else { Debug.Assert(false); return string.Empty; }
 			}
 
 			long m = Math.Max(lNew.Count, lOld.Count);
 
 			// Preserve order of previous columns
-			for(int i = 0; i < lOldS.Count; ++i)
+			for (int i = 0; i < lOldS.Count; ++i)
 			{
 				string strOldName = lOldS[i].TypeNameEx;
 
-				foreach(AceColumnWithTag ct in l)
+				foreach (AceColumnWithTag ct in l)
 				{
-					if(ct.TypeNameEx == strOldName)
+					if (ct.TypeNameEx == strOldName)
 					{
 						ct.Tag = m * i;
 						break;
@@ -434,19 +434,19 @@ namespace KeePass.Forms
 			}
 
 			// Insert new columns based on their default position
-			for(int i = 1; i < l.Count; ++i)
+			for (int i = 1; i < l.Count; ++i)
 			{
-				if(l[i].Tag == 0) l[i].Tag = l[i - 1].Tag + 1;
+				if (l[i].Tag == 0) l[i].Tag = l[i - 1].Tag + 1;
 			}
 
 			l.Sort(AceColumnWithTag.CompareByTags);
 
 			int[] v = new int[lNew.Count];
-			for(int i = 0; i < v.Length; ++i)
+			for (int i = 0; i < v.Length; ++i)
 			{
-				for(int j = 0; j < l.Count; ++j)
+				for (int j = 0; j < l.Count; ++j)
 				{
-					if(object.ReferenceEquals(l[j].Column, lNew[i]))
+					if (object.ReferenceEquals(l[j].Column, lNew[i]))
 					{
 						v[i] = j;
 						break;

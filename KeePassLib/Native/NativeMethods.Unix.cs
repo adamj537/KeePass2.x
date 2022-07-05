@@ -46,7 +46,7 @@ namespace KeePassLib.Native
 		private static Type m_tXplatUIX11 = null;
 		private static Type GetXplatUIX11Type(bool bThrowOnError)
 		{
-			if(m_tXplatUIX11 == null)
+			if (m_tXplatUIX11 == null)
 			{
 				// CheckState is in System.Windows.Forms
 				string strTypeCS = typeof(CheckState).AssemblyQualifiedName;
@@ -60,7 +60,7 @@ namespace KeePassLib.Native
 		private static Type m_tHwnd = null;
 		private static Type GetHwndType(bool bThrowOnError)
 		{
-			if(m_tHwnd == null)
+			if (m_tHwnd == null)
 			{
 				// CheckState is in System.Windows.Forms
 				string strTypeCS = typeof(CheckState).AssemblyQualifiedName;
@@ -73,12 +73,12 @@ namespace KeePassLib.Native
 
 		internal static void SetWmClass(Form f, string strName, string strClass)
 		{
-			if(f == null) { Debug.Assert(false); return; }
+			if (f == null) { Debug.Assert(false); return; }
 
 			// The following crashes under MacOS (SIGSEGV in native code,
 			// not just an exception), thus skip it when we are on MacOS;
 			// https://sourceforge.net/projects/keepass/forums/forum/329221/topic/5860588
-			if(NativeLib.GetPlatformID() == PlatformID.MacOSX) return;
+			if (NativeLib.GetPlatformID() == PlatformID.MacOSX) return;
 
 			try
 			{
@@ -108,7 +108,7 @@ namespace KeePassLib.Native
 				Marshal.FreeCoTaskMem(xch.res_name);
 				Marshal.FreeCoTaskMem(xch.res_class);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 #endif
 

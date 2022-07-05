@@ -41,9 +41,9 @@ namespace KeePass.Util
 	{
 		public static void AskCreate(PwDatabase pd)
 		{
-			if((pd == null) || !pd.IsOpen) { Debug.Assert(false); return; }
+			if ((pd == null) || !pd.IsOpen) { Debug.Assert(false); return; }
 
-			if(!Program.Config.UI.ShowEmSheetDialog) return;
+			if (!Program.Config.UI.ShowEmSheetDialog) return;
 
 			string str = KPRes.EmergencySheetInfo + MessageService.NewParagraph +
 				KPRes.EmergencySheetRec + MessageService.NewParagraph +
@@ -62,7 +62,7 @@ namespace KeePass.Util
 			dlg.SetIcon(VtdCustomIcon.Question);
 
 			bool bKeyFile = pd.MasterKey.ContainsType(typeof(KcpKeyFile));
-			if(bKeyFile)
+			if (bKeyFile)
 			{
 				dlg.VerificationText = KPRes.KeyFilePrintAlso;
 				dlg.FooterText = KPRes.KeyFilePrintLocal;
@@ -70,10 +70,10 @@ namespace KeePass.Util
 			}
 
 			bool b;
-			if(dlg.ShowDialog()) b = (dlg.Result == (int)DialogResult.OK);
+			if (dlg.ShowDialog()) b = (dlg.Result == (int)DialogResult.OK);
 			else b = MessageService.AskYesNo(str);
 
-			if(b)
+			if (b)
 			{
 				bool bPrintKF = (bKeyFile ? dlg.ResultVerificationChecked : false);
 				Print(pd, true, bPrintKF);
@@ -87,18 +87,18 @@ namespace KeePass.Util
 
 		internal static void Print(PwDatabase pd, bool bEmSheet, bool bKeyFile)
 		{
-			if((pd == null) || !pd.IsOpen) { Debug.Assert(false); return; }
-			if(!bEmSheet && !bKeyFile) { Debug.Assert(false); return; }
+			if ((pd == null) || !pd.IsOpen) { Debug.Assert(false); return; }
+			if (!bEmSheet && !bKeyFile) { Debug.Assert(false); return; }
 
-			if(!bEmSheet && bKeyFile)
+			if (!bEmSheet && bKeyFile)
 			{
 				string strText = KPRes.KeyFilePrintLocal + MessageService.NewParagraph +
 					KPRes.AskContinue;
-				if(!MessageService.AskYesNo(strText)) return;
+				if (!MessageService.AskYesNo(strText)) return;
 			}
 
 			try { PrintUtil.PrintHtml(GenerateDoc(pd, bEmSheet, bKeyFile)); }
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				MessageService.ShowWarning(ex);
 			}
@@ -110,11 +110,11 @@ namespace KeePass.Util
 
 			KcpKeyFile kf = (pd.MasterKey.GetUserKey(typeof(KcpKeyFile)) as KcpKeyFile);
 			string strKeyFile = ((kf != null) ? kf.Path : string.Empty);
-			if(bKeyFile)
+			if (bKeyFile)
 			{
-				if(strKeyFile.Length == 0) { Debug.Assert(false); return string.Empty; }
+				if (strKeyFile.Length == 0) { Debug.Assert(false); return string.Empty; }
 
-				if(!KfxFile.CanLoad(strKeyFile))
+				if (!KfxFile.CanLoad(strKeyFile))
 					throw new FormatException(strKeyFile + MessageService.NewParagraph +
 						KPRes.KeyFileNoXml + MessageService.NewParagraph +
 						KPRes.KeyFilePrintReqXml + MessageService.NewParagraph +
@@ -123,7 +123,7 @@ namespace KeePass.Util
 
 			string strName = UrlUtil.StripExtension(UrlUtil.GetFileName(bEmSheet ?
 				strDbFile : strKeyFile));
-			if(strName.Length == 0)
+			if (strName.Length == 0)
 				strName = (bEmSheet ? KPRes.Database : KPRes.KeyFile);
 
 			string strDocKind = (bEmSheet ? KPRes.EmergencySheet : KPRes.KeyFileBackup);
@@ -133,12 +133,12 @@ namespace KeePass.Util
 			string strLogRight = (bRtl ? "left" : "right");
 
 			GFunc<string, string> h = new GFunc<string, string>(StrUtil.StringToHtml);
-			GFunc<string, string> ne = delegate(string str)
+			GFunc<string, string> ne = delegate (string str)
 			{
-				if(string.IsNullOrEmpty(str)) return "&nbsp;";
+				if (string.IsNullOrEmpty(str)) return "&nbsp;";
 				return str;
 			};
-			GFunc<string, string> ltrPath = delegate(string str)
+			GFunc<string, string> ltrPath = delegate (string str)
 			{
 				return (bRtl ? StrUtil.EnsureLtrPath(str) : str);
 			};
@@ -148,10 +148,10 @@ namespace KeePass.Util
 
 			sb.Append("<html xmlns=\"http://www.w3.org/1999/xhtml\"");
 			string strLang = Program.Translation.Properties.Iso6391Code;
-			if(string.IsNullOrEmpty(strLang)) strLang = "en";
+			if (string.IsNullOrEmpty(strLang)) strLang = "en";
 			strLang = h(strLang);
 			sb.Append(" xml:lang=\"" + strLang + "\" lang=\"" + strLang + "\"");
-			if(bRtl) sb.Append(" dir=\"rtl\"");
+			if (bRtl) sb.Append(" dir=\"rtl\"");
 			sb.AppendLine(">");
 
 			sb.AppendLine("<head>");
@@ -170,7 +170,7 @@ namespace KeePass.Util
 
 			string strFont = "\"Arial\", \"Tahoma\", \"Verdana\", sans-serif;";
 			// https://sourceforge.net/p/keepass/discussion/329220/thread/f98dece5/
-			if(Program.Translation.IsFor("fa"))
+			if (Program.Translation.IsFor("fa"))
 				strFont = "\"Tahoma\", \"Arial\", \"Verdana\", sans-serif;";
 
 			sb.AppendLine("body {");
@@ -345,17 +345,17 @@ namespace KeePass.Util
 
 			string strFillInitEx = (bRtl ? strFillInitLtr : strFillInit);
 
-			if(bEmSheet)
+			if (bEmSheet)
 				GenerateEms(sb, pd, strDbFile,
 					h, ne, ltrPath, strFillInit, strFillInitEx, strFillEnd, strFill);
-			if(bEmSheet && bKeyFile)
+			if (bEmSheet && bKeyFile)
 			{
 				sb.AppendLine("<table class=\"docheader ems_break_before\"><tr>");
 				sb.AppendLine("<td style=\"text-align: center;\">");
 				sb.AppendLine("<h2>" + h(KPRes.KeyFileBackup) + "</h2>");
 				sb.AppendLine("</td></tr></table><br />");
 			}
-			if(bKeyFile)
+			if (bKeyFile)
 				GenerateKfb(sb, pd, strDbFile, strKeyFile,
 					h, ne, ltrPath, strFillInit, strFillInitEx, strFillEnd, strFill);
 
@@ -387,27 +387,27 @@ namespace KeePass.Util
 			sb.AppendLine(strFill);
 
 			CompositeKey ck = pd.MasterKey;
-			if(ck.UserKeyCount > 0)
+			if (ck.UserKeyCount > 0)
 			{
 				sb.AppendLine("<br />");
 				sb.AppendLine("<h3>" + h(KPRes.MasterKey) + "</h3>");
 				sb.AppendLine("<p>" + h(KPRes.MasterKeyComponents) + "</p>");
 				sb.AppendLine("<ul>");
 
-				foreach(IUserKey k in ck.UserKeys)
+				foreach (IUserKey k in ck.UserKeys)
 				{
 					KcpPassword p = (k as KcpPassword);
 					KcpKeyFile kf = (k as KcpKeyFile);
 					KcpUserAccount a = (k as KcpUserAccount);
 					KcpCustomKey c = (k as KcpCustomKey);
 
-					if(p != null)
+					if (p != null)
 					{
 						sb.AppendLine("<li><p><strong>" + h(KPRes.MasterPassword) +
 							":</strong></p>");
 						sb.AppendLine(strFill + "</li>");
 					}
-					else if(kf != null)
+					else if (kf != null)
 					{
 						sb.AppendLine("<li><p><strong>" + h(KPRes.KeyFile) +
 							":</strong></p>");
@@ -419,7 +419,7 @@ namespace KeePass.Util
 
 						sb.AppendLine("</li>");
 					}
-					else if(a != null)
+					else if (a != null)
 					{
 						sb.AppendLine("<li><p><strong>" + h(KPRes.WindowsUserAccount) +
 							":</strong></p>");
@@ -429,14 +429,14 @@ namespace KeePass.Util
 							sb.Append(ne(h(ltrPath(Environment.UserDomainName +
 								"\\" + Environment.UserName))));
 						}
-						catch(Exception) { Debug.Assert(false); sb.Append(ne(string.Empty)); }
+						catch (Exception) { Debug.Assert(false); sb.Append(ne(string.Empty)); }
 						sb.AppendLine(strFillEnd);
 
 						sb.AppendLine("<p>" + h(KPRes.WindowsUserAccountBackup) + " " +
 							h(KPRes.BackupLocation) + "</p>");
 						sb.AppendLine(strFill + "</li>");
 					}
-					else if(c != null)
+					else if (c != null)
 					{
 						sb.AppendLine("<li><p><strong>" + h(KPRes.KeyProvider) +
 							":</strong></p>");
@@ -478,10 +478,10 @@ namespace KeePass.Util
 			string strFillInit, string strFillInitEx, string strFillEnd, string strFill)
 		{
 			string strContent;
-			using(Stream s = IOConnection.OpenRead(IOConnectionInfo.FromPath(
+			using (Stream s = IOConnection.OpenRead(IOConnectionInfo.FromPath(
 				strKeyFile)))
 			{
-				using(StreamReader sr = new StreamReader(s, StrUtil.Utf8, true))
+				using (StreamReader sr = new StreamReader(s, StrUtil.Utf8, true))
 				{
 					strContent = sr.ReadToEnd();
 				}

@@ -75,7 +75,7 @@ namespace KeePass.Forms
 
 		private void OnFormLoad(object sender, EventArgs e)
 		{
-			if(m_d == null) { Debug.Assert(false); throw new InvalidOperationException(); }
+			if (m_d == null) { Debug.Assert(false); throw new InvalidOperationException(); }
 			Debug.Assert(m_pd != null); // Required for Spr-compiling {HMACOTP} preview
 
 			++m_uBlockUIUpdate;
@@ -108,7 +108,7 @@ namespace KeePass.Forms
 			FontUtil.AssignDefaultBold(m_lblTotpPreviewValue);
 
 			Debug.Assert(!m_cmbHotpSecretEnc.Sorted && !m_cmbTotpSecretEnc.Sorted);
-			foreach(KeyValuePair<string, string> kvp in m_vSecretEncs)
+			foreach (KeyValuePair<string, string> kvp in m_vSecretEncs)
 			{
 				m_cmbHotpSecretEnc.Items.Add(kvp.Value);
 				m_cmbTotpSecretEnc.Items.Add(kvp.Value);
@@ -116,7 +116,7 @@ namespace KeePass.Forms
 			m_cmbHotpSecretEnc.SelectedIndex = g_iSecretEncBase32;
 			m_cmbTotpSecretEnc.SelectedIndex = g_iSecretEncBase32;
 
-			GAction<Label, string> fSetDefault = delegate(Label lbl, string strValue)
+			GAction<Label, string> fSetDefault = delegate (Label lbl, string strValue)
 			{
 				UIUtil.SetText(lbl, "(" + KPRes.IfEmpty + ": " + strValue + ")");
 			};
@@ -126,7 +126,7 @@ namespace KeePass.Forms
 			fSetDefault(m_lblTotpAlgDefault, HmacOtp.TotpAlgDefault);
 
 			Debug.Assert(!m_cmbTotpAlg.Sorted);
-			foreach(string str in m_vTotpAlg) m_cmbTotpAlg.Items.Add(str);
+			foreach (string str in m_vTotpAlg) m_cmbTotpAlg.Items.Add(str);
 			m_cmbTotpAlg.SelectedIndex = 0;
 
 			UIUtil.SetText(m_lblHotpUsage, KPRes.OtpUsage.Replace(@"{PARAM}", EntryUtil.HotpPlh));
@@ -161,21 +161,21 @@ namespace KeePass.Forms
 		private void LoadSettings(ProtectedStringDictionary d, bool bUpdateUI,
 			bool bSwitchTab)
 		{
-			if(d == null) { Debug.Assert(false); return; }
+			if (d == null) { Debug.Assert(false); return; }
 
 			++m_uBlockUIUpdate;
 
-			for(int iType = 0; iType < 2; ++iType)
+			for (int iType = 0; iType < 2; ++iType)
 			{
 				TextBox tb = ((iType == 0) ? m_tbHotpSecret : m_tbTotpSecret);
 				ComboBox cmb = ((iType == 0) ? m_cmbHotpSecretEnc : m_cmbTotpSecretEnc);
 				string strPfx = ((iType == 0) ? EntryUtil.HotpPrefix : EntryUtil.TotpPrefix);
 				string strSecret = null;
 
-				for(int iEnc = 0; iEnc < m_vSecretEncs.Length; ++iEnc)
+				for (int iEnc = 0; iEnc < m_vSecretEncs.Length; ++iEnc)
 				{
 					strSecret = d.ReadSafe(strPfx + m_vSecretEncs[iEnc].Key);
-					if(!string.IsNullOrEmpty(strSecret))
+					if (!string.IsNullOrEmpty(strSecret))
 					{
 						cmb.SelectedIndex = iEnc;
 						break;
@@ -193,25 +193,25 @@ namespace KeePass.Forms
 			m_cmbTotpAlg.SelectedIndex = -1; // Free text
 			m_cmbTotpAlg.Text = d.ReadSafe(EntryUtil.TotpAlg);
 
-			if(bSwitchTab)
+			if (bSwitchTab)
 				m_tabMain.SelectedTab = (((m_tbHotpSecret.TextLength == 0) ||
 					(m_tbTotpSecret.TextLength != 0)) ? m_tabTotp : m_tabHotp);
 
 			--m_uBlockUIUpdate;
-			if(bUpdateUI) UpdateUI();
+			if (bUpdateUI) UpdateUI();
 		}
 
 		private void SaveSettings(ProtectedStringDictionary d)
 		{
-			if(d == null) { Debug.Assert(false); return; }
+			if (d == null) { Debug.Assert(false); return; }
 
 			EntryUtil.RemoveOtpSecrets(d, EntryUtil.HotpPrefix);
 			EntryUtil.RemoveOtpSecrets(d, EntryUtil.TotpPrefix);
 
-			GAction<string, string, bool> f = delegate(string strKey, string strValue,
+			GAction<string, string, bool> f = delegate (string strKey, string strValue,
 				bool bProtect)
 			{
-				if(!string.IsNullOrEmpty(strValue))
+				if (!string.IsNullOrEmpty(strValue))
 					d.Set(strKey, new ProtectedString(bProtect, strValue));
 				else d.Remove(strKey);
 			};
@@ -229,16 +229,16 @@ namespace KeePass.Forms
 
 		private void UpdateUI()
 		{
-			if(m_uBlockUIUpdate != 0) return;
+			if (m_uBlockUIUpdate != 0) return;
 
-			GAction<Control, string> f = delegate(Control c, string strError)
+			GAction<Control, string> f = delegate (Control c, string strError)
 			{
 				c.BackColor = (string.IsNullOrEmpty(strError) ?
 					AppDefs.ColorControlNormal : AppDefs.ColorEditError);
 				UIUtil.SetToolTip(m_ttRect, c, (strError ?? string.Empty), true);
 			};
 
-			for(int iType = 0; iType < 2; ++iType)
+			for (int iType = 0; iType < 2; ++iType)
 			{
 				TextBox tb = ((iType == 0) ? m_tbHotpSecret : m_tbTotpSecret);
 				ComboBox cmb = ((iType == 0) ? m_cmbHotpSecretEnc : m_cmbTotpSecretEnc);
@@ -246,17 +246,17 @@ namespace KeePass.Forms
 				try
 				{
 					string strSecret = tb.Text;
-					if(!string.IsNullOrEmpty(strSecret))
+					if (!string.IsNullOrEmpty(strSecret))
 					{
 						byte[] pbSecret = null;
-						switch(m_vSecretEncs[cmb.SelectedIndex].Key)
+						switch (m_vSecretEncs[cmb.SelectedIndex].Key)
 						{
 							case EntryUtil.OtpSecret:
 								pbSecret = StrUtil.Utf8.GetBytes(strSecret);
 								break;
 
 							case EntryUtil.OtpSecretHex:
-								if(StrUtil.IsHexString(strSecret, true) &&
+								if (StrUtil.IsHexString(strSecret, true) &&
 									((strSecret.Length & 1) == 0))
 									pbSecret = new byte[1];
 								break;
@@ -276,60 +276,60 @@ namespace KeePass.Forms
 								break;
 						}
 
-						if((pbSecret == null) || (pbSecret.Length == 0))
+						if ((pbSecret == null) || (pbSecret.Length == 0))
 							throw new FormatException();
 					}
 
 					f(tb, null);
 				}
-				catch(Exception ex) { f(tb, ex.Message); }
+				catch (Exception ex) { f(tb, ex.Message); }
 			}
 
-			GAction<string, uint, uint> fCheckUIntInRange = delegate(
+			GAction<string, uint, uint> fCheckUIntInRange = delegate (
 				string strValue, uint uMin, uint uMax)
 			{
-				if(string.IsNullOrEmpty(strValue)) return;
+				if (string.IsNullOrEmpty(strValue)) return;
 				uint u = uint.Parse(strValue);
-				if((u < uMin) || (u > uMax)) throw new ArgumentOutOfRangeException();
+				if ((u < uMin) || (u > uMax)) throw new ArgumentOutOfRangeException();
 			};
 
 			try
 			{
 				string str = m_tbHotpCounter.Text;
-				if(!string.IsNullOrEmpty(str)) ulong.Parse(str);
+				if (!string.IsNullOrEmpty(str)) ulong.Parse(str);
 				f(m_tbHotpCounter, null);
 			}
-			catch(Exception ex) { f(m_tbHotpCounter, ex.Message); }
+			catch (Exception ex) { f(m_tbHotpCounter, ex.Message); }
 
 			try
 			{
 				fCheckUIntInRange(m_tbTotpLength.Text, 1, 8);
 				f(m_tbTotpLength, null);
 			}
-			catch(Exception ex) { f(m_tbTotpLength, ex.Message); }
+			catch (Exception ex) { f(m_tbTotpLength, ex.Message); }
 
 			try
 			{
 				fCheckUIntInRange(m_tbTotpPeriod.Text, 1, uint.MaxValue);
 				f(m_tbTotpPeriod, null);
 			}
-			catch(Exception ex) { f(m_tbTotpPeriod, ex.Message); }
+			catch (Exception ex) { f(m_tbTotpPeriod, ex.Message); }
 
 			try
 			{
 				string str = (m_cmbTotpAlg.Text ?? string.Empty);
-				if(Array.IndexOf(m_vTotpAlg, str) < 0)
+				if (Array.IndexOf(m_vTotpAlg, str) < 0)
 					throw new Exception(KLRes.AlgorithmUnknown);
 				f(m_cmbTotpAlg, null);
 			}
-			catch(Exception ex) { f(m_cmbTotpAlg, ex.Message); }
+			catch (Exception ex) { f(m_cmbTotpAlg, ex.Message); }
 
 			UpdatePreviews();
 		}
 
 		private void UpdatePreviews()
 		{
-			if(m_cmbHotpSecretEnc.DroppedDown || m_cmbTotpSecretEnc.DroppedDown)
+			if (m_cmbHotpSecretEnc.DroppedDown || m_cmbTotpSecretEnc.DroppedDown)
 				return; // Text is updated, but not validated (no event raised yet)
 
 			PwEntry pe = new PwEntry(true, true);
@@ -338,36 +338,36 @@ namespace KeePass.Forms
 			bool bDbModPre = ((m_pd != null) ? m_pd.Modified : false);
 			SprContext ctx = new SprContext(pe, m_pd, SprCompileFlags.HmacOtp);
 
-			Predicate<Control> fValid = delegate(Control c)
+			Predicate<Control> fValid = delegate (Control c)
 			{
 				return (c.BackColor != AppDefs.ColorEditError);
 			};
 
-			for(int iType = 0; iType < 2; ++iType)
+			for (int iType = 0; iType < 2; ++iType)
 			{
 				string strPlh = ((iType == 0) ? EntryUtil.HotpPlh : EntryUtil.TotpPlh);
 				Label lbl = ((iType == 0) ? m_lblHotpPreviewValue : m_lblTotpPreviewValue);
 
 				Control[] vValidatable;
-				if(iType == 0)
+				if (iType == 0)
 					vValidatable = new Control[] { m_tbHotpSecret, m_tbHotpCounter };
 				else
 					vValidatable = new Control[] { m_tbTotpSecret, m_tbTotpLength,
 						m_tbTotpPeriod, m_cmbTotpAlg };
 
 				string strPreview = null;
-				if(Array.TrueForAll(vValidatable, fValid))
+				if (Array.TrueForAll(vValidatable, fValid))
 				{
 					try { strPreview = SprEngine.Compile(strPlh, ctx); }
-					catch(Exception) { Debug.Assert(false); }
+					catch (Exception) { Debug.Assert(false); }
 				}
-				if(string.IsNullOrEmpty(strPreview) || (strPreview == strPlh))
+				if (string.IsNullOrEmpty(strPreview) || (strPreview == strPlh))
 					strPreview = "\u2014"; // \u2013
 
 				UIUtil.SetText(lbl, strPreview);
 			}
 
-			if(m_pd != null) m_pd.Modified = bDbModPre;
+			if (m_pd != null) m_pd.Modified = bDbModPre;
 		}
 
 		private void OnBtnOK(object sender, EventArgs e)
@@ -386,12 +386,12 @@ namespace KeePass.Forms
 				KPRes.OtpAuthUri + ":", Properties.Resources.B48x48_Wizard,
 				string.Empty, null);
 
-			if(UIUtil.ShowDialogAndDestroy(dlg) == DialogResult.OK)
+			if (UIUtil.ShowDialogAndDestroy(dlg) == DialogResult.OK)
 			{
 				try
 				{
 					string str = dlg.ResultString;
-					if(string.IsNullOrEmpty(str)) return;
+					if (string.IsNullOrEmpty(str)) return;
 
 					ProtectedStringDictionary d = new ProtectedStringDictionary();
 					SaveSettings(d); // Preserve settings of other OTP type(s)
@@ -401,7 +401,7 @@ namespace KeePass.Forms
 
 					LoadSettings(d, true, true);
 				}
-				catch(Exception ex) { MessageService.ShowWarning(ex.Message); }
+				catch (Exception ex) { MessageService.ShowWarning(ex.Message); }
 			}
 		}
 

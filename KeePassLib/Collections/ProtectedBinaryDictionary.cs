@@ -81,7 +81,7 @@ namespace KeePassLib.Collections
 		{
 			ProtectedBinaryDictionary plNew = new ProtectedBinaryDictionary();
 
-			foreach(KeyValuePair<string, ProtectedBinary> kvpBin in m_vBinaries)
+			foreach (KeyValuePair<string, ProtectedBinary> kvpBin in m_vBinaries)
 			{
 				// ProtectedBinary objects are immutable
 				plNew.Set(kvpBin.Key, kvpBin.Value);
@@ -92,15 +92,15 @@ namespace KeePassLib.Collections
 
 		public bool EqualsDictionary(ProtectedBinaryDictionary dict)
 		{
-			if(dict == null) { Debug.Assert(false); return false; }
+			if (dict == null) { Debug.Assert(false); return false; }
 
-			if(m_vBinaries.Count != dict.m_vBinaries.Count) return false;
+			if (m_vBinaries.Count != dict.m_vBinaries.Count) return false;
 
-			foreach(KeyValuePair<string, ProtectedBinary> kvp in m_vBinaries)
+			foreach (KeyValuePair<string, ProtectedBinary> kvp in m_vBinaries)
 			{
 				ProtectedBinary pb = dict.Get(kvp.Key);
-				if(pb == null) return false;
-				if(!pb.Equals(kvp.Value)) return false;
+				if (pb == null) return false;
+				if (!pb.Equals(kvp.Value)) return false;
 			}
 
 			return true;
@@ -117,10 +117,10 @@ namespace KeePassLib.Collections
 		/// parameter is <c>null</c>.</exception>
 		public ProtectedBinary Get(string strName)
 		{
-			Debug.Assert(strName != null); if(strName == null) throw new ArgumentNullException("strName");
+			Debug.Assert(strName != null); if (strName == null) throw new ArgumentNullException("strName");
 
 			ProtectedBinary pb;
-			if(m_vBinaries.TryGetValue(strName, out pb)) return pb;
+			if (m_vBinaries.TryGetValue(strName, out pb)) return pb;
 
 			return null;
 		}
@@ -134,8 +134,8 @@ namespace KeePassLib.Collections
 		/// parameters is <c>null</c>.</exception>
 		public void Set(string strField, ProtectedBinary pbNewValue)
 		{
-			Debug.Assert(strField != null); if(strField == null) throw new ArgumentNullException("strField");
-			Debug.Assert(pbNewValue != null); if(pbNewValue == null) throw new ArgumentNullException("pbNewValue");
+			Debug.Assert(strField != null); if (strField == null) throw new ArgumentNullException("strField");
+			Debug.Assert(pbNewValue != null); if (pbNewValue == null) throw new ArgumentNullException("pbNewValue");
 
 			m_vBinaries[strField] = pbNewValue;
 		}
@@ -150,19 +150,19 @@ namespace KeePassLib.Collections
 		/// is <c>null</c>.</exception>
 		public bool Remove(string strField)
 		{
-			Debug.Assert(strField != null); if(strField == null) throw new ArgumentNullException("strField");
+			Debug.Assert(strField != null); if (strField == null) throw new ArgumentNullException("strField");
 
 			return m_vBinaries.Remove(strField);
 		}
 
 		public string KeysToString()
 		{
-			if(m_vBinaries.Count == 0) return string.Empty;
+			if (m_vBinaries.Count == 0) return string.Empty;
 
 			StringBuilder sb = new StringBuilder();
-			foreach(KeyValuePair<string, ProtectedBinary> kvp in m_vBinaries)
+			foreach (KeyValuePair<string, ProtectedBinary> kvp in m_vBinaries)
 			{
-				if(sb.Length > 0) sb.Append(", ");
+				if (sb.Length > 0) sb.Append(", ");
 				sb.Append(kvp.Key);
 			}
 

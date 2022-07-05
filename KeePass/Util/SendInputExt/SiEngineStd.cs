@@ -57,7 +57,7 @@ namespace KeePass.Util.SendInputExt
 				this.TargetHWnd = hWndTarget;
 				this.TargetWindowTitle = (strTargetTitle ?? string.Empty);
 			}
-			catch(Exception) { Debug.Assert(false); }
+			catch (Exception) { Debug.Assert(false); }
 		}
 
 		public virtual void Release()
@@ -80,7 +80,7 @@ namespace KeePass.Util.SendInputExt
 
 		public void SendKey(int iVKey, bool? obExtKey, bool? obDown)
 		{
-			if(!PreSendEvent()) return;
+			if (!PreSendEvent()) return;
 
 			SendKeyImpl(iVKey, obExtKey, obDown);
 
@@ -89,7 +89,7 @@ namespace KeePass.Util.SendInputExt
 
 		public void SetKeyModifier(Keys kMod, bool bDown)
 		{
-			if(!PreSendEvent()) return;
+			if (!PreSendEvent()) return;
 
 			SetKeyModifierImpl(kMod, bDown);
 
@@ -98,7 +98,7 @@ namespace KeePass.Util.SendInputExt
 
 		public void SendChar(char ch, bool? obDown)
 		{
-			if(!PreSendEvent()) return;
+			if (!PreSendEvent()) return;
 
 			SendCharImpl(ch, obDown);
 
@@ -107,9 +107,9 @@ namespace KeePass.Util.SendInputExt
 
 		public virtual void Delay(uint uMs)
 		{
-			if(this.Cancelled) return;
+			if (this.Cancelled) return;
 
-			if(!m_swLastEvent.IsRunning)
+			if (!m_swLastEvent.IsRunning)
 			{
 				Thread.Sleep((int)uMs);
 				m_swLastEvent.Reset();
@@ -121,7 +121,7 @@ namespace KeePass.Util.SendInputExt
 			long lAlreadyDelayed = m_swLastEvent.ElapsedMilliseconds;
 			long lRemDelay = (long)uMs - lAlreadyDelayed;
 
-			if(lRemDelay >= 0) Thread.Sleep((int)lRemDelay);
+			if (lRemDelay >= 0) Thread.Sleep((int)lRemDelay);
 
 #if DEBUG
 			m_lDelaysRec.Add(lAlreadyDelayed);
@@ -133,7 +133,7 @@ namespace KeePass.Util.SendInputExt
 
 		private bool ValidateState()
 		{
-			if(this.Cancelled) return false;
+			if (this.Cancelled) return false;
 
 			List<string> lAbortWindows = Program.Config.Integration.AutoTypeAbortOnWindows;
 
@@ -141,7 +141,7 @@ namespace KeePass.Util.SendInputExt
 			bool bChkTitleCh = Program.Config.Integration.AutoTypeCancelOnTitleChange;
 			bool bChkTitleFx = (lAbortWindows.Count != 0);
 
-			if(bChkWndCh || bChkTitleCh || bChkTitleFx)
+			if (bChkWndCh || bChkTitleCh || bChkTitleFx)
 			{
 				IntPtr h = IntPtr.Zero;
 				string strTitle = null;
@@ -150,30 +150,30 @@ namespace KeePass.Util.SendInputExt
 				{
 					NativeMethods.GetForegroundWindowInfo(out h, out strTitle, false);
 				}
-				catch(Exception) { Debug.Assert(false); bHasInfo = false; }
-				if(strTitle == null) strTitle = string.Empty;
+				catch (Exception) { Debug.Assert(false); bHasInfo = false; }
+				if (strTitle == null) strTitle = string.Empty;
 
-				if(bHasInfo)
+				if (bHasInfo)
 				{
-					if(bChkWndCh && (h != this.TargetHWnd))
+					if (bChkWndCh && (h != this.TargetHWnd))
 					{
 						this.Cancelled = true;
 						return false;
 					}
 
-					if(bChkTitleCh && (strTitle != this.TargetWindowTitle))
+					if (bChkTitleCh && (strTitle != this.TargetWindowTitle))
 					{
 						this.Cancelled = true;
 						return false;
 					}
 
-					if(bChkTitleFx)
+					if (bChkTitleFx)
 					{
 						string strT = AutoType.NormalizeWindowText(strTitle);
 
-						foreach(string strF in lAbortWindows)
+						foreach (string strF in lAbortWindows)
 						{
-							if(AutoType.IsMatchWindow(strT, strF))
+							if (AutoType.IsMatchWindow(strT, strF))
 							{
 								this.Cancelled = true;
 								throw new SecurityException(KPRes.AutoTypeAbortedOnWindow +
