@@ -106,7 +106,7 @@ namespace KeePass.Forms
 					KPRes.ConfigureKeystrokeSeqDesc);
 			}
 
-			this.Icon = AppIcons.Default;
+			Icon = AppIcons.Default;
 
 			// FontUtil.AssignDefaultBold(m_lblTargetWindow);
 			// FontUtil.AssignDefaultBold(m_rbSeqDefault);
@@ -539,8 +539,8 @@ namespace KeePass.Forms
 
 			public PwlwInfo(EditAutoTypeItemForm f, IntPtr h)
 			{
-				this.Form = f;
-				this.WindowHandle = h;
+				Form = f;
+				WindowHandle = h;
 			}
 		}
 

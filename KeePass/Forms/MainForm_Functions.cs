@@ -174,7 +174,7 @@ namespace KeePass.Forms
 			get
 			{
 				if (m_oszClientLast.HasValue) return m_oszClientLast.Value;
-				return this.ClientSize;
+				return ClientSize;
 			}
 		}
 
@@ -245,9 +245,9 @@ namespace KeePass.Forms
 			public EntryDataCommand(EntryDataCommandType t, string strParam,
 				string strErrorOnSprFailure)
 			{
-				this.Type = t;
-				this.Param = strParam;
-				this.ErrorOnSprFailure = strErrorOnSprFailure;
+				Type = t;
+				Param = strParam;
+				ErrorOnSprFailure = strErrorOnSprFailure;
 			}
 		}
 
@@ -257,7 +257,7 @@ namespace KeePass.Forms
 		/// <returns>Returns <c>true</c>, if the window is trayed.</returns>
 		public bool IsTrayed()
 		{
-			return !this.Visible;
+			return !Visible;
 		}
 
 		public bool IsFileLocked(PwDocument ds)
@@ -357,20 +357,20 @@ namespace KeePass.Forms
 
 			EntryTemplates.Release();
 
-			m_dynStringsMenu.MenuClick -= this.OnEntryStringClick;
-			m_dynStringsCtx.MenuClick -= this.OnEntryStringClick;
-			m_dynBinariesMenu.MenuClick -= this.OnEntryBinaryClick;
-			m_dynBinariesCtx.MenuClick -= this.OnEntryBinaryClick;
-			m_dynFindTagsMenu.MenuClick -= this.OnShowEntriesByTag;
-			m_dynFindTagsToolBar.MenuClick -= this.OnShowEntriesByTag;
-			m_dynTagAddMenu.MenuClick -= this.OnAddEntryTag;
-			m_dynTagAddCtx.MenuClick -= this.OnAddEntryTag;
-			m_dynTagRemoveMenu.MenuClick -= this.OnRemoveEntryTag;
-			m_dynTagRemoveCtx.MenuClick -= this.OnRemoveEntryTag;
-			m_dynMoveToGroupMenu.MenuClick -= this.OnEntryMoveToGroup;
-			m_dynMoveToGroupCtx.MenuClick -= this.OnEntryMoveToGroup;
-			m_dynAutoTypeAdvMenu.MenuClick -= this.OnEntryPerformAutoTypeAdv;
-			m_dynAutoTypeAdvCtx.MenuClick -= this.OnEntryPerformAutoTypeAdv;
+			m_dynStringsMenu.MenuClick -= OnEntryStringClick;
+			m_dynStringsCtx.MenuClick -= OnEntryStringClick;
+			m_dynBinariesMenu.MenuClick -= OnEntryBinaryClick;
+			m_dynBinariesCtx.MenuClick -= OnEntryBinaryClick;
+			m_dynFindTagsMenu.MenuClick -= OnShowEntriesByTag;
+			m_dynFindTagsToolBar.MenuClick -= OnShowEntriesByTag;
+			m_dynTagAddMenu.MenuClick -= OnAddEntryTag;
+			m_dynTagAddCtx.MenuClick -= OnAddEntryTag;
+			m_dynTagRemoveMenu.MenuClick -= OnRemoveEntryTag;
+			m_dynTagRemoveCtx.MenuClick -= OnRemoveEntryTag;
+			m_dynMoveToGroupMenu.MenuClick -= OnEntryMoveToGroup;
+			m_dynMoveToGroupCtx.MenuClick -= OnEntryMoveToGroup;
+			m_dynAutoTypeAdvMenu.MenuClick -= OnEntryPerformAutoTypeAdv;
+			m_dynAutoTypeAdvCtx.MenuClick -= OnEntryPerformAutoTypeAdv;
 			m_dynOpenUrlMenu.Destroy();
 			m_dynOpenUrlCtx.Destroy();
 			m_dynOpenUrlToolBar.Destroy();
@@ -388,7 +388,7 @@ namespace KeePass.Forms
 			Debug.Assert(m_uUIBlocked == 0);
 			Debug.Assert(m_uUnlockAutoBlocked == 0);
 			Debug.Assert(m_sCancellable.Count == 0);
-			this.Visible = false;
+			Visible = false;
 
 			// if(m_fontBoldUI != null) { m_fontBoldUI.Dispose(); m_fontBoldUI = null; }
 			// if(m_fontBoldTree != null) { m_fontBoldTree.Dispose(); m_fontBoldTree = null; }
@@ -431,14 +431,14 @@ namespace KeePass.Forms
 		{
 			if (!m_bFormLoadCalled) { Debug.Assert(false); return; }
 
-			FormWindowState ws = this.WindowState;
+			FormWindowState ws = WindowState;
 
 			if (ws == FormWindowState.Normal)
 			{
-				Program.Config.MainWindow.X = this.Location.X;
-				Program.Config.MainWindow.Y = this.Location.Y;
-				Program.Config.MainWindow.Width = this.Size.Width;
-				Program.Config.MainWindow.Height = this.Size.Height;
+				Program.Config.MainWindow.X = Location.X;
+				Program.Config.MainWindow.Y = Location.Y;
+				Program.Config.MainWindow.Width = Size.Width;
+				Program.Config.MainWindow.Height = Size.Height;
 			}
 
 			if ((ws == FormWindowState.Normal) || (ws == FormWindowState.Maximized))
@@ -594,7 +594,7 @@ namespace KeePass.Forms
 
 			// Clip the strings again (it could be that a translator used
 			// a string in KPRes that is too long to be displayed)
-			this.Text = StrUtil.CompactString3Dots(strWindowText, cchNtf);
+			Text = StrUtil.CompactString3Dots(strWindowText, cchNtf);
 
 			if (MonoWorkarounds.IsRequired(801414))
 				MonoWorkarounds.ExchangeFormShownRaised(this, bFormShownRaised);
@@ -607,7 +607,7 @@ namespace KeePass.Forms
 			//	ref m_kvpIcoMain, out icoToAssign, out icoToDispose))
 			//	this.Icon = icoToAssign;
 			// if(icoToDispose != null) icoToDispose.Dispose();
-			this.Icon = CreateColorizedIcon(AppIconType.Main, false);
+			Icon = CreateColorizedIcon(AppIconType.Main, false);
 
 			UIUtil.SetEnabledFast(s.DatabaseOpened || s.FileLocked,
 				m_menuFileClose, m_tbCloseTab);
@@ -700,7 +700,7 @@ namespace KeePass.Forms
 
 			if (cOptFocus != null) ResetDefaultFocus(cOptFocus);
 
-			if (this.UIStateUpdated != null) this.UIStateUpdated(this, EventArgs.Empty);
+			if (UIStateUpdated != null) UIStateUpdated(this, EventArgs.Empty);
 			// Program.TriggerSystem.RaiseEvent(EcasEventIDs.UpdatedUIState);
 		}
 
@@ -1896,10 +1896,10 @@ namespace KeePass.Forms
 		{
 			if (pe == null) { Debug.Assert(false); return; }
 
-			if (this.DefaultEntryAction != null)
+			if (DefaultEntryAction != null)
 			{
 				CancelEntryEventArgs args = new CancelEntryEventArgs(pe, colID);
-				this.DefaultEntryAction(sender, args);
+				DefaultEntryAction(sender, args);
 				if (args.Cancel) return;
 			}
 
@@ -2461,10 +2461,10 @@ namespace KeePass.Forms
 			if (FixDuplicateUuids(pwOpenedDb, pwOpenedDb.IOConnectionInfo))
 				UpdateUIState(false); // Already marked as modified
 
-			if (this.FileOpened != null)
+			if (FileOpened != null)
 			{
 				FileOpenedEventArgs ea = new FileOpenedEventArgs(pwOpenedDb);
-				this.FileOpened(this, ea);
+				FileOpened(this, ea);
 			}
 			Program.TriggerSystem.RaiseEvent(EcasEventIDs.OpenedDatabaseFile,
 				EcasProperty.Database, pwOpenedDb);
@@ -2743,7 +2743,7 @@ namespace KeePass.Forms
 		{
 			if (m_ntfTray == null) { Debug.Assert(false); return; } // Required
 
-			bool bWindowVisible = this.Visible;
+			bool bWindowVisible = Visible;
 			bool bTrayVisible = m_ntfTray.Visible;
 
 			if (Program.Config.UI.TrayIcon.ShowOnlyIfTrayedEx)
@@ -2790,8 +2790,8 @@ namespace KeePass.Forms
 
 			Program.TriggerSystem.NotifyUserActivity();
 
-			if (this.UserActivityPost != null)
-				this.UserActivityPost(null, EventArgs.Empty);
+			if (UserActivityPost != null)
+				UserActivityPost(null, EventArgs.Empty);
 		}
 
 		private void UpdateGlobalLockTimeout(DateTime utcNow)
@@ -2932,7 +2932,7 @@ namespace KeePass.Forms
 				ExecuteEntryAutoType();
 			else if (wParam == AppDefs.GlobalHotKeyId.ShowWindow)
 			{
-				bool bWndVisible = ((this.WindowState != FormWindowState.Minimized) &&
+				bool bWndVisible = ((WindowState != FormWindowState.Minimized) &&
 					!IsTrayed());
 				EnsureVisibleForegroundWindow(true, true);
 				if (bWndVisible && IsFileLocked(null))
@@ -3145,17 +3145,17 @@ namespace KeePass.Forms
 
 			if (bUntray && IsTrayed()) MinimizeToTray(false);
 
-			if (bRestoreWindow && (this.WindowState == FormWindowState.Minimized))
+			if (bRestoreWindow && (WindowState == FormWindowState.Minimized))
 				UIUtil.SetWindowState(this, FormWindowState.Normal);
 
 			UIUtil.EnsureInsideScreen(this);
 
 			try
 			{
-				if (this.Visible) // && (this.WindowState != FormWindowState.Minimized)
+				if (Visible) // && (this.WindowState != FormWindowState.Minimized)
 				{
-					this.BringToFront();
-					this.Activate();
+					BringToFront();
+					Activate();
 				}
 			}
 			catch (Exception) { Debug.Assert(false); }
@@ -3468,16 +3468,16 @@ namespace KeePass.Forms
 			if (!AppPolicy.Try(AppPolicyId.SaveFile)) return;
 
 			Guid eventGuid = Guid.NewGuid();
-			if (this.FileSavingPre != null)
+			if (FileSavingPre != null)
 			{
 				FileSavingEventArgs args = new FileSavingEventArgs(true, bCopy, pd, eventGuid);
-				this.FileSavingPre(sender, args);
+				FileSavingPre(sender, args);
 				if (args.Cancel) return;
 			}
-			if (this.FileSaving != null)
+			if (FileSaving != null)
 			{
 				FileSavingEventArgs args = new FileSavingEventArgs(true, bCopy, pd, eventGuid);
-				this.FileSaving(sender, args);
+				FileSaving(sender, args);
 				if (args.Cancel) return;
 			}
 
@@ -3523,7 +3523,7 @@ namespace KeePass.Forms
 
 				UIBlockInteraction(true);
 
-				ShutdownBlocker sdb = new ShutdownBlocker(this.Handle, KPRes.SavingDatabase);
+				ShutdownBlocker sdb = new ShutdownBlocker(Handle, KPRes.SavingDatabase);
 				ShowWarningsLogger swLogger = CreateShowWarningsLogger();
 				swLogger.StartLogging(KPRes.SavingDatabase, true);
 				m_sCancellable.Push(swLogger);
@@ -3551,10 +3551,10 @@ namespace KeePass.Forms
 				UpdateUIState(false);
 				UIBlockInteraction(false);
 
-				if (this.FileSaved != null)
+				if (FileSaved != null)
 				{
 					FileSavedEventArgs args = new FileSavedEventArgs(bSuccess, pd, eventGuid);
-					this.FileSaved(sender, args);
+					FileSaved(sender, args);
 				}
 				if (bSuccess)
 					Program.TriggerSystem.RaiseEvent(EcasEventIDs.SavedDatabaseFile,
@@ -3687,10 +3687,10 @@ namespace KeePass.Forms
 				else c = m_lvEntries;
 			}
 
-			if (this.FocusChanging != null)
+			if (FocusChanging != null)
 			{
 				FocusEventArgs ea = new FocusEventArgs(cExplicit, c);
-				this.FocusChanging(null, ea);
+				FocusChanging(null, ea);
 				if (ea.Cancel) return;
 			}
 
@@ -3817,7 +3817,7 @@ namespace KeePass.Forms
 			if (pbMod != null)
 			{
 				PwDatabase pd = m_docMgr.FindContainerOf(pe);
-				Debug.Assert(ReferenceEquals(pd, this.ActiveDatabase));
+				Debug.Assert(ReferenceEquals(pd, ActiveDatabase));
 				pe.CreateBackup(pd);
 
 				pe.Binaries.Set(ctx.Name, pbMod);
@@ -3892,10 +3892,10 @@ namespace KeePass.Forms
 
 			Program.TriggerSystem.RaiseEvent(EcasEventIDs.ClosingDatabaseFilePre,
 				EcasProperty.Database, pd);
-			if (this.FileClosingPre != null)
+			if (FileClosingPre != null)
 			{
 				FileClosingEventArgs fcea = new FileClosingEventArgs(pd, f);
-				this.FileClosingPre(null, fcea);
+				FileClosingPre(null, fcea);
 				if (fcea.Cancel) return;
 			}
 
@@ -3931,10 +3931,10 @@ namespace KeePass.Forms
 
 			Program.TriggerSystem.RaiseEvent(EcasEventIDs.ClosingDatabaseFilePost,
 				EcasProperty.Database, pd);
-			if (this.FileClosingPost != null)
+			if (FileClosingPost != null)
 			{
 				FileClosingEventArgs fcea = new FileClosingEventArgs(pd, f);
-				this.FileClosingPost(null, fcea);
+				FileClosingPost(null, fcea);
 				if (fcea.Cancel) return;
 			}
 
@@ -3965,10 +3965,10 @@ namespace KeePass.Forms
 			// NativeMethods.ClearIconicBitmaps(this.Handle);
 			Program.TempFilesPool.Clear(TempClearFlags.ContentTaggedFiles);
 
-			if (this.FileClosed != null)
+			if (FileClosed != null)
 			{
 				FileClosedEventArgs fcea = new FileClosedEventArgs(ioClosing, f);
-				this.FileClosed(null, fcea);
+				FileClosed(null, fcea);
 			}
 		}
 
@@ -4286,11 +4286,11 @@ namespace KeePass.Forms
 			if (bMinimize) // Order of Visible and ShowInTaskbar is important
 			{
 				// if(MonoWorkarounds.IsRequired(649266)) this.ShowInTaskbar = false;
-				this.Visible = false;
+				Visible = false;
 			}
 			else
 			{
-				this.Visible = true;
+				Visible = true;
 				// if(MonoWorkarounds.IsRequired(649266)) this.ShowInTaskbar = true;
 			}
 
@@ -4304,7 +4304,7 @@ namespace KeePass.Forms
 			{
 				// EnsureVisibleForegroundWindow(false, false); // Don't!
 
-				if (this.WindowState == FormWindowState.Minimized)
+				if (WindowState == FormWindowState.Minimized)
 					UIUtil.SetWindowState(this, (Program.Config.MainWindow.Maximized ?
 						FormWindowState.Maximized : FormWindowState.Normal));
 				else if (IsFileLocked(null) && !UIIsAutoUnlockBlocked())
@@ -4598,7 +4598,7 @@ namespace KeePass.Forms
 						if (a == AceEscAction.Lock)
 							LockAllDocuments();
 						else if (a == AceEscAction.Minimize)
-							this.WindowState = FormWindowState.Minimized;
+							WindowState = FormWindowState.Minimized;
 						else if (a == AceEscAction.MinimizeToTray)
 						{
 							if (!IsTrayed()) MinimizeToTray(true);
@@ -4703,7 +4703,7 @@ namespace KeePass.Forms
 			else { Debug.Assert(false); }
 
 			bool bNotBlocked = !UIIsInteractionBlocked();
-			this.Enabled = bNotBlocked;
+			Enabled = bNotBlocked;
 
 			if (bNotBlocked)
 			{
@@ -5649,13 +5649,13 @@ namespace KeePass.Forms
 
 				ToolStripMenuItem tsmiFD = new ToolStripMenuItem(
 					g_vProfileCmdTexts[0], Properties.Resources.B16x16_XMag,
-					this.OnFindProfileFind);
+					OnFindProfileFind);
 				tsmiFD.Tag = sp.Name;
 				tsmi.DropDownItems.Add(tsmiFD);
 
 				ToolStripMenuItem tsmiFG = new ToolStripMenuItem(
 					g_vProfileCmdTexts[1], Properties.Resources.B16x16_XMag,
-					this.OnFindProfileFindInGroup);
+					OnFindProfileFindInGroup);
 				tsmiFG.Tag = sp.Name;
 				tsmi.DropDownItems.Add(tsmiFG);
 
@@ -5663,13 +5663,13 @@ namespace KeePass.Forms
 
 				ToolStripMenuItem tsmiOD = new ToolStripMenuItem(
 					g_vProfileCmdTexts[2], Properties.Resources.B16x16_Misc,
-					this.OnFindProfileOpen);
+					OnFindProfileOpen);
 				tsmiOD.Tag = sp.Name;
 				tsmi.DropDownItems.Add(tsmiOD);
 
 				ToolStripMenuItem tsmiOG = new ToolStripMenuItem(
 					g_vProfileCmdTexts[3], Properties.Resources.B16x16_Misc,
-					this.OnFindProfileOpenInGroup);
+					OnFindProfileOpenInGroup);
 				tsmiOG.Tag = sp.Name;
 				tsmi.DropDownItems.Add(tsmiOG);
 			}
@@ -6070,11 +6070,11 @@ namespace KeePass.Forms
 		private void EnsureAlwaysOnTopOpt()
 		{
 			bool bWish = Program.Config.MainWindow.AlwaysOnTop;
-			if (NativeLib.IsUnix()) { this.TopMost = bWish; return; }
+			if (NativeLib.IsUnix()) { TopMost = bWish; return; }
 
 			// Workaround for issue reported in KPB 3475997
-			this.TopMost = false;
-			if (bWish) this.TopMost = true;
+			TopMost = false;
+			if (bWish) TopMost = true;
 		}
 
 		private bool IsPrimaryControlActive()
@@ -6099,12 +6099,12 @@ namespace KeePass.Forms
 		{
 			if (MonoWorkarounds.IsRequired(3574233558U))
 			{
-				if (!value && m_bFormShown && (this.WindowState ==
+				if (!value && m_bFormShown && (WindowState ==
 					FormWindowState.Minimized))
 				{
 					// Mono destroys window when trying to hide minimized
 					// window; so, restore it before hiding
-					this.WindowState = FormWindowState.Normal;
+					WindowState = FormWindowState.Normal;
 					Application.DoEvents();
 					Thread.Sleep(250);
 				}
@@ -6372,14 +6372,14 @@ namespace KeePass.Forms
 					PwGroup pg = GetSelectedGroup();
 					if (pg == null) { Debug.Assert(false); return; }
 
-					EntryUtil.CopyGroupToClipboard(pd, pg, this.Handle, bEncrypt);
+					EntryUtil.CopyGroupToClipboard(pd, pg, Handle, bEncrypt);
 				}
 				else if (t == typeof(PwEntry))
 				{
 					PwEntry[] v = GetSelectedEntries();
 					if ((v == null) || (v.Length == 0)) { Debug.Assert(false); return; }
 
-					EntryUtil.CopyEntriesToClipboard(pd, v, this.Handle, bEncrypt);
+					EntryUtil.CopyEntriesToClipboard(pd, v, Handle, bEncrypt);
 				}
 				else { Debug.Assert(false); return; }
 

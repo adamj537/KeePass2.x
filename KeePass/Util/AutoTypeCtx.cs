@@ -68,7 +68,7 @@ namespace KeePass.Util
 
 		public AutoTypeCtx Clone()
 		{
-			return (AutoTypeCtx)this.MemberwiseClone();
+			return (AutoTypeCtx)MemberwiseClone();
 		}
 	}
 

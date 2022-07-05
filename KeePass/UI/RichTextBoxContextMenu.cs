@@ -73,7 +73,7 @@ namespace KeePass.UI
 			m_form = fParent;
 
 			m_ctx = CreateContextMenu();
-			m_ctx.Opening += this.OnMenuOpening;
+			m_ctx.Opening += OnMenuOpening;
 
 			m_rtb.ContextMenuStrip = m_ctx;
 		}
@@ -84,7 +84,7 @@ namespace KeePass.UI
 			{
 				m_rtb.ContextMenuStrip = null;
 
-				m_ctx.Opening -= this.OnMenuOpening;
+				m_ctx.Opening -= OnMenuOpening;
 				m_ctx = null;
 
 				for (int i = 0; i < (int)RtbCtxCommands.Count; ++i)
@@ -101,29 +101,29 @@ namespace KeePass.UI
 			int iPos = -1;
 
 			ToolStripItem tsiUndo = ctx.Items.Add(KPRes.Undo,
-				Properties.Resources.B16x16_Undo, this.OnUndoCommand);
+				Properties.Resources.B16x16_Undo, OnUndoCommand);
 			tsiUndo.RightToLeftAutoMirrorImage = true;
 			m_vMenuItems[++iPos] = tsiUndo;
 			ctx.Items.Add(new ToolStripSeparator());
 
 			m_vMenuItems[++iPos] = ctx.Items.Add(KPRes.Cut,
-				Properties.Resources.B16x16_Cut, this.OnCutCommand);
+				Properties.Resources.B16x16_Cut, OnCutCommand);
 			m_vMenuItems[++iPos] = ctx.Items.Add(KPRes.Copy,
-				Properties.Resources.B16x16_EditCopy, this.OnCopyCommand);
+				Properties.Resources.B16x16_EditCopy, OnCopyCommand);
 			m_vMenuItems[++iPos] = ctx.Items.Add(KPRes.Paste,
-				Properties.Resources.B16x16_EditPaste, this.OnPasteCommand);
+				Properties.Resources.B16x16_EditPaste, OnPasteCommand);
 			m_vMenuItems[++iPos] = ctx.Items.Add(KPRes.Delete,
-				Properties.Resources.B16x16_EditDelete, this.OnDeleteCommand);
+				Properties.Resources.B16x16_EditDelete, OnDeleteCommand);
 			ctx.Items.Add(new ToolStripSeparator());
 
 			ToolStripItem tsiLink = ctx.Items.Add(KPRes.CopyLink,
-				Properties.Resources.B16x16_EditCopyLink, this.OnCopyLinkCommand);
+				Properties.Resources.B16x16_EditCopyLink, OnCopyLinkCommand);
 			tsiLink.RightToLeftAutoMirrorImage = true;
 			m_vMenuItems[++iPos] = tsiLink;
 			m_vMenuItems[++iPos] = ctx.Items.Add(KPRes.CopyAll,
-				Properties.Resources.B16x16_EditShred, this.OnCopyAllCommand);
+				Properties.Resources.B16x16_EditShred, OnCopyAllCommand);
 			m_vMenuItems[++iPos] = ctx.Items.Add(KPRes.SelectAll,
-				Properties.Resources.B16x16_Edit, this.OnSelectAllCommand);
+				Properties.Resources.B16x16_Edit, OnSelectAllCommand);
 
 			Debug.Assert(iPos == ((int)RtbCtxCommands.Count - 1));
 			return ctx;

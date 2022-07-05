@@ -53,11 +53,11 @@ namespace KeePass.UI
 			public RtfbTag(string strId, string strRtf, bool bStartTag, FontStyle fs)
 			{
 				if (string.IsNullOrEmpty(strId)) strId = GenerateRandomIdCode();
-				this.IdCode = strId;
+				IdCode = strId;
 
-				this.RtfCode = strRtf;
-				this.StartTag = bStartTag;
-				this.Style = fs;
+				RtfCode = strRtf;
+				StartTag = bStartTag;
+				Style = fs;
 			}
 
 			internal static string GenerateRandomIdCode()
@@ -85,7 +85,7 @@ namespace KeePass.UI
 			// For debugger display
 			public override string ToString()
 			{
-				return (this.IdCode + " => " + (this.RtfCode ?? string.Empty));
+				return (IdCode + " => " + (RtfCode ?? string.Empty));
 			}
 #endif
 		}

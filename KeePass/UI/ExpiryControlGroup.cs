@@ -90,17 +90,17 @@ namespace KeePass.UI
 			m_dtp.CustomFormat = DateTimeFormatInfo.CurrentInfo.ShortDatePattern +
 				" " + DateTimeFormatInfo.CurrentInfo.LongTimePattern;
 
-			m_dtp.ValueChanged += this.OnExpiryValueChanged;
+			m_dtp.ValueChanged += OnExpiryValueChanged;
 			// Also handle key press event (workaround for KPB 3505269)
-			m_dtp.KeyPress += this.OnExpiryKeyPress;
+			m_dtp.KeyPress += OnExpiryKeyPress;
 		}
 
 		public void Release()
 		{
 			if (m_cb == null) return;
 
-			m_dtp.ValueChanged -= this.OnExpiryValueChanged;
-			m_dtp.KeyPress -= this.OnExpiryKeyPress;
+			m_dtp.ValueChanged -= OnExpiryValueChanged;
+			m_dtp.KeyPress -= OnExpiryKeyPress;
 
 			m_cb = null;
 			m_dtp = null;

@@ -711,7 +711,7 @@ namespace KeePassLib
 
 			byte[] pbHashCopy = m_pbHashOfFileOnDisk;
 
-			try { this.Save(slLogger); }
+			try { Save(slLogger); }
 			catch (Exception)
 			{
 				m_ioSource = ioCurrent; // Restore

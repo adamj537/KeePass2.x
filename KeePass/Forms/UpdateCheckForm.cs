@@ -44,7 +44,7 @@ namespace KeePass.Forms
 		{
 			m_lInfo = lInfo;
 
-			if (!bModal) this.ShowInTaskbar = true;
+			if (!bModal) ShowInTaskbar = true;
 		}
 
 		public UpdateCheckForm()
@@ -62,8 +62,8 @@ namespace KeePass.Forms
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_WWW, KPRes.UpdateCheck,
 				KPRes.UpdateCheckResults);
-			this.Icon = AppIcons.Default;
-			this.Text = KPRes.UpdateCheck + " - " + PwDefs.ShortProductName;
+			Icon = AppIcons.Default;
+			Text = KPRes.UpdateCheck + " - " + PwDefs.ShortProductName;
 
 			UIUtil.SetExplorerTheme(m_lvInfo, true);
 

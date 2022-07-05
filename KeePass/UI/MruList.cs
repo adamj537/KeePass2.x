@@ -118,7 +118,7 @@ namespace KeePass.UI
 					{
 						m_lContainers.Add(tsmi);
 
-						tsmi.DropDownOpening += this.OnDropDownOpening;
+						tsmi.DropDownOpening += OnDropDownOpening;
 					}
 				}
 			}
@@ -130,7 +130,7 @@ namespace KeePass.UI
 
 			foreach (ToolStripMenuItem tsmi in m_lContainers)
 			{
-				tsmi.DropDownOpening -= this.OnDropDownOpening;
+				tsmi.DropDownOpening -= OnDropDownOpening;
 			}
 			m_lContainers.Clear();
 
@@ -141,13 +141,13 @@ namespace KeePass.UI
 		{
 			if (m_tsmiClear != null)
 			{
-				m_tsmiClear.Click -= this.ClearHandler;
+				m_tsmiClear.Click -= ClearHandler;
 				m_tsmiClear = null;
 			}
 
 			foreach (ToolStripMenuItem tsmi in m_lMruMenuItems)
 			{
-				tsmi.Click -= this.ClickHandler;
+				tsmi.Click -= ClickHandler;
 			}
 			m_lMruMenuItems.Clear();
 		}
@@ -317,9 +317,9 @@ namespace KeePass.UI
 			}
 
 			if (t == MruMenuItemType.Item)
-				tsmi.Click += this.ClickHandler;
+				tsmi.Click += ClickHandler;
 			else if (t == MruMenuItemType.Clear)
-				tsmi.Click += this.ClearHandler;
+				tsmi.Click += ClearHandler;
 			// t == MruMenuItemType.None needs no handler
 
 			if (!bEnabled) tsmi.Enabled = false;

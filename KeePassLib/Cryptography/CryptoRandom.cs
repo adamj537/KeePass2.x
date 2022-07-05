@@ -289,8 +289,8 @@ namespace KeePassLib.Cryptography
 
 		private byte[] GenerateRandom256()
 		{
-			if (this.GenerateRandom256Pre != null)
-				this.GenerateRandom256Pre(this, EventArgs.Empty);
+			if (GenerateRandom256Pre != null)
+				GenerateRandom256Pre(this, EventArgs.Empty);
 
 			byte[] pbCmp;
 			lock (m_oSyncRoot)

@@ -61,7 +61,7 @@ namespace KeePass.UI.ToolStripRendering
 		{
 			get
 			{
-				ProfessionalColorTable ct = this.ColorTable;
+				ProfessionalColorTable ct = ColorTable;
 				if (ct == null) { Debug.Assert(false); return false; }
 
 				return UIUtil.IsDarkColor(ct.ToolStripDropDownBackground);
@@ -93,7 +93,7 @@ namespace KeePass.UI.ToolStripRendering
 			ToolStripItem tsi = ((e != null) ? e.Item : null);
 			if ((tsi != null) && tsi.Pressed && !NativeLib.IsUnix())
 			{
-				using (Pen p = new Pen(this.ColorTable.ButtonPressedBorder))
+				using (Pen p = new Pen(ColorTable.ButtonPressedBorder))
 				{
 					e.Graphics.DrawRectangle(p, 0, 0, tsi.Width - 1, tsi.Height - 1);
 				}
@@ -249,22 +249,22 @@ namespace KeePass.UI.ToolStripRendering
 
 				// In high contrast mode, various colors of the default
 				// color table are incorrect, thus check m_bCustomColorTable
-				if ((tsi != null) && this.EnsureTextContrast && m_bCustomColorTable)
+				if ((tsi != null) && EnsureTextContrast && m_bCustomColorTable)
 				{
-					bool bDarkBack = this.IsDarkStyle;
+					bool bDarkBack = IsDarkStyle;
 					if (tsi.Selected || tsi.Pressed)
 					{
 						if ((tsi.Owner is ContextMenuStrip) || (tsi.OwnerItem != null))
-							bDarkBack = UIUtil.IsDarkColor(this.ColorTable.MenuItemSelected);
+							bDarkBack = UIUtil.IsDarkColor(ColorTable.MenuItemSelected);
 						else // Top menu item
 						{
 							if (tsi.Pressed)
 								bDarkBack = UIUtil.IsDarkColor(
-									this.ColorTable.MenuItemPressedGradientMiddle);
+									ColorTable.MenuItemPressedGradientMiddle);
 							else
 								bDarkBack = UIUtil.IsDarkColor(UIUtil.ColorMiddle(
-									this.ColorTable.MenuItemSelectedGradientBegin,
-									this.ColorTable.MenuItemSelectedGradientEnd));
+									ColorTable.MenuItemSelectedGradientBegin,
+									ColorTable.MenuItemSelectedGradientEnd));
 						}
 					}
 

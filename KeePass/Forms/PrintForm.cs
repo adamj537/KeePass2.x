@@ -104,7 +104,7 @@ namespace KeePass.Forms
 
 			public PfOptions CloneShallow()
 			{
-				return (PfOptions)this.MemberwiseClone();
+				return (PfOptions)MemberwiseClone();
 			}
 		}
 
@@ -142,7 +142,7 @@ namespace KeePass.Forms
 
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_FilePrint, strTitle, strDesc);
-			this.Text = strTitle;
+			Text = strTitle;
 		}
 
 		private void OnFormLoad(object sender, EventArgs e)
@@ -154,7 +154,7 @@ namespace KeePass.Forms
 
 			GlobalWindowManager.AddWindow(this);
 
-			this.Icon = AppIcons.Default;
+			Icon = AppIcons.Default;
 			CreateDialogBanner();
 
 			List<Image> lTabImg = new List<Image>();
@@ -303,7 +303,7 @@ namespace KeePass.Forms
 		{
 			if (bBlock) m_cPreBlock = UIUtil.GetActiveControl(this);
 
-			this.UseWaitCursor = bBlock;
+			UseWaitCursor = bBlock;
 
 			// this.Enabled = !bBlock; // Prevents wait cursor
 			m_tabMain.Enabled = !bBlock;
@@ -396,7 +396,7 @@ namespace KeePass.Forms
 			}
 
 			p.SprMode = m_cmbSpr.SelectedIndex;
-			p.Rtl = (this.RightToLeft == RightToLeft.Yes);
+			p.Rtl = (RightToLeft == RightToLeft.Yes);
 			p.Database = m_pdContext;
 			if (m_cbIcon.Checked) p.ClientIcons = m_ilClientIcons;
 

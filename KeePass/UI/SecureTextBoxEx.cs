@@ -55,7 +55,7 @@ namespace KeePass.UI
 			}
 		}
 		// https://msdn.microsoft.com/en-us/library/53b8022e.aspx
-		public virtual void ResetTextEx() { this.TextEx = ProtectedString.EmptyEx; }
+		public virtual void ResetTextEx() { TextEx = ProtectedString.EmptyEx; }
 		public virtual bool ShouldSerializeTextEx() { return false; }
 
 		private static char? m_ochPasswordChar = null;
@@ -82,11 +82,11 @@ namespace KeePass.UI
 			try
 			{
 				bool bSTA = (Thread.CurrentThread.GetApartmentState() == ApartmentState.STA);
-				this.AllowDrop = bSTA;
+				AllowDrop = bSTA;
 			}
-			catch (Exception) { Debug.Assert(false); this.AllowDrop = false; }
+			catch (Exception) { Debug.Assert(false); AllowDrop = false; }
 
-			this.UseSystemPasswordChar = true;
+			UseSystemPasswordChar = true;
 		}
 
 #if DEBUG
@@ -111,7 +111,7 @@ namespace KeePass.UI
 
 		public virtual void EnableProtection(bool bEnable)
 		{
-			if (bEnable == this.UseSystemPasswordChar) return;
+			if (bEnable == UseSystemPasswordChar) return;
 
 			if (!MonoWorkarounds.IsRequired(5795))
 			{
@@ -121,23 +121,23 @@ namespace KeePass.UI
 				else FontUtil.AssignDefaultMono(this, true);
 			}
 
-			this.UseSystemPasswordChar = bEnable;
+			UseSystemPasswordChar = bEnable;
 			ShowCurrentText(-1, -1);
 		}
 
 		private void ShowCurrentText(int nSelStart, int nSelLength)
 		{
-			if (nSelStart < 0) nSelStart = this.SelectionStart;
-			if (nSelLength < 0) nSelLength = this.SelectionLength;
+			if (nSelStart < 0) nSelStart = SelectionStart;
+			if (nSelLength < 0) nSelLength = SelectionLength;
 
 			++m_uBlockTextChanged;
-			if (!this.UseSystemPasswordChar)
-				this.Text = m_psText.ReadString();
+			if (!UseSystemPasswordChar)
+				Text = m_psText.ReadString();
 			else
-				this.Text = new string(PasswordCharEx, m_psText.Length);
+				Text = new string(PasswordCharEx, m_psText.Length);
 			--m_uBlockTextChanged;
 
-			int nNewTextLen = this.TextLength;
+			int nNewTextLen = TextLength;
 			if (nSelStart < 0) { Debug.Assert(false); nSelStart = 0; }
 			if (nSelStart > nNewTextLen) nSelStart = nNewTextLen; // Behind last char
 			if (nSelLength < 0) { Debug.Assert(false); nSelLength = 0; }
@@ -154,16 +154,16 @@ namespace KeePass.UI
 		{
 			if (m_uBlockTextChanged != 0) return;
 
-			if (!this.UseSystemPasswordChar)
+			if (!UseSystemPasswordChar)
 			{
-				m_psText = new ProtectedString(true, this.Text);
+				m_psText = new ProtectedString(true, Text);
 				base.OnTextChanged(e);
 				return;
 			}
 
-			string strText = this.Text;
-			int nSelPos = this.SelectionStart;
-			int nSelLen = this.SelectionLength;
+			string strText = Text;
+			int nSelPos = SelectionStart;
+			int nSelLen = SelectionLength;
 
 			int inxLeft = -1, inxRight = 0;
 			StringBuilder sbNewPart = new StringBuilder();
@@ -221,7 +221,7 @@ namespace KeePass.UI
 				// e.g. the selection restoration when hiding/unhiding does
 				// not work the first time (because after restoring the
 				// selection, we would override it here by selecting all)
-				if ((this.SelectionStart <= 0) && (this.SelectionLength <= 0))
+				if ((SelectionStart <= 0) && (SelectionLength <= 0))
 					SelectAll();
 			}
 		}

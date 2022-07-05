@@ -264,31 +264,31 @@ namespace KeePass.UI
 
 		public string DefaultExt
 		{
-			get { return this.FileDialog.DefaultExt; }
-			set { this.FileDialog.DefaultExt = value; }
+			get { return FileDialog.DefaultExt; }
+			set { FileDialog.DefaultExt = value; }
 		}
 
 		public string FileName
 		{
-			get { return this.FileDialog.FileName; }
-			set { this.FileDialog.FileName = value; }
+			get { return FileDialog.FileName; }
+			set { FileDialog.FileName = value; }
 		}
 
 		public string[] FileNames
 		{
-			get { return this.FileDialog.FileNames; }
+			get { return FileDialog.FileNames; }
 		}
 
 		public string Filter
 		{
-			get { return this.FileDialog.Filter; }
-			set { this.FileDialog.Filter = value; }
+			get { return FileDialog.Filter; }
+			set { FileDialog.Filter = value; }
 		}
 
 		public int FilterIndex
 		{
-			get { return this.FileDialog.FilterIndex; }
-			set { this.FileDialog.FilterIndex = value; }
+			get { return FileDialog.FilterIndex; }
+			set { FileDialog.FilterIndex = value; }
 		}
 
 		private string m_strInitialDirectoryOvr = null;
@@ -300,8 +300,8 @@ namespace KeePass.UI
 
 		public string Title
 		{
-			get { return this.FileDialog.Title; }
-			set { this.FileDialog.Title = value; }
+			get { return FileDialog.Title; }
+			set { FileDialog.Title = value; }
 		}
 
 		protected FileDialogEx(bool bSaveMode, string strContext)
@@ -313,7 +313,7 @@ namespace KeePass.UI
 		public DialogResult ShowDialog()
 		{
 			string strPrevWorkDir = PreShowDialog();
-			DialogResult dr = this.FileDialog.ShowDialog();
+			DialogResult dr = FileDialog.ShowDialog();
 			PostShowDialog(strPrevWorkDir, dr);
 			return dr;
 		}
@@ -321,7 +321,7 @@ namespace KeePass.UI
 		public DialogResult ShowDialog(IWin32Window owner)
 		{
 			string strPrevWorkDir = PreShowDialog();
-			DialogResult dr = this.FileDialog.ShowDialog(owner);
+			DialogResult dr = FileDialog.ShowDialog(owner);
 			PostShowDialog(strPrevWorkDir, dr);
 			return dr;
 		}
@@ -340,7 +340,7 @@ namespace KeePass.UI
 			try
 			{
 				string strWD = WinUtil.GetWorkingDirectory();
-				this.FileDialog.InitialDirectory = strWD;
+				FileDialog.InitialDirectory = strWD;
 			}
 			catch (Exception) { Debug.Assert(false); }
 
@@ -358,9 +358,9 @@ namespace KeePass.UI
 				if (dr == DialogResult.OK)
 				{
 					string strFile = null;
-					if (m_bSaveMode) strFile = this.FileDialog.FileName;
-					else if (this.FileDialog.FileNames.Length > 0)
-						strFile = this.FileDialog.FileNames[0];
+					if (m_bSaveMode) strFile = FileDialog.FileName;
+					else if (FileDialog.FileNames.Length > 0)
+						strFile = FileDialog.FileNames[0];
 
 					if (!string.IsNullOrEmpty(strFile))
 						strCur = UrlUtil.GetFileDirectory(strFile, false, true);

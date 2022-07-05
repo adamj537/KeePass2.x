@@ -51,7 +51,7 @@ namespace KeePass.UI
 
 			// Enable default double buffering (must be combined with
 			// TVS_EX_DOUBLEBUFFER, see OnHandleCreated)
-			try { this.DoubleBuffered = true; }
+			try { DoubleBuffered = true; }
 			catch (Exception) { Debug.Assert(!WinUtil.IsAtLeastWindowsVista); }
 
 			// try
@@ -89,7 +89,7 @@ namespace KeePass.UI
 
 		internal void ApplyOptions()
 		{
-			this.ShowLines = Program.Config.UI.TreeViewShowLines;
+			ShowLines = Program.Config.UI.TreeViewShowLines;
 		}
 
 		// protected override void WndProc(ref Message m)
@@ -153,10 +153,10 @@ namespace KeePass.UI
 
 			try
 			{
-				if (this.DoubleBuffered && !NativeLib.IsUnix())
+				if (DoubleBuffered && !NativeLib.IsUnix())
 				{
 					IntPtr p = new IntPtr((int)NativeMethods.TVS_EX_DOUBLEBUFFER);
-					NativeMethods.SendMessage(this.Handle,
+					NativeMethods.SendMessage(Handle,
 						NativeMethods.TVM_SETEXTENDEDSTYLE, p, p);
 				}
 				else { Debug.Assert(!WinUtil.IsAtLeastWindowsVista); }
@@ -210,7 +210,7 @@ namespace KeePass.UI
 			TreeNode tn = ((e != null) ? e.Node : null);
 			if (tn != null)
 			{
-				if ((tn.Parent == null) && !this.ShowRootLines)
+				if ((tn.Parent == null) && !ShowRootLines)
 				{
 					// This should only occur due to a user action (e.g.
 					// double-click on the node), not programmatically

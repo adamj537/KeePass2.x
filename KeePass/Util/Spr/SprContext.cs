@@ -167,7 +167,7 @@ namespace KeePass.Util.Spr
 
 		public SprContext Clone()
 		{
-			return (SprContext)this.MemberwiseClone();
+			return (SprContext)MemberwiseClone();
 		}
 
 		/// <summary>

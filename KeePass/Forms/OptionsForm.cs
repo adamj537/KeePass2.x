@@ -91,7 +91,7 @@ namespace KeePass.Forms
 			// Set ShowInTaskbar immediately, not later, otherwise the form
 			// can disappear:
 			// https://sourceforge.net/p/keepass/discussion/329220/thread/c95b5644/
-			if (bForceInTaskbar) this.ShowInTaskbar = true;
+			if (bForceInTaskbar) ShowInTaskbar = true;
 		}
 
 		private void CreateDialogBanner(BannerStyle bs)
@@ -112,7 +112,7 @@ namespace KeePass.Forms
 		private void OnFormLoad(object sender, EventArgs e)
 		{
 			// Can be invoked by tray command; don't use CenterParent
-			Debug.Assert(this.StartPosition == FormStartPosition.CenterScreen);
+			Debug.Assert(StartPosition == FormStartPosition.CenterScreen);
 
 			// When multiline is enabled, tabs added by plugins can result
 			// in multiple tab rows, cropping the tab content at the bottom;
@@ -121,7 +121,7 @@ namespace KeePass.Forms
 
 			GlobalWindowManager.AddWindow(this);
 
-			this.Icon = AppIcons.Default;
+			Icon = AppIcons.Default;
 
 			Debug.Assert(m_ilIcons != null);
 			if (m_ilIcons != null)
@@ -903,7 +903,7 @@ namespace KeePass.Forms
 
 		private void OnBtnOK(object sender, EventArgs e)
 		{
-			if (!ValidateOptions()) { this.DialogResult = DialogResult.None; return; }
+			if (!ValidateOptions()) { DialogResult = DialogResult.None; return; }
 
 			SaveOptions();
 		}

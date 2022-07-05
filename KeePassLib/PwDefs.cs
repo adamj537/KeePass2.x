@@ -505,7 +505,7 @@ namespace KeePassLib
 
 		public SearchParameters Clone()
 		{
-			return (SearchParameters)this.MemberwiseClone();
+			return (SearchParameters)MemberwiseClone();
 		}
 	}
 	// #pragma warning restore 1591 // Missing XML comments warning
@@ -526,16 +526,16 @@ namespace KeePassLib
 
 		public MemoryProtectionConfig CloneDeep()
 		{
-			return (MemoryProtectionConfig)this.MemberwiseClone();
+			return (MemoryProtectionConfig)MemberwiseClone();
 		}
 
 		public bool GetProtection(string strField)
 		{
-			if (strField == PwDefs.TitleField) return this.ProtectTitle;
-			if (strField == PwDefs.UserNameField) return this.ProtectUserName;
-			if (strField == PwDefs.PasswordField) return this.ProtectPassword;
-			if (strField == PwDefs.UrlField) return this.ProtectUrl;
-			if (strField == PwDefs.NotesField) return this.ProtectNotes;
+			if (strField == PwDefs.TitleField) return ProtectTitle;
+			if (strField == PwDefs.UserNameField) return ProtectUserName;
+			if (strField == PwDefs.PasswordField) return ProtectPassword;
+			if (strField == PwDefs.UrlField) return ProtectUrl;
+			if (strField == PwDefs.NotesField) return ProtectNotes;
 
 			return false;
 		}

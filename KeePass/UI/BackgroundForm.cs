@@ -28,18 +28,18 @@ namespace KeePass.UI
 		{
 			Screen s = (sc ?? Screen.PrimaryScreen);
 
-			this.ShowIcon = false;
-			this.ShowInTaskbar = false;
-			this.FormBorderStyle = FormBorderStyle.None;
+			ShowIcon = false;
+			ShowInTaskbar = false;
+			FormBorderStyle = FormBorderStyle.None;
 
-			this.StartPosition = FormStartPosition.Manual;
-			this.Location = s.Bounds.Location;
-			this.Size = s.Bounds.Size;
+			StartPosition = FormStartPosition.Manual;
+			Location = s.Bounds.Location;
+			Size = s.Bounds.Size;
 
-			this.DoubleBuffered = true;
-			this.BackColor = Color.Black;
+			DoubleBuffered = true;
+			BackColor = Color.Black;
 
-			if (bmpBackground != null) this.BackgroundImage = bmpBackground;
+			if (bmpBackground != null) BackgroundImage = bmpBackground;
 		}
 	}
 }

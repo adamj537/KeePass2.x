@@ -82,8 +82,8 @@ namespace KeePass.Forms
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_KGPG_Gen,
 				KPRes.OtpGenSettings, KPRes.OtpGenSettingsDesc);
-			this.Icon = AppIcons.Default;
-			this.Text = KPRes.OtpGenSettings;
+			Icon = AppIcons.Default;
+			Text = KPRes.OtpGenSettings;
 
 			Debug.Assert(m_lblHotpSecret.Bounds == m_lblTotpSecret.Bounds);
 			Debug.Assert(m_tbHotpSecret.Bounds == m_tbTotpSecret.Bounds);
@@ -134,14 +134,14 @@ namespace KeePass.Forms
 
 			LoadSettings(m_d, false, true);
 
-			m_tbHotpSecret.TextChanged += this.OnOtpParamChanged;
-			m_cmbHotpSecretEnc.SelectedIndexChanged += this.OnOtpParamChanged;
-			m_tbHotpCounter.TextChanged += this.OnOtpParamChanged;
-			m_tbTotpSecret.TextChanged += this.OnOtpParamChanged;
-			m_cmbTotpSecretEnc.SelectedIndexChanged += this.OnOtpParamChanged;
-			m_tbTotpLength.TextChanged += this.OnOtpParamChanged;
-			m_tbTotpPeriod.TextChanged += this.OnOtpParamChanged;
-			m_cmbTotpAlg.TextChanged += this.OnOtpParamChanged;
+			m_tbHotpSecret.TextChanged += OnOtpParamChanged;
+			m_cmbHotpSecretEnc.SelectedIndexChanged += OnOtpParamChanged;
+			m_tbHotpCounter.TextChanged += OnOtpParamChanged;
+			m_tbTotpSecret.TextChanged += OnOtpParamChanged;
+			m_cmbTotpSecretEnc.SelectedIndexChanged += OnOtpParamChanged;
+			m_tbTotpLength.TextChanged += OnOtpParamChanged;
+			m_tbTotpPeriod.TextChanged += OnOtpParamChanged;
+			m_cmbTotpAlg.TextChanged += OnOtpParamChanged;
 
 			--m_uBlockUIUpdate;
 			UpdateUI();

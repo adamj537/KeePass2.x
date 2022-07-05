@@ -147,10 +147,10 @@ namespace KeePass.Ecas
 			// if(e == null) throw new ArgumentNullException("e");
 			// if(!m_bEnabled) return;
 
-			if (this.RaisingEvent != null)
+			if (RaisingEvent != null)
 			{
 				EcasRaisingEventArgs args = new EcasRaisingEventArgs(e, props);
-				this.RaisingEvent(this, args);
+				RaisingEvent(this, args);
 				if (args.Cancel) return;
 			}
 

@@ -79,38 +79,38 @@ namespace KeePassLib.Serialization
 			private LockFileInfo(string strID, string strTime, string strUserName,
 				string strMachine, string strDomain)
 			{
-				this.ID = (strID ?? string.Empty).Trim();
+				ID = (strID ?? string.Empty).Trim();
 
 				DateTime dt;
 				if (TimeUtil.TryDeserializeUtc(strTime.Trim(), out dt))
-					this.Time = dt;
+					Time = dt;
 				else
 				{
 					Debug.Assert(false);
-					this.Time = DateTime.UtcNow;
+					Time = DateTime.UtcNow;
 				}
 
-				this.UserName = (strUserName ?? string.Empty).Trim();
-				this.Machine = (strMachine ?? string.Empty).Trim();
-				this.Domain = (strDomain ?? string.Empty).Trim();
+				UserName = (strUserName ?? string.Empty).Trim();
+				Machine = (strMachine ?? string.Empty).Trim();
+				Domain = (strDomain ?? string.Empty).Trim();
 
-				if (this.Domain.Equals(this.Machine, StrUtil.CaseIgnoreCmp))
-					this.Domain = string.Empty;
+				if (Domain.Equals(Machine, StrUtil.CaseIgnoreCmp))
+					Domain = string.Empty;
 			}
 
 			public string GetOwner()
 			{
 				StringBuilder sb = new StringBuilder();
-				sb.Append((this.UserName.Length > 0) ? this.UserName : "?");
+				sb.Append((UserName.Length > 0) ? UserName : "?");
 
-				bool bMachine = (this.Machine.Length > 0);
-				bool bDomain = (this.Domain.Length > 0);
+				bool bMachine = (Machine.Length > 0);
+				bool bDomain = (Domain.Length > 0);
 				if (bMachine || bDomain)
 				{
 					sb.Append(" (");
-					sb.Append(this.Machine);
+					sb.Append(Machine);
 					if (bMachine && bDomain) sb.Append(" @ ");
-					sb.Append(this.Domain);
+					sb.Append(Domain);
 					sb.Append(")");
 				}
 

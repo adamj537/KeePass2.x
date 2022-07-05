@@ -75,7 +75,7 @@ namespace KeePass.Forms
 			// Set ShowInTaskbar immediately, not later, otherwise the form
 			// can disappear:
 			// https://sourceforge.net/p/keepass/discussion/329220/thread/c95b5644/
-			if (bForceInTaskbar) this.ShowInTaskbar = true;
+			if (bForceInTaskbar) ShowInTaskbar = true;
 		}
 
 		public PwGeneratorForm()
@@ -87,7 +87,7 @@ namespace KeePass.Forms
 		private void OnFormLoad(object sender, EventArgs e)
 		{
 			// Can be invoked by tray command; don't use CenterParent
-			Debug.Assert(this.StartPosition == FormStartPosition.CenterScreen);
+			Debug.Assert(StartPosition == FormStartPosition.CenterScreen);
 
 			++m_uBlockUIUpdate;
 
@@ -98,7 +98,7 @@ namespace KeePass.Forms
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_KGPG_Gen, KPRes.PasswordOptions,
 				KPRes.PasswordOptionsDesc);
-			this.Icon = AppIcons.Default;
+			Icon = AppIcons.Default;
 
 			UIUtil.SetButtonImage(m_btnProfileAdd,
 				Properties.Resources.B16x16_FileSaveAs, false);
@@ -202,27 +202,27 @@ namespace KeePass.Forms
 			// Debug.Assert(!this.ShowInTaskbar);
 			// if(m_bForceInTaskbar) this.ShowInTaskbar = true;
 
-			m_rbStandardCharSet.CheckedChanged += this.UpdateUIProc;
-			m_rbPattern.CheckedChanged += this.UpdateUIProc;
-			m_rbCustom.CheckedChanged += this.UpdateUIProc;
-			m_numGenChars.ValueChanged += this.UpdateUIProc;
-			m_cbUpperCase.CheckedChanged += this.UpdateUIProc;
-			m_cbLowerCase.CheckedChanged += this.UpdateUIProc;
-			m_cbDigits.CheckedChanged += this.UpdateUIProc;
-			m_cbMinus.CheckedChanged += this.UpdateUIProc;
-			m_cbUnderline.CheckedChanged += this.UpdateUIProc;
-			m_cbSpace.CheckedChanged += this.UpdateUIProc;
-			m_cbSpecial.CheckedChanged += this.UpdateUIProc;
-			m_cbBrackets.CheckedChanged += this.UpdateUIProc;
-			m_cbLatin1S.CheckedChanged += this.UpdateUIProc;
-			m_tbCustomChars.TextChanged += this.UpdateUIProc;
-			m_tbPattern.TextChanged += this.UpdateUIProc;
-			m_cbPatternPermute.CheckedChanged += this.UpdateUIProc;
-			m_cmbCustomAlgo.SelectedIndexChanged += this.UpdateUIProc;
-			m_cbEntropy.CheckedChanged += this.UpdateUIProc;
-			m_cbNoRepeat.CheckedChanged += this.UpdateUIProc;
-			m_cbExcludeLookAlike.CheckedChanged += this.UpdateUIProc;
-			m_tbExcludeChars.TextChanged += this.UpdateUIProc;
+			m_rbStandardCharSet.CheckedChanged += UpdateUIProc;
+			m_rbPattern.CheckedChanged += UpdateUIProc;
+			m_rbCustom.CheckedChanged += UpdateUIProc;
+			m_numGenChars.ValueChanged += UpdateUIProc;
+			m_cbUpperCase.CheckedChanged += UpdateUIProc;
+			m_cbLowerCase.CheckedChanged += UpdateUIProc;
+			m_cbDigits.CheckedChanged += UpdateUIProc;
+			m_cbMinus.CheckedChanged += UpdateUIProc;
+			m_cbUnderline.CheckedChanged += UpdateUIProc;
+			m_cbSpace.CheckedChanged += UpdateUIProc;
+			m_cbSpecial.CheckedChanged += UpdateUIProc;
+			m_cbBrackets.CheckedChanged += UpdateUIProc;
+			m_cbLatin1S.CheckedChanged += UpdateUIProc;
+			m_tbCustomChars.TextChanged += UpdateUIProc;
+			m_tbPattern.TextChanged += UpdateUIProc;
+			m_cbPatternPermute.CheckedChanged += UpdateUIProc;
+			m_cmbCustomAlgo.SelectedIndexChanged += UpdateUIProc;
+			m_cbEntropy.CheckedChanged += UpdateUIProc;
+			m_cbNoRepeat.CheckedChanged += UpdateUIProc;
+			m_cbExcludeLookAlike.CheckedChanged += UpdateUIProc;
+			m_tbExcludeChars.TextChanged += UpdateUIProc;
 
 			--m_uBlockUIUpdate;
 			EnableControlsEx(false);
@@ -548,7 +548,7 @@ namespace KeePass.Forms
 
 		private void GeneratePreviewPasswords()
 		{
-			this.UseWaitCursor = true;
+			UseWaitCursor = true;
 
 			m_pbPreview.Value = 0;
 			m_tbPreview.Text = string.Empty;
@@ -594,7 +594,7 @@ namespace KeePass.Forms
 			m_pbPreview.Value = 100; // In case of error or n = 0
 			UIUtil.SetMultilineText(m_tbPreview, sbList.ToString());
 
-			this.UseWaitCursor = false;
+			UseWaitCursor = false;
 		}
 
 		private CustomPwGenerator GetPwGenerator()

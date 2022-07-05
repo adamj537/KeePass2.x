@@ -180,8 +180,8 @@ namespace KeePass.UI
 		{
 			RememberActiveDocument();
 
-			if (this.ActiveDocumentSelected != null)
-				this.ActiveDocumentSelected(null, EventArgs.Empty);
+			if (ActiveDocumentSelected != null)
+				ActiveDocumentSelected(null, EventArgs.Empty);
 		}
 
 		internal void RememberActiveDocument()

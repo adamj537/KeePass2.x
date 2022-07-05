@@ -81,7 +81,7 @@ namespace KeePass.Forms
 		private void OnFormLoad(object sender, EventArgs e)
 		{
 			// Can be invoked during auto-type; don't use CenterParent
-			Debug.Assert(this.StartPosition == FormStartPosition.CenterScreen);
+			Debug.Assert(StartPosition == FormStartPosition.CenterScreen);
 
 			GlobalWindowManager.AddWindow(this);
 
@@ -90,8 +90,8 @@ namespace KeePass.Forms
 			if (strTitle.Length > 0) strTitleEx += " - ";
 			strTitleEx += PwDefs.ShortProductName;
 
-			this.Icon = AppIcons.Default;
-			this.Text = strTitleEx;
+			Icon = AppIcons.Default;
+			Text = strTitleEx;
 
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_Binary, strTitle,
@@ -134,8 +134,8 @@ namespace KeePass.Forms
 				}
 			}
 
-			this.BringToFront();
-			this.Activate();
+			BringToFront();
+			Activate();
 			if (m_lvFields.Items.Count > 0)
 				UIUtil.SetFocusedItem(m_lvFields, m_lvFields.Items[0], true);
 			UIUtil.SetFocus(m_lvFields, this, true);
@@ -148,7 +148,7 @@ namespace KeePass.Forms
 
 		private void ProcessItemSelection()
 		{
-			if (this.DialogResult == DialogResult.OK) return; // Already closing
+			if (DialogResult == DialogResult.OK) return; // Already closing
 
 			ListView.SelectedListViewItemCollection lvsic =
 				m_lvFields.SelectedItems;
@@ -161,7 +161,7 @@ namespace KeePass.Forms
 			if (fpf == null) { Debug.Assert(false); return; }
 
 			m_fpResult = fpf;
-			this.DialogResult = DialogResult.OK;
+			DialogResult = DialogResult.OK;
 		}
 
 		private void OnFieldItemActivate(object sender, EventArgs e)

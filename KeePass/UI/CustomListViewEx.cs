@@ -62,7 +62,7 @@ namespace KeePass.UI
 		{
 			if (Program.DesignMode) return;
 
-			try { this.DoubleBuffered = true; }
+			try { DoubleBuffered = true; }
 			catch (Exception) { Debug.Assert(false); }
 		}
 
@@ -160,11 +160,11 @@ namespace KeePass.UI
 		private bool SkipGroupHeaderIfRequired(KeyEventArgs e)
 		{
 			if (!UIUtil.GetGroupsEnabled(this)) return false;
-			if (this.MultiSelect) return false;
+			if (MultiSelect) return false;
 
 			if (MonoWorkarounds.IsRequired(836428016)) return false;
 
-			ListViewItem lvi = this.FocusedItem;
+			ListViewItem lvi = FocusedItem;
 			if (lvi != null)
 			{
 				ListViewGroup g = lvi.Group;
@@ -177,7 +177,7 @@ namespace KeePass.UI
 
 				if (lviChangeTo != null)
 				{
-					foreach (ListViewItem lviEnum in this.Items)
+					foreach (ListViewItem lviEnum in Items)
 						lviEnum.Selected = false;
 
 					EnsureVisible(lviChangeTo.Index);
@@ -206,7 +206,7 @@ namespace KeePass.UI
 		{
 			if (gBaseExcl == null) { Debug.Assert(false); return null; }
 
-			int i = this.Groups.IndexOf(gBaseExcl);
+			int i = Groups.IndexOf(gBaseExcl);
 			if (i < 0) { Debug.Assert(false); return null; }
 
 			if (bUp)
@@ -214,7 +214,7 @@ namespace KeePass.UI
 				--i;
 				while (i >= 0)
 				{
-					ListViewGroup g = this.Groups[i];
+					ListViewGroup g = Groups[i];
 					if (g.Items.Count > 0) return g.Items[g.Items.Count - 1];
 
 					--i;
@@ -223,10 +223,10 @@ namespace KeePass.UI
 			else // Down
 			{
 				++i;
-				int nGroups = this.Groups.Count;
+				int nGroups = Groups.Count;
 				while (i < nGroups)
 				{
-					ListViewGroup g = this.Groups[i];
+					ListViewGroup g = Groups[i];
 					if (g.Items.Count > 0) return g.Items[0];
 
 					++i;
@@ -240,9 +240,9 @@ namespace KeePass.UI
 		{
 			try
 			{
-				if ((e.KeyData == Keys.F2) && this.LabelEdit)
+				if ((e.KeyData == Keys.F2) && LabelEdit)
 				{
-					ListView.SelectedListViewItemCollection lvsic = this.SelectedItems;
+					ListView.SelectedListViewItemCollection lvsic = SelectedItems;
 					if (lvsic.Count >= 1)
 					{
 						UIUtil.SetHandled(e, true);
@@ -277,10 +277,10 @@ namespace KeePass.UI
 			try
 			{
 				if ((m.Msg == NativeMethods.WM_CONTEXTMENU) && (m_ctxHeader != null) &&
-					(this.View == View.Details) && (this.HeaderStyle !=
+					(View == View.Details) && (HeaderStyle !=
 					ColumnHeaderStyle.None) && !NativeLib.IsUnix())
 				{
-					IntPtr hList = this.Handle;
+					IntPtr hList = Handle;
 					if (hList != IntPtr.Zero)
 					{
 						IntPtr hHeader = NativeMethods.SendMessage(hList,
@@ -320,11 +320,11 @@ namespace KeePass.UI
 
 			if (++m_cUpdating == 1) // Increment before setting properties
 			{
-				m_cmpUpdatingPre = this.ListViewItemSorter;
-				m_soUpdatingPre = this.Sorting;
+				m_cmpUpdatingPre = ListViewItemSorter;
+				m_soUpdatingPre = Sorting;
 
-				this.Sorting = SortOrder.None;
-				this.ListViewItemSorter = null;
+				Sorting = SortOrder.None;
+				ListViewItemSorter = null;
 			}
 		}
 
@@ -340,12 +340,12 @@ namespace KeePass.UI
 			if (m_cUpdating == 1)
 			{
 				// The caller should not change the sorting while updating
-				Debug.Assert(this.ListViewItemSorter == null);
-				Debug.Assert(this.Sorting == SortOrder.None);
+				Debug.Assert(ListViewItemSorter == null);
+				Debug.Assert(Sorting == SortOrder.None);
 
-				this.ListViewItemSorter = m_cmpUpdatingPre;
+				ListViewItemSorter = m_cmpUpdatingPre;
 				if (m_soUpdatingPre != SortOrder.None)
-					this.Sorting = m_soUpdatingPre;
+					Sorting = m_soUpdatingPre;
 
 				m_cmpUpdatingPre = null;
 				// m_soUpdatingPre = SortOrder.None;
@@ -356,7 +356,7 @@ namespace KeePass.UI
 				{
 					Debug.Assert(lviTop.ListView == this);
 					int i = lviTop.Index;
-					Debug.Assert((i >= 0) && (i < this.Items.Count));
+					Debug.Assert((i >= 0) && (i < Items.Count));
 					UIUtil.SetTopVisibleItem(this, i, false);
 				}
 			}
@@ -371,7 +371,7 @@ namespace KeePass.UI
 		{
 			if (!m_bAltItemStyles) return;
 
-			Color clrAlt = UIUtil.GetAlternateColorEx(this.BackColor);
+			Color clrAlt = UIUtil.GetAlternateColorEx(BackColor);
 
 			UIUtil.SetAlternatingBgColors(this, clrAlt,
 				Program.Config.MainWindow.EntryListAlternatingBgColors);

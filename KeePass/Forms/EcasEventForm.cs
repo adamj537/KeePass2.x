@@ -51,8 +51,8 @@ namespace KeePass.Forms
 		{
 			GlobalWindowManager.AddWindow(this);
 
-			this.Text = KPRes.Event;
-			this.Icon = AppIcons.Default;
+			Text = KPRes.Event;
+			Icon = AppIcons.Default;
 
 			Debug.Assert(!m_lblParamHint.AutoSize); // For RTL support
 			m_lblParamHint.Text = KPRes.ParamDescHelp;
@@ -84,7 +84,7 @@ namespace KeePass.Forms
 		private void OnBtnOK(object sender, EventArgs e)
 		{
 			if (!UpdateDataEx(m_eventInOut, true, EcasTypeDxMode.Selection))
-				this.DialogResult = DialogResult.None;
+				DialogResult = DialogResult.None;
 			else m_eventInOut.RunAtTicks = -1;
 		}
 

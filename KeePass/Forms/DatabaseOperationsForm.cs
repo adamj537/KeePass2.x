@@ -61,8 +61,8 @@ namespace KeePass.Forms
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_Package_Settings, KPRes.DatabaseMaintenance,
 				KPRes.DatabaseMaintenanceDesc);
-			this.Icon = AppIcons.Default;
-			this.Text = KPRes.DatabaseMaintenance;
+			Icon = AppIcons.Default;
+			Text = KPRes.DatabaseMaintenance;
 
 			m_numHistoryDays.Value = m_pwDatabase.MaintenanceHistoryDays;
 

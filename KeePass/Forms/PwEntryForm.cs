@@ -719,9 +719,9 @@ namespace KeePass.Forms
 			m_ctxNotes.Attach(m_rtNotes, this);
 
 			m_ctxBinOpen = new CustomContextMenuStripEx();
-			m_ctxBinOpen.Opening += this.OnCtxBinOpenOpening;
+			m_ctxBinOpen.Opening += OnCtxBinOpenOpening;
 			m_dynBinOpen = new DynamicMenu(m_ctxBinOpen.Items);
-			m_dynBinOpen.MenuClick += this.OnDynBinOpen;
+			m_dynBinOpen.MenuClick += OnDynBinOpen;
 			m_btnBinOpen.SplitDropDownMenu = m_ctxBinOpen;
 
 			string strTitle = string.Empty, strDesc = string.Empty;
@@ -755,8 +755,8 @@ namespace KeePass.Forms
 
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_KGPG_Sign, strTitle, strDesc);
-			this.Icon = AppIcons.Default;
-			this.Text = strTitle;
+			Icon = AppIcons.Default;
+			Text = strTitle;
 
 			// m_btnTools.Text += " \u23F7 \u25BC \u25BE \u2BC6 \uD83D\uDF83";
 			// m_btnTools.Width += DpiUtil.ScaleIntX(60);
@@ -971,10 +971,10 @@ namespace KeePass.Forms
 
 			bool bPri = ReferenceEquals(peTarget, m_pwEntry);
 
-			if ((this.EntrySaving != null) && bPri)
+			if ((EntrySaving != null) && bPri)
 			{
 				CancellableOperationEventArgs e = new CancellableOperationEventArgs();
-				this.EntrySaving(this, e);
+				EntrySaving(this, e);
 				if (e.Cancel) return false;
 			}
 
@@ -1045,8 +1045,8 @@ namespace KeePass.Forms
 				m_mvec.MultiAutoTypeObf = (m_cbAutoTypeObfuscation.CheckState == CheckState.Indeterminate);
 			}
 
-			if ((this.EntrySaved != null) && bPri)
-				this.EntrySaved(this, EventArgs.Empty);
+			if ((EntrySaved != null) && bPri)
+				EntrySaved(this, EventArgs.Empty);
 
 			return true;
 		}
@@ -1063,7 +1063,7 @@ namespace KeePass.Forms
 		private void OnBtnOK(object sender, EventArgs e)
 		{
 			if (SaveEntry(m_pwEntry, true)) m_bForceClosing = true;
-			else this.DialogResult = DialogResult.None;
+			else DialogResult = DialogResult.None;
 		}
 
 		private void OnBtnCancel(object sender, EventArgs e)
@@ -1098,9 +1098,9 @@ namespace KeePass.Forms
 			m_cgExpiry.Release();
 
 			m_btnBinOpen.SplitDropDownMenu = null;
-			m_dynBinOpen.MenuClick -= this.OnDynBinOpen;
+			m_dynBinOpen.MenuClick -= OnDynBinOpen;
 			m_dynBinOpen.Clear();
-			m_ctxBinOpen.Opening -= this.OnCtxBinOpenOpening;
+			m_ctxBinOpen.Opening -= OnCtxBinOpenOpening;
 			m_ctxBinOpen.Dispose();
 
 			m_cmbOverrideUrl.OrderedImageList = null;
@@ -1344,7 +1344,7 @@ namespace KeePass.Forms
 			m_pwEntry.RestoreFromBackup((uint)lvsic[0], m_pwDatabase);
 			m_pwEntry.Touch(true, false);
 			m_bTouchedOnce = true;
-			this.DialogResult = DialogResult.OK; // Doesn't invoke OnBtnOK
+			DialogResult = DialogResult.OK; // Doesn't invoke OnBtnOK
 		}
 
 		private void OnHistorySelectedIndexChanged(object sender, EventArgs e)
@@ -1462,9 +1462,9 @@ namespace KeePass.Forms
 			{
 				ms.WriteByte(0);
 				byte[] pb = MemUtil.Compress(ms.ToArray());
-				ClipboardUtil.Copy(pb, ClipFmtStrings, false, this.Handle);
+				ClipboardUtil.Copy(pb, ClipFmtStrings, false, Handle);
 			}
-			else ClipboardUtil.Copy(sb.ToString(), false, false, null, null, this.Handle);
+			else ClipboardUtil.Copy(sb.ToString(), false, false, null, null, Handle);
 
 			ms.Dispose();
 		}
@@ -1549,9 +1549,9 @@ namespace KeePass.Forms
 			{
 				ms.WriteByte(0);
 				byte[] pb = MemUtil.Compress(ms.ToArray());
-				ClipboardUtil.Copy(pb, ClipFmtAutoType, false, this.Handle);
+				ClipboardUtil.Copy(pb, ClipFmtAutoType, false, Handle);
 			}
-			else ClipboardUtil.Copy(sb.ToString(), false, false, null, null, this.Handle);
+			else ClipboardUtil.Copy(sb.ToString(), false, false, null, null, Handle);
 
 			ms.Dispose();
 		}
@@ -2018,7 +2018,7 @@ namespace KeePass.Forms
 					if ((dr == DialogResult.Yes) || (dr == DialogResult.OK))
 					{
 						bCancel = !SaveEntry(m_pwEntry, true);
-						if (!bCancel) this.DialogResult = DialogResult.OK;
+						if (!bCancel) DialogResult = DialogResult.OK;
 					}
 					else if ((dr == DialogResult.Cancel) || (dr == DialogResult.None))
 						bCancel = true;
@@ -2028,7 +2028,7 @@ namespace KeePass.Forms
 			if (bCancel)
 			{
 				e.Cancel = true;
-				this.DialogResult = DialogResult.None;
+				DialogResult = DialogResult.None;
 			}
 		}
 

@@ -36,7 +36,7 @@ namespace KeePassLib.Cryptography.KeyDerivation
 
 		public virtual KdfParameters GetDefaultParameters()
 		{
-			return new KdfParameters(this.Uuid);
+			return new KdfParameters(Uuid);
 		}
 
 		/// <summary>
@@ -45,7 +45,7 @@ namespace KeePassLib.Cryptography.KeyDerivation
 		public virtual void Randomize(KdfParameters p)
 		{
 			Debug.Assert(p != null);
-			Debug.Assert(p.KdfUuid.Equals(this.Uuid));
+			Debug.Assert(p.KdfUuid.Equals(Uuid));
 		}
 
 		public abstract byte[] Transform(byte[] pbMsg, KdfParameters p);

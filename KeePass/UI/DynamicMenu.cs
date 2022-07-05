@@ -110,7 +110,7 @@ namespace KeePass.UI
 			if (strItemText == null) { Debug.Assert(false); throw new ArgumentNullException("strItemText"); }
 
 			ToolStripMenuItem tsmi = new ToolStripMenuItem(strItemText);
-			tsmi.Click += this.OnMenuClick;
+			tsmi.Click += OnMenuClick;
 			tsmi.Tag = objTag;
 
 			if (imgSmallIcon != null) tsmi.Image = imgSmallIcon;
@@ -135,8 +135,8 @@ namespace KeePass.UI
 			string strText = tsi.Text;
 			if (strText == null) { Debug.Assert(false); return; }
 
-			if (this.MenuClick != null)
-				this.MenuClick(sender, new DynamicMenuEventArgs(strText, tsi.Tag));
+			if (MenuClick != null)
+				MenuClick(sender, new DynamicMenuEventArgs(strText, tsi.Tag));
 		}
 	}
 }

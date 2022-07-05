@@ -153,14 +153,14 @@ namespace KeePass.Forms
 			string strBannerDesc = m_ioInfo.GetDisplayName(); // Compacted by banner
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_KGPG_Key2, strBannerTitle, strBannerDesc);
-			this.Icon = AppIcons.Default;
+			Icon = AppIcons.Default;
 
 			string strStart = (!string.IsNullOrEmpty(m_strCustomTitle) ?
 				m_strCustomTitle : KPRes.OpenDatabase);
 			string strName = UrlUtil.GetFileName(m_ioInfo.Path);
 			if (!string.IsNullOrEmpty(strName))
-				this.Text = strStart + " - " + strName;
-			else this.Text = strStart;
+				Text = strStart + " - " + strName;
+			else Text = strStart;
 
 			FontUtil.SetDefaultFont(m_cbPassword);
 			// FontUtil.AssignDefaultBold(m_cbPassword);
@@ -180,7 +180,7 @@ namespace KeePass.Forms
 			OnHidePasswordCheckedChanged(null, EventArgs.Empty);
 
 			// Must be set manually due to possible object override
-			m_tbPassword.TextChanged += this.OnPasswordTextChanged;
+			m_tbPassword.TextChanged += OnPasswordTextChanged;
 
 			// m_cmbKeyFile.OrderedImageList = m_lKeyFileImages;
 			AddKeyFileItem(KPRes.NoKeyFileSpecifiedMeta, true);
@@ -276,12 +276,12 @@ namespace KeePass.Forms
 			UpdateUIState();
 
 			// Local, but thread will continue to run anyway
-			Thread th = new Thread(new ThreadStart(this.OnFormLoadAsync));
+			Thread th = new Thread(new ThreadStart(OnFormLoadAsync));
 			th.Start();
 			// ThreadPool.QueueUserWorkItem(new WaitCallback(this.OnFormLoadAsync));
 
-			this.BringToFront();
-			this.Activate();
+			BringToFront();
+			Activate();
 			// UIUtil.SetFocus(m_tbPassword, this); // See OnFormShown
 		}
 
@@ -306,7 +306,7 @@ namespace KeePass.Forms
 			// m_cmbKeyFile.OrderedImageList = null;
 			// m_lKeyFileImages.Clear();
 
-			m_tbPassword.TextChanged -= this.OnPasswordTextChanged;
+			m_tbPassword.TextChanged -= OnPasswordTextChanged;
 
 			// if(m_bRedirectActivation) Program.MainForm.RedirectActivationPop();
 			GlobalWindowManager.RemoveWindow(this);
@@ -337,7 +337,7 @@ namespace KeePass.Forms
 		{
 			m_pKey = KeyUtil.KeyFromUI(m_cbPassword, null, m_tbPassword,
 				m_cbKeyFile, m_cmbKeyFile, m_cbUserAccount, m_ioInfo, m_bSecureDesktop);
-			if (m_pKey == null) this.DialogResult = DialogResult.None;
+			if (m_pKey == null) DialogResult = DialogResult.None;
 		}
 
 		private void OnBtnCancel(object sender, EventArgs e)
@@ -348,7 +348,7 @@ namespace KeePass.Forms
 		private void OnBtnExit(object sender, EventArgs e)
 		{
 			if (m_bCanExit) m_bHasExited = true;
-			else { Debug.Assert(false); this.DialogResult = DialogResult.None; }
+			else { Debug.Assert(false); DialogResult = DialogResult.None; }
 		}
 
 		private void OnBtnHelp(object sender, EventArgs e)
@@ -458,7 +458,7 @@ namespace KeePass.Forms
 					continue;
 
 				ThreadPool.QueueUserWorkItem(new WaitCallback(
-					this.AddKeyDriveItemAsync), di);
+					AddKeyDriveItemAsync), di);
 			}
 		}
 
@@ -489,7 +489,7 @@ namespace KeePass.Forms
 		private void AddKeyFileItemAsync(string str)
 		{
 			if (m_cmbKeyFile.InvokeRequired)
-				m_cmbKeyFile.Invoke(new AkfiDelegate(this.AddKeyFileItem), str, false);
+				m_cmbKeyFile.Invoke(new AkfiDelegate(AddKeyFileItem), str, false);
 			else AddKeyFileItem(str, false);
 		}
 

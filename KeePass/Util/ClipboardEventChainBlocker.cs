@@ -85,9 +85,9 @@ namespace KeePass.Util
 		{
 			public ClipboardBlockerForm() : base()
 			{
-				this.Visible = false;
-				this.ShowInTaskbar = false;
-				this.ShowIcon = false;
+				Visible = false;
+				ShowInTaskbar = false;
+				ShowIcon = false;
 			}
 
 			public override bool PreProcessMessage(ref Message msg)

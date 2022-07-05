@@ -469,7 +469,7 @@ namespace KeePass.App.Configuration
 		{
 			if (f == null) throw new ArgumentNullException("f");
 
-			this.Family = f.FontFamily.Name;
+			Family = f.FontFamily.Name;
 			m_fSize = f.Size;
 			m_gu = f.Unit;
 			m_fs = f.Style;

@@ -161,7 +161,7 @@ namespace KeePassLib.Serialization
 
 		public IOConnectionInfo CloneDeep()
 		{
-			IOConnectionInfo ioc = (IOConnectionInfo)this.MemberwiseClone();
+			IOConnectionInfo ioc = (IOConnectionInfo)MemberwiseClone();
 			ioc.m_props = m_props.CloneDeep();
 			return ioc;
 		}

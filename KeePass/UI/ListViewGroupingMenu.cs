@@ -49,17 +49,17 @@ namespace KeePass.UI
 			m_mf = mf;
 
 			ToolStripMenuItem tsmi = new ToolStripMenuItem(KPRes.On);
-			tsmi.Click += this.OnGroupOn;
+			tsmi.Click += OnGroupOn;
 			m_dItems[AceListGrouping.On] = tsmi;
 			m_tsmiMenu.DropDownItems.Add(tsmi);
 
 			tsmi = new ToolStripMenuItem(KPRes.Automatic + " (" + KPRes.RecommendedCmd + ")");
-			tsmi.Click += this.OnGroupAuto;
+			tsmi.Click += OnGroupAuto;
 			m_dItems[AceListGrouping.Auto] = tsmi;
 			m_tsmiMenu.DropDownItems.Add(tsmi);
 
 			tsmi = new ToolStripMenuItem(KPRes.Off);
-			tsmi.Click += this.OnGroupOff;
+			tsmi.Click += OnGroupOff;
 			m_dItems[AceListGrouping.Off] = tsmi;
 			m_tsmiMenu.DropDownItems.Add(tsmi);
 
@@ -77,9 +77,9 @@ namespace KeePass.UI
 		{
 			if (m_tsmiMenu != null)
 			{
-				m_dItems[AceListGrouping.On].Click -= this.OnGroupOn;
-				m_dItems[AceListGrouping.Auto].Click -= this.OnGroupAuto;
-				m_dItems[AceListGrouping.Off].Click -= this.OnGroupOff;
+				m_dItems[AceListGrouping.On].Click -= OnGroupOn;
+				m_dItems[AceListGrouping.Auto].Click -= OnGroupAuto;
+				m_dItems[AceListGrouping.Off].Click -= OnGroupOff;
 
 				m_dItems.Clear();
 				m_tsmiMenu.DropDownItems.Clear();

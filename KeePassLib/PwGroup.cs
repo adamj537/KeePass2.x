@@ -508,7 +508,7 @@ namespace KeePassLib
 			if (!m_pwLastTopVisibleEntry.Equals(pg.m_pwLastTopVisibleEntry)) return false;
 
 			// The Tags property normalizes
-			if (!MemUtil.ListsEqual<string>(this.Tags, pg.Tags)) return false;
+			if (!MemUtil.ListsEqual<string>(Tags, pg.Tags)) return false;
 
 			if (!m_dCustomData.Equals(pg.m_dCustomData)) return false;
 
@@ -612,8 +612,8 @@ namespace KeePassLib
 
 			if (bModified) m_tLastMod = m_tLastAccess;
 
-			if (this.Touched != null)
-				this.Touched(this, new ObjectTouchedEventArgs(this,
+			if (Touched != null)
+				Touched(this, new ObjectTouchedEventArgs(this,
 					bModified, bTouchParents));
 			if (GroupTouched != null)
 				GroupTouched(this, new ObjectTouchedEventArgs(this,

@@ -70,7 +70,7 @@ namespace KeePass.Forms
 		private void OnFormLoad(object sender, EventArgs e)
 		{
 			// Must work without a parent window
-			Debug.Assert(this.StartPosition == FormStartPosition.CenterScreen);
+			Debug.Assert(StartPosition == FormStartPosition.CenterScreen);
 
 			// The password text box should not be focused by default
 			// in order to avoid a Caps Lock warning tooltip bug;
@@ -86,8 +86,8 @@ namespace KeePass.Forms
 
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_WWW, strTitle, strDesc);
-			this.Icon = AppIcons.Default;
-			this.Text = strTitle;
+			Icon = AppIcons.Default;
+			Text = strTitle;
 
 			FontUtil.AssignDefaultBold(m_lblUrl);
 			FontUtil.AssignDefaultBold(m_lblUserName);
@@ -138,7 +138,7 @@ namespace KeePass.Forms
 			{
 				// m_ttInvalidUrl.Show(KPRes.InvalidUrl, m_tbUrl);
 				MessageService.ShowWarning(strUrl, KPRes.InvalidUrl);
-				this.DialogResult = DialogResult.None;
+				DialogResult = DialogResult.None;
 				return;
 			}
 
@@ -206,7 +206,7 @@ namespace KeePass.Forms
 					//	PwDefs.ShortProductName, VtdIcon.Warning, this))
 					MessageService.ShowWarning(strMsg);
 
-					this.DialogResult = DialogResult.None;
+					DialogResult = DialogResult.None;
 					return;
 				}
 			}
@@ -214,7 +214,7 @@ namespace KeePass.Forms
 			if (m_bTestConnection && !m_bSave)
 			{
 				if (!TestConnectionEx())
-					this.DialogResult = DialogResult.None;
+					DialogResult = DialogResult.None;
 			}
 		}
 
@@ -328,7 +328,7 @@ namespace KeePass.Forms
 			int xInput = d + wCell + d - 1;
 			int xGroup = xText;
 
-			if (this.RightToLeft == RightToLeft.Yes)
+			if (RightToLeft == RightToLeft.Yes)
 			{
 				int iTemp = xText;
 				xText = xInput;

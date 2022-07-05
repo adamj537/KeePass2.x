@@ -68,9 +68,9 @@ namespace KeePass.Util
 
 			try
 			{
-				SystemEvents.SessionEnding += this.OnSessionEnding;
-				SystemEvents.SessionSwitch += this.OnSessionSwitch;
-				SystemEvents.PowerModeChanged += this.OnPowerModeChanged;
+				SystemEvents.SessionEnding += OnSessionEnding;
+				SystemEvents.SessionSwitch += OnSessionSwitch;
+				SystemEvents.PowerModeChanged += OnPowerModeChanged;
 			}
 			catch (Exception) { Debug.Assert(WinUtil.IsWindows2000); } // 2000 always throws
 
@@ -86,9 +86,9 @@ namespace KeePass.Util
 				// in case one of them throws)
 				try
 				{
-					SystemEvents.SessionEnding -= this.OnSessionEnding;
-					SystemEvents.SessionSwitch -= this.OnSessionSwitch;
-					SystemEvents.PowerModeChanged -= this.OnPowerModeChanged;
+					SystemEvents.SessionEnding -= OnSessionEnding;
+					SystemEvents.SessionSwitch -= OnSessionSwitch;
+					SystemEvents.PowerModeChanged -= OnPowerModeChanged;
 				}
 				catch (Exception) { Debug.Assert(WinUtil.IsWindows2000); } // 2000 always throws
 

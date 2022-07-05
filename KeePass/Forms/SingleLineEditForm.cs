@@ -73,9 +73,9 @@ namespace KeePass.Forms
 
 			BannerFactory.CreateBannerEx(this, m_bannerImage, m_imgIcon,
 				m_strTitle, m_strDesc);
-			this.Icon = AppIcons.Default;
+			Icon = AppIcons.Default;
 
-			this.Text = m_strTitle;
+			Text = m_strTitle;
 
 			Debug.Assert(!m_lblLongDesc.AutoSize); // For RTL support
 			m_lblLongDesc.Text = m_strLongDesc;

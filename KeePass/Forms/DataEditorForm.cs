@@ -96,8 +96,8 @@ namespace KeePass.Forms
 
 			GlobalWindowManager.AddWindow(this);
 
-			this.Icon = AppIcons.Default;
-			this.DoubleBuffered = true;
+			Icon = AppIcons.Default;
+			DoubleBuffered = true;
 
 			m_strInitialFormRect = UIUtil.SetWindowScreenRectEx(this,
 				Program.Config.UI.DataEditorRect);
@@ -232,7 +232,7 @@ namespace KeePass.Forms
 			++m_uBlockEvents;
 			if (bSetModified) m_bModified = true;
 
-			this.Text = (((m_strDataDesc.Length > 0) ? (m_strDataDesc +
+			Text = (((m_strDataDesc.Length > 0) ? (m_strDataDesc +
 				(m_bModified ? "*" : string.Empty) + " - ") : string.Empty) +
 				KPRes.DataEditorKP);
 
@@ -430,7 +430,7 @@ namespace KeePass.Forms
 
 		private void OnFileExit(object sender, EventArgs e)
 		{
-			this.DialogResult = DialogResult.OK;
+			DialogResult = DialogResult.OK;
 		}
 
 		private void OnTextTextChanged(object sender, EventArgs e)

@@ -195,7 +195,7 @@ namespace KeePass.App
 
 		public AppPolicyFlags CloneDeep()
 		{
-			return (AppPolicyFlags)this.MemberwiseClone();
+			return (AppPolicyFlags)MemberwiseClone();
 		}
 	}
 

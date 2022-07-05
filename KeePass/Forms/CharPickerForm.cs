@@ -108,7 +108,7 @@ namespace KeePass.Forms
 		{
 			m_psWord = psWord;
 
-			if (bCenterScreen) this.StartPosition = FormStartPosition.CenterScreen;
+			if (bCenterScreen) StartPosition = FormStartPosition.CenterScreen;
 
 			m_bSetForeground = bSetForeground;
 			m_uCharCount = uCharCount;
@@ -128,18 +128,18 @@ namespace KeePass.Forms
 
 			GlobalWindowManager.AddWindow(this);
 
-			m_nFormHeight = this.Height; // Before restoring the position/size
+			m_nFormHeight = Height; // Before restoring the position/size
 
 			m_strInitialFormRect = UIUtil.SetWindowScreenRectEx(this,
 				Program.Config.UI.CharPickerRect);
 
 			m_fontChars = FontUtil.CreateFont("Tahoma", 8.25f, FontStyle.Bold);
 
-			this.Icon = AppIcons.Default;
-			this.Text = KPRes.PickCharacters + " - " + PwDefs.ShortProductName;
+			Icon = AppIcons.Default;
+			Text = KPRes.PickCharacters + " - " + PwDefs.ShortProductName;
 
 			// Must be set manually due to possible object override
-			m_tbSelected.TextChanged += this.OnSelectedTextChangedEx;
+			m_tbSelected.TextChanged += OnSelectedTextChangedEx;
 
 			PwInputControlGroup.ConfigureHideButton(m_cbHideChars, null);
 
@@ -159,8 +159,8 @@ namespace KeePass.Forms
 
 			if (m_bSetForeground)
 			{
-				this.BringToFront();
-				this.Activate();
+				BringToFront();
+				Activate();
 			}
 
 			m_bFormLoaded = true;
@@ -177,7 +177,7 @@ namespace KeePass.Forms
 			if (strRect != m_strInitialFormRect) // Don't overwrite ""
 				Program.Config.UI.CharPickerRect = strRect;
 
-			m_tbSelected.TextChanged -= this.OnSelectedTextChangedEx;
+			m_tbSelected.TextChanged -= OnSelectedTextChangedEx;
 
 			RemoveAllCharButtons();
 			m_fontChars.Dispose();
@@ -200,7 +200,7 @@ namespace KeePass.Forms
 			{
 				foreach (Button btn in m_lButtons)
 				{
-					btn.Click -= this.OnSelectCharacter;
+					btn.Click -= OnSelectCharacter;
 					m_pnlSelect.Controls.Remove(btn);
 					btn.Dispose();
 				}
@@ -231,7 +231,7 @@ namespace KeePass.Forms
 
 			RemoveAllCharButtons();
 
-			bool bRtl = (this.RightToLeft == RightToLeft.Yes);
+			bool bRtl = (RightToLeft == RightToLeft.Yes);
 
 			char[] vWord = ((m_psWord != null) ? m_psWord.ReadChars() : new char[0]);
 			if (vWord.Length >= 1)
@@ -249,7 +249,7 @@ namespace KeePass.Forms
 					btn.Size = new Size(w, nPnlHeight / 2 - 1);
 					btn.Font = m_fontChars;
 					btn.Tag = vWord[i];
-					btn.Click += this.OnSelectCharacter;
+					btn.Click += OnSelectCharacter;
 
 					m_lButtons.Add(btn);
 					m_pnlSelect.Controls.Add(btn);
@@ -328,8 +328,8 @@ namespace KeePass.Forms
 
 		private void ProcessResize()
 		{
-			if ((this.Height != m_nFormHeight) && (m_nFormHeight != 0))
-				this.Height = m_nFormHeight;
+			if ((Height != m_nFormHeight) && (m_nFormHeight != 0))
+				Height = m_nFormHeight;
 
 			if (m_bFormLoaded) RecreateResizableWindowControls();
 		}

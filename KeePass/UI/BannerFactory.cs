@@ -52,12 +52,12 @@ namespace KeePass.UI
 		public BfBannerInfo(int nWidth, int nHeight, BannerStyle bs,
 			Image imgIcon, string strTitle, string strLine)
 		{
-			this.Width = nWidth;
-			this.Height = nHeight;
-			this.Style = bs;
-			this.Icon = imgIcon;
-			this.TitleText = strTitle;
-			this.InfoText = strLine;
+			Width = nWidth;
+			Height = nHeight;
+			Style = bs;
+			Icon = imgIcon;
+			TitleText = strTitle;
+			InfoText = strLine;
 		}
 	}
 

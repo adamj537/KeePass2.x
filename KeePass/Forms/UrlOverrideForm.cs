@@ -48,8 +48,8 @@ namespace KeePass.Forms
 
 			GlobalWindowManager.AddWindow(this);
 
-			this.Icon = AppIcons.Default;
-			this.Text = KPRes.UrlOverride;
+			Icon = AppIcons.Default;
+			Text = KPRes.UrlOverride;
 
 			m_tbScheme.Text = m_ovr.Scheme;
 			m_tbOverride.Text = m_ovr.UrlOverride;

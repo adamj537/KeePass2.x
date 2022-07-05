@@ -271,7 +271,7 @@ namespace KeePass.Util
 			}
 
 			Interlocked.Increment(ref m_nThreads); // Here, not in thread
-			try { ThreadPool.QueueUserWorkItem(this.ClearContentTh); }
+			try { ThreadPool.QueueUserWorkItem(ClearContentTh); }
 			catch (Exception)
 			{
 				Debug.Assert(false);

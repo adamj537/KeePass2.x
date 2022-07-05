@@ -137,7 +137,7 @@ namespace KeePass.UI
 				stp.ThreadDesktop = pNewDesktop;
 				stp.FormConstructParam = objConstructParam;
 
-				Thread th = new Thread(this.SecureDialogThread);
+				Thread th = new Thread(SecureDialogThread);
 				th.CurrentCulture = Thread.CurrentThread.CurrentCulture;
 				th.CurrentUICulture = Thread.CurrentThread.CurrentUICulture;
 				th.Start(stp);

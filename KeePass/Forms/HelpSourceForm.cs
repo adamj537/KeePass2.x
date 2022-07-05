@@ -45,8 +45,8 @@ namespace KeePass.Forms
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_Folder_Download, KPRes.HelpSourceSelection,
 				KPRes.HelpSourceSelectionDesc);
-			this.Icon = AppIcons.Default;
-			this.Text = KPRes.HelpSourceSelection;
+			Icon = AppIcons.Default;
+			Text = KPRes.HelpSourceSelection;
 
 			FontUtil.AssignDefaultBold(m_radioLocal);
 			FontUtil.AssignDefaultBold(m_radioOnline);

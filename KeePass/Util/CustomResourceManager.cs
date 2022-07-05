@@ -109,10 +109,10 @@ namespace KeePass.Util
 		{
 			if (name == null) throw new ArgumentNullException("name");
 
-			if (this.GetObjectPre != null)
+			if (GetObjectPre != null)
 			{
 				CrmEventArgs e = new CrmEventArgs(name, culture, null);
-				this.GetObjectPre(this, e);
+				GetObjectPre(this, e);
 				if (e.Object != null) return e.Object;
 			}
 

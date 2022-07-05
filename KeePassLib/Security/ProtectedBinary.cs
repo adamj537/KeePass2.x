@@ -380,12 +380,12 @@ namespace KeePassLib.Security
 
 		public override bool Equals(object obj)
 		{
-			return this.Equals(obj as ProtectedBinary, true);
+			return Equals(obj as ProtectedBinary, true);
 		}
 
 		public bool Equals(ProtectedBinary other)
 		{
-			return this.Equals(other, true);
+			return Equals(other, true);
 		}
 
 		public bool Equals(ProtectedBinary other, bool bCheckProtEqual)

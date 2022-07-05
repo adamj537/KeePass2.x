@@ -244,12 +244,12 @@ namespace KeePass.App.Configuration
 		{
 			get
 			{
-				return this.CustomConfig.Serialize(); // m_cc might be null
+				return CustomConfig.Serialize(); // m_cc might be null
 			}
 			set
 			{
 				if (value == null) throw new ArgumentNullException("value");
-				this.CustomConfig.Deserialize(value); // m_cc might be null
+				CustomConfig.Deserialize(value); // m_cc might be null
 			}
 		}
 
@@ -260,10 +260,10 @@ namespace KeePass.App.Configuration
 		/// </summary>
 		private void PrepareSave()
 		{
-			AceMeta aceMeta = this.Meta; // m_meta might be null
-			AceApplication aceApp = this.Application; // m_aceApp might be null
-			AceSearch aceSearch = this.Search; // m_aceSearch might be null
-			AceDefaults aceDef = this.Defaults; // m_def might be null
+			AceMeta aceMeta = Meta; // m_meta might be null
+			AceApplication aceApp = Application; // m_aceApp might be null
+			AceSearch aceSearch = Search; // m_aceSearch might be null
+			AceDefaults aceDef = Defaults; // m_def might be null
 
 			aceMeta.OmitItemsWithDefaultValues = true;
 			aceMeta.DpiFactorX = DpiUtil.FactorX; // For new (not loaded) cfgs.
@@ -289,9 +289,9 @@ namespace KeePass.App.Configuration
 
 		internal void OnLoad()
 		{
-			AceMainWindow aceMW = this.MainWindow; // m_uiMainWindow might be null
-			AceSearch aceSearch = this.Search; // m_aceSearch might be null
-			AceDefaults aceDef = this.Defaults; // m_def might be null
+			AceMainWindow aceMW = MainWindow; // m_uiMainWindow might be null
+			AceSearch aceSearch = Search; // m_aceSearch might be null
+			AceDefaults aceDef = Defaults; // m_def might be null
 
 			// aceInt.UrlSchemeOverrides.SetDefaultsIfEmpty();
 
@@ -323,9 +323,9 @@ namespace KeePass.App.Configuration
 
 			if (NativeLib.IsUnix())
 			{
-				this.Security.MasterKeyOnSecureDesktop = false;
+				Security.MasterKeyOnSecureDesktop = false;
 
-				AceIntegration aceInt = this.Integration;
+				AceIntegration aceInt = Integration;
 				aceInt.HotKeyGlobalAutoType = (long)Keys.None;
 				aceInt.HotKeyGlobalAutoTypePassword = (long)Keys.None;
 				aceInt.HotKeySelectedAutoType = (long)Keys.None;
@@ -335,7 +335,7 @@ namespace KeePass.App.Configuration
 
 			if (MonoWorkarounds.IsRequired(1378))
 			{
-				AceWorkspaceLocking aceWL = this.Security.WorkspaceLocking;
+				AceWorkspaceLocking aceWL = Security.WorkspaceLocking;
 				aceWL.LockOnSessionSwitch = false;
 				aceWL.LockOnSuspend = false;
 				aceWL.LockOnRemoteControlChange = false;
@@ -344,7 +344,7 @@ namespace KeePass.App.Configuration
 			if (MonoWorkarounds.IsRequired(1418))
 			{
 				aceMW.MinimizeAfterOpeningDatabase = false;
-				this.Application.Start.MinimizedAndLocked = false;
+				Application.Start.MinimizedAndLocked = false;
 			}
 
 			if (MonoWorkarounds.IsRequired(1976))
@@ -372,8 +372,8 @@ namespace KeePass.App.Configuration
 
 		private void ChangePathsRelAbs(bool bMakeAbsolute)
 		{
-			AceApplication aceApp = this.Application; // m_aceApp might be null
-			AceDefaults aceDef = this.Defaults; // m_def might be null
+			AceApplication aceApp = Application; // m_aceApp might be null
+			AceDefaults aceDef = Defaults; // m_def might be null
 
 			ChangePathRelAbs(aceApp.LastUsedFile, bMakeAbsolute);
 
@@ -422,8 +422,8 @@ namespace KeePass.App.Configuration
 
 		private void ObfuscateCred(bool bObf)
 		{
-			AceApplication aceApp = this.Application; // m_aceApp might be null
-			AceIntegration aceInt = this.Integration; // m_int might be null
+			AceApplication aceApp = Application; // m_aceApp might be null
+			AceIntegration aceInt = Integration; // m_int might be null
 
 			if (aceApp.LastUsedFile == null) { Debug.Assert(false); }
 			else aceApp.LastUsedFile.Obfuscate(bObf);
@@ -443,7 +443,7 @@ namespace KeePass.App.Configuration
 
 		private void RemoveSensitiveInfo(bool bRemove)
 		{
-			SearchParameters sp = this.Search.LastUsedProfile;
+			SearchParameters sp = Search.LastUsedProfile;
 
 			if (bRemove)
 			{
@@ -464,7 +464,7 @@ namespace KeePass.App.Configuration
 
 		private void DpiScale()
 		{
-			AceMeta aceMeta = this.Meta; // m_meta might be null
+			AceMeta aceMeta = Meta; // m_meta might be null
 			double dCfgX = aceMeta.DpiFactorX, dCfgY = aceMeta.DpiFactorY;
 			double dScrX = DpiUtil.FactorX, dScrY = DpiUtil.FactorY;
 
@@ -520,8 +520,8 @@ namespace KeePass.App.Configuration
 					f.Size = (float)(f.Size * sY);
 			};
 
-			AceMainWindow mw = this.MainWindow;
-			AceUI ui = this.UI;
+			AceMainWindow mw = MainWindow;
+			AceUI ui = UI;
 
 			if (mw.X != AppDefs.InvalidWindowValue) mw.X = fX(mw.X);
 			if (mw.Y != AppDefs.InvalidWindowValue) mw.Y = fY(mw.Y);
@@ -599,9 +599,9 @@ namespace KeePass.App.Configuration
 
 		public void Apply(AceApplyFlags f)
 		{
-			AceApplication aceApp = this.Application; // m_aceApp might be null
-			AceSecurity aceSec = this.Security; // m_sec might be null
-			AceIntegration aceInt = this.Integration; // m_int might be null
+			AceApplication aceApp = Application; // m_aceApp might be null
+			AceSecurity aceSec = Security; // m_sec might be null
+			AceIntegration aceInt = Integration; // m_int might be null
 
 			if ((f & AceApplyFlags.Proxy) != AceApplyFlags.None)
 				IOConnection.SetProxy(aceInt.ProxyType, aceInt.ProxyAddress,

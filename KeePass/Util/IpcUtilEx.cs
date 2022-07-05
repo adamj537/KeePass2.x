@@ -45,23 +45,23 @@ namespace KeePass.Util
 
 		public IpcParamEx()
 		{
-			this.Message = string.Empty;
-			this.Param0 = string.Empty;
-			this.Param1 = string.Empty;
-			this.Param2 = string.Empty;
-			this.Param3 = string.Empty;
-			this.Param4 = string.Empty;
+			Message = string.Empty;
+			Param0 = string.Empty;
+			Param1 = string.Empty;
+			Param2 = string.Empty;
+			Param3 = string.Empty;
+			Param4 = string.Empty;
 		}
 
 		public IpcParamEx(string strMessage, string strParam0, string strParam1,
 			string strParam2, string strParam3, string strParam4)
 		{
-			this.Message = (strMessage ?? string.Empty);
-			this.Param0 = (strParam0 ?? string.Empty);
-			this.Param1 = (strParam1 ?? string.Empty);
-			this.Param2 = (strParam2 ?? string.Empty);
-			this.Param3 = (strParam3 ?? string.Empty);
-			this.Param4 = (strParam4 ?? string.Empty);
+			Message = (strMessage ?? string.Empty);
+			Param0 = (strParam0 ?? string.Empty);
+			Param1 = (strParam1 ?? string.Empty);
+			Param2 = (strParam2 ?? string.Empty);
+			Param3 = (strParam3 ?? string.Empty);
+			Param4 = (strParam4 ?? string.Empty);
 		}
 	}
 

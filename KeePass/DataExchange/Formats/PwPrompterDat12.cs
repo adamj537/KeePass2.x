@@ -49,7 +49,7 @@ namespace KeePass.DataExchange.Formats
 			IStatusLogger slLogger)
 		{
 			SingleLineEditForm dlg = new SingleLineEditForm();
-			dlg.InitEx(KPRes.Password, KPRes.Import + ": " + this.FormatName,
+			dlg.InitEx(KPRes.Password, KPRes.Import + ": " + FormatName,
 				KPRes.PasswordPrompt, Properties.Resources.B48x48_KGPG_Key2,
 				string.Empty, null);
 			if (UIUtil.ShowDialogNotValue(dlg, DialogResult.OK)) return;

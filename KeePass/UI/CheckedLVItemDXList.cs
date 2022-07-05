@@ -130,7 +130,7 @@ namespace KeePass.UI
 			m_lv = lv;
 			m_bUseEnforcedConfig = bUseEnforcedConfig;
 
-			m_lv.ItemChecked += this.OnItemCheckedChanged;
+			m_lv.ItemChecked += OnItemCheckedChanged;
 		}
 
 #if DEBUG
@@ -147,7 +147,7 @@ namespace KeePass.UI
 			m_lItems.Clear();
 			m_lLinks.Clear();
 
-			m_lv.ItemChecked -= this.OnItemCheckedChanged;
+			m_lv.ItemChecked -= OnItemCheckedChanged;
 			m_lv = null;
 		}
 

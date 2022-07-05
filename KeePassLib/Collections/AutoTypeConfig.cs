@@ -80,7 +80,7 @@ namespace KeePassLib.Collections
 
 		public AutoTypeAssociation CloneDeep()
 		{
-			return (AutoTypeAssociation)this.MemberwiseClone();
+			return (AutoTypeAssociation)MemberwiseClone();
 		}
 	}
 

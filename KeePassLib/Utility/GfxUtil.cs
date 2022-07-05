@@ -55,16 +55,16 @@ namespace KeePassLib.Utility
 
 			public GfxImage(byte[] pbData, int w, int h)
 			{
-				this.Data = pbData;
-				this.Width = w;
-				this.Height = h;
+				Data = pbData;
+				Width = w;
+				Height = h;
 			}
 
 #if DEBUG
 			// For debugger display
 			public override string ToString()
 			{
-				return (this.Width.ToString() + "x" + this.Height.ToString());
+				return (Width.ToString() + "x" + Height.ToString());
 			}
 #endif
 		}

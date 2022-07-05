@@ -38,7 +38,7 @@ namespace KeePass.UI
 		{
 			if (Program.DesignMode) return;
 
-			this.DoubleBuffered = true;
+			DoubleBuffered = true;
 		}
 
 		private int m_nMinimum = 0;
@@ -105,7 +105,7 @@ namespace KeePass.UI
 			if (nNormPos < 0) { Debug.Assert(false); nNormPos = 0; }
 			if (nNormPos > nNormMax) { Debug.Assert(false); nNormPos = nNormMax; }
 
-			Rectangle rectClient = this.ClientRectangle;
+			Rectangle rectClient = ClientRectangle;
 			Rectangle rectDraw;
 			VisualStyleElement vse = VisualStyleElement.ProgressBar.Bar.Normal;
 			if (VisualStyleRenderer.IsSupported &&
@@ -143,14 +143,14 @@ namespace KeePass.UI
 			Color clrStart = AppDefs.ColorQualityLow;
 			Color clrEnd = AppDefs.ColorQualityHigh;
 			Color clrMid = AppDefs.ColorQualityMid;
-			if (!this.Enabled)
+			if (!Enabled)
 			{
 				clrStart = UIUtil.ColorToGrayscale(SystemColors.ControlDark);
 				clrEnd = UIUtil.ColorToGrayscale(SystemColors.ControlLight);
 				clrMid = UIUtil.ColorMiddle(clrStart, clrEnd);
 			}
 
-			bool bRtl = (this.RightToLeft == RightToLeft.Yes);
+			bool bRtl = (RightToLeft == RightToLeft.Yes);
 			if (bRtl)
 			{
 				Color clrTemp = clrStart;
@@ -183,8 +183,8 @@ namespace KeePass.UI
 		{
 			if (string.IsNullOrEmpty(m_strText)) return;
 
-			Font f = (FontUtil.DefaultFont ?? this.Font);
-			Color clrFG = UIUtil.ColorToGrayscale(this.ForeColor);
+			Font f = (FontUtil.DefaultFont ?? Font);
+			Color clrFG = UIUtil.ColorToGrayscale(ForeColor);
 			Color clrBG = Color.FromArgb(clrFG.ToArgb() ^ 0x20FFFFFF);
 
 			int dx = rectDraw.X;

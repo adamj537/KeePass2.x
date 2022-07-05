@@ -36,18 +36,18 @@ namespace KeePass.Util.SendInputExt
 		{
 			if (string.IsNullOrEmpty(strCode)) { Debug.Assert(false); strCode = " "; }
 
-			this.Code = strCode;
-			this.VKey = iVKey;
-			this.XKeySym = strXKeySym;
+			Code = strCode;
+			VKey = iVKey;
+			XKeySym = strXKeySym;
 		}
 
 		public SiCode(string strCode, Keys k, string strXKeySym)
 		{
 			if (string.IsNullOrEmpty(strCode)) { Debug.Assert(false); strCode = " "; }
 
-			this.Code = strCode;
-			this.VKey = (int)k;
-			this.XKeySym = strXKeySym;
+			Code = strCode;
+			VKey = (int)k;
+			XKeySym = strXKeySym;
 		}
 	}
 

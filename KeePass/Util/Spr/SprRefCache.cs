@@ -35,9 +35,9 @@ namespace KeePass.Util.Spr
 
 			public SprRefCacheItem(string strRef, string strValue, uint uContext)
 			{
-				this.Ref = strRef;
-				this.Value = strValue;
-				this.Context = uContext;
+				Ref = strRef;
+				Value = strValue;
+				Context = uContext;
 			}
 		}
 

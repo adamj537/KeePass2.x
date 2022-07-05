@@ -89,8 +89,8 @@ namespace KeePass.Forms
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_Folder_Txt, strTitle,
 				(m_bCreatingNew ? KPRes.AddGroupDesc : KPRes.EditGroupDesc));
-			this.Icon = AppIcons.Default;
-			this.Text = strTitle;
+			Icon = AppIcons.Default;
+			Text = strTitle;
 
 			UIUtil.ConfigureToolTip(m_ttRect);
 			UIUtil.SetToolTip(m_ttRect, m_btnIcon, KPRes.SelectIcon, true);

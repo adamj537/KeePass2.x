@@ -62,7 +62,7 @@ namespace KeePass.Forms
 				DpiUtil.ScaleIntX(48), DpiUtil.ScaleIntY(48)), Color.Empty);
 			BannerFactory.CreateBannerEx(this, m_bannerImage, icoSc.ToBitmap(),
 				strTitle, strDesc);
-			this.Icon = AppIcons.Default;
+			Icon = AppIcons.Default;
 
 			Debug.Assert(!m_lblCopyright.AutoSize); // For RTL support
 			m_lblCopyright.Text = PwDefs.Copyright + ".";
@@ -182,7 +182,7 @@ namespace KeePass.Forms
 
 			ToolStripMenuItem tsmiShow = new ToolStripMenuItem(KPRes.ShowWithFileManager,
 				Properties.Resources.B16x16_Folder_Yellow_Open);
-			tsmiShow.Click += this.OnComponentShow;
+			tsmiShow.Click += OnComponentShow;
 			m_ctxComponents.Items.Add(tsmiShow);
 
 			m_ctxComponents.Items.Add(new ToolStripSeparator());
@@ -190,13 +190,13 @@ namespace KeePass.Forms
 			ToolStripMenuItem tsmiCopyVersion = new ToolStripMenuItem(
 				KPRes.CopyObject.Replace(@"{PARAM}", m_lvComponents.Columns[1].Text),
 				Properties.Resources.B16x16_EditCopy);
-			tsmiCopyVersion.Click += this.OnComponentCopyVersion;
+			tsmiCopyVersion.Click += OnComponentCopyVersion;
 			m_ctxComponents.Items.Add(tsmiCopyVersion);
 
 			ToolStripMenuItem tsmiCopyPath = new ToolStripMenuItem(
 				KPRes.CopyObject.Replace(@"{PARAM}", KPRes.Path),
 				Properties.Resources.B16x16_EditCopyLink);
-			tsmiCopyPath.Click += this.OnComponentCopyTag;
+			tsmiCopyPath.Click += OnComponentCopyTag;
 			m_ctxComponents.Items.Add(tsmiCopyPath);
 
 			m_ctxComponents.Opening += delegate (object sender, CancelEventArgs e)
@@ -270,7 +270,7 @@ namespace KeePass.Forms
 			if (lvi == null) { Debug.Assert(false); return; }
 
 			string str = (lvi.SubItems[1].Text ?? string.Empty);
-			ClipboardUtil.Copy(str, false, false, null, null, this.Handle);
+			ClipboardUtil.Copy(str, false, false, null, null, Handle);
 		}
 
 		private void OnComponentCopyTag(object sender, EventArgs e)
@@ -279,7 +279,7 @@ namespace KeePass.Forms
 			if (lvi == null) { Debug.Assert(false); return; }
 
 			string str = ((lvi.Tag as string) ?? string.Empty);
-			ClipboardUtil.Copy(str, false, false, null, null, this.Handle);
+			ClipboardUtil.Copy(str, false, false, null, null, Handle);
 		}
 	}
 }

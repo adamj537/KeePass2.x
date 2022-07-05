@@ -66,10 +66,10 @@ namespace KeePass.UI
 
 		public HotKeyControlEx()
 		{
-			m_clrNormalBack = this.BackColor;
+			m_clrNormalBack = BackColor;
 			if (Program.DesignMode) return;
 
-			this.ContextMenuStrip = new ContextMenuStrip(); // No context menu
+			ContextMenuStrip = new ContextMenuStrip(); // No context menu
 
 			UpdateUI(m_k, m_k); // Initialize text
 		}
@@ -163,11 +163,11 @@ namespace KeePass.UI
 				}
 
 				if (UIUtil.ColorsEqual(m_clrNormalBack, Color.White))
-					this.BackColor = (bInvalid ? AppDefs.ColorEditError : m_clrNormalBack);
+					BackColor = (bInvalid ? AppDefs.ColorEditError : m_clrNormalBack);
 
-				if (strText != this.Text) // Avoid flicker
+				if (strText != Text) // Avoid flicker
 				{
-					this.Text = strText;
+					Text = strText;
 					Select(strText.Length, 0);
 				}
 			}

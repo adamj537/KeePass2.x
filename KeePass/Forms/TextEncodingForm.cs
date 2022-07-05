@@ -66,7 +66,7 @@ namespace KeePass.Forms
 			GlobalWindowManager.AddWindow(this);
 
 			m_bInitializing = true;
-			this.Icon = AppIcons.Default;
+			Icon = AppIcons.Default;
 
 			FontUtil.AssignDefaultBold(m_lblContext);
 			Debug.Assert(!m_lblContext.AutoSize); // For RTL support

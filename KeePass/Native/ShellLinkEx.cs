@@ -67,7 +67,7 @@ namespace KeePass.Native
 		{
 			m_strPath = strPath;
 			m_strArgs = strArgs;
-			this.Description = strDesc; // Shortens description if necessary
+			Description = strDesc; // Shortens description if necessary
 		}
 
 		public static ShellLinkEx Load(string strLnkFilePath)

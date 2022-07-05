@@ -96,8 +96,8 @@ namespace KeePass.Forms
 
 			GlobalWindowManager.AddWindow(this);
 
-			this.Icon = AppIcons.Default;
-			this.Text = m_strTitle;
+			Icon = AppIcons.Default;
+			Text = m_strTitle;
 
 			m_nIconDim = m_tvFolders.ItemHeight;
 
@@ -461,12 +461,12 @@ namespace KeePass.Forms
 
 		private void OnBtnOK(object sender, EventArgs e)
 		{
-			if (!PerformFileSelection()) this.DialogResult = DialogResult.None;
+			if (!PerformFileSelection()) DialogResult = DialogResult.None;
 		}
 
 		private void OnFilesItemActivate(object sender, EventArgs e)
 		{
-			if (PerformFileSelection()) this.DialogResult = DialogResult.OK;
+			if (PerformFileSelection()) DialogResult = DialogResult.OK;
 		}
 
 		private void OnFoldersBeforeExpand(object sender, TreeViewCancelEventArgs e)

@@ -58,8 +58,8 @@ namespace KeePass.Forms
 		{
 			GlobalWindowManager.AddWindow(this);
 
-			this.Icon = AppIcons.Default;
-			this.Text = m_strTitle;
+			Icon = AppIcons.Default;
+			Text = m_strTitle;
 
 			UIUtil.SetWebBrowserDocument(m_wbMain, m_strDocHtml);
 
@@ -82,7 +82,7 @@ namespace KeePass.Forms
 			if (uri != null)
 			{
 				m_strResultUri = uri.ToString();
-				this.DialogResult = DialogResult.OK;
+				DialogResult = DialogResult.OK;
 			}
 			else { Debug.Assert(false); }
 		}

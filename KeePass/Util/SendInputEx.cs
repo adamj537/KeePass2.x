@@ -69,29 +69,29 @@ namespace KeePass.Util
 		// For debugger display
 		public override string ToString()
 		{
-			string str = Enum.GetName(typeof(SiEventType), this.Type);
+			string str = Enum.GetName(typeof(SiEventType), Type);
 
 			string strSub = null;
-			switch (this.Type)
+			switch (Type)
 			{
 				case SiEventType.Key:
-					strSub = this.VKey.ToString() + " " + this.ExtendedKey.ToString() +
-						" " + this.Down.ToString();
+					strSub = VKey.ToString() + " " + ExtendedKey.ToString() +
+						" " + Down.ToString();
 					break;
 				case SiEventType.KeyModifier:
-					strSub = this.KeyModifier.ToString() + " " + this.Down.ToString();
+					strSub = KeyModifier.ToString() + " " + Down.ToString();
 					break;
 				case SiEventType.Char:
-					strSub = this.Char.ToString() + " " + this.Down.ToString();
+					strSub = Char.ToString() + " " + Down.ToString();
 					break;
 				case SiEventType.Delay:
 				case SiEventType.SetDefaultDelay:
-					strSub = this.Delay.ToString();
+					strSub = Delay.ToString();
 					break;
 				case SiEventType.ClipboardCopy:
 				case SiEventType.AppActivate:
 				case SiEventType.Beep:
-					strSub = this.Text;
+					strSub = Text;
 					break;
 				default: break;
 			}

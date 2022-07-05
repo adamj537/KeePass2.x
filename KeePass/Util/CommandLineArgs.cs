@@ -82,7 +82,7 @@ namespace KeePass.Util
 			get
 			{
 				if (string.IsNullOrEmpty(strKey))
-					return this.FileName;
+					return FileName;
 				else
 				{
 					string strValue;

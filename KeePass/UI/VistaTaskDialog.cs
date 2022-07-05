@@ -109,8 +109,8 @@ namespace KeePass.UI
 		{
 			Debug.Assert(bConstruct);
 
-			this.ID = (int)DialogResult.Cancel;
-			this.Text = string.Empty;
+			ID = (int)DialogResult.Cancel;
+			Text = string.Empty;
 		}
 	}
 
@@ -409,7 +409,7 @@ namespace KeePass.UI
 				bResult = InternalShowDialog(f);
 			else
 				bResult = (bool)f.Invoke(new InternalShowDialogDelegate(
-					this.InternalShowDialog), f);
+					InternalShowDialog), f);
 
 			MessageService.ExternalDecrementMessageCount();
 			return bResult;
@@ -448,7 +448,7 @@ namespace KeePass.UI
 			try { ButtonsToPtr(); }
 			catch (Exception) { Debug.Assert(false); return false; }
 
-			m_cfg.pfCallback = this.OnTaskDialogCallback;
+			m_cfg.pfCallback = OnTaskDialogCallback;
 
 			try
 			{
@@ -486,7 +486,7 @@ namespace KeePass.UI
 				// else if(uNotification == (uint)VtdNtf.Destroyed)
 				//	UpdateHWnd(IntPtr.Zero);
 
-				if ((uNotification == (uint)VtdNtf.HyperlinkClicked) && this.EnableHyperlinks &&
+				if ((uNotification == (uint)VtdNtf.HyperlinkClicked) && EnableHyperlinks &&
 					(lParam != IntPtr.Zero))
 				{
 					string str = Marshal.PtrToStringUni(lParam);
@@ -495,10 +495,10 @@ namespace KeePass.UI
 						if (str.StartsWith("http:", StrUtil.CaseIgnoreCmp) ||
 							str.StartsWith("https:", StrUtil.CaseIgnoreCmp))
 							WinUtil.OpenUrl(str, null);
-						else if (this.LinkClicked != null)
+						else if (LinkClicked != null)
 						{
 							LinkClickedEventArgs e = new LinkClickedEventArgs(str);
-							this.LinkClicked(this, e);
+							LinkClicked(this, e);
 						}
 						else { Debug.Assert(false); }
 					}

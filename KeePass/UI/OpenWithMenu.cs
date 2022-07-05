@@ -139,9 +139,9 @@ namespace KeePass.UI
 
 			m_tsmiHost = tsmiHost;
 			m_dynMenu = new DynamicMenu(m_tsmiHost);
-			m_dynMenu.MenuClick += this.OnOpenUrl;
+			m_dynMenu.MenuClick += OnOpenUrl;
 
-			m_tsmiHost.DropDownOpening += this.OnMenuOpening;
+			m_tsmiHost.DropDownOpening += OnMenuOpening;
 		}
 
 #if DEBUG
@@ -156,10 +156,10 @@ namespace KeePass.UI
 			if (m_dynMenu != null)
 			{
 				m_dynMenu.Clear();
-				m_dynMenu.MenuClick -= this.OnOpenUrl;
+				m_dynMenu.MenuClick -= OnOpenUrl;
 				m_dynMenu = null;
 
-				m_tsmiHost.DropDownOpening -= this.OnMenuOpening;
+				m_tsmiHost.DropDownOpening -= OnMenuOpening;
 				m_tsmiHost = null;
 
 				// After the menu has been destroyed:

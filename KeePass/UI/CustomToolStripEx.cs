@@ -61,8 +61,8 @@ namespace KeePass.UI
 
 		public void LockHeight(bool bLock)
 		{
-			Debug.Assert(this.Height > 0);
-			m_iLockedHeight = (bLock ? this.Height : 0);
+			Debug.Assert(Height > 0);
+			m_iLockedHeight = (bLock ? Height : 0);
 		}
 
 		protected override void OnSizeChanged(EventArgs e)
@@ -71,7 +71,7 @@ namespace KeePass.UI
 			{
 				try
 				{
-					Size sz = this.Size;
+					Size sz = Size;
 					// Ignore zero-size events (which can occur e.g. when
 					// the ToolStrip is being hidden)
 					if ((sz.Width > 0) && (sz.Height > 0))
@@ -79,8 +79,8 @@ namespace KeePass.UI
 						if ((m_iLockedHeight > 0) && (sz.Height != m_iLockedHeight))
 						{
 							base.OnSizeChanged(e);
-							this.Height = m_iLockedHeight;
-							Debug.Assert(this.Size.Height == m_iLockedHeight);
+							Height = m_iLockedHeight;
+							Debug.Assert(Size.Height == m_iLockedHeight);
 							return;
 						}
 					}

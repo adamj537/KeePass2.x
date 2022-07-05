@@ -64,8 +64,8 @@ namespace KeePass.Forms
 
 			GlobalWindowManager.AddWindow(this);
 
-			this.Icon = AppIcons.Default;
-			this.Text = KPRes.UrlOverrides;
+			Icon = AppIcons.Default;
+			Text = KPRes.UrlOverrides;
 
 			UIUtil.SetExplorerTheme(m_lvOverrides, false);
 

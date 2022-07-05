@@ -129,10 +129,10 @@ namespace KeePass.Native
 
 			public RECT(Rectangle rect)
 			{
-				this.Left = rect.Left;
-				this.Top = rect.Top;
-				this.Right = rect.Right;
-				this.Bottom = rect.Bottom;
+				Left = rect.Left;
+				Top = rect.Top;
+				Right = rect.Right;
+				Bottom = rect.Bottom;
 			}
 		}
 

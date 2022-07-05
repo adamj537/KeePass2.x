@@ -68,7 +68,7 @@ namespace KeePass.Forms
 
 			GlobalWindowManager.AddWindow(this);
 
-			this.Icon = AppIcons.Default;
+			Icon = AppIcons.Default;
 
 			UIUtil.SetExplorerTheme(m_lvEntries, true);
 
@@ -112,7 +112,7 @@ namespace KeePass.Forms
 
 		private bool CreateResultRef()
 		{
-			PwEntry pe = this.GetSelectedEntry();
+			PwEntry pe = GetSelectedEntry();
 			if (pe == null) return false;
 
 			string str = @"{REF:";
@@ -188,7 +188,7 @@ namespace KeePass.Forms
 
 		private void OnBtnOK(object sender, EventArgs e)
 		{
-			if (!CreateResultRef()) this.DialogResult = DialogResult.None;
+			if (!CreateResultRef()) DialogResult = DialogResult.None;
 		}
 
 		private void OnBtnCancel(object sender, EventArgs e)

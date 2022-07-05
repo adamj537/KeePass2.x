@@ -69,7 +69,7 @@ namespace KeePass.UI
 
 			UIUtil.SetToolTip(tt, btnHost, KPRes.GeneratePassword, true);
 
-			btnHost.Click += this.OnHostBtnClick;
+			btnHost.Click += OnHostBtnClick;
 
 			m_btnHost = btnHost;
 			m_oTarget = oTarget;
@@ -86,7 +86,7 @@ namespace KeePass.UI
 			{
 				UIUtil.DisposeButtonImage(m_btnHost, ref m_imgHost);
 
-				m_btnHost.Click -= this.OnHostBtnClick;
+				m_btnHost.Click -= OnHostBtnClick;
 				m_btnHost = null;
 			}
 			else { Debug.Assert(false); }
@@ -123,15 +123,15 @@ namespace KeePass.UI
 			};
 
 			fAdd(KPRes.PwGenOpen, Properties.Resources.B16x16_Key_New,
-				this.OnGenOpen, null);
+				OnGenOpen, null);
 
 			l.Add(new ToolStripSeparator());
 
 			ToolStripMenuItem tsmiDerive = fAdd(GenDeriveFromPrevious,
-				Properties.Resources.B16x16_CompFile, this.OnGenDeriveFromPrevious, null);
+				Properties.Resources.B16x16_CompFile, OnGenDeriveFromPrevious, null);
 			if (IsMultipleValues(ps)) tsmiDerive.Enabled = false;
 
-			fAdd(GenAuto, Properties.Resources.B16x16_FileNew, this.OnGenAuto, null);
+			fAdd(GenAuto, Properties.Resources.B16x16_FileNew, OnGenAuto, null);
 
 			bool bHideBuiltIn = ((Program.Config.UI.UIFlags &
 				(ulong)AceUIFlags.HideBuiltInPwGenPrfInEntryDlg) != 0);
@@ -151,7 +151,7 @@ namespace KeePass.UI
 				}
 
 				fAdd(prf.Name, Properties.Resources.B16x16_KOrganizer,
-					this.OnGenProfile, prf);
+					OnGenProfile, prf);
 			}
 
 			return l;

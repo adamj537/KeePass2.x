@@ -46,20 +46,20 @@ namespace KeePass.UI
 		{
 			base.WndProc(ref m);
 
-			if ((m.Msg == WM_PAINT) && !this.Focused && (this.TextLength == 0) &&
+			if ((m.Msg == WM_PAINT) && !Focused && (TextLength == 0) &&
 				(m_strPrompt.Length > 0))
 			{
 				TextFormatFlags tff = (TextFormatFlags.EndEllipsis |
 					TextFormatFlags.NoPrefix | TextFormatFlags.Left |
 					TextFormatFlags.Top | TextFormatFlags.NoPadding);
 
-				using (Graphics g = this.CreateGraphics())
+				using (Graphics g = CreateGraphics())
 				{
-					Rectangle rect = this.ClientRectangle;
+					Rectangle rect = ClientRectangle;
 					rect.Offset(1, 1);
 
-					TextRenderer.DrawText(g, m_strPrompt, this.Font,
-						rect, SystemColors.GrayText, this.BackColor, tff);
+					TextRenderer.DrawText(g, m_strPrompt, Font,
+						rect, SystemColors.GrayText, BackColor, tff);
 				}
 			}
 		}

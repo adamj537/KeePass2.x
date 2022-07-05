@@ -102,13 +102,13 @@ namespace KeePass.Forms
 
 			GlobalWindowManager.AddWindow(this);
 
-			this.Icon = AppIcons.Default;
-			this.DoubleBuffered = true;
+			Icon = AppIcons.Default;
+			DoubleBuffered = true;
 
 			string strTitle = KPRes.DataViewerKP;
 			if (m_strDataDesc.Length > 0)
 				strTitle = m_strDataDesc + " - " + strTitle;
-			this.Text = strTitle;
+			Text = strTitle;
 
 			m_strInitialFormRect = UIUtil.SetWindowScreenRectEx(this,
 				Program.Config.UI.DataViewerRect);
@@ -162,11 +162,11 @@ namespace KeePass.Forms
 			else if (m_bdc == BinaryDataClass.WebDocument) m_tscViewers.SelectedIndex = 3;
 			else m_tscViewers.SelectedIndex = 0;
 
-			if (this.DvfInit != null)
-				this.DvfInit(this, new DvfContextEventArgs(this, m_pbData,
+			if (DvfInit != null)
+				DvfInit(this, new DvfContextEventArgs(this, m_pbData,
 					m_strDataDesc, m_tscViewers));
 
-			m_picBox.MouseWheel += this.OnPicBoxMouseWheel;
+			m_picBox.MouseWheel += OnPicBoxMouseWheel;
 
 			m_bInitializing = false;
 			UpdateDataView();
@@ -381,11 +381,11 @@ namespace KeePass.Forms
 
 			try
 			{
-				if (this.DvfUpdating != null)
+				if (DvfUpdating != null)
 				{
 					DvfContextEventArgs args = new DvfContextEventArgs(this,
 						m_pbData, m_strDataDesc, m_tscViewers);
-					this.DvfUpdating(this, args);
+					DvfUpdating(this, args);
 					if (args.Cancel) return;
 				}
 
@@ -522,11 +522,11 @@ namespace KeePass.Forms
 
 		private void OnFormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (this.DvfRelease != null)
+			if (DvfRelease != null)
 			{
 				DvfContextEventArgs args = new DvfContextEventArgs(this,
 					m_pbData, m_strDataDesc, m_tscViewers);
-				this.DvfRelease(sender, args);
+				DvfRelease(sender, args);
 				if (args.Cancel)
 				{
 					e.Cancel = true;
@@ -541,7 +541,7 @@ namespace KeePass.Forms
 
 		private void OnFormClosed(object sender, FormClosedEventArgs e)
 		{
-			m_picBox.MouseWheel -= this.OnPicBoxMouseWheel;
+			m_picBox.MouseWheel -= OnPicBoxMouseWheel;
 
 			m_picBox.Image = null;
 			if (m_img != null) { m_img.Dispose(); m_img = null; }

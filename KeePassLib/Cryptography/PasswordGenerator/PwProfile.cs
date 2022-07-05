@@ -100,12 +100,12 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 		[DefaultValue("")]
 		public string CharSetRanges
 		{
-			get { this.UpdateCharSet(true); return m_strCharSetRanges; }
+			get { UpdateCharSet(true); return m_strCharSetRanges; }
 			set
 			{
 				if (value == null) throw new ArgumentNullException("value");
 				m_strCharSetRanges = value;
-				this.UpdateCharSet(false);
+				UpdateCharSet(false);
 			}
 		}
 
@@ -113,12 +113,12 @@ namespace KeePassLib.Cryptography.PasswordGenerator
 		[DefaultValue("")]
 		public string CharSetAdditional
 		{
-			get { this.UpdateCharSet(true); return m_strCharSetAdditional; }
+			get { UpdateCharSet(true); return m_strCharSetAdditional; }
 			set
 			{
 				if (value == null) throw new ArgumentNullException("value");
 				m_strCharSetAdditional = value;
-				this.UpdateCharSet(false);
+				UpdateCharSet(false);
 			}
 		}
 

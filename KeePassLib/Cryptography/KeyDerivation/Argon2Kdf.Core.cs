@@ -81,10 +81,10 @@ namespace KeePassLib.Cryptography.KeyDerivation
 
 			public void Release()
 			{
-				if (this.Finished != null)
+				if (Finished != null)
 				{
-					this.Finished.Close();
-					this.Finished = null;
+					Finished.Close();
+					Finished = null;
 				}
 				else { Debug.Assert(false); }
 			}

@@ -47,15 +47,15 @@ namespace KeePass.Forms
 		private void OnFormLoad(object sender, EventArgs e)
 		{
 			GlobalWindowManager.AddWindow(this);
-			try { if (this.Owner == null) this.Owner = Program.MainForm; }
+			try { if (Owner == null) Owner = Program.MainForm; }
 			catch (Exception) { Debug.Assert(false); }
 
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_Folder_Download, KPRes.ImportBehavior,
 				KPRes.ImportBehaviorDesc);
-			this.Icon = AppIcons.Default;
+			Icon = AppIcons.Default;
 
-			this.Text = KPRes.ImportBehavior;
+			Text = KPRes.ImportBehavior;
 
 			m_radioCreateNew.Text = KPRes.CreateNewIDs;
 			m_radioKeepExisting.Text = KPRes.KeepExisting;

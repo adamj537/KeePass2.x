@@ -40,7 +40,7 @@ namespace TrlUtil
 
 		public PreviewForm()
 		{
-			try { this.DoubleBuffered = true; }
+			try { DoubleBuffered = true; }
 			catch (Exception) { Debug.Assert(false); }
 		}
 
@@ -62,15 +62,15 @@ namespace TrlUtil
 
 			try
 			{
-				this.MinimizeBox = false;
-				this.MaximizeBox = false;
-				this.ControlBox = false;
-				this.FormBorderStyle = FormBorderStyle.FixedDialog;
+				MinimizeBox = false;
+				MaximizeBox = false;
+				ControlBox = false;
+				FormBorderStyle = FormBorderStyle.FixedDialog;
 
-				this.Controls.Clear();
+				Controls.Clear();
 
-				this.ClientSize = f.ClientSize;
-				this.Text = f.Text;
+				ClientSize = f.ClientSize;
+				Text = f.Text;
 
 				CopyChildControls(this, f, fCustomizeCopy);
 			}
@@ -186,7 +186,7 @@ namespace TrlUtil
 		{
 			if (string.IsNullOrEmpty(strName)) return; // No assert
 
-			Control[] v = this.Controls.Find(strName, true);
+			Control[] v = Controls.Find(strName, true);
 			if ((v == null) || (v.Length == 0)) return; // No assert
 
 			Control c = v[0];
@@ -217,7 +217,7 @@ namespace TrlUtil
 		{
 			try
 			{
-				IntPtr hWnd = this.Handle;
+				IntPtr hWnd = Handle;
 				if (hWnd == IntPtr.Zero) { Debug.Assert(false); return; }
 
 				NativeMethods.SendMessage(hWnd, NativeMethods.WM_UPDATEUISTATE,
@@ -236,7 +236,7 @@ namespace TrlUtil
 					try
 					{
 						Thread.Sleep(msDelay);
-						Invoke(new VoidDelegate(this.ShowAccelerators));
+						Invoke(new VoidDelegate(ShowAccelerators));
 					}
 					catch (Exception) { Debug.Assert(false); }
 				});

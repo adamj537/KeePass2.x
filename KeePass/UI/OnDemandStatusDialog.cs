@@ -82,7 +82,7 @@ namespace KeePass.UI
 
 			if (m_bUseThread && (m_th == null))
 			{
-				ThreadStart ts = new ThreadStart(this.GuiThread);
+				ThreadStart ts = new ThreadStart(GuiThread);
 				m_th = new Thread(ts);
 				m_th.Start();
 			}

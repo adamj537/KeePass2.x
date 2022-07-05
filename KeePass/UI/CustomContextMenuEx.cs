@@ -33,7 +33,7 @@ namespace KeePass.UI
 
 			if (cParent.RightToLeft == RightToLeft.Yes)
 			{
-				this.RightToLeft = RightToLeft.Yes;
+				RightToLeft = RightToLeft.Yes;
 				Show(cParent, new Point(cParent.Width, cParent.Height),
 					LeftRightAlignment.Left);
 			}

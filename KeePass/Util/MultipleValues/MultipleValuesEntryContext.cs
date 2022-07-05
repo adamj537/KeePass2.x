@@ -154,7 +154,7 @@ namespace KeePass.Util.MultipleValues
 
 				// Standard string protections are normalized while
 				// loading/saving the database file
-				this.MultiStringProt[strKey] = true;
+				MultiStringProt[strKey] = true;
 			}
 		}
 
@@ -189,7 +189,7 @@ namespace KeePass.Util.MultipleValues
 
 							if (bProtM != bProt)
 							{
-								this.MultiStringProt[kvp.Key] = true;
+								MultiStringProt[kvp.Key] = true;
 								if (bProtM)
 									m_peM.Strings.Set(kvp.Key, m_peM.Strings.Get(
 										kvp.Key).WithProtection(false)); // May be set to cue above
@@ -227,7 +227,7 @@ namespace KeePass.Util.MultipleValues
 
 					bool bProt = kvpM.Value.IsProtected;
 					bool bMultiProt;
-					this.MultiStringProt.TryGetValue(kvpM.Key, out bMultiProt);
+					MultiStringProt.TryGetValue(kvpM.Key, out bMultiProt);
 					if (bMultiProt && (ps != null))
 						bProt = ps.IsProtected;
 
@@ -340,20 +340,20 @@ namespace KeePass.Util.MultipleValues
 
 				if ((pe.Expires != bExpM) || (bExpM && (pe.ExpiryTime != m_peM.ExpiryTime)))
 				{
-					this.MultiExpiry = true;
+					MultiExpiry = true;
 					m_peM.Expires = false;
 					bExpM = false;
 				}
 
 				if (!UIUtil.ColorsEqual(pe.ForegroundColor, m_peM.ForegroundColor))
 				{
-					this.MultiFgColor = true;
+					MultiFgColor = true;
 					m_peM.ForegroundColor = Color.Empty;
 				}
 
 				if (!UIUtil.ColorsEqual(pe.BackgroundColor, m_peM.BackgroundColor))
 				{
-					this.MultiBgColor = true;
+					MultiBgColor = true;
 					m_peM.BackgroundColor = Color.Empty;
 				}
 
@@ -369,7 +369,7 @@ namespace KeePass.Util.MultipleValues
 
 				if (pe.AutoType.Enabled != m_peM.AutoType.Enabled)
 				{
-					this.MultiAutoTypeEnabled = true;
+					MultiAutoTypeEnabled = true;
 					m_peM.AutoType.Enabled = true;
 				}
 
@@ -378,7 +378,7 @@ namespace KeePass.Util.MultipleValues
 
 				if (pe.AutoType.ObfuscationOptions != m_peM.AutoType.ObfuscationOptions)
 				{
-					this.MultiAutoTypeObf = true;
+					MultiAutoTypeObf = true;
 					m_peM.AutoType.ObfuscationOptions = AutoTypeObfuscationOptions.None;
 				}
 			}
@@ -398,7 +398,7 @@ namespace KeePass.Util.MultipleValues
 			{
 				PwEntry pe = m_v[i];
 
-				if (!this.MultiExpiry && ((pe.Expires != bExpM) ||
+				if (!MultiExpiry && ((pe.Expires != bExpM) ||
 					(bExpM && (pe.ExpiryTime != m_peM.ExpiryTime))))
 				{
 					PrepareMod(i);
@@ -407,14 +407,14 @@ namespace KeePass.Util.MultipleValues
 					if (bExpM) pe.ExpiryTime = m_peM.ExpiryTime;
 				}
 
-				if (!this.MultiFgColor && !UIUtil.ColorsEqual(pe.ForegroundColor,
+				if (!MultiFgColor && !UIUtil.ColorsEqual(pe.ForegroundColor,
 					m_peM.ForegroundColor))
 				{
 					PrepareMod(i);
 					pe.ForegroundColor = m_peM.ForegroundColor;
 				}
 
-				if (!this.MultiBgColor && !UIUtil.ColorsEqual(pe.BackgroundColor,
+				if (!MultiBgColor && !UIUtil.ColorsEqual(pe.BackgroundColor,
 					m_peM.BackgroundColor))
 				{
 					PrepareMod(i);
@@ -433,7 +433,7 @@ namespace KeePass.Util.MultipleValues
 					pe.OverrideUrl = m_peM.OverrideUrl;
 				}
 
-				if (!this.MultiAutoTypeEnabled && (pe.AutoType.Enabled !=
+				if (!MultiAutoTypeEnabled && (pe.AutoType.Enabled !=
 					m_peM.AutoType.Enabled))
 				{
 					PrepareMod(i);
@@ -447,7 +447,7 @@ namespace KeePass.Util.MultipleValues
 					pe.AutoType.DefaultSequence = m_peM.AutoType.DefaultSequence;
 				}
 
-				if (!this.MultiAutoTypeObf && (pe.AutoType.ObfuscationOptions !=
+				if (!MultiAutoTypeObf && (pe.AutoType.ObfuscationOptions !=
 					m_peM.AutoType.ObfuscationOptions))
 				{
 					PrepareMod(i);

@@ -41,12 +41,12 @@ namespace KeePass.UI
 		{
 			get
 			{
-				bool bVert = (this.Orientation == Orientation.Vertical);
+				bool bVert = (Orientation == Orientation.Vertical);
 
-				int m = (bVert ? this.Width : this.Height);
+				int m = (bVert ? Width : Height);
 				if (m <= 0) { Debug.Assert(false); return 0.0; }
 
-				int d = this.SplitterDistance;
+				int d = SplitterDistance;
 				if (d < 0) { Debug.Assert(false); return 0.0; }
 				if (d == 0) return 0.0; // Avoid fExact infinity
 
@@ -82,21 +82,21 @@ namespace KeePass.UI
 			{
 				if ((value < 0.0) || (value > 1.0)) { Debug.Assert(false); return; }
 
-				bool bVert = (this.Orientation == Orientation.Vertical);
+				bool bVert = (Orientation == Orientation.Vertical);
 
-				int m = (bVert ? this.Width : this.Height);
+				int m = (bVert ? Width : Height);
 				if (m <= 0) { Debug.Assert(false); return; }
 
 				int d = (int)Math.Round(value * (double)m);
 				if (d < 0) { Debug.Assert(false); d = 0; }
 				if (d > m) { Debug.Assert(false); d = m; }
 
-				this.SplitterDistance = d;
+				SplitterDistance = d;
 				if (d == 0) return; // Avoid infinity / division by zero
 
 				// If the position was auto-adjusted (e.g. due to
 				// minimum size constraints), skip the rest
-				if (this.SplitterDistance != d) return;
+				if (SplitterDistance != d) return;
 
 				try
 				{
@@ -174,7 +174,7 @@ namespace KeePass.UI
 		{
 			base.OnEnter(e);
 
-			if (this.Focused && (m_cFocused == null))
+			if (Focused && (m_cFocused == null))
 			{
 				if (m_cLastKnown != null) UIUtil.SetFocus(m_cLastKnown, null);
 				else if (m_cDefault != null) UIUtil.SetFocus(m_cDefault, null);

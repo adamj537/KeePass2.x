@@ -70,15 +70,15 @@ namespace KeePass.Forms
 		private void OnFormLoad(object sender, EventArgs e)
 		{
 			// Can be invoked by tray command; don't use CenterParent
-			Debug.Assert(this.StartPosition == FormStartPosition.CenterScreen);
+			Debug.Assert(StartPosition == FormStartPosition.CenterScreen);
 
 			GlobalWindowManager.AddWindow(this);
 
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_Binary, KPRes.EntropyTitle,
 				KPRes.EntropyDesc);
-			this.Icon = AppIcons.Default;
-			this.Text = KPRes.EntropyTitle;
+			Icon = AppIcons.Default;
+			Text = KPRes.EntropyTitle;
 
 			m_bmpRandom = CreateRandomBitmap(m_picRandom.ClientSize);
 			m_picRandom.Image = m_bmpRandom;

@@ -950,9 +950,9 @@ namespace KeePass.Util
 				if (peA == null) throw new ArgumentNullException("peA");
 				if (peB == null) throw new ArgumentNullException("peB");
 
-				this.EntryA = peA;
-				this.EntryB = peB;
-				this.Similarity = fSimilarity;
+				EntryA = peA;
+				EntryB = peB;
+				Similarity = fSimilarity;
 			}
 		}
 

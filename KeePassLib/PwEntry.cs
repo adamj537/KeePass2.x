@@ -511,7 +511,7 @@ namespace KeePassLib
 			if (m_bQualityCheck != pe.m_bQualityCheck) return false;
 
 			// The Tags property normalizes
-			if (!MemUtil.ListsEqual<string>(this.Tags, pe.Tags)) return false;
+			if (!MemUtil.ListsEqual<string>(Tags, pe.Tags)) return false;
 
 			if (!m_dCustomData.Equals(pe.m_dCustomData)) return false;
 
@@ -600,8 +600,8 @@ namespace KeePassLib
 
 			if (bModified) m_tLastMod = m_tLastAccess;
 
-			if (this.Touched != null)
-				this.Touched(this, new ObjectTouchedEventArgs(this,
+			if (Touched != null)
+				Touched(this, new ObjectTouchedEventArgs(this,
 					bModified, bTouchParents));
 			if (EntryTouched != null)
 				EntryTouched(this, new ObjectTouchedEventArgs(this,
@@ -848,7 +848,7 @@ namespace KeePassLib
 			if (string.IsNullOrEmpty(strTag)) { Debug.Assert(false); return false; }
 
 			// this.Tags normalizes
-			return this.Tags.Contains(StrUtil.NormalizeTag(strTag));
+			return Tags.Contains(StrUtil.NormalizeTag(strTag));
 		}
 
 		public bool AddTag(string strTag)
@@ -856,7 +856,7 @@ namespace KeePassLib
 			if (string.IsNullOrEmpty(strTag)) { Debug.Assert(false); return false; }
 
 			strTag = StrUtil.NormalizeTag(strTag);
-			if (this.Tags.Contains(strTag)) return false; // this.Tags normalizes
+			if (Tags.Contains(strTag)) return false; // this.Tags normalizes
 
 			m_lTags.Add(strTag);
 			return true;
@@ -867,14 +867,14 @@ namespace KeePassLib
 			if (string.IsNullOrEmpty(strTag)) { Debug.Assert(false); return false; }
 
 			// this.Tags normalizes
-			return this.Tags.Remove(StrUtil.NormalizeTag(strTag));
+			return Tags.Remove(StrUtil.NormalizeTag(strTag));
 		}
 
 		internal List<string> GetTagsInherited()
 		{
 			List<string> l = ((m_pParentGroup != null) ?
 				m_pParentGroup.GetTagsInherited(false) : new List<string>());
-			l.AddRange(this.Tags);
+			l.AddRange(Tags);
 			StrUtil.NormalizeTags(l);
 			return l;
 		}
@@ -894,7 +894,7 @@ namespace KeePassLib
 
 		public void SetUuid(PwUuid pwNewUuid, bool bAlsoChangeHistoryUuids)
 		{
-			this.Uuid = pwNewUuid;
+			Uuid = pwNewUuid;
 
 			if (bAlsoChangeHistoryUuids)
 			{

@@ -276,8 +276,8 @@ namespace KeePassLib.Cryptography
 
 			public QePathState(int iPosition, List<QePatternInstance> lPath)
 			{
-				this.Position = iPosition;
-				this.Path = lPath;
+				Position = iPosition;
+				Path = lPath;
 			}
 		}
 

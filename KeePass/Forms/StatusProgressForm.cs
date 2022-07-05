@@ -88,11 +88,11 @@ namespace KeePass.Forms
 		private void OnFormLoad(object sender, EventArgs e)
 		{
 			// Must work without a parent window
-			Debug.Assert(this.StartPosition == FormStartPosition.CenterScreen);
+			Debug.Assert(StartPosition == FormStartPosition.CenterScreen);
 
 			GlobalWindowManager.AddWindow(this);
 
-			this.Icon = AppIcons.Default;
+			Icon = AppIcons.Default;
 
 			m_pbTotal.Minimum = 0;
 			m_pbTotal.Maximum = 100;
@@ -101,10 +101,10 @@ namespace KeePass.Forms
 			try { if (m_bMarquee) m_pbTotal.Style = ProgressBarStyle.Marquee; }
 			catch (Exception) { Debug.Assert(WinUtil.IsWindows9x || WinUtil.IsWindows2000); }
 
-			if (!string.IsNullOrEmpty(m_strTitle)) this.Text = m_strTitle;
-			else this.Text = PwDefs.ShortProductName;
+			if (!string.IsNullOrEmpty(m_strTitle)) Text = m_strTitle;
+			else Text = PwDefs.ShortProductName;
 
-			try { if (m_fOwner != null) this.Owner = m_fOwner; }
+			try { if (m_fOwner != null) Owner = m_fOwner; }
 			catch (Exception) { Debug.Assert(false); } // Throws from other thread
 
 			if (!m_bCanCancel) m_btnCancel.Enabled = false;
@@ -112,7 +112,7 @@ namespace KeePass.Forms
 
 		private void OnBtnCancel(object sender, EventArgs e)
 		{
-			this.DialogResult = DialogResult.None;
+			DialogResult = DialogResult.None;
 			DoCancel();
 		}
 
@@ -141,8 +141,8 @@ namespace KeePass.Forms
 
 		private bool SetProgressGlobal(string strText, int nPercent)
 		{
-			if (this.InvokeRequired)
-				this.Invoke(new Priv_SetProgressInternal(this.SetProgressInternal),
+			if (InvokeRequired)
+				Invoke(new Priv_SetProgressInternal(SetProgressInternal),
 					strText, nPercent);
 			else SetProgressInternal(strText, nPercent);
 

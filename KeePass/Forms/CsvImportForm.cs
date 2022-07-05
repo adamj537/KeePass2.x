@@ -108,10 +108,10 @@ namespace KeePass.Forms
 			GlobalWindowManager.AddWindow(this);
 
 			// Callable from KPScript without parent form
-			Debug.Assert(this.StartPosition == FormStartPosition.CenterScreen);
+			Debug.Assert(StartPosition == FormStartPosition.CenterScreen);
 
-			this.Icon = AppIcons.Default;
-			this.Text = KPRes.GenericCsvImporter;
+			Icon = AppIcons.Default;
+			Text = KPRes.GenericCsvImporter;
 
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_Binary, KPRes.GenericCsvImporter,

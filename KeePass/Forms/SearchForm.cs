@@ -97,8 +97,8 @@ namespace KeePass.Forms
 
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_XMag, strTitle, strDesc);
-			this.Icon = AppIcons.Default;
-			this.Text = KPRes.SearchTitle;
+			Icon = AppIcons.Default;
+			Text = KPRes.SearchTitle;
 
 			UIUtil.SetButtonImage(m_btnProfileAdd,
 				Properties.Resources.B16x16_FileSaveAs, false);
@@ -120,10 +120,10 @@ namespace KeePass.Forms
 			UpdateProfilesList((sp != null) ? sp.Name : ProfileCustom);
 			SetSearchParameters(sp ?? Program.Config.Search.LastUsedProfile);
 
-			m_tbSearch.TextChanged += this.OnProfilePropertyChanged;
-			m_rbModeSimple.CheckedChanged += this.OnProfilePropertyChanged;
-			m_rbModeRegular.CheckedChanged += this.OnProfilePropertyChanged;
-			m_rbModeXPath.CheckedChanged += this.OnProfilePropertyChanged;
+			m_tbSearch.TextChanged += OnProfilePropertyChanged;
+			m_rbModeSimple.CheckedChanged += OnProfilePropertyChanged;
+			m_rbModeRegular.CheckedChanged += OnProfilePropertyChanged;
+			m_rbModeXPath.CheckedChanged += OnProfilePropertyChanged;
 
 			CheckBox[] v = new CheckBox[] {
 				m_cbTitle, m_cbUserName, m_cbPassword, m_cbUrl, m_cbNotes,
@@ -132,7 +132,7 @@ namespace KeePass.Forms
 				m_cbCaseSensitive, m_cbExcludeExpired, m_cbIgnoreGroupSettings,
 				m_cbDerefData
 			};
-			foreach (CheckBox cb in v) cb.CheckedChanged += this.OnProfilePropertyChanged;
+			foreach (CheckBox cb in v) cb.CheckedChanged += OnProfilePropertyChanged;
 
 			UpdateUIState();
 			m_tbSearch.SelectAll();
@@ -153,21 +153,21 @@ namespace KeePass.Forms
 			IStatusLogger sl = StatusUtil.CreateStatusDialog(this, out fOptDialog,
 				null, KPRes.SearchingOp + "...", true, false);
 			// if(fOptDialog != null) Program.MainForm.RedirectActivationPush(fOptDialog);
-			this.Enabled = false;
+			Enabled = false;
 
 			PwGroup pgResults = null;
 			Exception exFind = null;
 			try { pgResults = SearchUtil.Find(sp, m_pgRoot, sl); }
 			catch (Exception ex) { exFind = ex; }
 
-			this.Enabled = true;
+			Enabled = true;
 			// if(fOptDialog != null) Program.MainForm.RedirectActivationPop();
 			sl.EndLogging();
 
 			if (exFind != null)
 			{
 				MessageService.ShowWarning(sp.SearchString, exFind);
-				this.DialogResult = DialogResult.None;
+				DialogResult = DialogResult.None;
 			}
 			else if (pgResults != null)
 			{
@@ -177,7 +177,7 @@ namespace KeePass.Forms
 			else
 			{
 				Debug.Assert(false);
-				this.DialogResult = DialogResult.None;
+				DialogResult = DialogResult.None;
 			}
 		}
 

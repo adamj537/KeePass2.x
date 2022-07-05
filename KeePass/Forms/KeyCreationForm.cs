@@ -134,8 +134,8 @@ namespace KeePass.Forms
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_KGPG_Sign, strTitle,
 				m_ioInfo.GetDisplayName());
-			this.Icon = AppIcons.Default;
-			this.Text = strTitle;
+			Icon = AppIcons.Default;
+			Text = strTitle;
 
 			FontUtil.SetDefaultFont(m_cbPassword);
 			FontUtil.AssignDefaultBold(m_cbPassword);
@@ -268,7 +268,7 @@ namespace KeePass.Forms
 		{
 			m_pKey = KeyUtil.KeyFromUI(m_cbPassword, m_icgPassword, m_tbPassword,
 				m_cbKeyFile, m_cmbKeyFile, m_cbUserAccount, m_ioInfo, m_bSecureDesktop);
-			if (m_pKey == null) this.DialogResult = DialogResult.None;
+			if (m_pKey == null) DialogResult = DialogResult.None;
 		}
 
 		private void OnBtnCancel(object sender, EventArgs e)

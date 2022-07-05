@@ -108,8 +108,8 @@ namespace KeePass.Forms
 				Properties.Resources.B48x48_Folder_Download);
 			BannerFactory.CreateBannerEx(this, m_bannerImage, img, strTitle, strDesc);
 
-			this.Icon = AppIcons.Default;
-			this.Text = strTitle;
+			Icon = AppIcons.Default;
+			Text = strTitle;
 
 			UIUtil.ConfigureToolTip(m_ttRect);
 			UIUtil.SetToolTip(m_ttRect, m_btnSelFile, StrUtil.TrimDots(
@@ -371,7 +371,7 @@ namespace KeePass.Forms
 
 		private void OnBtnOK(object sender, EventArgs e)
 		{
-			if (!PrepareExchangeEx()) this.DialogResult = DialogResult.None;
+			if (!PrepareExchangeEx()) DialogResult = DialogResult.None;
 		}
 
 		private void OnBtnCancel(object sender, EventArgs e)

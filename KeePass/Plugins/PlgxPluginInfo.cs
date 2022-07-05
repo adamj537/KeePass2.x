@@ -144,15 +144,15 @@ namespace KeePass.Plugins
 
 		public PlgxPluginInfo(bool bCompiling, bool bAllowCached, bool bAllowCompile)
 		{
-			this.Compiling = bCompiling;
-			this.AllowCached = bAllowCached;
-			this.AllowCompile = bAllowCompile;
+			Compiling = bCompiling;
+			AllowCached = bAllowCached;
+			AllowCompile = bAllowCompile;
 		}
 
 		public string GetAbsPath(string strRelPath)
 		{
-			Debug.Assert(!string.IsNullOrEmpty(this.CsprojFilePath));
-			return UrlUtil.MakeAbsolutePath(this.CsprojFilePath,
+			Debug.Assert(!string.IsNullOrEmpty(CsprojFilePath));
+			return UrlUtil.MakeAbsolutePath(CsprojFilePath,
 				UrlUtil.ConvertSeparators(strRelPath));
 		}
 	}

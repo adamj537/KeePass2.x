@@ -60,9 +60,9 @@ namespace KeePass.Util
 				if (strVolumeLabel == null) throw new ArgumentNullException("strVolumeLabel");
 				if (fMatch == null) throw new ArgumentNullException("fMatch");
 
-				this.RootDirectory = strRoot;
-				this.VolumeLabel = strVolumeLabel;
-				this.Match = fMatch;
+				RootDirectory = strRoot;
+				VolumeLabel = strVolumeLabel;
+				Match = fMatch;
 			}
 
 			public void AddResult(FsxResult r)
@@ -102,8 +102,8 @@ namespace KeePass.Util
 				if (strPath == null) throw new ArgumentNullException("strPath");
 				if (strType == null) throw new ArgumentNullException("strType");
 
-				this.Path = strPath;
-				this.Type = strType;
+				Path = strPath;
+				Type = strType;
 			}
 
 			public static int CompareByPath(FsxResult a, FsxResult b)

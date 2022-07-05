@@ -79,7 +79,7 @@ namespace TrlUtil
 
 		private void OnFormLoad(object sender, EventArgs e)
 		{
-			this.Icon = Properties.Resources.KeePass;
+			Icon = Properties.Resources.KeePass;
 
 			m_trl.Forms = FormTrlMgr.CreateListOfCurrentVersion();
 			m_rtbUnusedText.SimpleTextOnly = true;
@@ -95,7 +95,7 @@ namespace TrlUtil
 			if (m_prev != null) m_prev.Show();
 			else { Debug.Assert(false); }
 
-			try { this.DoubleBuffered = true; }
+			try { DoubleBuffered = true; }
 			catch (Exception) { Debug.Assert(false); }
 
 			UpdateUIState();
@@ -288,7 +288,7 @@ namespace TrlUtil
 				if (!string.IsNullOrEmpty(strFile))
 					str = strFile + " - " + str;
 			}
-			this.Text = str;
+			Text = str;
 		}
 
 		private void OnLinkLangCodeClicked(object sender, LinkLabelLinkClickedEventArgs e)

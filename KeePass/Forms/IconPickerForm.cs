@@ -81,7 +81,7 @@ namespace KeePass.Forms
 
 			GlobalWindowManager.AddWindow(this);
 
-			this.Icon = AppIcons.Default;
+			Icon = AppIcons.Default;
 
 			FontUtil.AssignDefaultBold(m_radioStandard);
 			FontUtil.AssignDefaultBold(m_radioCustom);
@@ -258,7 +258,7 @@ namespace KeePass.Forms
 		{
 			if (!SaveChosenIcon())
 			{
-				this.DialogResult = DialogResult.None;
+				DialogResult = DialogResult.None;
 				MessageService.ShowWarning(KPRes.PickIcon);
 			}
 		}
@@ -442,14 +442,14 @@ namespace KeePass.Forms
 		{
 			OnIconsItemSelectionChanged(sender, null);
 			if (!SaveChosenIcon()) return;
-			this.DialogResult = DialogResult.OK;
+			DialogResult = DialogResult.OK;
 		}
 
 		private void OnCustomIconsItemActivate(object sender, EventArgs e)
 		{
 			OnCustomIconsItemSelectionChanged(sender, null);
 			if (!SaveChosenIcon()) return;
-			this.DialogResult = DialogResult.OK;
+			DialogResult = DialogResult.OK;
 		}
 
 		private void OnBtnCustomSave(object sender, EventArgs e)

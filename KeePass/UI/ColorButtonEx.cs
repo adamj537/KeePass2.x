@@ -76,9 +76,9 @@ namespace KeePass.UI
 		{
 			if (Program.DesignMode) return;
 
-			Debug.Assert(this.ImageAlign == ContentAlignment.MiddleCenter);
-			Debug.Assert(this.Text == string.Empty); // Foreground color?
-			Debug.Assert(this.TextImageRelation == TextImageRelation.Overlay);
+			Debug.Assert(ImageAlign == ContentAlignment.MiddleCenter);
+			Debug.Assert(Text == string.Empty); // Foreground color?
+			Debug.Assert(TextImageRelation == TextImageRelation.Overlay);
 
 			m_tt = new ToolTip();
 			UIUtil.ConfigureToolTip(m_tt);
@@ -108,7 +108,7 @@ namespace KeePass.UI
 			if (m_ctx == null) return;
 
 			foreach (ColorMenuItem mi in m_lMenuItems)
-				mi.Click -= this.OnColorMenuItemClick;
+				mi.Click -= OnColorMenuItemClick;
 			m_lMenuItems.Clear();
 
 			m_ctx.Dispose();
@@ -125,12 +125,12 @@ namespace KeePass.UI
 			if (cColors == 0) { Debug.Assert(false); return; }
 
 			int nBreakAt = Math.Max((int)Math.Sqrt(0.1 + cColors), 1);
-			int qSize = (int)((20.0f * this.Height) / 23.0f + 0.01f);
+			int qSize = (int)((20.0f * Height) / 23.0f + 0.01f);
 
 			for (int i = 0; i < cColors; ++i)
 			{
 				ColorMenuItem mi = new ColorMenuItem(m_vColors[i], qSize);
-				mi.Click += this.OnColorMenuItemClick;
+				mi.Click += OnColorMenuItemClick;
 
 				if (((i % nBreakAt) == 0) && (i != 0))
 					mi.Break = true;
@@ -158,7 +158,7 @@ namespace KeePass.UI
 			else
 			{
 				Color? oclr = UIUtil.ShowColorDialog(m_clr);
-				if (oclr.HasValue) this.SelectedColor = oclr.Value;
+				if (oclr.HasValue) SelectedColor = oclr.Value;
 			}
 		}
 
@@ -167,7 +167,7 @@ namespace KeePass.UI
 			ColorMenuItem mi = (sender as ColorMenuItem);
 			if (mi == null) { Debug.Assert(false); return; }
 
-			this.SelectedColor = mi.Color;
+			SelectedColor = mi.Color;
 		}
 	}
 }

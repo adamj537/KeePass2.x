@@ -53,10 +53,10 @@ namespace KeePass.Forms
 		{
 			if (strOperation != null)
 			{
-				this.Text = PwDefs.ShortProductName + " - " + strOperation;
+				Text = PwDefs.ShortProductName + " - " + strOperation;
 
 				if (bWriteOperationToLog)
-					this.SetText(strOperation, LogStatusType.Info);
+					SetText(strOperation, LogStatusType.Info);
 			}
 
 			m_pbProgress.Value = 0;
@@ -72,7 +72,7 @@ namespace KeePass.Forms
 
 			string strFinish = KPRes.Ready + " " + uErrors.ToString() + " " + KPRes.Errors +
 				", " + uWarnings.ToString() + " " + KPRes.Warnings + ".";
-			this.SetText(strFinish, LogStatusType.Info);
+			SetText(strFinish, LogStatusType.Info);
 
 			m_pbProgress.Value = 100;
 			m_uLastPercent = 100;
@@ -126,8 +126,8 @@ namespace KeePass.Forms
 		{
 			GlobalWindowManager.AddWindow(this);
 
-			this.Icon = AppIcons.Default;
-			this.Text = PwDefs.ShortProductName;
+			Icon = AppIcons.Default;
+			Text = PwDefs.ShortProductName;
 
 			m_pbProgress.Minimum = 0;
 			m_pbProgress.Maximum = 100;
@@ -156,13 +156,13 @@ namespace KeePass.Forms
 		{
 			if (m_bCloseMode)
 			{
-				if (m_bIsModal) this.DialogResult = DialogResult.Cancel;
+				if (m_bIsModal) DialogResult = DialogResult.Cancel;
 				else Close();
 			}
 			else
 			{
 				m_bCancelled = true;
-				this.DialogResult = DialogResult.None;
+				DialogResult = DialogResult.None;
 			}
 		}
 

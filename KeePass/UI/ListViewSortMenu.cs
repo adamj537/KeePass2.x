@@ -62,7 +62,7 @@ namespace KeePass.UI
 			m_tsmiInitDummy = new ToolStripMenuItem(KPRes.NoSort);
 			m_tsmiMenu.DropDownItems.Add(m_tsmiInitDummy);
 
-			m_tsmiMenu.DropDownOpening += this.UpdateMenu;
+			m_tsmiMenu.DropDownOpening += UpdateMenu;
 		}
 
 #if DEBUG
@@ -77,7 +77,7 @@ namespace KeePass.UI
 			if (m_tsmiMenu != null)
 			{
 				DeleteMenuItems();
-				m_tsmiMenu.DropDownOpening -= this.UpdateMenu;
+				m_tsmiMenu.DropDownOpening -= UpdateMenu;
 
 				m_tsmiMenu = null;
 				m_lv = null;
@@ -95,11 +95,11 @@ namespace KeePass.UI
 
 			if (m_tsmiNoSort == null) return;
 
-			m_tsmiNoSort.Click -= this.OnNoSort;
+			m_tsmiNoSort.Click -= OnNoSort;
 			foreach (ToolStripMenuItem tsmiCol in m_vColumns)
-				tsmiCol.Click -= this.OnSortColumn;
-			m_tsmiAsc.Click -= this.OnSortAscDesc;
-			m_tsmiDesc.Click -= this.OnSortAscDesc;
+				tsmiCol.Click -= OnSortColumn;
+			m_tsmiAsc.Click -= OnSortAscDesc;
+			m_tsmiDesc.Click -= OnSortAscDesc;
 
 			m_tsmiMenu.DropDownItems.Clear();
 
@@ -129,7 +129,7 @@ namespace KeePass.UI
 
 			m_tsmiNoSort = new ToolStripMenuItem(KPRes.NoSort);
 			if (m_iCurSortColumn < 0) UIUtil.SetRadioChecked(m_tsmiNoSort, true);
-			m_tsmiNoSort.Click += this.OnNoSort;
+			m_tsmiNoSort.Click += OnNoSort;
 			m_tsmiMenu.DropDownItems.Add(m_tsmiNoSort);
 
 			m_tssSep0 = new ToolStripSeparator();
@@ -143,7 +143,7 @@ namespace KeePass.UI
 
 				ToolStripMenuItem tsmi = new ToolStripMenuItem(strText);
 				if (ch.Index == m_iCurSortColumn) UIUtil.SetRadioChecked(tsmi, true);
-				tsmi.Click += this.OnSortColumn;
+				tsmi.Click += OnSortColumn;
 
 				m_vColumns.Add(tsmi);
 				m_tsmiMenu.DropDownItems.Add(tsmi);
@@ -155,14 +155,14 @@ namespace KeePass.UI
 			m_tsmiAsc = new ToolStripMenuItem(KPRes.Ascending);
 			if ((m_iCurSortColumn >= 0) && m_bCurSortAsc)
 				UIUtil.SetRadioChecked(m_tsmiAsc, true);
-			m_tsmiAsc.Click += this.OnSortAscDesc;
+			m_tsmiAsc.Click += OnSortAscDesc;
 			if (m_iCurSortColumn < 0) m_tsmiAsc.Enabled = false;
 			m_tsmiMenu.DropDownItems.Add(m_tsmiAsc);
 
 			m_tsmiDesc = new ToolStripMenuItem(KPRes.Descending);
 			if ((m_iCurSortColumn >= 0) && !m_bCurSortAsc)
 				UIUtil.SetRadioChecked(m_tsmiDesc, true);
-			m_tsmiDesc.Click += this.OnSortAscDesc;
+			m_tsmiDesc.Click += OnSortAscDesc;
 			if (m_iCurSortColumn < 0) m_tsmiDesc.Enabled = false;
 			m_tsmiMenu.DropDownItems.Add(m_tsmiDesc);
 		}

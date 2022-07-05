@@ -52,8 +52,8 @@ namespace KeePass.Forms
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_View_Detailed,
 				KPRes.ConfigureColumns, KPRes.ConfigureColumnsDesc);
-			this.Icon = AppIcons.Default;
-			this.Text = KPRes.ConfigureColumns;
+			Icon = AppIcons.Default;
+			Text = KPRes.ConfigureColumns;
 
 			float fWidth = (float)(m_lvColumns.ClientRectangle.Width -
 				UIUtil.GetVScrollBarWidth()) / 5.0f;
@@ -362,15 +362,15 @@ namespace KeePass.Forms
 
 			public AceColumnWithTag(AceColumn c, long lTag)
 			{
-				this.Column = c;
-				this.TypeNameEx = c.GetTypeNameEx();
-				this.Tag = lTag;
+				Column = c;
+				TypeNameEx = c.GetTypeNameEx();
+				Tag = lTag;
 			}
 
 #if DEBUG
 			public override string ToString()
 			{
-				return (this.TypeNameEx + ", " + this.Tag.ToString());
+				return (TypeNameEx + ", " + Tag.ToString());
 			}
 #endif
 

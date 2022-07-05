@@ -116,8 +116,8 @@ namespace KeePass.Util
 
 			public UpdateCheckParams(bool bForceUI, Form fOptParent)
 			{
-				this.ForceUI = bForceUI;
-				this.Parent = fOptParent;
+				ForceUI = bForceUI;
+				Parent = fOptParent;
 			}
 		}
 
@@ -248,7 +248,7 @@ namespace KeePass.Util
 			{
 				if (strUrl == null) throw new ArgumentNullException("strUrl");
 
-				this.Url = strUrl;
+				Url = strUrl;
 			}
 		}
 

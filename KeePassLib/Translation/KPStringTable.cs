@@ -72,10 +72,10 @@ namespace KeePassLib.Translation
 		{
 			if (tsic == null) throw new ArgumentNullException("tsic");
 
-			Dictionary<string, string> dict = this.ToDictionary();
+			Dictionary<string, string> dict = ToDictionary();
 			if (dict.Count == 0) return;
 
-			this.ApplyTo(tsic, dict);
+			ApplyTo(tsic, dict);
 		}
 
 		private void ApplyTo(ToolStripItemCollection tsic, Dictionary<string, string> dict)
@@ -92,7 +92,7 @@ namespace KeePassLib.Translation
 
 				ToolStripMenuItem tsmi = tsi as ToolStripMenuItem;
 				if ((tsmi != null) && (tsmi.DropDownItems != null))
-					this.ApplyTo(tsmi.DropDownItems);
+					ApplyTo(tsmi.DropDownItems);
 			}
 		}
 #endif

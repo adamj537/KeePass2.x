@@ -96,7 +96,7 @@ namespace KeePass.Forms
 		{
 			GlobalWindowManager.AddWindow(this);
 
-			this.Icon = AppIcons.Default;
+			Icon = AppIcons.Default;
 
 			FontUtil.AssignDefaultBold(m_cbAppendCopy);
 			FontUtil.AssignDefaultBold(m_cbFieldRefs);

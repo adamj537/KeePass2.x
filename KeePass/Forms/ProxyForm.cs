@@ -43,7 +43,7 @@ namespace KeePass.Forms
 		{
 			GlobalWindowManager.AddWindow(this);
 
-			this.Icon = AppIcons.Default;
+			Icon = AppIcons.Default;
 
 			ProxyServerType pst = Program.Config.Integration.ProxyType;
 			if (pst == ProxyServerType.None) m_rbNoProxy.Checked = true;

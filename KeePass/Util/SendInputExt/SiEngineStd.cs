@@ -53,8 +53,8 @@ namespace KeePass.Util.SendInputExt
 				string strTargetTitle;
 				NativeMethods.GetForegroundWindowInfo(out hWndTarget,
 					out strTargetTitle, false);
-				this.TargetHWnd = hWndTarget;
-				this.TargetWindowTitle = (strTargetTitle ?? string.Empty);
+				TargetHWnd = hWndTarget;
+				TargetWindowTitle = (strTargetTitle ?? string.Empty);
 			}
 			catch (Exception) { Debug.Assert(false); }
 		}
@@ -106,7 +106,7 @@ namespace KeePass.Util.SendInputExt
 
 		public virtual void Delay(uint uMs)
 		{
-			if (this.Cancelled) return;
+			if (Cancelled) return;
 
 			if (!m_swLastEvent.IsRunning)
 			{
@@ -132,7 +132,7 @@ namespace KeePass.Util.SendInputExt
 
 		private bool ValidateState()
 		{
-			if (this.Cancelled) return false;
+			if (Cancelled) return false;
 
 			List<string> lAbortWindows = Program.Config.Integration.AutoTypeAbortOnWindows;
 
@@ -154,15 +154,15 @@ namespace KeePass.Util.SendInputExt
 
 				if (bHasInfo)
 				{
-					if (bChkWndCh && (h != this.TargetHWnd))
+					if (bChkWndCh && (h != TargetHWnd))
 					{
-						this.Cancelled = true;
+						Cancelled = true;
 						return false;
 					}
 
-					if (bChkTitleCh && (strTitle != this.TargetWindowTitle))
+					if (bChkTitleCh && (strTitle != TargetWindowTitle))
 					{
-						this.Cancelled = true;
+						Cancelled = true;
 						return false;
 					}
 
@@ -174,7 +174,7 @@ namespace KeePass.Util.SendInputExt
 						{
 							if (AutoType.IsMatchWindow(strT, strF))
 							{
-								this.Cancelled = true;
+								Cancelled = true;
 								throw new SecurityException(KPRes.AutoTypeAbortedOnWindow +
 									MessageService.NewParagraph + KPRes.TargetWindow +
 									@": '" + strTitle + @"'.");

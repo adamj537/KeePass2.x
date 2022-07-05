@@ -72,7 +72,7 @@ namespace KeePass.UI
 					// Multiline property while constructing the object
 					if (!MonoWorkarounds.IsRequired())
 					{
-						if (this.Multiline) cp.Style |= NativeMethods.ES_WANTRETURN;
+						if (Multiline) cp.Style |= NativeMethods.ES_WANTRETURN;
 					}
 				}
 
@@ -108,7 +108,7 @@ namespace KeePass.UI
 
 			// The following is intended to set a default value;
 			// see also OnHandleCreated
-			this.AutoWordSelection = false;
+			AutoWordSelection = false;
 		}
 
 		private CriticalSectionEx m_csAutoProps = new CriticalSectionEx();
@@ -128,17 +128,17 @@ namespace KeePass.UI
 				// So, when setting AutoWordSelection to false, the control
 				// style is toggled instead of turned off (the internal value
 				// is updated correctly)
-				bool bAutoWord = this.AutoWordSelection; // Internal, no message
+				bool bAutoWord = AutoWordSelection; // Internal, no message
 				if (!bAutoWord) // Only 'false' needs workaround
 				{
 					// Ensure control style is on (currently we're in a
 					// random state, as it could be set to false multiple
 					// times; e.g. base.OnHandleCreated does the following:
 					// 'this.AutoWordSelection = this.AutoWordSelection;')
-					this.AutoWordSelection = true;
+					AutoWordSelection = true;
 
 					// Toggle control style to false
-					this.AutoWordSelection = false;
+					AutoWordSelection = false;
 				}
 
 				m_csAutoProps.Exit();
@@ -176,7 +176,7 @@ namespace KeePass.UI
 			if (m_bCtrlEnterAccepts && e.Control && (e.KeyCode == Keys.Return))
 			{
 				UIUtil.SetHandled(e, true);
-				Debug.Assert(this.Multiline);
+				Debug.Assert(Multiline);
 
 				Control p = this;
 				Form f;
@@ -255,9 +255,9 @@ namespace KeePass.UI
 
 			try
 			{
-				string strSel = (this.SelectedText ?? string.Empty);
-				int iSel = this.SelectionStart;
-				Debug.Assert(this.SelectionLength == strSel.Length);
+				string strSel = (SelectedText ?? string.Empty);
+				int iSel = SelectionStart;
+				Debug.Assert(SelectionLength == strSel.Length);
 
 				if (e.Shift) // Character -> code
 				{
@@ -271,7 +271,7 @@ namespace KeePass.UI
 					else if (strSel.Length == 0) // Work with char. to the left
 					{
 						int p = iSel - 1;
-						string strText = this.Text;
+						string strText = Text;
 						if ((p < 0) || (p >= strText.Length)) return true;
 
 						char ch = strText[p];
@@ -297,14 +297,14 @@ namespace KeePass.UI
 					string strRep = Convert.ToString(uc, 16).ToUpperInvariant();
 
 					if (strSel.Length >= 2)
-						this.Select(iSel, strChar.Length);
+						Select(iSel, strChar.Length);
 					else if (strSel.Length == 0)
 					{
-						this.Select(iSel - strChar.Length, strChar.Length);
+						Select(iSel - strChar.Length, strChar.Length);
 						iSel -= strChar.Length;
 					}
-					this.SelectedText = strRep;
-					this.Select(iSel, strRep.Length);
+					SelectedText = strRep;
+					Select(iSel, strRep.Length);
 				}
 				else // Code -> character
 				{
@@ -315,7 +315,7 @@ namespace KeePass.UI
 					if (strSel.Length == 0)
 					{
 						int p = iSel - 1;
-						string strText = this.Text;
+						string strText = Text;
 						while ((p >= 0) && (p < strText.Length))
 						{
 							char ch = strText[p];
@@ -345,8 +345,8 @@ namespace KeePass.UI
 					if (char.IsControl(strRep, 0) && (strRep[0] != '\t')) return true;
 
 					if (strSel.Length == 0)
-						this.Select(iSel - strHex.Length, strHex.Length);
-					this.SelectedText = strRep;
+						Select(iSel - strHex.Length, strHex.Length);
+					SelectedText = strRep;
 				}
 			}
 			catch (Exception) { Debug.Assert(false); }
@@ -360,7 +360,7 @@ namespace KeePass.UI
 
 			Debug.Assert(Keys.Return == Keys.Enter);
 			if ((k == Keys.Return) && ((keyData & (Keys.Control | Keys.Alt)) ==
-				Keys.None) && this.Multiline)
+				Keys.None) && Multiline)
 				return false; // New line in rich text box
 
 			return base.ProcessDialogKey(keyData);
@@ -374,8 +374,8 @@ namespace KeePass.UI
 
 			try
 			{
-				if (!m_bSimpleTextOnly && this.ShortcutsEnabled &&
-					this.RichTextShortcutsEnabled && !this.ReadOnly)
+				if (!m_bSimpleTextOnly && ShortcutsEnabled &&
+					RichTextShortcutsEnabled && !ReadOnly)
 				{
 					bool bHandled = true;
 
@@ -395,13 +395,13 @@ namespace KeePass.UI
 						// by the rich text box on Windows, but not by Mono;
 						// https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.textboxbase.shortcutsenabled
 						case (Keys.Control | Keys.L): // Without Shift
-							if (bDown) this.SelectionAlignment = HorizontalAlignment.Left;
+							if (bDown) SelectionAlignment = HorizontalAlignment.Left;
 							break;
 						case (Keys.Control | Keys.E): // Without Shift
-							if (bDown) this.SelectionAlignment = HorizontalAlignment.Center;
+							if (bDown) SelectionAlignment = HorizontalAlignment.Center;
 							break;
 						case (Keys.Control | Keys.R): // Without Shift
-							if (bDown) this.SelectionAlignment = HorizontalAlignment.Right;
+							if (bDown) SelectionAlignment = HorizontalAlignment.Right;
 							break;
 
 						default: bHandled = false; break;
@@ -690,7 +690,7 @@ namespace KeePass.UI
 				object oEv = ((fi != null) ? fi.GetValue(null) : null);
 				if (oEv != null)
 				{
-					if (this.Events[oEv] == null) // No event handler associated
+					if (Events[oEv] == null) // No event handler associated
 					{
 						WinUtil.OpenUrl(str, null);
 						return;

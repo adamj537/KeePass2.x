@@ -73,7 +73,7 @@ namespace KeePassLib.Cryptography.Hash
 		public Blake2b()
 		{
 			m_cbHashLength = NbMaxOutBytes;
-			this.HashSizeValue = NbMaxOutBytes * 8; // Bits
+			HashSizeValue = NbMaxOutBytes * 8; // Bits
 
 			Initialize();
 		}
@@ -84,7 +84,7 @@ namespace KeePassLib.Cryptography.Hash
 				throw new ArgumentOutOfRangeException("cbHashLength");
 
 			m_cbHashLength = cbHashLength;
-			this.HashSizeValue = cbHashLength * 8; // Bits
+			HashSizeValue = cbHashLength * 8; // Bits
 
 			Initialize();
 		}

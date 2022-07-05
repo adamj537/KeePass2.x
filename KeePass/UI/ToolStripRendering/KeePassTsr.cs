@@ -85,32 +85,32 @@ namespace KeePass.UI.ToolStripRendering
 
 			public override Color ButtonPressedGradientBegin
 			{
-				get { return StartGradient(this.ButtonPressedGradientMiddle); }
+				get { return StartGradient(ButtonPressedGradientMiddle); }
 			}
 
 			public override Color ButtonPressedGradientEnd
 			{
-				get { return EndGradient(this.ButtonPressedGradientMiddle); }
+				get { return EndGradient(ButtonPressedGradientMiddle); }
 			}
 
 			public override Color ButtonSelectedGradientBegin
 			{
-				get { return StartGradient(this.ButtonSelectedGradientMiddle); }
+				get { return StartGradient(ButtonSelectedGradientMiddle); }
 			}
 
 			public override Color ButtonSelectedGradientEnd
 			{
-				get { return EndGradient(this.ButtonSelectedGradientMiddle); }
+				get { return EndGradient(ButtonSelectedGradientMiddle); }
 			}
 
 			public override Color ImageMarginGradientBegin
 			{
-				get { return StartGradient(this.ImageMarginGradientMiddle); }
+				get { return StartGradient(ImageMarginGradientMiddle); }
 			}
 
 			public override Color ImageMarginGradientEnd
 			{
-				get { return EndGradient(this.ImageMarginGradientMiddle); }
+				get { return EndGradient(ImageMarginGradientMiddle); }
 			}
 
 			/* public override Color MenuItemPressedGradientBegin
@@ -125,12 +125,12 @@ namespace KeePass.UI.ToolStripRendering
 
 			public override Color MenuItemSelectedGradientBegin
 			{
-				get { return StartGradient(this.MenuItemSelected); }
+				get { return StartGradient(MenuItemSelected); }
 			}
 
 			public override Color MenuItemSelectedGradientEnd
 			{
-				get { return EndGradient(this.MenuItemSelected); }
+				get { return EndGradient(MenuItemSelected); }
 			}
 		}
 
@@ -149,13 +149,13 @@ namespace KeePass.UI.ToolStripRendering
 				rect.Offset(0, -1);
 				rect.Height += 1;
 
-				Color clrStart = KeePassTsrColorTable.StartGradient(this.ColorTable.MenuItemSelected);
-				Color clrEnd = KeePassTsrColorTable.EndGradient(this.ColorTable.MenuItemSelected);
-				Color clrBorder = this.ColorTable.MenuItemBorder;
+				Color clrStart = KeePassTsrColorTable.StartGradient(ColorTable.MenuItemSelected);
+				Color clrEnd = KeePassTsrColorTable.EndGradient(ColorTable.MenuItemSelected);
+				Color clrBorder = ColorTable.MenuItemBorder;
 
 				if (!tsi.Enabled)
 				{
-					Color clrBase = this.ColorTable.MenuStripGradientEnd;
+					Color clrBase = ColorTable.MenuStripGradientEnd;
 					clrStart = UIUtil.ColorTowardsGrayscale(clrStart, clrBase, 0.5);
 					clrEnd = UIUtil.ColorTowardsGrayscale(clrEnd, clrBase, 0.2);
 					clrBorder = UIUtil.ColorTowardsGrayscale(clrBorder, clrBase, 0.2);

@@ -416,7 +416,7 @@ namespace KeePass.UI.ToolStripRendering
 						clr = SystemColors.MenuText;
 					else
 					{
-						bool bDarkBack = this.IsDarkStyle;
+						bool bDarkBack = IsDarkStyle;
 						bool bDarkText = UIUtil.IsDarkColor(clr);
 
 						if ((bDarkBack && bDarkText) || (!bDarkBack && !bDarkText))
@@ -446,7 +446,7 @@ namespace KeePass.UI.ToolStripRendering
 				rect.Offset(0, -1);
 				rect.Height += 1;
 
-				Color clrBack = this.ColorTable.MenuItemSelected;
+				Color clrBack = ColorTable.MenuItemSelected;
 				Color clrBorder = clrBack;
 
 				SolidBrush br = new SolidBrush(clrBack);

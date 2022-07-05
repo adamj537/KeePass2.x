@@ -202,7 +202,7 @@ namespace KeePassLib.Serialization
 			{
 				try
 				{
-					Stream s = this.BaseStream;
+					Stream s = BaseStream;
 					Type t = s.GetType();
 					if (t.Name == "WebConnectionStream")
 					{

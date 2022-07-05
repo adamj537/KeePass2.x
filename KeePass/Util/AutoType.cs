@@ -68,9 +68,9 @@ namespace KeePass.Util
 			// pe may be null
 
 			m_strSeq = strSequence;
-			this.SendObfuscated = bObfuscated;
-			this.Entry = pe;
-			this.Database = pd;
+			SendObfuscated = bObfuscated;
+			Entry = pe;
+			Database = pd;
 		}
 	}
 

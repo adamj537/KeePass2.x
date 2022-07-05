@@ -155,16 +155,16 @@ namespace KeePass.UI
 			m_ttHint = ttHint;
 			m_fParent = fParent;
 
-			m_tbPassword.TextChanged += this.OnPasswordTextChanged;
+			m_tbPassword.TextChanged += OnPasswordTextChanged;
 			m_tbPassword.EnableProtection(bInitialHide);
 
-			m_tbRepeat.TextChanged += this.OnRepeatTextChanged;
+			m_tbRepeat.TextChanged += OnRepeatTextChanged;
 			m_tbRepeat.EnableProtection(bInitialHide);
 
 			ConfigureHideButton(m_cbHide, m_ttHint);
 
 			m_cbHide.Checked = bInitialHide;
-			m_cbHide.CheckedChanged += this.OnHideCheckedChanged;
+			m_cbHide.CheckedChanged += OnHideCheckedChanged;
 
 			Debug.Assert(m_pbQuality.Minimum == 0);
 			Debug.Assert(m_pbQuality.Maximum == 100);
@@ -178,10 +178,10 @@ namespace KeePass.UI
 			Debug.Assert(!m_bInitializing);
 			if (m_tbPassword == null) return;
 
-			m_tbPassword.TextChanged -= this.OnPasswordTextChanged;
-			m_tbRepeat.TextChanged -= this.OnRepeatTextChanged;
+			m_tbPassword.TextChanged -= OnPasswordTextChanged;
+			m_tbRepeat.TextChanged -= OnRepeatTextChanged;
 
-			m_cbHide.CheckedChanged -= this.OnHideCheckedChanged;
+			m_cbHide.CheckedChanged -= OnHideCheckedChanged;
 
 			m_tbPassword = null;
 			m_cbHide = null;
@@ -217,7 +217,7 @@ namespace KeePass.UI
 			m_cbHide.Enabled = (m_bEnabled && ((uFlags &
 				(ulong)AceKeyUIFlags.DisableHidePassword) == 0));
 
-			bool bAutoRepeat = this.AutoRepeat;
+			bool bAutoRepeat = AutoRepeat;
 			if (bAutoRepeat && (m_tbRepeat.TextLength > 0))
 				m_tbRepeat.Text = string.Empty;
 
@@ -341,7 +341,7 @@ namespace KeePass.UI
 
 			++m_uBlockUIUpdate;
 			m_tbPassword.TextEx = ps;
-			if (bSetRepeatPw && !this.AutoRepeat) m_tbRepeat.TextEx = ps;
+			if (bSetRepeatPw && !AutoRepeat) m_tbRepeat.TextEx = ps;
 			--m_uBlockUIUpdate;
 
 			UpdateUI();
@@ -361,7 +361,7 @@ namespace KeePass.UI
 			++m_uBlockUIUpdate;
 			if (psPassword != null)
 				m_tbPassword.TextEx = psPassword;
-			if ((psRepeat != null) && !this.AutoRepeat)
+			if ((psRepeat != null) && !AutoRepeat)
 				m_tbRepeat.TextEx = psRepeat;
 			--m_uBlockUIUpdate;
 
@@ -387,25 +387,25 @@ namespace KeePass.UI
 		[Obsolete]
 		public string GetRepeat()
 		{
-			if (this.AutoRepeat) return m_tbPassword.TextEx.ReadString();
+			if (AutoRepeat) return m_tbPassword.TextEx.ReadString();
 			return m_tbRepeat.TextEx.ReadString();
 		}
 
 		public ProtectedString GetRepeatEx()
 		{
-			if (this.AutoRepeat) return GetPasswordEx();
+			if (AutoRepeat) return GetPasswordEx();
 			return m_tbRepeat.TextEx;
 		}
 
 		public byte[] GetRepeatUtf8()
 		{
-			if (this.AutoRepeat) return GetPasswordUtf8();
+			if (AutoRepeat) return GetPasswordUtf8();
 			return m_tbRepeat.TextEx.ReadUtf8();
 		}
 
 		public bool ValidateData(bool bUIOnError)
 		{
-			if (this.AutoRepeat) return true;
+			if (AutoRepeat) return true;
 			if (m_tbPassword.TextEx.Equals(m_tbRepeat.TextEx, false)) return true;
 
 			if (bUIOnError)
@@ -451,11 +451,11 @@ namespace KeePass.UI
 
 			if ((nTasks <= 3) && (nPoolWorkers >= 2))
 				ThreadPool.QueueUserWorkItem(new WaitCallback(
-					this.UpdateQualityInfoTh), vForTh);
+					UpdateQualityInfoTh), vForTh);
 			else
 			{
 				ParameterizedThreadStart pts = new ParameterizedThreadStart(
-					this.UpdateQualityInfoTh);
+					UpdateQualityInfoTh);
 				Thread th = new Thread(pts);
 				th.Start(vForTh);
 			}
@@ -478,10 +478,10 @@ namespace KeePass.UI
 
 				// Test whether the password has changed in the meanwhile
 				vNew = (tb.Invoke(new UqiGetPasswordDelegate(
-					this.UqiGetPassword)) as char[]);
+					UqiGetPassword)) as char[]);
 				if (!MemUtil.ArrayHelperExOfChar.Equals(v, vNew)) return;
 
-				tb.Invoke(new UqiShowQualityDelegate(this.UqiShowQuality),
+				tb.Invoke(new UqiShowQualityDelegate(UqiShowQuality),
 					uBits, (uint)v.Length);
 			}
 			catch (Exception) { Debug.Assert(false); }

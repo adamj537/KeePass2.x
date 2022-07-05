@@ -109,8 +109,8 @@ namespace KeePass.Forms
 
 			m_asyncListUpdate = new AsyncPwListUpdate(m_lvEntries);
 
-			m_splitHorizontal.InitEx(this.Controls, m_menuMain);
-			m_splitVertical.InitEx(this.Controls, m_menuMain);
+			m_splitHorizontal.InitEx(Controls, m_menuMain);
+			m_splitVertical.InitEx(Controls, m_menuMain);
 
 			if (!Program.DesignMode)
 			{
@@ -152,8 +152,8 @@ namespace KeePass.Forms
 			GlobalWindowManager.CustomizeControl(this);
 			GlobalWindowManager.CustomizeFormHandleCreated(this, true, true);
 
-			this.Text = PwDefs.ShortProductName;
-			this.Icon = AppIcons.Default;
+			Text = PwDefs.ShortProductName;
+			Icon = AppIcons.Default;
 			m_imgFileSaveEnabled = Properties.Resources.B16x16_FileSave;
 			m_imgFileSaveDisabled = Properties.Resources.B16x16_FileSave_Disabled;
 			// m_imgFileSaveAllEnabled = Properties.Resources.B16x16_File_SaveAll;
@@ -167,11 +167,11 @@ namespace KeePass.Forms
 			// m_ilCurrentIcons = m_ilClientIcons;
 			UpdateImageLists(true);
 
-			m_ntfTray = new NotifyIconEx(this.components);
+			m_ntfTray = new NotifyIconEx(components);
 			m_ntfTray.ContextMenuStrip = m_ctxTray;
 			m_ntfTray.Visible = true;
-			m_ntfTray.SetHandlers(this.OnSystemTrayClick, this.OnSystemTrayDoubleClick,
-				this.OnSystemTrayMouseDown);
+			m_ntfTray.SetHandlers(OnSystemTrayClick, OnSystemTrayDoubleClick,
+				OnSystemTrayMouseDown);
 
 			m_ctxTrayTray.Font = FontUtil.CreateFont(m_ctxTrayTray.Font, FontStyle.Bold);
 
@@ -183,39 +183,39 @@ namespace KeePass.Forms
 			m_ctxEntryPreviewContextMenu.Attach(m_richEntryView, this);
 
 			m_dynStringsMenu = new DynamicMenu(m_menuEntryOtherData.DropDownItems);
-			m_dynStringsMenu.MenuClick += this.OnEntryStringClick;
+			m_dynStringsMenu.MenuClick += OnEntryStringClick;
 			m_dynStringsCtx = new DynamicMenu(m_ctxEntryOtherData.DropDownItems);
-			m_dynStringsCtx.MenuClick += this.OnEntryStringClick;
+			m_dynStringsCtx.MenuClick += OnEntryStringClick;
 
 			m_dynBinariesMenu = new DynamicMenu(m_menuEntryAttachments.DropDownItems);
-			m_dynBinariesMenu.MenuClick += this.OnEntryBinaryClick;
+			m_dynBinariesMenu.MenuClick += OnEntryBinaryClick;
 			m_dynBinariesCtx = new DynamicMenu(m_ctxEntryAttachments.DropDownItems);
-			m_dynBinariesCtx.MenuClick += this.OnEntryBinaryClick;
+			m_dynBinariesCtx.MenuClick += OnEntryBinaryClick;
 
 			m_dynFindTagsMenu = new DynamicMenu(m_menuFindTag.DropDownItems);
-			m_dynFindTagsMenu.MenuClick += this.OnShowEntriesByTag;
+			m_dynFindTagsMenu.MenuClick += OnShowEntriesByTag;
 			m_dynFindTagsToolBar = new DynamicMenu(m_tbEntryViewsDropDown.DropDownItems);
-			m_dynFindTagsToolBar.MenuClick += this.OnShowEntriesByTag;
+			m_dynFindTagsToolBar.MenuClick += OnShowEntriesByTag;
 
 			m_dynTagAddMenu = new DynamicMenu(m_menuEntryTagAdd.DropDownItems);
-			m_dynTagAddMenu.MenuClick += this.OnAddEntryTag;
+			m_dynTagAddMenu.MenuClick += OnAddEntryTag;
 			m_dynTagAddCtx = new DynamicMenu(m_ctxEntryTagAdd.DropDownItems);
-			m_dynTagAddCtx.MenuClick += this.OnAddEntryTag;
+			m_dynTagAddCtx.MenuClick += OnAddEntryTag;
 
 			m_dynTagRemoveMenu = new DynamicMenu(m_menuEntryTagRemove.DropDownItems);
-			m_dynTagRemoveMenu.MenuClick += this.OnRemoveEntryTag;
+			m_dynTagRemoveMenu.MenuClick += OnRemoveEntryTag;
 			m_dynTagRemoveCtx = new DynamicMenu(m_ctxEntryTagRemove.DropDownItems);
-			m_dynTagRemoveCtx.MenuClick += this.OnRemoveEntryTag;
+			m_dynTagRemoveCtx.MenuClick += OnRemoveEntryTag;
 
 			m_dynMoveToGroupMenu = new DynamicMenu(m_menuEntryMoveToGroup.DropDownItems);
-			m_dynMoveToGroupMenu.MenuClick += this.OnEntryMoveToGroup;
+			m_dynMoveToGroupMenu.MenuClick += OnEntryMoveToGroup;
 			m_dynMoveToGroupCtx = new DynamicMenu(m_ctxEntryMoveToGroup.DropDownItems);
-			m_dynMoveToGroupCtx.MenuClick += this.OnEntryMoveToGroup;
+			m_dynMoveToGroupCtx.MenuClick += OnEntryMoveToGroup;
 
 			m_dynAutoTypeAdvMenu = new DynamicMenu(m_menuEntryAutoTypeAdv.DropDownItems);
-			m_dynAutoTypeAdvMenu.MenuClick += this.OnEntryPerformAutoTypeAdv;
+			m_dynAutoTypeAdvMenu.MenuClick += OnEntryPerformAutoTypeAdv;
 			m_dynAutoTypeAdvCtx = new DynamicMenu(m_ctxEntryAutoTypeAdv.DropDownItems);
-			m_dynAutoTypeAdvCtx.MenuClick += this.OnEntryPerformAutoTypeAdv;
+			m_dynAutoTypeAdvCtx.MenuClick += OnEntryPerformAutoTypeAdv;
 
 			string[] vAdvSeq = new string[] {
 				@"{USERNAME}", @"{USERNAME}{ENTER}",
@@ -282,24 +282,24 @@ namespace KeePass.Forms
 					sizeY = Math.Max(250, sizeY);
 				}
 
-				this.Size = new Size(sizeX, sizeY);
+				Size = new Size(sizeX, sizeY);
 			}
 			if (MonoWorkarounds.IsRequired(686017))
-				this.MinimumSize = new Size(250, 250);
+				MinimumSize = new Size(250, 250);
 
 			Rectangle rectRestWindow = new Rectangle(wndX, wndY,
-				this.Size.Width, this.Size.Height);
+				Size.Width, Size.Height);
 			bool bWndPartVisible = UIUtil.IsScreenAreaVisible(rectRestWindow);
 			if ((wndX != AppDefs.InvalidWindowValue) &&
 				(wndY != AppDefs.InvalidWindowValue) && bWndValid && bWndPartVisible)
 			{
-				this.Location = new Point(wndX, wndY);
+				Location = new Point(wndX, wndY);
 			}
 			else
 			{
 				Rectangle rectScreen = Screen.PrimaryScreen.WorkingArea;
-				this.Location = new Point((rectScreen.Width - this.Size.Width) / 2,
-					(rectScreen.Height - this.Size.Height) / 2);
+				Location = new Point((rectScreen.Width - Size.Width) / 2,
+					(rectScreen.Height - Size.Height) / 2);
 			}
 
 			SetMainWindowLayout(Program.Config.MainWindow.Layout == AceMainWindowLayout.SideBySide);
@@ -318,7 +318,7 @@ namespace KeePass.Forms
 
 			CustomContextMenuStripEx ctxHeader = new CustomContextMenuStripEx();
 			ToolStripMenuItem tsmiCfgCol = new ToolStripMenuItem(m_menuViewConfigColumns.Text,
-				m_menuViewConfigColumns.Image, new EventHandler(this.OnViewConfigColumns));
+				m_menuViewConfigColumns.Image, new EventHandler(OnViewConfigColumns));
 			ctxHeader.Items.Add(tsmiCfgCol);
 			m_lvEntries.HeaderContextMenuStrip = ctxHeader;
 
@@ -330,7 +330,7 @@ namespace KeePass.Forms
 			else m_pListSorter = new ListSorter();
 
 			m_lvsmMenu = new ListViewSortMenu(m_menuViewSortBy, m_lvEntries,
-				new SortCommandHandler(this.SortPasswordList));
+				new SortCommandHandler(SortPasswordList));
 			m_lvgmMenu = new ListViewGroupingMenu(m_menuViewEntryListGrouping, this);
 
 			if (MonoWorkarounds.IsRequired(1716) && (NativeLib.GetDesktopType() ==
@@ -397,7 +397,7 @@ namespace KeePass.Forms
 			Program.KeyProviderPool.Add(new KeePassLib.Keys.SampleKeyProvider());
 #endif
 
-			m_sessionLockNotifier.Install(this.OnSessionLock);
+			m_sessionLockNotifier.Install(OnSessionLock);
 			IpcBroadcast.StartServer();
 
 			HotKeyManager.Initialize(this);
@@ -444,7 +444,7 @@ namespace KeePass.Forms
 
 			LoadPlugins();
 
-			bool bCanMaximize = ((this.WindowState == FormWindowState.Normal) && !IsTrayed());
+			bool bCanMaximize = ((WindowState == FormWindowState.Normal) && !IsTrayed());
 			Debug.Assert(bCanMaximize);
 			if (bMaximize && bCanMaximize)
 				UIUtil.SetWindowState(this, FormWindowState.Maximized);
@@ -480,15 +480,15 @@ namespace KeePass.Forms
 			m_bFormLoaded = true;
 			NotifyUserActivity(); // Initialize locking timeout
 
-			if (this.FormLoadPost != null)
-				this.FormLoadPost(this, EventArgs.Empty);
+			if (FormLoadPost != null)
+				FormLoadPost(this, EventArgs.Empty);
 			Program.TriggerSystem.RaiseEvent(EcasEventIDs.AppLoadPost);
 
 			// https://sourceforge.net/p/keepass/discussion/329220/thread/3b696041f8/
 			Debug.Assert(NativeLib.IsUnix() || ((NativeMethods.GetWindowStyle(
-				this.Handle) & NativeMethods.WS_VISIBLE) == 0));
+				Handle) & NativeMethods.WS_VISIBLE) == 0));
 			Debug.Assert(m_bFormLoaded); // Otherwise Show() might be blocked
-			if (m_bHasBlockedShowWindow && this.Visible) Show();
+			if (m_bHasBlockedShowWindow && Visible) Show();
 		}
 
 		private void OnFormShown(object sender, EventArgs e)
@@ -510,9 +510,9 @@ namespace KeePass.Forms
 			if (!NativeLib.IsUnix())
 			{
 				Control c = UIUtil.GetActiveControl(this);
-				if ((c != null) && !c.Focused && this.Visible && this.Enabled &&
-					(this.WindowState != FormWindowState.Minimized) &&
-					(NativeMethods.GetForegroundWindowHandle() == this.Handle))
+				if ((c != null) && !c.Focused && Visible && Enabled &&
+					(WindowState != FormWindowState.Minimized) &&
+					(NativeMethods.GetForegroundWindowHandle() == Handle))
 				{
 					Debug.Assert(IsPrimaryControlActive());
 					Debug.Assert((m_splitHorizontal.Orientation == Orientation.Vertical) &&
@@ -676,10 +676,10 @@ namespace KeePass.Forms
 			EmergencySheet.AskCreate(pd);
 			UpdateUI(true, null, true, null, true, null, true);
 
-			if (this.FileCreated != null)
+			if (FileCreated != null)
 			{
 				FileCreatedEventArgs ea = new FileCreatedEventArgs(pd);
-				this.FileCreated(this, ea);
+				FileCreated(this, ea);
 			}
 		}
 
@@ -710,25 +710,25 @@ namespace KeePass.Forms
 			UIBlockInteraction(true);
 
 			Guid eventGuid = Guid.NewGuid();
-			if (this.FileSavingPre != null)
+			if (FileSavingPre != null)
 			{
 				FileSavingEventArgs args = new FileSavingEventArgs(false, false, pd, eventGuid);
-				this.FileSavingPre(sender, args);
+				FileSavingPre(sender, args);
 				if (args.Cancel) { UIBlockInteraction(false); return; }
 			}
 
 			if (!PreSaveValidate(pd)) { UIBlockInteraction(false); return; }
 
-			if (this.FileSaving != null)
+			if (FileSaving != null)
 			{
 				FileSavingEventArgs args = new FileSavingEventArgs(false, false, pd, eventGuid);
-				this.FileSaving(sender, args);
+				FileSaving(sender, args);
 				if (args.Cancel) { UIBlockInteraction(false); return; }
 			}
 			Program.TriggerSystem.RaiseEvent(EcasEventIDs.SavingDatabaseFile,
 				EcasProperty.Database, pd);
 
-			ShutdownBlocker sdb = new ShutdownBlocker(this.Handle, KPRes.SavingDatabase);
+			ShutdownBlocker sdb = new ShutdownBlocker(Handle, KPRes.SavingDatabase);
 			ShowWarningsLogger swLogger = CreateShowWarningsLogger();
 			swLogger.StartLogging(KPRes.SavingDatabase, true);
 			m_sCancellable.Push(swLogger);
@@ -756,10 +756,10 @@ namespace KeePass.Forms
 			UpdateUIState(false);
 			UIBlockInteraction(false);
 
-			if (this.FileSaved != null)
+			if (FileSaved != null)
 			{
 				FileSavedEventArgs args = new FileSavedEventArgs(bSuccess, pd, eventGuid);
-				this.FileSaved(sender, args);
+				FileSaved(sender, args);
 			}
 			if (bSuccess)
 				Program.TriggerSystem.RaiseEvent(EcasEventIDs.SavedDatabaseFile,
@@ -831,7 +831,7 @@ namespace KeePass.Forms
 				}
 			}
 
-			if (this.Visible) UpdateUIState(false);
+			if (Visible) UpdateUIState(false);
 		}
 
 		private void OnFileExit(object sender, EventArgs e)
@@ -1198,7 +1198,7 @@ namespace KeePass.Forms
 
 			// Asynchronous invocation allows to cleanly process
 			// an Enter keypress before blocking the UI
-			BeginInvoke(new PerformSearchQuickDelegate(this.PerformSearchQuick),
+			BeginInvoke(new PerformSearchQuickDelegate(PerformSearchQuick),
 				strSearch, false, true);
 
 			--m_uBlockQuickFind;
@@ -1297,7 +1297,7 @@ namespace KeePass.Forms
 			m_pgActiveAtDragStart = GetSelectedGroup();
 
 			m_bDraggingEntries = true;
-			this.DoDragDrop(strToTransfer, DragDropEffects.Copy | DragDropEffects.Move);
+			DoDragDrop(strToTransfer, DragDropEffects.Copy | DragDropEffects.Move);
 			m_bDraggingEntries = false;
 
 			pe.Touch(false);
@@ -1318,7 +1318,7 @@ namespace KeePass.Forms
 			m_pgActiveAtDragStart = pg;
 
 			m_bDraggingGroup = true;
-			this.DoDragDrop(pg, DragDropEffects.Copy | DragDropEffects.Move);
+			DoDragDrop(pg, DragDropEffects.Copy | DragDropEffects.Move);
 			m_bDraggingGroup = false;
 
 			pg.Touch(false);
@@ -1485,12 +1485,12 @@ namespace KeePass.Forms
 			// this (otherwise e.g. the maximized state gets corrupted)
 			if (!m_bFormLoadCalled) return;
 
-			FormWindowState ws = this.WindowState;
+			FormWindowState ws = WindowState;
 			FormWindowState wsLast = m_fwsLast;
 			m_fwsLast = ws; // Save now, as auto. below may raise event again
 
 			if ((ws == FormWindowState.Normal) || (ws == FormWindowState.Maximized))
-				m_oszClientLast = this.ClientSize;
+				m_oszClientLast = ClientSize;
 
 			if (ws == FormWindowState.Maximized)
 				Program.Config.MainWindow.Maximized = true;
@@ -1541,14 +1541,14 @@ namespace KeePass.Forms
 				// indirectly by activating the main window
 				if (GlobalWindowManager.WindowCount > 0)
 				{
-					try { this.Activate(); }
+					try { Activate(); }
 					catch (Exception) { Debug.Assert(false); }
 					return;
 				}
 
 				try // Show error notification
 				{
-					NotifyIcon ni = this.MainNotifyIcon;
+					NotifyIcon ni = MainNotifyIcon;
 					if (ni != null)
 					{
 						string str = (m_statusPartInfo.Text ?? string.Empty);
@@ -1566,7 +1566,7 @@ namespace KeePass.Forms
 				return;
 			}
 
-			if ((this.WindowState == FormWindowState.Minimized) && !IsTrayed())
+			if ((WindowState == FormWindowState.Minimized) && !IsTrayed())
 			{
 				if (Program.Config.MainWindow.Maximized)
 					UIUtil.SetWindowState(this, FormWindowState.Maximized);

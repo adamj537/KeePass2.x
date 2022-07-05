@@ -50,7 +50,7 @@ namespace KeePass.Forms
 		{
 			GlobalWindowManager.AddWindow(this);
 
-			this.Icon = AppIcons.Default;
+			Icon = AppIcons.Default;
 
 			if (m_strInitialUrl.Length > 0)
 				m_webBrowser.Navigate(m_strInitialUrl);
@@ -71,7 +71,7 @@ namespace KeePass.Forms
 
 			string strTitle = m_webBrowser.DocumentTitle;
 			if (strTitle.Length > 0) strTitle += " - ";
-			this.Text = strTitle + PwDefs.ShortProductName;
+			Text = strTitle + PwDefs.ShortProductName;
 		}
 
 		private void ProcessResize()

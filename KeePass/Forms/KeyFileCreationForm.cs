@@ -42,8 +42,8 @@ namespace KeePass.Forms
 
 			public KfcfInfo(ulong uVersion, string strName)
 			{
-				this.Version = uVersion;
-				this.Name = strName;
+				Version = uVersion;
+				Name = strName;
 			}
 		}
 
@@ -96,8 +96,8 @@ namespace KeePass.Forms
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_KGPG_Gen,
 				KPRes.KeyFileCreateTitle, KPRes.KeyFileCreate + ".");
-			this.Icon = AppIcons.Default;
-			this.Text = KPRes.KeyFileCreateTitle;
+			Icon = AppIcons.Default;
+			Text = KPRes.KeyFileCreateTitle;
 
 			FontUtil.AssignDefaultBold(m_rbCreate);
 			FontUtil.AssignDefaultBold(m_rbRecreate);
@@ -123,10 +123,10 @@ namespace KeePass.Forms
 				m_cmbRecFormat.Items.Add(kfi.Name);
 			m_cmbRecFormat.SelectedIndex = 0;
 
-			m_rbCreate.CheckedChanged += this.OnShouldUpdateUIState;
-			m_rbRecreate.CheckedChanged += this.OnShouldUpdateUIState;
-			m_cmbRecFormat.SelectedIndexChanged += this.OnShouldUpdateUIState;
-			m_tbRecKey.TextChanged += this.OnShouldUpdateUIState;
+			m_rbCreate.CheckedChanged += OnShouldUpdateUIState;
+			m_rbRecreate.CheckedChanged += OnShouldUpdateUIState;
+			m_cmbRecFormat.SelectedIndexChanged += OnShouldUpdateUIState;
+			m_tbRecKey.TextChanged += OnShouldUpdateUIState;
 
 			--m_cBlockUIUpdate;
 			UpdateUIState();
@@ -177,7 +177,7 @@ namespace KeePass.Forms
 			catch (Exception ex) { MessageService.ShowWarning(ex); }
 
 			if (string.IsNullOrEmpty(strResultFile))
-				this.DialogResult = DialogResult.None;
+				DialogResult = DialogResult.None;
 			else m_strResultFile = strResultFile;
 		}
 

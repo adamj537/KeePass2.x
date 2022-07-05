@@ -60,8 +60,8 @@ namespace KeePass.Forms
 				Properties.Resources.B48x48_Wizard, KPRes.TanWizard,
 				KPRes.TanWizardDesc);
 
-			this.Icon = AppIcons.Default;
-			this.Text = KPRes.TanWizard;
+			Icon = AppIcons.Default;
+			Text = KPRes.TanWizard;
 
 			Debug.Assert(!m_lblToGroup.AutoSize); // For RTL support
 			if (!string.IsNullOrEmpty(m_pgStorage.Name))

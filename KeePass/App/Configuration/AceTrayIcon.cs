@@ -33,7 +33,7 @@ namespace KeePass.App.Configuration
 		[XmlIgnore]
 		public bool ShowOnlyIfTrayed
 		{
-			get { return this.ShowOnlyIfTrayedEx; }
+			get { return ShowOnlyIfTrayedEx; }
 			// Old setting should not affect 'ShowOnlyIfTrayedEx';
 			// a reset of this option is intended
 			set { }

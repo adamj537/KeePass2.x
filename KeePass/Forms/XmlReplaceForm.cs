@@ -59,8 +59,8 @@ namespace KeePass.Forms
 				Properties.Resources.B48x48_Binary, KPRes.XmlReplace,
 				KPRes.XmlReplaceDesc);
 
-			this.Icon = AppIcons.Default;
-			this.Text = KPRes.XmlReplace;
+			Icon = AppIcons.Default;
+			Text = KPRes.XmlReplace;
 
 			m_imgWarning = UIUtil.IconToBitmap(SystemIcons.Warning,
 				DpiUtil.ScaleIntX(16), DpiUtil.ScaleIntY(16));
@@ -102,7 +102,7 @@ namespace KeePass.Forms
 
 		private void OnBtnOK(object sender, EventArgs e)
 		{
-			this.Enabled = false;
+			Enabled = false;
 
 			try
 			{
@@ -129,13 +129,13 @@ namespace KeePass.Forms
 
 				opt.Flags = f;
 				XmlUtil.Replace(m_pd, opt);
-				this.Enabled = true;
+				Enabled = true;
 			}
 			catch (Exception ex)
 			{
-				this.Enabled = true;
+				Enabled = true;
 				MessageService.ShowWarning(ex);
-				this.DialogResult = DialogResult.None;
+				DialogResult = DialogResult.None;
 			}
 		}
 

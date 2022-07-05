@@ -37,7 +37,7 @@ namespace KeePass.DataExchange
 
 		public virtual string DisplayName
 		{
-			get { return this.FormatName; }
+			get { return FormatName; }
 		}
 
 		/// <summary>
@@ -134,7 +134,7 @@ namespace KeePass.DataExchange
 		public virtual void Import(PwDatabase pwStorage, Stream sInput,
 			IStatusLogger slLogger)
 		{
-			GxiProfile p = this.XmlProfile;
+			GxiProfile p = XmlProfile;
 			if (p != null)
 			{
 				if (pwStorage == null) throw new ArgumentNullException("pwStorage");

@@ -60,8 +60,8 @@ namespace KeePass.Forms
 			string strDesc = (m_bEditing ? KPRes.TriggerEditDesc : KPRes.TriggerAddDesc);
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_Run, strTitle, strDesc);
-			this.Text = strTitle;
-			this.Icon = AppIcons.Default;
+			Text = strTitle;
+			Icon = AppIcons.Default;
 
 			m_lvEvents.SmallImageList = m_ilIcons;
 			m_lvConditions.SmallImageList = m_ilIcons;

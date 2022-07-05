@@ -38,12 +38,12 @@ namespace KeePass.UI
 			m_clr = clr;
 			m_qSize = qSize;
 
-			Debug.Assert(this.CanRaiseEvents);
-			this.ShowShortcut = false;
-			this.OwnerDraw = true;
+			Debug.Assert(CanRaiseEvents);
+			ShowShortcut = false;
+			OwnerDraw = true;
 
 			if (AccessibilityEx.Enabled)
-				this.Text = UIUtil.ColorToString(clr);
+				Text = UIUtil.ColorToString(clr);
 		}
 
 		protected override void OnDrawItem(DrawItemEventArgs e)

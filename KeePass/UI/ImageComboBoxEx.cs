@@ -46,21 +46,21 @@ namespace KeePass.UI
 			if (Program.DesignMode) return;
 			if (NativeLib.IsUnix()) return;
 
-			Debug.Assert(this.DrawMode == DrawMode.Normal);
-			this.DrawMode = DrawMode.OwnerDrawVariable;
+			Debug.Assert(DrawMode == DrawMode.Normal);
+			DrawMode = DrawMode.OwnerDrawVariable;
 
-			this.DropDownHeight = GetStdItemHeight(null) * 12 + 2;
-			this.MaxDropDownItems = 12;
+			DropDownHeight = GetStdItemHeight(null) * 12 + 2;
+			MaxDropDownItems = 12;
 
-			Debug.Assert(!this.Sorted);
+			Debug.Assert(!Sorted);
 		}
 
 		private int GetStdItemHeight(Graphics g)
 		{
 			if (g == null)
-				return Math.Max(18, TextRenderer.MeasureText("Wg", this.Font).Height);
+				return Math.Max(18, TextRenderer.MeasureText("Wg", Font).Height);
 
-			return Math.Max(18, TextRenderer.MeasureText(g, "Wg", this.Font).Height);
+			return Math.Max(18, TextRenderer.MeasureText(g, "Wg", Font).Height);
 		}
 
 		protected override void OnMeasureItem(MeasureItemEventArgs e)
@@ -84,7 +84,7 @@ namespace KeePass.UI
 
 			// Don't use RTL property of translation, as the parent (form)
 			// may explicitly turn off the RTL mode
-			bool bRtl = (this.RightToLeft == RightToLeft.Yes);
+			bool bRtl = (RightToLeft == RightToLeft.Yes);
 
 			Graphics g = e.Graphics;
 			using (SolidBrush brBack = new SolidBrush(clrBack))
@@ -109,8 +109,8 @@ namespace KeePass.UI
 				TextFormatFlags.SingleLine | TextFormatFlags.VerticalCenter);
 			if (bRtl) tff |= (TextFormatFlags.RightToLeft | TextFormatFlags.Right);
 			string strText = string.Empty;
-			if ((nIdx >= 0) && (nIdx < this.Items.Count))
-				strText = ((this.Items[nIdx] as string) ?? string.Empty);
+			if ((nIdx >= 0) && (nIdx < Items.Count))
+				strText = ((Items[nIdx] as string) ?? string.Empty);
 			TextRenderer.DrawText(g, strText, e.Font, rectText, clrFore, clrBack, tff);
 
 			if (((e.State & DrawItemState.Focus) != DrawItemState.None) &&

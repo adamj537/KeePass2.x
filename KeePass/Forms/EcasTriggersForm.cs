@@ -75,8 +75,8 @@ namespace KeePass.Forms
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_Make_KDevelop, KPRes.Triggers,
 				KPRes.TriggersDesc);
-			this.Text = KPRes.Triggers;
-			this.Icon = AppIcons.Default;
+			Text = KPRes.Triggers;
+			Icon = AppIcons.Default;
 
 			int nWidth = (m_lvTriggers.ClientSize.Width - UIUtil.GetVScrollBarWidth() - 1);
 			m_lvTriggers.Columns.Add(KPRes.Triggers, nWidth);
@@ -225,7 +225,7 @@ namespace KeePass.Forms
 					XmlUtilEx.Serialize<EcasTriggerContainer>(ms, v);
 
 					ClipboardUtil.Copy(StrUtil.Utf8.GetString(ms.ToArray()),
-						false, false, null, null, this.Handle);
+						false, false, null, null, Handle);
 				}
 			}
 			catch (Exception ex) { MessageService.ShowWarning(ex); }

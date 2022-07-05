@@ -114,7 +114,7 @@ namespace KeePass.Forms
 
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_Font, strTitle, strDesc);
-			this.Icon = AppIcons.Default;
+			Icon = AppIcons.Default;
 
 			UIUtil.ConfigureToolTip(m_ttRect);
 
@@ -259,7 +259,7 @@ namespace KeePass.Forms
 
 			if (!ValidateStringNameUI())
 			{
-				this.DialogResult = DialogResult.None;
+				DialogResult = DialogResult.None;
 				return;
 			}
 
@@ -301,7 +301,7 @@ namespace KeePass.Forms
 
 		private void PopulateNamesComboBox()
 		{
-			ThreadStart ts = new ThreadStart(this.PopulateNamesCollectFunc);
+			ThreadStart ts = new ThreadStart(PopulateNamesCollectFunc);
 			Thread th = new Thread(ts);
 			th.Start();
 		}
@@ -341,7 +341,7 @@ namespace KeePass.Forms
 			m_lSuggestedNames.Sort();
 
 			if (m_cmbName.InvokeRequired)
-				m_cmbName.Invoke(new VoidDelegate(this.PopulateNamesAddFunc));
+				m_cmbName.Invoke(new VoidDelegate(PopulateNamesAddFunc));
 			else PopulateNamesAddFunc();
 		}
 

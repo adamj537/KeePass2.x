@@ -46,7 +46,7 @@ namespace KeePass.UI
 				int dx = 0;
 				if (cParent.RightToLeft == RightToLeft.Yes)
 				{
-					this.RightToLeft = RightToLeft.Yes;
+					RightToLeft = RightToLeft.Yes;
 					dx = cParent.Width;
 				}
 

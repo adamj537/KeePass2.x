@@ -93,8 +93,8 @@ namespace KeePass.Forms
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_Keyboard_Layout,
 				KPRes.SelectLanguage, KPRes.SelectLanguageDesc);
-			this.Icon = AppIcons.Default;
-			this.Text = KPRes.SelectLanguage;
+			Icon = AppIcons.Default;
+			Text = KPRes.SelectLanguage;
 
 			UIUtil.SetExplorerTheme(m_lvLanguages, true);
 
@@ -260,7 +260,7 @@ namespace KeePass.Forms
 			//	return; // Is active already, do not close the dialog
 
 			Program.Config.Application.SetLanguageFilePath(strSel);
-			this.DialogResult = DialogResult.OK;
+			DialogResult = DialogResult.OK;
 		}
 
 		private void OnFormClosed(object sender, FormClosedEventArgs e)
@@ -279,7 +279,7 @@ namespace KeePass.Forms
 		private void OnBtnGetMore(object sender, EventArgs e)
 		{
 			WinUtil.OpenUrl(PwDefs.TranslationsUrl, null);
-			this.DialogResult = DialogResult.Cancel;
+			DialogResult = DialogResult.Cancel;
 		}
 
 		private void OnBtnOpenFolder(object sender, EventArgs e)
@@ -301,7 +301,7 @@ namespace KeePass.Forms
 				if (!Directory.Exists(str)) Directory.CreateDirectory(str);
 
 				WinUtil.OpenUrlDirectly(str);
-				this.DialogResult = DialogResult.Cancel;
+				DialogResult = DialogResult.Cancel;
 			}
 			catch (Exception ex) { MessageService.ShowWarning(ex); }
 		}

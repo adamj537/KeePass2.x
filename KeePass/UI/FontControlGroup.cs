@@ -96,16 +96,16 @@ namespace KeePass.UI
 
 			UpdateUI();
 
-			m_cb.CheckedChanged += this.OnCheckedChanged;
-			m_btn.Click += this.OnSelectFont;
+			m_cb.CheckedChanged += OnCheckedChanged;
+			m_btn.Click += OnSelectFont;
 		}
 
 		public void Dispose()
 		{
 			if (m_cb == null) { Debug.Assert(false); return; }
 
-			m_cb.CheckedChanged -= this.OnCheckedChanged;
-			m_btn.Click -= this.OnSelectFont;
+			m_cb.CheckedChanged -= OnCheckedChanged;
+			m_btn.Click -= OnSelectFont;
 
 			Debug.Assert(m_cb.Checked == m_af.OverrideUIDefault);
 

@@ -290,9 +290,9 @@ namespace KeePass.DataExchange
 		/// <returns>Byte array (16 bytes).</returns>
 		public byte[] ToByteArray()
 		{
-			return new byte[] { this.V0, this.V1, this.V2, this.V3, this.V4,
-				this.V5, this.V6, this.V7, this.V8, this.V9, this.VA,
-				this.VB, this.VC, this.VD, this.VE, this.VF };
+			return new byte[] { V0, V1, V2, V3, V4,
+				V5, V6, V7, V8, V9, VA,
+				VB, VC, VD, VE, VF };
 		}
 
 		/// <summary>
@@ -305,10 +305,10 @@ namespace KeePass.DataExchange
 			if (pb == null) throw new ArgumentNullException("pb");
 			if (pb.Length != 16) throw new ArgumentException();
 
-			this.V0 = pb[0]; this.V1 = pb[1]; this.V2 = pb[2]; this.V3 = pb[3];
-			this.V4 = pb[4]; this.V5 = pb[5]; this.V6 = pb[6]; this.V7 = pb[7];
-			this.V8 = pb[8]; this.V9 = pb[9]; this.VA = pb[10]; this.VB = pb[11];
-			this.VC = pb[12]; this.VD = pb[13]; this.VE = pb[14]; this.VF = pb[15];
+			V0 = pb[0]; V1 = pb[1]; V2 = pb[2]; V3 = pb[3];
+			V4 = pb[4]; V5 = pb[5]; V6 = pb[6]; V7 = pb[7];
+			V8 = pb[8]; V9 = pb[9]; VA = pb[10]; VB = pb[11];
+			VC = pb[12]; VD = pb[13]; VE = pb[14]; VF = pb[15];
 		}
 	}
 
@@ -356,12 +356,12 @@ namespace KeePass.DataExchange
 		public KdbTime(UInt16 uYear, Byte uMonth, Byte uDay, Byte uHour,
 			Byte uMinute, Byte uSecond)
 		{
-			this.Year = uYear;
-			this.Month = uMonth;
-			this.Day = uDay;
-			this.Hour = uHour;
-			this.Minute = uMinute;
-			this.Second = uSecond;
+			Year = uYear;
+			Month = uMonth;
+			Day = uDay;
+			Hour = uHour;
+			Minute = uMinute;
+			Second = uSecond;
 
 #if VPF_ALIGN
 			this.Dummy = 0;
@@ -373,29 +373,29 @@ namespace KeePass.DataExchange
 		/// </summary>
 		public DateTime ToDateTime()
 		{
-			if ((this.Year == 0) || (this.Month == 0) || (this.Day == 0))
+			if ((Year == 0) || (Month == 0) || (Day == 0))
 				return DateTime.UtcNow;
 
 			// https://sourceforge.net/p/keepass/discussion/329221/thread/07599afd/
 			try
 			{
-				int dy = (int)this.Year;
+				int dy = (int)Year;
 				if (dy > 2999) { Debug.Assert(false); dy = 2999; }
 
-				int dm = (int)this.Month;
+				int dm = (int)Month;
 				if (dm > 12) { Debug.Assert(false); dm = 12; }
 
-				int dd = (int)this.Day;
+				int dd = (int)Day;
 				if (dd > 31) { Debug.Assert(false); dd = 28; }
 				// Day might not exist in month
 
-				int th = (int)this.Hour;
+				int th = (int)Hour;
 				if (th > 23) { Debug.Assert(false); th = 23; }
 
-				int tm = (int)this.Minute;
+				int tm = (int)Minute;
 				if (tm > 59) { Debug.Assert(false); tm = 59; }
 
-				int ts = (int)this.Second;
+				int ts = (int)Second;
 				if (ts > 59) { Debug.Assert(false); ts = 59; }
 
 				return (new DateTime(dy, dm, dd, th, tm, ts,
@@ -414,12 +414,12 @@ namespace KeePass.DataExchange
 		{
 			DateTime dtLocal = TimeUtil.ToLocal(dt, true);
 
-			this.Year = (UInt16)dtLocal.Year;
-			this.Month = (Byte)dtLocal.Month;
-			this.Day = (Byte)dtLocal.Day;
-			this.Hour = (Byte)dtLocal.Hour;
-			this.Minute = (Byte)dtLocal.Minute;
-			this.Second = (Byte)dtLocal.Second;
+			Year = (UInt16)dtLocal.Year;
+			Month = (Byte)dtLocal.Month;
+			Day = (Byte)dtLocal.Day;
+			Hour = (Byte)dtLocal.Hour;
+			Minute = (Byte)dtLocal.Minute;
+			Second = (Byte)dtLocal.Second;
 		}
 
 		/// <summary>
@@ -847,7 +847,7 @@ namespace KeePass.DataExchange
 		/// structure won't affect the internal data structures of the manager.</returns>
 		public KdbEntry GetEntry(uint uIndex)
 		{
-			Debug.Assert(uIndex < this.EntryCount);
+			Debug.Assert(uIndex < EntryCount);
 
 			IntPtr p;
 			if (m_bX64) p = GetEntry64(m_pManager, uIndex);
@@ -884,7 +884,7 @@ namespace KeePass.DataExchange
 			if ((uGroupId == 0) || (uGroupId == UInt32.MaxValue))
 				throw new ArgumentException("Invalid group ID!");
 
-			Debug.Assert(uIndex < this.EntryCount);
+			Debug.Assert(uIndex < EntryCount);
 
 			IntPtr p;
 			if (m_bX64) p = GetEntryByGroup64(m_pManager, uGroupId, uIndex);
@@ -915,7 +915,7 @@ namespace KeePass.DataExchange
 		/// <returns>Group structure.</returns>
 		public KdbGroup GetGroup(UInt32 uIndex)
 		{
-			Debug.Assert(uIndex < this.GroupCount);
+			Debug.Assert(uIndex < GroupCount);
 
 			IntPtr p;
 			if (m_bX64) p = GetGroup64(m_pManager, uIndex);
@@ -1057,7 +1057,7 @@ namespace KeePass.DataExchange
 		/// <returns>Returns <c>true</c> if the group was created successfully.</returns>
 		public bool SetGroup(UInt32 uIndex, ref KdbGroup pNewGroup)
 		{
-			Debug.Assert(uIndex < this.GroupCount);
+			Debug.Assert(uIndex < GroupCount);
 
 			if (m_bX64) return SetGroup64(m_pManager, uIndex, ref pNewGroup);
 			else return SetGroup32(m_pManager, uIndex, ref pNewGroup);
@@ -1115,7 +1115,7 @@ namespace KeePass.DataExchange
 		/// <returns>Returns <c>true</c> if the entry was created successfully.</returns>
 		public bool SetEntry(UInt32 uIndex, ref KdbEntry peNew)
 		{
-			Debug.Assert(uIndex < this.EntryCount);
+			Debug.Assert(uIndex < EntryCount);
 
 			if (m_bX64) return SetEntry64(m_pManager, uIndex, ref peNew);
 			else return SetEntry32(m_pManager, uIndex, ref peNew);
@@ -1134,7 +1134,7 @@ namespace KeePass.DataExchange
 		/// <returns>If the entry has been deleted, the return value is <c>true</c>.</returns>
 		public bool DeleteEntry(UInt32 uIndex)
 		{
-			Debug.Assert(uIndex < this.EntryCount);
+			Debug.Assert(uIndex < EntryCount);
 
 			if (m_bX64) return DeleteEntry64(m_pManager, uIndex);
 			else return DeleteEntry32(m_pManager, uIndex);

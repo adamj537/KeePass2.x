@@ -38,7 +38,7 @@ namespace KeePassLib.Cryptography.Cipher
 
 		public CtrBlockCipher()
 		{
-			int cb = this.BlockSize;
+			int cb = BlockSize;
 			if (cb <= 0) throw new InvalidOperationException("this.BlockSize");
 
 			m_pBlock = new byte[cb];

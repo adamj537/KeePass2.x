@@ -109,7 +109,7 @@ namespace KeePassLib.Cryptography.KeyDerivation
 		public override void Randomize(KdfParameters p)
 		{
 			if (p == null) { Debug.Assert(false); return; }
-			Debug.Assert(p.KdfUuid.Equals(this.Uuid));
+			Debug.Assert(p.KdfUuid.Equals(Uuid));
 
 			byte[] pb = CryptoRandom.Instance.GetRandomBytes(32);
 			p.SetByteArray(ParamSalt, pb);

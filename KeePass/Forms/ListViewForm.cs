@@ -99,8 +99,8 @@ namespace KeePass.Forms
 
 			GlobalWindowManager.AddWindow(this);
 
-			this.Text = m_strTitle;
-			this.Icon = AppIcons.Default;
+			Text = m_strTitle;
+			Icon = AppIcons.Default;
 
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				m_imgIcon, m_strTitle, m_strSubTitle);
@@ -157,8 +157,8 @@ namespace KeePass.Forms
 
 			if (m_bEnsureForeground)
 			{
-				this.BringToFront();
-				this.Activate();
+				BringToFront();
+				Activate();
 			}
 		}
 
@@ -189,9 +189,9 @@ namespace KeePass.Forms
 
 		private void ProcessItemSelection()
 		{
-			if (this.DialogResult == DialogResult.OK) return; // Already closing
+			if (DialogResult == DialogResult.OK) return; // Already closing
 
-			if (CreateResult()) this.DialogResult = DialogResult.OK;
+			if (CreateResult()) DialogResult = DialogResult.OK;
 		}
 
 		private void OnListItemActivate(object sender, EventArgs e)

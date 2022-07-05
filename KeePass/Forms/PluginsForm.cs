@@ -65,7 +65,7 @@ namespace KeePass.Forms
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_BlockDevice, KPRes.Plugins,
 				KPRes.PluginsDesc);
-			this.Icon = AppIcons.Default;
+			Icon = AppIcons.Default;
 
 			m_lvPlugins.Columns.Add(KPRes.Plugin);
 			m_lvPlugins.Columns.Add(KPRes.Version);

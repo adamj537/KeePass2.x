@@ -86,7 +86,7 @@ namespace KeePass.Forms
 
 			BannerFactory.CreateBannerEx(this, m_bannerImage,
 				Properties.Resources.B48x48_Ark, KPRes.DatabaseSettings, strDesc);
-			this.Icon = AppIcons.Default;
+			Icon = AppIcons.Default;
 
 			FontUtil.AssignDefaultBold(m_rbCmpNone);
 			FontUtil.AssignDefaultBold(m_rbCmpGZip);
@@ -102,8 +102,8 @@ namespace KeePass.Forms
 			m_tbDbName.PromptText = KPRes.DatabaseNamePrompt;
 			m_tbDbDesc.PromptText = KPRes.DatabaseDescPrompt;
 
-			if (m_bCreatingNew) this.Text = KPRes.ConfigureOnNewDatabase3;
-			else this.Text = KPRes.DatabaseSettings;
+			if (m_bCreatingNew) Text = KPRes.ConfigureOnNewDatabase3;
+			else Text = KPRes.DatabaseSettings;
 
 			m_tbDbName.Text = m_pwDatabase.Name;
 			UIUtil.SetMultilineText(m_tbDbDesc, m_pwDatabase.Description);
@@ -668,7 +668,7 @@ namespace KeePass.Forms
 
 			try
 			{
-				m_thKdf = new Thread(new ParameterizedThreadStart(this.Kdf1SecTh));
+				m_thKdf = new Thread(new ParameterizedThreadStart(Kdf1SecTh));
 				EnableControlsEx(); // Disable controls (m_thKdf is not null)
 
 				m_thKdf.Start(kdf);
@@ -705,7 +705,7 @@ namespace KeePass.Forms
 			}
 			finally { m_thKdf = null; } // Before continuation, to enable controls
 
-			try { m_btnOK.Invoke(new KdfpDelegate(this.Kdf1SecPost), p, strMsg); }
+			try { m_btnOK.Invoke(new KdfpDelegate(Kdf1SecPost), p, strMsg); }
 			catch (Exception) { Debug.Assert(false); }
 		}
 
@@ -737,7 +737,7 @@ namespace KeePass.Forms
 			{
 				SetKdfParameters(p); // Show auto-adjusted parameters
 
-				m_thKdf = new Thread(new ParameterizedThreadStart(this.KdfTestTh));
+				m_thKdf = new Thread(new ParameterizedThreadStart(KdfTestTh));
 				EnableControlsEx(); // Disable controls (m_thKdf is not null)
 
 				m_thKdf.Start(p);
@@ -792,7 +792,7 @@ namespace KeePass.Forms
 			}
 			finally { m_thKdf = null; } // Before continuation, to enable controls
 
-			try { m_btnOK.Invoke(new KdfsDelegate(this.KdfTestPost), strMsg); }
+			try { m_btnOK.Invoke(new KdfsDelegate(KdfTestPost), strMsg); }
 			catch (Exception) { Debug.Assert(false); }
 		}
 
