@@ -147,20 +147,6 @@ namespace KeePass.DataExchange
 
 			try
 			{
-				if (pwExportInfo.ExportMasterKeySpec && fileFormat.RequiresKey &&
-					(pd != null))
-				{
-					KeyCreationFormResult r;
-					DialogResult dr = KeyCreationForm.ShowDialog(iocOutput, true, out r);
-					if ((dr != DialogResult.OK) || (r == null)) return false;
-
-					ckOrgMasterKey = pd.MasterKey;
-					dtOrgMasterKey = pd.MasterKeyChanged;
-
-					pd.MasterKey = r.CompositeKey;
-					pd.MasterKeyChanged = DateTime.UtcNow;
-				}
-
 				if (bParentGroups)
 				{
 					PwGroup pgNew = WithParentGroups(pgOrgData, pd);

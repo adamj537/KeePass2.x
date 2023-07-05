@@ -1067,13 +1067,6 @@ namespace KeePass.Forms
 			m_ctxBinOpen.Opening -= OnCtxBinOpenOpening;
 			m_ctxBinOpen.Dispose();
 
-			m_cmbOverrideUrl.OrderedImageList = null;
-			foreach (Image img in m_lOverrideUrlIcons)
-			{
-				if (img != null) img.Dispose();
-			}
-			m_lOverrideUrlIcons.Clear();
-
 			// Detach event handlers
 			m_lvStrings.SmallImageList = null;
 			// m_lvBinaries.SmallImageList = null;
@@ -1223,31 +1216,12 @@ namespace KeePass.Forms
 
 		private void OnBtnAutoTypeAdd(object sender, EventArgs e)
 		{
-			EditAutoTypeItemForm dlg = new EditAutoTypeItemForm();
-			dlg.InitEx(m_atConfig, -1, false, m_tbDefaultAutoTypeSeq.Text, m_vStrings);
 
-			if (UIUtil.ShowDialogAndDestroy(dlg) == DialogResult.OK)
-			{
-				AutoTypeAssociation a = null;
-				if (m_atConfig.AssociationsCount > 0)
-					a = m_atConfig.GetAt(m_atConfig.AssociationsCount - 1);
-				else { Debug.Assert(false); }
-
-				UpdateAutoTypeList(ListSelRestore.None, a, true, true);
-			}
 		}
 
 		private void OnBtnAutoTypeEdit(object sender, EventArgs e)
 		{
-			ListView.SelectedIndexCollection lvsic = m_lvAutoType.SelectedIndices;
-			if (lvsic.Count != 1) { Debug.Assert(false); return; }
 
-			EditAutoTypeItemForm dlg = new EditAutoTypeItemForm();
-			dlg.InitEx(m_atConfig, lvsic[0], false, m_tbDefaultAutoTypeSeq.Text,
-				m_vStrings);
-
-			if (UIUtil.ShowDialogAndDestroy(dlg) == DialogResult.OK)
-				UpdateAutoTypeList(ListSelRestore.ByIndex, null, false, true);
 		}
 
 		private void OnBtnAutoTypeDelete(object sender, EventArgs e)
@@ -1609,13 +1583,7 @@ namespace KeePass.Forms
 
 		private void OnBtnAutoTypeEditDefault(object sender, EventArgs e)
 		{
-			SaveDefaultSeq();
 
-			EditAutoTypeItemForm ef = new EditAutoTypeItemForm();
-			ef.InitEx(m_atConfig, -1, true, m_tbDefaultAutoTypeSeq.Text, m_vStrings);
-
-			if (UIUtil.ShowDialogAndDestroy(ef) == DialogResult.OK)
-				m_tbDefaultAutoTypeSeq.Text = m_atConfig.DefaultSequence;
 		}
 
 		private void OnCtxStrMoveToTitle(object sender, EventArgs e)
@@ -2174,25 +2142,6 @@ namespace KeePass.Forms
 				AppLocator.OperaPath);
 			AddOverrideUrlItem(l, "cmd://{SAFARI} \"{URL}\"",
 				AppLocator.SafariPath);
-
-			Debug.Assert(m_cmbOverrideUrl.InvokeRequired ||
-				MonoWorkarounds.IsRequired(373134));
-			VoidDelegate f = delegate ()
-			{
-				try
-				{
-					Debug.Assert(!m_cmbOverrideUrl.InvokeRequired);
-					foreach (KeyValuePair<string, Image> kvp in l)
-					{
-						m_cmbOverrideUrl.Items.Add(kvp.Key);
-						m_lOverrideUrlIcons.Add(kvp.Value);
-					}
-
-					m_cmbOverrideUrl.OrderedImageList = m_lOverrideUrlIcons;
-				}
-				catch (Exception) { Debug.Assert(false); }
-			};
-			m_cmbOverrideUrl.Invoke(f);
 		}
 
 		private void AddOverrideUrlItem(List<KeyValuePair<string, Image>> l,

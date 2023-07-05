@@ -39,6 +39,9 @@ using KeePassLib.Utility;
 
 namespace KeePass.Forms
 {
+	/// <summary>
+	/// Prompt user for master password.
+	/// </summary>
 	public partial class KeyPromptForm : Form
 	{
 		private IOConnectionInfo m_ioInfo = new IOConnectionInfo();
@@ -105,14 +108,10 @@ namespace KeePass.Forms
 		internal static DialogResult ShowDialog(IOConnectionInfo ioInfo,
 			bool bCanExit, string strCustomTitle, out KeyPromptFormResult r)
 		{
-			bool bSecDesk = (Program.Config.Security.MasterKeyOnSecureDesktop &&
-				ProtectedDialog.IsSupported);
-
 			GFunc<KeyPromptForm> fConstruct = delegate ()
 			{
 				KeyPromptForm f = new KeyPromptForm();
 				f.InitEx(ioInfo, bCanExit, true, strCustomTitle);
-				f.SecureDesktopMode = bSecDesk;
 				return f;
 			};
 
@@ -127,7 +126,7 @@ namespace KeePass.Forms
 			};
 
 			DialogResult dr = ProtectedDialog.ShowDialog<KeyPromptForm,
-				KeyPromptFormResult>(bSecDesk, fConstruct, fResultBuilder, out r);
+				KeyPromptFormResult>(fConstruct, fResultBuilder, out r);
 
 			GAction fIac = ((r != null) ? r.InvokeAfterClose : null);
 			if (fIac != null) fIac();

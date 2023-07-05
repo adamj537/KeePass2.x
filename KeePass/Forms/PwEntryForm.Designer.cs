@@ -111,7 +111,7 @@
 			this.m_tbUuid = new System.Windows.Forms.TextBox();
 			this.m_lblUuid = new System.Windows.Forms.Label();
 			this.m_lblOverrideUrl = new System.Windows.Forms.Label();
-			this.m_cmbOverrideUrl = new KeePass.UI.ImageComboBoxEx();
+			this.m_cmbOverrideUrl = new System.Windows.Forms.ComboBox();
 			this.m_tabAutoType = new System.Windows.Forms.TabPage();
 			this.m_btnAutoTypeMore = new System.Windows.Forms.Button();
 			this.m_btnAutoTypeDown = new System.Windows.Forms.Button();
@@ -1632,7 +1632,7 @@
 		private System.Windows.Forms.ToolStripMenuItem m_ctxBinImportFile;
 		private System.Windows.Forms.ToolStripSeparator m_ctxBinSep0;
 		private System.Windows.Forms.ToolStripMenuItem m_ctxBinNew;
-		private KeePass.UI.ImageComboBoxEx m_cmbOverrideUrl;
+		private System.Windows.Forms.ComboBox m_cmbOverrideUrl;
 		private System.Windows.Forms.Button m_btnAutoTypeDown;
 		private System.Windows.Forms.Button m_btnAutoTypeUp;
 		private System.Windows.Forms.Label m_lblCustomData;

@@ -85,14 +85,10 @@ namespace KeePass.Forms
 		internal static DialogResult ShowDialog(IOConnectionInfo ioInfo,
 			bool bCreatingNew, out KeyCreationFormResult r)
 		{
-			bool bSecDesk = (Program.Config.Security.MasterKeyOnSecureDesktop &&
-				ProtectedDialog.IsSupported);
-
 			GFunc<KeyCreationForm> fConstruct = delegate ()
 			{
 				KeyCreationForm f = new KeyCreationForm();
 				f.InitEx(ioInfo, bCreatingNew);
-				f.SecureDesktopMode = bSecDesk;
 				return f;
 			};
 
@@ -106,7 +102,7 @@ namespace KeePass.Forms
 			};
 
 			DialogResult dr = ProtectedDialog.ShowDialog<KeyCreationForm,
-				KeyCreationFormResult>(bSecDesk, fConstruct, fResultBuilder, out r);
+				KeyCreationFormResult>(fConstruct, fResultBuilder, out r);
 
 			GAction fIac = ((r != null) ? r.InvokeAfterClose : null);
 			if (fIac != null) fIac();

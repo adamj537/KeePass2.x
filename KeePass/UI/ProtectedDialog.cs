@@ -374,30 +374,7 @@ namespace KeePass.UI
 			}
 		}
 
-		/* private static void BlockPrintScreen(Form f, bool bBlock)
-		{
-			if(f == null) { Debug.Assert(false); return; }
-
-			try
-			{
-				if(bBlock)
-				{
-					NativeMethods.RegisterHotKey(f.Handle, NativeMethods.IDHOT_SNAPDESKTOP,
-						0, NativeMethods.VK_SNAPSHOT);
-					NativeMethods.RegisterHotKey(f.Handle, NativeMethods.IDHOT_SNAPWINDOW,
-						NativeMethods.MOD_ALT, NativeMethods.VK_SNAPSHOT);
-				}
-				else
-				{
-					NativeMethods.UnregisterHotKey(f.Handle, NativeMethods.IDHOT_SNAPWINDOW);
-					NativeMethods.UnregisterHotKey(f.Handle, NativeMethods.IDHOT_SNAPDESKTOP);
-				}
-			}
-			catch(Exception) { Debug.Assert(false); }
-		} */
-
-		internal static DialogResult ShowDialog<TForm, TResult>(bool bProtect,
-			GFunc<TForm> fnConstruct, GFunc<TForm, TResult> fnResultBuilder,
+		internal static DialogResult ShowDialog<TForm, TResult>(GFunc<TForm> fnConstruct, GFunc<TForm, TResult> fnResultBuilder,
 			out TResult r)
 			where TForm : Form
 			where TResult : class
@@ -406,20 +383,6 @@ namespace KeePass.UI
 			if (fnResultBuilder == null) { Debug.Assert(false); throw new ArgumentNullException("fnResultBuilder"); }
 
 			r = null;
-
-			if (!bProtect)
-			{
-				TForm tf = fnConstruct();
-				if (tf == null) { Debug.Assert(false); return DialogResult.None; }
-
-				try
-				{
-					DialogResult drDirect = tf.ShowDialog();
-					r = fnResultBuilder(tf); // Always
-					return drDirect;
-				}
-				finally { UIUtil.DestroyForm(tf); }
-			}
 
 			UIFormConstructor fnUifC = delegate (object objParam)
 			{

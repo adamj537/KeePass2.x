@@ -200,8 +200,6 @@ namespace KeePass.UI
 			++m_uBlockUIUpdate;
 
 			ulong uFlags = 0;
-			if (m_fParent is KeyCreationForm)
-				uFlags = Program.Config.UI.KeyCreationFlags;
 
 			byte[] pbUtf8 = Encoding.ASCII.GetBytes(m_tbPassword.Text);
 			char[] v = StrUtil.Utf8.GetChars(pbUtf8);

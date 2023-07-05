@@ -259,19 +259,7 @@ namespace KeePass.Forms
 
 		private void OnBtnAutoTypeEdit(object sender, EventArgs e)
 		{
-			// string strName = @"(" + KPRes.AutoType + @")";
 
-			AutoTypeConfig atConfig = new AutoTypeConfig();
-			atConfig.DefaultSequence = m_tbDefaultAutoTypeSeq.Text;
-
-			EditAutoTypeItemForm dlg = new EditAutoTypeItemForm();
-			dlg.InitEx(atConfig, -1, true, atConfig.DefaultSequence, null);
-
-			if (dlg.ShowDialog() == DialogResult.OK)
-				m_tbDefaultAutoTypeSeq.Text = atConfig.DefaultSequence;
-
-			UIUtil.DestroyForm(dlg);
-			EnableControlsEx();
 		}
 
 		private void OnCustomDataSelectedIndexChanged(object sender, EventArgs e)

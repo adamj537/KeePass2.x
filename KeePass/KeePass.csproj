@@ -509,6 +509,12 @@
     <Compile Include="Forms\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\KeyCreationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\KeyCreationForm.Designer.cs">
+      <DependentUpon>KeyCreationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\OtpGeneratorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -600,12 +606,6 @@
     <Compile Include="Forms\EcasTriggersForm.Designer.cs">
       <DependentUpon>EcasTriggersForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\EditAutoTypeItemForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\EditAutoTypeItemForm.Designer.cs">
-      <DependentUpon>EditAutoTypeItemForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\EditStringForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -677,12 +677,6 @@
     </Compile>
     <Compile Include="Forms\InternalBrowserForm.Designer.cs">
       <DependentUpon>InternalBrowserForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\KeyCreationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\KeyCreationForm.Designer.cs">
-      <DependentUpon>KeyCreationForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\KeyPromptForm.cs">
       <SubType>Form</SubType>
@@ -852,9 +846,6 @@
     </Compile>
     <Compile Include="UI\IconColorizer.cs" />
     <Compile Include="UI\IGwmWindow.cs" />
-    <Compile Include="UI\ImageComboBoxEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="UI\KeyboardControl.cs">
     </Compile>
     <Compile Include="UI\ListViewGroupingMenu.cs" />
@@ -864,9 +855,6 @@
     <Compile Include="UI\NotifyIconEx.cs" />
     <Compile Include="UI\OnDemandStatusDialog.cs" />
     <Compile Include="UI\OpenWithMenu.cs" />
-    <Compile Include="UI\PromptedTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="UI\ProtectedDialog.cs" />
     <Compile Include="UI\PwGeneratorMenu.cs" />
     <Compile Include="UI\PwInputControlGroup.cs" />
@@ -955,13 +943,13 @@
     <EmbeddedResource Include="Forms\EcasTriggersForm.resx">
       <DependentUpon>EcasTriggersForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditAutoTypeItemForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>EditAutoTypeItemForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditStringForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>EditStringForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\KeyCreationForm.resx">
+      <DependentUpon>KeyCreationForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\KeyFileCreationForm.resx">
       <DependentUpon>KeyFileCreationForm.cs</DependentUpon>
@@ -1002,10 +990,6 @@
     <EmbeddedResource Include="Forms\InternalBrowserForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>InternalBrowserForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\KeyCreationForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>KeyCreationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\KeyPromptForm.resx">
       <SubType>Designer</SubType>

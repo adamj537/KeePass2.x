@@ -99,9 +99,6 @@ namespace KeePass.Forms
 			AccessibilityEx.SetContext(m_numKeyRecDays, m_cbKeyRec);
 			AccessibilityEx.SetContext(m_numKeyForceDays, m_cbKeyForce);
 
-			m_tbDbName.PromptText = KPRes.DatabaseNamePrompt;
-			m_tbDbDesc.PromptText = KPRes.DatabaseDescPrompt;
-
 			if (m_bCreatingNew) Text = KPRes.ConfigureOnNewDatabase3;
 			else Text = KPRes.DatabaseSettings;
 

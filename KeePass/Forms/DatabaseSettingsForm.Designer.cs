@@ -57,9 +57,9 @@
 			this.m_tabGeneral = new System.Windows.Forms.TabPage();
 			this.m_tbDefaultUser = new System.Windows.Forms.TextBox();
 			this.m_lblDefaultUser = new System.Windows.Forms.Label();
-			this.m_tbDbDesc = new KeePass.UI.PromptedTextBox();
+			this.m_tbDbDesc = new System.Windows.Forms.TextBox();
 			this.m_lblDbDesc = new System.Windows.Forms.Label();
-			this.m_tbDbName = new KeePass.UI.PromptedTextBox();
+			this.m_tbDbName = new System.Windows.Forms.TextBox();
 			this.m_lblDbName = new System.Windows.Forms.Label();
 			this.m_tabSecurity = new System.Windows.Forms.TabPage();
 			this.m_lblSecIntro = new System.Windows.Forms.Label();
@@ -797,9 +797,9 @@
 		private System.Windows.Forms.TabPage m_tabGeneral;
 		private System.Windows.Forms.TabPage m_tabSecurity;
 		private System.Windows.Forms.TabPage m_tabCompression;
-		private KeePass.UI.PromptedTextBox m_tbDbDesc;
+		private System.Windows.Forms.TextBox m_tbDbDesc;
 		private System.Windows.Forms.Label m_lblDbDesc;
-		private KeePass.UI.PromptedTextBox m_tbDbName;
+		private System.Windows.Forms.TextBox m_tbDbName;
 		private System.Windows.Forms.Label m_lblDbName;
 		private System.Windows.Forms.Label m_lblSecIntro;
 		private System.Windows.Forms.RadioButton m_rbCmpGZip;
