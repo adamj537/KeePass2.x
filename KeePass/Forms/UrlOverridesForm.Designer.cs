@@ -30,7 +30,7 @@
 		{
 			this.m_btnOK = new System.Windows.Forms.Button();
 			this.m_btnCancel = new System.Windows.Forms.Button();
-			this.m_lvOverrides = new KeePass.UI.CustomListViewEx();
+			this.m_lvOverrides = new System.Windows.Forms.ListView();
 			this.m_btnAdd = new System.Windows.Forms.Button();
 			this.m_btnEdit = new System.Windows.Forms.Button();
 			this.m_btnDelete = new System.Windows.Forms.Button();
@@ -165,7 +165,7 @@
 
 		private System.Windows.Forms.Button m_btnOK;
 		private System.Windows.Forms.Button m_btnCancel;
-		private KeePass.UI.CustomListViewEx m_lvOverrides;
+		private System.Windows.Forms.ListView m_lvOverrides;
 		private System.Windows.Forms.Button m_btnAdd;
 		private System.Windows.Forms.Button m_btnEdit;
 		private System.Windows.Forms.Button m_btnDelete;

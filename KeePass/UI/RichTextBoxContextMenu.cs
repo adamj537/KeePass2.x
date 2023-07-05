@@ -30,7 +30,7 @@ namespace KeePass.UI
 	{
 		private RichTextBox m_rtb = null;
 		private Form m_form = null;
-		private CustomContextMenuStripEx m_ctx = null;
+		private ContextMenuStrip m_ctx = null;
 		private ToolStripItem[] m_vMenuItems =
 			new ToolStripItem[(int)RtbCtxCommands.Count];
 		private string m_strCurLink = string.Empty;
@@ -95,9 +95,9 @@ namespace KeePass.UI
 			}
 		}
 
-		private CustomContextMenuStripEx CreateContextMenu()
+		private ContextMenuStrip CreateContextMenu()
 		{
-			CustomContextMenuStripEx ctx = new CustomContextMenuStripEx();
+			ContextMenuStrip ctx = new ContextMenuStrip();
 			int iPos = -1;
 
 			ToolStripItem tsiUndo = ctx.Items.Add(KPRes.Undo,
@@ -212,9 +212,7 @@ namespace KeePass.UI
 
 		private void OnPasteCommand(object sender, EventArgs e)
 		{
-			CustomRichTextBoxEx crtb = (m_rtb as CustomRichTextBoxEx);
-			if (crtb != null) crtb.PasteAcceptable();
-			else m_rtb.Paste();
+			m_rtb.Paste();
 		}
 
 		private void OnDeleteCommand(object sender, EventArgs e)

@@ -31,7 +31,7 @@
 			this.m_bannerImage = new System.Windows.Forms.PictureBox();
 			this.m_lblText = new System.Windows.Forms.Label();
 			this.m_btnCancel = new System.Windows.Forms.Button();
-			this.m_lvItems = new KeePass.UI.CustomListViewEx();
+			this.m_lvItems = new System.Windows.Forms.ListView();
 			this.m_pnlTop = new System.Windows.Forms.Panel();
 			this.m_pnlBottom = new System.Windows.Forms.Panel();
 			this.m_btnTools = new System.Windows.Forms.Button();
@@ -163,7 +163,7 @@
 
 		private System.Windows.Forms.PictureBox m_bannerImage;
 		private System.Windows.Forms.Label m_lblText;
-		private KeePass.UI.CustomListViewEx m_lvItems;
+		private System.Windows.Forms.ListView m_lvItems;
 		private System.Windows.Forms.Button m_btnCancel;
 		private System.Windows.Forms.Panel m_pnlTop;
 		private System.Windows.Forms.Panel m_pnlBottom;

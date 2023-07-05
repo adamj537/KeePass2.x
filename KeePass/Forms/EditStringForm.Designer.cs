@@ -34,7 +34,7 @@
 			this.m_lblStringValueDesc = new System.Windows.Forms.Label();
 			this.m_lblStringIdDesc = new System.Windows.Forms.Label();
 			this.m_lblIDIntro = new System.Windows.Forms.Label();
-			this.m_rtbValue = new KeePass.UI.CustomRichTextBoxEx();
+			this.m_rtbValue = new System.Windows.Forms.RichTextBox();
 			this.m_lblSeparator = new System.Windows.Forms.Label();
 			this.m_btnOK = new System.Windows.Forms.Button();
 			this.m_btnCancel = new System.Windows.Forms.Button();
@@ -208,7 +208,7 @@
 		private System.Windows.Forms.Label m_lblStringValueDesc;
 		private System.Windows.Forms.Label m_lblStringIdDesc;
 		private System.Windows.Forms.Label m_lblIDIntro;
-		private KeePass.UI.CustomRichTextBoxEx m_rtbValue;
+		private System.Windows.Forms.RichTextBox m_rtbValue;
 		private System.Windows.Forms.Label m_lblSeparator;
 		private System.Windows.Forms.Button m_btnOK;
 		private System.Windows.Forms.Button m_btnCancel;

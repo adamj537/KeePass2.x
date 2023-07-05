@@ -30,7 +30,7 @@
 		{
 			this.m_tabMain = new System.Windows.Forms.TabControl();
 			this.m_tabEnc = new System.Windows.Forms.TabPage();
-			this.m_rtbEncPreview = new KeePass.UI.CustomRichTextBoxEx();
+			this.m_rtbEncPreview = new System.Windows.Forms.RichTextBox();
 			this.m_lblEncPreview = new System.Windows.Forms.Label();
 			this.m_cmbEnc = new System.Windows.Forms.ComboBox();
 			this.m_lblEnc = new System.Windows.Forms.Label();
@@ -49,7 +49,7 @@
 			this.m_btnFieldMoveUp = new System.Windows.Forms.Button();
 			this.m_btnFieldDel = new System.Windows.Forms.Button();
 			this.m_lblFields = new System.Windows.Forms.Label();
-			this.m_lvFields = new KeePass.UI.CustomListViewEx();
+			this.m_lvFields = new System.Windows.Forms.ListView();
 			this.m_grpSyntax = new System.Windows.Forms.GroupBox();
 			this.m_cbIgnoreFirst = new System.Windows.Forms.CheckBox();
 			this.m_cbTrim = new System.Windows.Forms.CheckBox();
@@ -62,7 +62,7 @@
 			this.m_lblRecSep = new System.Windows.Forms.Label();
 			this.m_tabPreview = new System.Windows.Forms.TabPage();
 			this.m_cbMergeGroups = new System.Windows.Forms.CheckBox();
-			this.m_lvImportPreview = new KeePass.UI.CustomListViewEx();
+			this.m_lvImportPreview = new System.Windows.Forms.ListView();
 			this.m_btnOK = new System.Windows.Forms.Button();
 			this.m_btnCancel = new System.Windows.Forms.Button();
 			this.m_btnTabBack = new System.Windows.Forms.Button();
@@ -568,7 +568,7 @@
 		private System.Windows.Forms.TabPage m_tabPreview;
 		private System.Windows.Forms.ComboBox m_cmbEnc;
 		private System.Windows.Forms.Label m_lblEnc;
-		private KeePass.UI.CustomRichTextBoxEx m_rtbEncPreview;
+		private System.Windows.Forms.RichTextBox m_rtbEncPreview;
 		private System.Windows.Forms.Label m_lblEncPreview;
 		private System.Windows.Forms.ComboBox m_cmbRecSep;
 		private System.Windows.Forms.Label m_lblRecSep;
@@ -578,7 +578,7 @@
 		private System.Windows.Forms.GroupBox m_grpSem;
 		private System.Windows.Forms.Button m_btnFieldDel;
 		private System.Windows.Forms.Label m_lblFields;
-		private KeePass.UI.CustomListViewEx m_lvFields;
+		private System.Windows.Forms.ListView m_lvFields;
 		private System.Windows.Forms.GroupBox m_grpFieldAdd;
 		private System.Windows.Forms.Label m_lblFieldFormat;
 		private System.Windows.Forms.TextBox m_tbFieldName;
@@ -590,7 +590,7 @@
 		private System.Windows.Forms.Button m_btnFieldAdd;
 		private System.Windows.Forms.LinkLabel m_linkFieldFormat;
 		private System.Windows.Forms.ComboBox m_cmbFieldFormat;
-		private KeePass.UI.CustomListViewEx m_lvImportPreview;
+		private System.Windows.Forms.ListView m_lvImportPreview;
 		private System.Windows.Forms.CheckBox m_cbBackEscape;
 		private System.Windows.Forms.ComboBox m_cmbTextQual;
 		private System.Windows.Forms.Label m_lblTextQual;

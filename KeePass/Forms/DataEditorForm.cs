@@ -189,7 +189,6 @@ namespace KeePass.Forms
 			if (bSimpleText)
 			{
 				m_rtbText.Text = strData;
-				m_rtbText.SimpleTextOnly = true;
 
 				// CR is upgraded to CR+LF
 				m_bNewLinesWin = (StrUtil.GetNewLineSeq(strData) != "\n");
@@ -553,7 +552,6 @@ namespace KeePass.Forms
 
 		private void OnEditPaste(object sender, EventArgs e)
 		{
-			m_rtbText.PasteAcceptable();
 			UpdateUIState(true, true);
 		}
 

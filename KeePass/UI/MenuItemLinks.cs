@@ -52,9 +52,15 @@ namespace KeePass.UI
 				ToolStripItem[] v = tsicTarget.Find(strNameNew, true);
 				if ((v == null) || (v.Length == 0))
 					tsmi.Name = strNameNew;
-				else { Debug.Assert(false); }
+				else
+				{
+					Debug.Assert(false);
+				}
 			}
-			else { Debug.Assert(false); }
+			else
+			{
+				Debug.Assert(false);
+			}
 
 			CreateLink(tsmi, tsmiBase, (tsmiBase.DropDownItems.Count == 0));
 

@@ -46,8 +46,6 @@ namespace KeePass.Util.MultipleValues
 		internal readonly Dictionary<string, bool> MultiStringProt =
 			new Dictionary<string, bool>();
 		internal bool MultiExpiry = false;
-		internal bool MultiFgColor = false;
-		internal bool MultiBgColor = false;
 		internal bool MultiAutoTypeEnabled = false;
 		internal bool MultiAutoTypeObf = false;
 
@@ -322,9 +320,6 @@ namespace KeePass.Util.MultipleValues
 			m_peM.Expires = bExpM;
 			m_peM.ExpiryTime = m_v[0].ExpiryTime;
 
-			m_peM.ForegroundColor = m_v[0].ForegroundColor;
-			m_peM.BackgroundColor = m_v[0].BackgroundColor;
-
 			bool bTagsEq = true;
 			m_peM.Tags = new List<string>(m_v[0].Tags);
 
@@ -343,18 +338,6 @@ namespace KeePass.Util.MultipleValues
 					MultiExpiry = true;
 					m_peM.Expires = false;
 					bExpM = false;
-				}
-
-				if (!UIUtil.ColorsEqual(pe.ForegroundColor, m_peM.ForegroundColor))
-				{
-					MultiFgColor = true;
-					m_peM.ForegroundColor = Color.Empty;
-				}
-
-				if (!UIUtil.ColorsEqual(pe.BackgroundColor, m_peM.BackgroundColor))
-				{
-					MultiBgColor = true;
-					m_peM.BackgroundColor = Color.Empty;
 				}
 
 				if (bTagsEq && !MemUtil.ListsEqual<string>(pe.Tags, m_peM.Tags))
@@ -405,20 +388,6 @@ namespace KeePass.Util.MultipleValues
 					pe.Expires = bExpM;
 
 					if (bExpM) pe.ExpiryTime = m_peM.ExpiryTime;
-				}
-
-				if (!MultiFgColor && !UIUtil.ColorsEqual(pe.ForegroundColor,
-					m_peM.ForegroundColor))
-				{
-					PrepareMod(i);
-					pe.ForegroundColor = m_peM.ForegroundColor;
-				}
-
-				if (!MultiBgColor && !UIUtil.ColorsEqual(pe.BackgroundColor,
-					m_peM.BackgroundColor))
-				{
-					PrepareMod(i);
-					pe.BackgroundColor = m_peM.BackgroundColor;
 				}
 
 				if (bSetTags && !MemUtil.ListsEqual<string>(pe.Tags, m_peM.Tags))

@@ -39,7 +39,7 @@ namespace KeePass.Forms
 {
 	public partial class AboutForm : Form, IGwmWindow
 	{
-		private CustomContextMenuStripEx m_ctxComponents = null;
+		private ContextMenuStrip m_ctxComponents = null;
 
 		public bool CanCloseWithoutDataLoss { get { return true; } }
 
@@ -177,7 +177,7 @@ namespace KeePass.Forms
 
 		private void BuildComponentsContextMenu()
 		{
-			m_ctxComponents = new CustomContextMenuStripEx();
+			m_ctxComponents = new ContextMenuStrip();
 			m_ctxComponents.SuspendLayout();
 
 			ToolStripMenuItem tsmiShow = new ToolStripMenuItem(KPRes.ShowWithFileManager,

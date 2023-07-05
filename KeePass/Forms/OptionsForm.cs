@@ -569,13 +569,6 @@ namespace KeePass.Forms
 				m_numMruCount.Enabled = false;
 			}
 
-			int c = Program.Config.MainWindow.EntryListAlternatingBgColor;
-			m_btnAltColor.SelectedColor = ((c != 0) ? Color.FromArgb(c) :
-				UIUtil.GetAlternateColor(m_lvGuiOptions.BackColor));
-			m_cbAltColor.Checked = (c != 0);
-			if (AppConfigEx.IsOptionEnforced(Program.Config.MainWindow, "EntryListAlternatingBgColor"))
-				m_cbAltColor.Enabled = false;
-
 			if (AppConfigEx.IsOptionEnforced(Program.Config.UI, "StandardFont"))
 				m_fcgList.Enabled = false;
 			if (AppConfigEx.IsOptionEnforced(Program.Config.UI, "PasswordFont") ||
@@ -804,10 +797,6 @@ namespace KeePass.Forms
 
 			Program.Config.Application.MostRecentlyUsed.MaxItemCount =
 				(uint)m_numMruCount.Value;
-
-			Debug.Assert(Color.Empty.ToArgb() == 0);
-			Program.Config.MainWindow.EntryListAlternatingBgColor =
-				(m_cbAltColor.Checked ? m_btnAltColor.SelectedColor.ToArgb() : 0);
 
 			ChangeHotKey(ref m_kPrevAT, m_hkAutoType,
 				AppDefs.GlobalHotKeyId.AutoType);

@@ -109,13 +109,6 @@ namespace KeePass.Forms
 			UIUtil.SetMultilineText(m_tbDbDesc, m_pwDatabase.Description);
 			m_tbDefaultUser.Text = m_pwDatabase.DefaultUserName;
 
-			m_btnColor.Colors = AppIcons.Colors;
-
-			Color clr = m_pwDatabase.Color;
-			bool bClr = !UIUtil.ColorsEqual(clr, Color.Empty);
-			if (bClr) m_btnColor.SelectedColor = AppIcons.RoundColor(clr);
-			m_cbColor.Checked = bClr;
-
 			for (int inx = 0; inx < CipherPool.GlobalPool.EngineCount; ++inx)
 				m_cmbEncAlgo.Items.Add(CipherPool.GlobalPool[inx].DisplayName);
 
@@ -230,8 +223,6 @@ namespace KeePass.Forms
 		{
 			if (m_bInitializing) return;
 
-			m_btnColor.Enabled = m_cbColor.Checked;
-
 			KdfEngine kdf = GetKdf();
 			if (kdf != null)
 			{
@@ -304,9 +295,6 @@ namespace KeePass.Forms
 				m_pwDatabase.DefaultUserName = m_tbDefaultUser.Text;
 				m_pwDatabase.DefaultUserNameChanged = DateTime.UtcNow;
 			}
-
-			m_pwDatabase.Color = (m_cbColor.Checked ? m_btnColor.SelectedColor :
-				Color.Empty);
 
 			int nCipher = CipherPool.GlobalPool.GetCipherIndex(m_cmbEncAlgo.Text);
 			Debug.Assert(nCipher >= 0);

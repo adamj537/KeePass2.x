@@ -46,7 +46,7 @@ namespace KeePass.UI
 		private readonly bool m_bMultipleValues;
 
 		private Image m_imgHost = null;
-		private CustomContextMenuStripEx m_ctx = null;
+		private ContextMenuStrip m_ctx = null;
 
 		private readonly string GenDeriveFromPrevious = "(" +
 			KPRes.GenPwBasedOnPrevious + ")";
@@ -161,7 +161,7 @@ namespace KeePass.UI
 		{
 			DisposeContextMenu();
 
-			m_ctx = new CustomContextMenuStripEx();
+			m_ctx = new ContextMenuStrip();
 			m_ctx.SuspendLayout();
 			m_ctx.Items.AddRange(ConstructMenuItems().ToArray());
 			m_ctx.ResumeLayout(true);
@@ -181,7 +181,6 @@ namespace KeePass.UI
 			if (m_btnHost == null) { Debug.Assert(false); return; }
 
 			ConstructContextMenu();
-			m_ctx.ShowEx(m_btnHost);
 		}
 
 		private ProtectedString GetPassword()

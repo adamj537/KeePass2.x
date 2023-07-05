@@ -39,7 +39,7 @@
 			this.m_lblSecOpt = new System.Windows.Forms.Label();
 			this.m_numLockAfterGlobalTime = new System.Windows.Forms.NumericUpDown();
 			this.m_cbLockAfterGlobalTime = new System.Windows.Forms.CheckBox();
-			this.m_lvSecurityOptions = new KeePass.UI.CustomListViewEx();
+			this.m_lvSecurityOptions = new System.Windows.Forms.ListView();
 			this.m_numClipClearTime = new System.Windows.Forms.NumericUpDown();
 			this.m_cbClipClearTime = new System.Windows.Forms.CheckBox();
 			this.m_numDefaultExpireDays = new System.Windows.Forms.NumericUpDown();
@@ -47,13 +47,13 @@
 			this.m_cbLockAfterTime = new System.Windows.Forms.CheckBox();
 			this.m_numLockAfterTime = new System.Windows.Forms.NumericUpDown();
 			this.m_tabPolicy = new System.Windows.Forms.TabPage();
-			this.m_lvPolicy = new KeePass.UI.CustomListViewEx();
+			this.m_lvPolicy = new System.Windows.Forms.ListView();
 			this.m_linkPolicyInfo = new System.Windows.Forms.LinkLabel();
 			this.m_lblPolicyMore = new System.Windows.Forms.Label();
 			this.m_lblPolicyRestart = new System.Windows.Forms.Label();
 			this.m_lblPolicyIntro = new System.Windows.Forms.Label();
 			this.m_tabGui1 = new System.Windows.Forms.TabPage();
-			this.m_lvGuiOptions = new KeePass.UI.CustomListViewEx();
+			this.m_lvGuiOptions = new System.Windows.Forms.ListView();
 			this.m_tabGui2 = new System.Windows.Forms.TabPage();
 			this.m_grpIntAdv = new System.Windows.Forms.GroupBox();
 			this.m_lblEscAction = new System.Windows.Forms.Label();
@@ -69,7 +69,7 @@
 			this.m_grpStyles = new System.Windows.Forms.GroupBox();
 			this.m_linkTheme = new System.Windows.Forms.LinkLabel();
 			this.m_cmbMenuStyle = new System.Windows.Forms.ComboBox();
-			this.m_btnAltColor = new KeePass.UI.ColorButtonEx();
+			this.m_btnAltColor = new System.Windows.Forms.Button();
 			this.m_cmbBannerStyle = new System.Windows.Forms.ComboBox();
 			this.m_cbAltColor = new System.Windows.Forms.CheckBox();
 			this.m_lblBannerStyle = new System.Windows.Forms.Label();
@@ -94,7 +94,7 @@
 			this.m_hkAutoType = new KeePass.UI.HotKeyControlEx();
 			this.m_tabAdvanced = new System.Windows.Forms.TabPage();
 			this.m_btnProxy = new System.Windows.Forms.Button();
-			this.m_lvAdvanced = new KeePass.UI.CustomListViewEx();
+			this.m_lvAdvanced = new System.Windows.Forms.ListView();
 			this.m_ttRect = new System.Windows.Forms.ToolTip(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.m_bannerImage)).BeginInit();
 			this.m_tabMain.SuspendLayout();
@@ -899,8 +899,8 @@
 		private System.Windows.Forms.Label m_lblPolicyMore;
 		private System.Windows.Forms.Label m_lblPolicyRestart;
 		private System.Windows.Forms.Label m_lblPolicyIntro;
-		private KeePass.UI.CustomListViewEx m_lvPolicy;
-		private KeePass.UI.CustomListViewEx m_lvGuiOptions;
+		private System.Windows.Forms.ListView m_lvPolicy;
+		private System.Windows.Forms.ListView m_lvGuiOptions;
 		private System.Windows.Forms.TabPage m_tabIntegration;
 		private KeePass.UI.HotKeyControlEx m_hkAutoType;
 		private System.Windows.Forms.Label m_lblAutoType;
@@ -916,8 +916,8 @@
 		private System.Windows.Forms.Button m_btnFileExtCreate;
 		private System.Windows.Forms.Label m_lblFileExtHint;
 		private System.Windows.Forms.CheckBox m_cbAutoRun;
-		private KeePass.UI.CustomListViewEx m_lvAdvanced;
-		private KeePass.UI.CustomListViewEx m_lvSecurityOptions;
+		private System.Windows.Forms.ListView m_lvAdvanced;
+		private System.Windows.Forms.ListView m_lvSecurityOptions;
 		private System.Windows.Forms.Button m_btnSchemeOverrides;
 		private System.Windows.Forms.Label m_lblAutoTypeSelected;
 		private KeePass.UI.HotKeyControlEx m_hkAutoTypeSelected;
@@ -945,7 +945,7 @@
 		private System.Windows.Forms.Button m_btnPasswordFont;
 		private System.Windows.Forms.CheckBox m_cbPasswordFont;
 		private System.Windows.Forms.Button m_btnListFont;
-		private KeePass.UI.ColorButtonEx m_btnAltColor;
+		private System.Windows.Forms.Button m_btnAltColor;
 		private System.Windows.Forms.CheckBox m_cbAltColor;
 		private System.Windows.Forms.GroupBox m_grpFonts;
 		private System.Windows.Forms.GroupBox m_grpStyles;

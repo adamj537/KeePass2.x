@@ -32,7 +32,7 @@
 			this.m_btnClose = new System.Windows.Forms.Button();
 			this.m_btnMore = new System.Windows.Forms.Button();
 			this.m_btnOpenFolder = new System.Windows.Forms.Button();
-			this.m_lvLanguages = new KeePass.UI.CustomListViewEx();
+			this.m_lvLanguages = new System.Windows.Forms.ListView();
 			((System.ComponentModel.ISupportInitialize)(this.m_bannerImage)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -120,7 +120,7 @@
 		#endregion
 
 		private System.Windows.Forms.PictureBox m_bannerImage;
-		private KeePass.UI.CustomListViewEx m_lvLanguages;
+		private System.Windows.Forms.ListView m_lvLanguages;
 		private System.Windows.Forms.Button m_btnClose;
 		private System.Windows.Forms.Button m_btnMore;
 		private System.Windows.Forms.Button m_btnOpenFolder;

@@ -61,7 +61,7 @@
 			this.m_tbDefaultAutoTypeSeq = new System.Windows.Forms.TextBox();
 			this.m_tabCustomData = new System.Windows.Forms.TabPage();
 			this.m_btnCDDel = new System.Windows.Forms.Button();
-			this.m_lvCustomData = new KeePass.UI.CustomListViewEx();
+			this.m_lvCustomData = new System.Windows.Forms.ListView();
 			this.m_ttRect = new System.Windows.Forms.ToolTip(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.m_bannerImage)).BeginInit();
 			this.m_tabMain.SuspendLayout();
@@ -465,7 +465,7 @@
 		private System.Windows.Forms.ComboBox m_cmbEnableAutoType;
 		private System.Windows.Forms.TabPage m_tabCustomData;
 		private System.Windows.Forms.Button m_btnCDDel;
-		private KeePass.UI.CustomListViewEx m_lvCustomData;
+		private System.Windows.Forms.ListView m_lvCustomData;
 		private System.Windows.Forms.TextBox m_tbUuid;
 		private System.Windows.Forms.Label m_lblUuid;
 		private System.Windows.Forms.Label m_lblNotes;

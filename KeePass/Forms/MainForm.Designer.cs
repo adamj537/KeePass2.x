@@ -29,10 +29,10 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			this.m_ctxGroupList = new KeePass.UI.CustomContextMenuStripEx(this.components);
+			this.m_ctxGroupList = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.m_ctxGroupFind = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_ctxGroupFindProfiles = new System.Windows.Forms.ToolStripMenuItem();
-			this.m_ctxPwList = new KeePass.UI.CustomContextMenuStripEx(this.components);
+			this.m_ctxPwList = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.m_ctxEntryUrl = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_ctxEntryOtherData = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_ctxEntryAttachments = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,7 +45,7 @@
 			this.m_ctxEntrySep2 = new System.Windows.Forms.ToolStripSeparator();
 			this.m_ctxEntryRearrange = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_ctxEntryMoveToGroup = new System.Windows.Forms.ToolStripMenuItem();
-			this.m_menuMain = new KeePass.UI.CustomMenuStripEx();
+			this.m_menuMain = new System.Windows.Forms.MenuStrip();
 			this.m_menuFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_menuFileNew = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_menuFileOpen = new System.Windows.Forms.ToolStripMenuItem();
@@ -129,15 +129,6 @@
 			this.m_menuEntryEdit = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_menuEntryEditQuick = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_menuEntryIcon = new System.Windows.Forms.ToolStripMenuItem();
-			this.m_menuEntryColor = new System.Windows.Forms.ToolStripMenuItem();
-			this.m_menuEntryColorStandard = new System.Windows.Forms.ToolStripMenuItem();
-			this.m_menuEntryColorSep0 = new System.Windows.Forms.ToolStripSeparator();
-			this.m_menuEntryColorLightRed = new System.Windows.Forms.ToolStripMenuItem();
-			this.m_menuEntryColorLightGreen = new System.Windows.Forms.ToolStripMenuItem();
-			this.m_menuEntryColorLightBlue = new System.Windows.Forms.ToolStripMenuItem();
-			this.m_menuEntryColorLightYellow = new System.Windows.Forms.ToolStripMenuItem();
-			this.m_menuEntryColorSep1 = new System.Windows.Forms.ToolStripSeparator();
-			this.m_menuEntryColorCustom = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_menuEntryEditQuickSep0 = new System.Windows.Forms.ToolStripSeparator();
 			this.m_menuEntryTagAdd = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_menuEntryTagNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -244,7 +235,7 @@
 			this.m_menuHelpCheckForUpdates = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_menuHelpSep2 = new System.Windows.Forms.ToolStripSeparator();
 			this.m_menuHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
-			this.m_toolMain = new KeePass.UI.CustomToolStripEx();
+			this.m_toolMain = new System.Windows.Forms.ToolStrip();
 			this.m_tbNewDatabase = new System.Windows.Forms.ToolStripButton();
 			this.m_tbOpenDatabase = new System.Windows.Forms.ToolStripButton();
 			this.m_tbSaveDatabase = new System.Windows.Forms.ToolStripButton();
@@ -274,7 +265,7 @@
 			this.m_statusPartInfo = new System.Windows.Forms.ToolStripStatusLabel();
 			this.m_statusPartProgress = new System.Windows.Forms.ToolStripProgressBar();
 			this.m_statusClipboard = new System.Windows.Forms.ToolStripProgressBar();
-			this.m_ctxTray = new KeePass.UI.CustomContextMenuStripEx(this.components);
+			this.m_ctxTray = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.m_ctxTrayTray = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_ctxTraySep0 = new System.Windows.Forms.ToolStripSeparator();
 			this.m_ctxTrayGenPw = new System.Windows.Forms.ToolStripMenuItem();
@@ -286,20 +277,22 @@
 			this.m_ctxTrayFileExit = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_timerMain = new System.Windows.Forms.Timer(this.components);
 			this.m_tabMain = new System.Windows.Forms.TabControl();
-			this.m_splitHorizontal = new KeePass.UI.CustomSplitContainerEx();
-			this.m_splitVertical = new KeePass.UI.CustomSplitContainerEx();
-			this.m_tvGroups = new KeePass.UI.CustomTreeViewEx();
-			this.m_lvEntries = new KeePass.UI.CustomListViewEx();
-			this.m_richEntryView = new KeePass.UI.CustomRichTextBoxEx();
+			this.m_splitHorizontal = new System.Windows.Forms.SplitContainer();
+			this.m_splitVertical = new System.Windows.Forms.SplitContainer();
+			this.m_tvGroups = new System.Windows.Forms.TreeView();
+			this.m_lvEntries = new System.Windows.Forms.ListView();
+			this.m_richEntryView = new System.Windows.Forms.RichTextBox();
 			this.m_ctxGroupList.SuspendLayout();
 			this.m_ctxPwList.SuspendLayout();
 			this.m_menuMain.SuspendLayout();
 			this.m_toolMain.SuspendLayout();
 			this.m_statusMain.SuspendLayout();
 			this.m_ctxTray.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.m_splitHorizontal)).BeginInit();
 			this.m_splitHorizontal.Panel1.SuspendLayout();
 			this.m_splitHorizontal.Panel2.SuspendLayout();
 			this.m_splitHorizontal.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.m_splitVertical)).BeginInit();
 			this.m_splitVertical.Panel1.SuspendLayout();
 			this.m_splitVertical.Panel2.SuspendLayout();
 			this.m_splitVertical.SuspendLayout();
@@ -1110,7 +1103,6 @@
 			// 
 			this.m_menuEntryEditQuick.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.m_menuEntryIcon,
-            this.m_menuEntryColor,
             this.m_menuEntryEditQuickSep0,
             this.m_menuEntryTagAdd,
             this.m_menuEntryTagRemove,
@@ -1131,73 +1123,6 @@
 			this.m_menuEntryIcon.Text = "&Icon...";
 			this.m_menuEntryIcon.Click += new System.EventHandler(this.OnEntryMassSetIcon);
 			// 
-			// m_menuEntryColor
-			// 
-			this.m_menuEntryColor.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.m_menuEntryColorStandard,
-            this.m_menuEntryColorSep0,
-            this.m_menuEntryColorLightRed,
-            this.m_menuEntryColorLightGreen,
-            this.m_menuEntryColorLightBlue,
-            this.m_menuEntryColorLightYellow,
-            this.m_menuEntryColorSep1,
-            this.m_menuEntryColorCustom});
-			this.m_menuEntryColor.Name = "m_menuEntryColor";
-			this.m_menuEntryColor.Size = new System.Drawing.Size(204, 22);
-			this.m_menuEntryColor.Text = "&Color";
-			// 
-			// m_menuEntryColorStandard
-			// 
-			this.m_menuEntryColorStandard.Name = "m_menuEntryColorStandard";
-			this.m_menuEntryColorStandard.Size = new System.Drawing.Size(157, 22);
-			this.m_menuEntryColorStandard.Text = "&Standard";
-			this.m_menuEntryColorStandard.Click += new System.EventHandler(this.OnEntryColorStandard);
-			// 
-			// m_menuEntryColorSep0
-			// 
-			this.m_menuEntryColorSep0.Name = "m_menuEntryColorSep0";
-			this.m_menuEntryColorSep0.Size = new System.Drawing.Size(154, 6);
-			// 
-			// m_menuEntryColorLightRed
-			// 
-			this.m_menuEntryColorLightRed.Name = "m_menuEntryColorLightRed";
-			this.m_menuEntryColorLightRed.Size = new System.Drawing.Size(157, 22);
-			this.m_menuEntryColorLightRed.Text = "Light &Red";
-			this.m_menuEntryColorLightRed.Click += new System.EventHandler(this.OnEntryColorLightRed);
-			// 
-			// m_menuEntryColorLightGreen
-			// 
-			this.m_menuEntryColorLightGreen.Name = "m_menuEntryColorLightGreen";
-			this.m_menuEntryColorLightGreen.Size = new System.Drawing.Size(157, 22);
-			this.m_menuEntryColorLightGreen.Text = "Light &Green";
-			this.m_menuEntryColorLightGreen.Click += new System.EventHandler(this.OnEntryColorLightGreen);
-			// 
-			// m_menuEntryColorLightBlue
-			// 
-			this.m_menuEntryColorLightBlue.Name = "m_menuEntryColorLightBlue";
-			this.m_menuEntryColorLightBlue.Size = new System.Drawing.Size(157, 22);
-			this.m_menuEntryColorLightBlue.Text = "Light &Blue";
-			this.m_menuEntryColorLightBlue.Click += new System.EventHandler(this.OnEntryColorLightBlue);
-			// 
-			// m_menuEntryColorLightYellow
-			// 
-			this.m_menuEntryColorLightYellow.Name = "m_menuEntryColorLightYellow";
-			this.m_menuEntryColorLightYellow.Size = new System.Drawing.Size(157, 22);
-			this.m_menuEntryColorLightYellow.Text = "Light &Yellow";
-			this.m_menuEntryColorLightYellow.Click += new System.EventHandler(this.OnEntryColorLightYellow);
-			// 
-			// m_menuEntryColorSep1
-			// 
-			this.m_menuEntryColorSep1.Name = "m_menuEntryColorSep1";
-			this.m_menuEntryColorSep1.Size = new System.Drawing.Size(154, 6);
-			// 
-			// m_menuEntryColorCustom
-			// 
-			this.m_menuEntryColorCustom.Name = "m_menuEntryColorCustom";
-			this.m_menuEntryColorCustom.Size = new System.Drawing.Size(157, 22);
-			this.m_menuEntryColorCustom.Text = "&Custom Color...";
-			this.m_menuEntryColorCustom.Click += new System.EventHandler(this.OnEntryColorCustom);
-			// 
 			// m_menuEntryEditQuickSep0
 			// 
 			this.m_menuEntryEditQuickSep0.Name = "m_menuEntryEditQuickSep0";
@@ -1216,7 +1141,7 @@
 			// 
 			this.m_menuEntryTagNew.Image = global::KeePass.Properties.Resources.B16x16_KNotes;
 			this.m_menuEntryTagNew.Name = "m_menuEntryTagNew";
-			this.m_menuEntryTagNew.Size = new System.Drawing.Size(152, 22);
+			this.m_menuEntryTagNew.Size = new System.Drawing.Size(128, 22);
 			this.m_menuEntryTagNew.Text = "&New Tag...";
 			this.m_menuEntryTagNew.Click += new System.EventHandler(this.OnEntrySelectedNewTag);
 			// 
@@ -2248,8 +2173,8 @@
 			this.m_tbQuickFind.Name = "m_tbQuickFind";
 			this.m_tbQuickFind.Size = new System.Drawing.Size(121, 25);
 			this.m_tbQuickFind.SelectedIndexChanged += new System.EventHandler(this.OnQuickFindSelectedIndexChanged);
-			this.m_tbQuickFind.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnQuickFindKeyUp);
 			this.m_tbQuickFind.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnQuickFindKeyDown);
+			this.m_tbQuickFind.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnQuickFindKeyUp);
 			// 
 			// m_tbCloseTab
 			// 
@@ -2399,8 +2324,8 @@
 			this.m_tabMain.ShowToolTips = true;
 			this.m_tabMain.Size = new System.Drawing.Size(654, 22);
 			this.m_tabMain.TabIndex = 2;
-			this.m_tabMain.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OnTabMainMouseClick);
 			this.m_tabMain.SelectedIndexChanged += new System.EventHandler(this.OnTabMainSelectedIndexChanged);
+			this.m_tabMain.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OnTabMainMouseClick);
 			// 
 			// m_splitHorizontal
 			// 
@@ -2453,15 +2378,15 @@
 			this.m_tvGroups.Size = new System.Drawing.Size(177, 306);
 			this.m_tvGroups.TabIndex = 0;
 			this.m_tvGroups.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.OnGroupsAfterCollapse);
-			this.m_tvGroups.DragLeave += new System.EventHandler(this.OnGroupsDragLeave);
-			this.m_tvGroups.DragDrop += new System.Windows.Forms.DragEventHandler(this.OnGroupsDragDrop);
-			this.m_tvGroups.DragEnter += new System.Windows.Forms.DragEventHandler(this.OnGroupsDragEnter);
-			this.m_tvGroups.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnGroupsKeyUp);
-			this.m_tvGroups.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.OnGroupsNodeClick);
-			this.m_tvGroups.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnGroupsKeyDown);
 			this.m_tvGroups.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.OnGroupsAfterExpand);
 			this.m_tvGroups.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.OnGroupsItemDrag);
+			this.m_tvGroups.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.OnGroupsNodeClick);
+			this.m_tvGroups.DragDrop += new System.Windows.Forms.DragEventHandler(this.OnGroupsDragDrop);
+			this.m_tvGroups.DragEnter += new System.Windows.Forms.DragEventHandler(this.OnGroupsDragEnter);
 			this.m_tvGroups.DragOver += new System.Windows.Forms.DragEventHandler(this.OnGroupsDragOver);
+			this.m_tvGroups.DragLeave += new System.EventHandler(this.OnGroupsDragLeave);
+			this.m_tvGroups.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnGroupsKeyDown);
+			this.m_tvGroups.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnGroupsKeyUp);
 			// 
 			// m_lvEntries
 			// 
@@ -2477,15 +2402,15 @@
 			this.m_lvEntries.TabIndex = 0;
 			this.m_lvEntries.UseCompatibleStateImageBehavior = false;
 			this.m_lvEntries.View = System.Windows.Forms.View.Details;
-			this.m_lvEntries.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.OnPwListMouseDoubleClick);
-			this.m_lvEntries.ColumnWidthChanged += new System.Windows.Forms.ColumnWidthChangedEventHandler(this.OnPwListColumnWidthChanged);
-			this.m_lvEntries.SelectedIndexChanged += new System.EventHandler(this.OnPwListSelectedIndexChanged);
 			this.m_lvEntries.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.OnPwListColumnClick);
-			this.m_lvEntries.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnPwListMouseDown);
-			this.m_lvEntries.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnPwListKeyUp);
-			this.m_lvEntries.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnPwListKeyDown);
+			this.m_lvEntries.ColumnWidthChanged += new System.Windows.Forms.ColumnWidthChangedEventHandler(this.OnPwListColumnWidthChanged);
 			this.m_lvEntries.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.OnPwListItemDrag);
+			this.m_lvEntries.SelectedIndexChanged += new System.EventHandler(this.OnPwListSelectedIndexChanged);
 			this.m_lvEntries.Click += new System.EventHandler(this.OnPwListClick);
+			this.m_lvEntries.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnPwListKeyDown);
+			this.m_lvEntries.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnPwListKeyUp);
+			this.m_lvEntries.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.OnPwListMouseDoubleClick);
+			this.m_lvEntries.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnPwListMouseDown);
 			// 
 			// m_richEntryView
 			// 
@@ -2497,8 +2422,8 @@
 			this.m_richEntryView.Size = new System.Drawing.Size(654, 83);
 			this.m_richEntryView.TabIndex = 0;
 			this.m_richEntryView.Text = "";
-			this.m_richEntryView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnEntryViewKeyDown);
 			this.m_richEntryView.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.OnEntryViewLinkClicked);
+			this.m_richEntryView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnEntryViewKeyDown);
 			this.m_richEntryView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnEntryViewKeyUp);
 			// 
 			// MainForm
@@ -2515,12 +2440,12 @@
 			this.Name = "MainForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "<>";
+			this.Activated += new System.EventHandler(this.OnFormActivated);
 			this.Deactivate += new System.EventHandler(this.OnFormDeactivate);
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OnFormClosed);
 			this.Load += new System.EventHandler(this.OnFormLoad);
 			this.Shown += new System.EventHandler(this.OnFormShown);
-			this.Activated += new System.EventHandler(this.OnFormActivated);
-			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OnFormClosed);
-			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
 			this.Resize += new System.EventHandler(this.OnFormResize);
 			this.m_ctxGroupList.ResumeLayout(false);
 			this.m_ctxPwList.ResumeLayout(false);
@@ -2533,9 +2458,11 @@
 			this.m_ctxTray.ResumeLayout(false);
 			this.m_splitHorizontal.Panel1.ResumeLayout(false);
 			this.m_splitHorizontal.Panel2.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.m_splitHorizontal)).EndInit();
 			this.m_splitHorizontal.ResumeLayout(false);
 			this.m_splitVertical.Panel1.ResumeLayout(false);
 			this.m_splitVertical.Panel2.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.m_splitVertical)).EndInit();
 			this.m_splitVertical.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -2544,7 +2471,7 @@
 
 		#endregion
 
-		private KeePass.UI.CustomMenuStripEx m_menuMain;
+		private System.Windows.Forms.MenuStrip m_menuMain;
 		private System.Windows.Forms.ToolStripMenuItem m_menuFile;
 		private System.Windows.Forms.ToolStripMenuItem m_menuFileNew;
 		private System.Windows.Forms.ToolStripMenuItem m_menuFileClose;
@@ -2571,19 +2498,19 @@
 		private System.Windows.Forms.ToolStripMenuItem m_menuHelpCheckForUpdates;
 		private System.Windows.Forms.ToolStripSeparator m_menuHelpSep2;
 		private System.Windows.Forms.ToolStripMenuItem m_menuHelpAbout;
-		private KeePass.UI.CustomToolStripEx m_toolMain;
+		private System.Windows.Forms.ToolStrip m_toolMain;
 		private System.Windows.Forms.ToolStripButton m_tbNewDatabase;
 		private System.Windows.Forms.ToolStripButton m_tbOpenDatabase;
-		private KeePass.UI.CustomRichTextBoxEx m_richEntryView;
-		private KeePass.UI.CustomSplitContainerEx m_splitHorizontal;
-		private KeePass.UI.CustomSplitContainerEx m_splitVertical;
-		private KeePass.UI.CustomTreeViewEx m_tvGroups;
+		private System.Windows.Forms.RichTextBox m_richEntryView;
+		private System.Windows.Forms.SplitContainer m_splitHorizontal;
+		private System.Windows.Forms.SplitContainer m_splitVertical;
+		private System.Windows.Forms.TreeView m_tvGroups;
 		private System.Windows.Forms.StatusStrip m_statusMain;
 		private System.Windows.Forms.ToolStripStatusLabel m_statusPartSelected;
 		private System.Windows.Forms.ToolStripStatusLabel m_statusPartInfo;
-		private KeePass.UI.CustomListViewEx m_lvEntries;
+		private System.Windows.Forms.ListView m_lvEntries;
 		private System.Windows.Forms.ToolStripButton m_tbSaveDatabase;
-		private KeePass.UI.CustomContextMenuStripEx m_ctxPwList;
+		private System.Windows.Forms.ContextMenuStrip m_ctxPwList;
 		private System.Windows.Forms.ToolStripSeparator m_ctxEntrySep0;
 		private System.Windows.Forms.ToolStripSeparator m_ctxEntrySep1;
 		private System.Windows.Forms.ToolStripMenuItem m_ctxEntryEditQuick;
@@ -2602,14 +2529,14 @@
 		private System.Windows.Forms.ToolStripComboBox m_tbQuickFind;
 		private System.Windows.Forms.ToolStripMenuItem m_menuToolsOptions;
 		private System.Windows.Forms.ToolStripSeparator m_menuViewSep1;
-		private KeePass.UI.CustomContextMenuStripEx m_ctxGroupList;
+		private System.Windows.Forms.ContextMenuStrip m_ctxGroupList;
 		private System.Windows.Forms.ToolStripProgressBar m_statusPartProgress;
 		private System.Windows.Forms.ToolStripMenuItem m_menuViewAlwaysOnTop;
 		private System.Windows.Forms.ToolStripSeparator m_menuViewSep2;
 		private System.Windows.Forms.ToolStripMenuItem m_menuViewConfigColumns;
 		private System.Windows.Forms.ToolStripSeparator m_menuViewSep3;
 		private System.Windows.Forms.ToolStripMenuItem m_menuFileRecent;
-		private KeePass.UI.CustomContextMenuStripEx m_ctxTray;
+		private System.Windows.Forms.ContextMenuStrip m_ctxTray;
 		private System.Windows.Forms.ToolStripMenuItem m_ctxTrayTray;
 		private System.Windows.Forms.Timer m_timerMain;
 		private System.Windows.Forms.ToolStripMenuItem m_menuToolsPlugins;
@@ -2731,15 +2658,6 @@
 		private System.Windows.Forms.ToolStripSeparator m_menuEntrySep2;
 		private System.Windows.Forms.ToolStripSeparator m_menuEntrySep3;
 		private System.Windows.Forms.ToolStripMenuItem m_menuEntryEditQuick;
-		private System.Windows.Forms.ToolStripMenuItem m_menuEntryColor;
-		private System.Windows.Forms.ToolStripMenuItem m_menuEntryColorStandard;
-		private System.Windows.Forms.ToolStripSeparator m_menuEntryColorSep0;
-		private System.Windows.Forms.ToolStripMenuItem m_menuEntryColorLightRed;
-		private System.Windows.Forms.ToolStripMenuItem m_menuEntryColorLightGreen;
-		private System.Windows.Forms.ToolStripMenuItem m_menuEntryColorLightBlue;
-		private System.Windows.Forms.ToolStripMenuItem m_menuEntryColorLightYellow;
-		private System.Windows.Forms.ToolStripSeparator m_menuEntryColorSep1;
-		private System.Windows.Forms.ToolStripMenuItem m_menuEntryColorCustom;
 		private System.Windows.Forms.ToolStripMenuItem m_menuEntryDX;
 		private System.Windows.Forms.ToolStripMenuItem m_menuEntryIcon;
 		private System.Windows.Forms.ToolStripSeparator m_menuEntryEditQuickSep0;

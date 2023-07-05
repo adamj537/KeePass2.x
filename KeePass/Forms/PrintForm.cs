@@ -173,20 +173,6 @@ namespace KeePass.Forms
 
 			m_rbLayTable.Checked = true;
 
-			m_cbColorP.Checked = true;
-			using (RtlAwareResizeScope r = new RtlAwareResizeScope(
-				m_lblColorPU, m_lblColorPL, m_lblColorPD, m_lblColorPO))
-			{
-				m_lblColorPU.Text = "\u27A5 ABC...:";
-				m_lblColorPL.Text = "\u27A5 abc...:";
-				m_lblColorPD.Text = "\u27A5 012...:";
-				m_lblColorPO.Text = "\u27A5 !$%...:";
-			}
-			m_btnColorPU.SelectedColor = Color.FromArgb(0, 0, 255);
-			m_btnColorPL.SelectedColor = Color.FromArgb(0, 0, 0);
-			m_btnColorPD.SelectedColor = Color.FromArgb(0, 128, 0);
-			m_btnColorPO.SelectedColor = Color.FromArgb(192, 0, 0);
-
 			m_fcgMain = new FontControlGroup(m_cbMainFont, m_btnMainFont,
 				null, GetDefaultFont(false));
 			m_fcgPassword = new FontControlGroup(m_cbPasswordFont, m_btnPasswordFont,
@@ -292,10 +278,6 @@ namespace KeePass.Forms
 				UIUtil.SetChecked(m_cbGroups, false);
 			}
 
-			UIUtil.SetEnabledFast(m_cbColorP.Checked,
-				m_lblColorPU, m_btnColorPU, m_lblColorPL, m_btnColorPL,
-				m_lblColorPD, m_btnColorPD, m_lblColorPO, m_btnColorPO);
-
 			--m_uBlockUpdateUIState;
 		}
 
@@ -386,14 +368,6 @@ namespace KeePass.Forms
 			bool bUuid = m_cbUuid.Checked;
 
 			PfOptions p = new PfOptions();
-
-			if (m_cbColorP.Checked)
-			{
-				p.ColorPU = m_btnColorPU.SelectedColor;
-				p.ColorPL = m_btnColorPL.SelectedColor;
-				p.ColorPD = m_btnColorPD.SelectedColor;
-				p.ColorPO = m_btnColorPO.SelectedColor;
-			}
 
 			p.SprMode = m_cmbSpr.SelectedIndex;
 			p.Rtl = (RightToLeft == RightToLeft.Yes);

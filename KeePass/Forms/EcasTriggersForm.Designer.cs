@@ -32,7 +32,7 @@
 			this.m_bannerImage = new System.Windows.Forms.PictureBox();
 			this.m_btnOK = new System.Windows.Forms.Button();
 			this.m_btnCancel = new System.Windows.Forms.Button();
-			this.m_lvTriggers = new KeePass.UI.CustomListViewEx();
+			this.m_lvTriggers = new System.Windows.Forms.ListView();
 			this.m_btnAdd = new System.Windows.Forms.Button();
 			this.m_btnEdit = new System.Windows.Forms.Button();
 			this.m_btnDelete = new System.Windows.Forms.Button();
@@ -41,7 +41,7 @@
 			this.m_btnMoveUp = new System.Windows.Forms.Button();
 			this.m_btnMoveDown = new System.Windows.Forms.Button();
 			this.m_btnTools = new System.Windows.Forms.Button();
-			this.m_ctxTools = new KeePass.UI.CustomContextMenuStripEx(this.components);
+			this.m_ctxTools = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.m_ctxToolsHelp = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_ctxToolsSep0 = new System.Windows.Forms.ToolStripSeparator();
 			this.m_ctxToolsCopyTriggers = new System.Windows.Forms.ToolStripMenuItem();
@@ -263,7 +263,7 @@
 		private System.Windows.Forms.PictureBox m_bannerImage;
 		private System.Windows.Forms.Button m_btnOK;
 		private System.Windows.Forms.Button m_btnCancel;
-		private KeePass.UI.CustomListViewEx m_lvTriggers;
+		private System.Windows.Forms.ListView m_lvTriggers;
 		private System.Windows.Forms.Button m_btnAdd;
 		private System.Windows.Forms.Button m_btnEdit;
 		private System.Windows.Forms.Button m_btnDelete;
@@ -272,7 +272,7 @@
 		private System.Windows.Forms.Button m_btnMoveUp;
 		private System.Windows.Forms.Button m_btnMoveDown;
 		private System.Windows.Forms.Button m_btnTools;
-		private KeePass.UI.CustomContextMenuStripEx m_ctxTools;
+		private System.Windows.Forms.ContextMenuStrip m_ctxTools;
 		private System.Windows.Forms.ToolStripMenuItem m_ctxToolsHelp;
 		private System.Windows.Forms.ToolStripSeparator m_ctxToolsSep0;
 		private System.Windows.Forms.ToolStripMenuItem m_ctxToolsCopyTriggers;

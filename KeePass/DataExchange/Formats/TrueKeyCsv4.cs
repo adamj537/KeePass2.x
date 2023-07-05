@@ -194,17 +194,6 @@ namespace KeePass.DataExchange.Formats
 							break;
 
 						case "hexcolor":
-							if ((strValue.Length == 6) && StrUtil.IsHexString(strValue, true))
-							{
-								Color c = Color.FromArgb(unchecked((int)(0xFF000000U |
-									Convert.ToUInt32(strValue, 16))));
-
-								Color cG = UIUtil.ColorToGrayscale(c);
-								if (cG.B < 128) c = UIUtil.LightenColor(c, 0.5);
-
-								pe.BackgroundColor = c;
-							}
-							else { Debug.Assert(false); }
 							break;
 
 						case "issuedate":

@@ -40,10 +40,10 @@ namespace KeePass.UI
 
 		private readonly bool m_bSupported;
 
-		private CustomContextMenuStripEx m_ctx = null;
+		private ContextMenuStrip m_ctx = null;
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public CustomContextMenuStripEx SplitDropDownMenu
+		public ContextMenuStrip SplitDropDownMenu
 		{
 			get { return m_ctx; }
 			set { m_ctx = value; }
@@ -91,7 +91,7 @@ namespace KeePass.UI
 					{
 						if (m_ctx != null)
 						{
-							m_ctx.ShowEx(this);
+							m_ctx.Show();
 							return; // We handled it
 						}
 						else { Debug.Assert(false); }

@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.m_btnClose = new System.Windows.Forms.Button();
-			this.m_lvPlugins = new KeePass.UI.CustomListViewEx();
+			this.m_lvPlugins = new System.Windows.Forms.ListView();
 			this.m_lblSeparator = new System.Windows.Forms.Label();
 			this.m_bannerImage = new System.Windows.Forms.PictureBox();
 			this.m_grpPluginDesc = new System.Windows.Forms.GroupBox();
@@ -200,7 +200,7 @@
 
 		private System.Windows.Forms.PictureBox m_bannerImage;
 		private System.Windows.Forms.Button m_btnClose;
-		private KeePass.UI.CustomListViewEx m_lvPlugins;
+		private System.Windows.Forms.ListView m_lvPlugins;
 		private System.Windows.Forms.Label m_lblSeparator;
 		private System.Windows.Forms.GroupBox m_grpPluginDesc;
 		private System.Windows.Forms.Label m_lblSelectedPluginDesc;

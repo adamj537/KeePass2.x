@@ -31,7 +31,7 @@ namespace KeePass.Util
 {
 	public static class EntryMenu
 	{
-		private static CustomContextMenuStripEx m_ctx = null;
+		private static ContextMenuStrip m_ctx = null;
 
 		public static void Show()
 		{
@@ -56,9 +56,9 @@ namespace KeePass.Util
 			}
 		}
 
-		private static CustomContextMenuStripEx Construct()
+		private static ContextMenuStrip Construct()
 		{
-			CustomContextMenuStripEx ctx = new CustomContextMenuStripEx();
+			ContextMenuStrip ctx = new ContextMenuStrip();
 
 			// Clone the image list in order to prevent event handlers
 			// from the global client icons list to the context menu

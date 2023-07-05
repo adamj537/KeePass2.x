@@ -46,7 +46,7 @@
 			this.m_lblDelObjInfoIntro = new System.Windows.Forms.Label();
 			this.m_tabCustomData = new System.Windows.Forms.TabPage();
 			this.m_btnCDDel = new System.Windows.Forms.Button();
-			this.m_lvCustomData = new KeePass.UI.CustomListViewEx();
+			this.m_lvCustomData = new System.Windows.Forms.ListView();
 			this.m_pbStatus = new System.Windows.Forms.ProgressBar();
 			((System.ComponentModel.ISupportInitialize)(this.m_bannerImage)).BeginInit();
 			this.m_grpHistoryDelete.SuspendLayout();
@@ -322,7 +322,7 @@
 		private System.Windows.Forms.Label m_lblDelObjInfoWarning;
 		private System.Windows.Forms.Button m_btnRemoveDelObjInfo;
 		private System.Windows.Forms.TabPage m_tabCustomData;
-		private KeePass.UI.CustomListViewEx m_lvCustomData;
+		private System.Windows.Forms.ListView m_lvCustomData;
 		private System.Windows.Forms.Button m_btnCDDel;
 	}
 }

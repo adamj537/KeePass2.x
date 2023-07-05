@@ -125,14 +125,14 @@ namespace KeePass.Util
 
 			UIUtil.SetToolTip(tt, btn, KPRes.TagsAddRemove, true);
 
-			CustomContextMenuStripEx ctx = null;
+			ContextMenuStrip ctx = null;
 			Font fItalic = null;
 
 			btn.Click += delegate (object sender, EventArgs e)
 			{
 				if (ctx == null)
 				{
-					ctx = new CustomContextMenuStripEx();
+					ctx = new ContextMenuStrip();
 					fItalic = FontUtil.CreateFont(ctx.Font, FontStyle.Italic);
 				}
 
@@ -199,7 +199,7 @@ namespace KeePass.Util
 				ctx.Items.Clear();
 				ctx.Items.AddRange(lMenuItems.ToArray());
 
-				ctx.ShowEx(btn);
+				ctx.Show();
 			};
 		}
 	}

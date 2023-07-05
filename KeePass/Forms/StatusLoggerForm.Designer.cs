@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.m_btnCancel = new System.Windows.Forms.Button();
-			this.m_lvMessages = new KeePass.UI.CustomListViewEx();
+			this.m_lvMessages = new System.Windows.Forms.ListView();
 			this.m_pbProgress = new System.Windows.Forms.ProgressBar();
 			this.m_tbDetails = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
@@ -103,7 +103,7 @@
 		#endregion
 
 		private System.Windows.Forms.Button m_btnCancel;
-		private KeePass.UI.CustomListViewEx m_lvMessages;
+		private System.Windows.Forms.ListView m_lvMessages;
 		private System.Windows.Forms.ProgressBar m_pbProgress;
 		private System.Windows.Forms.TextBox m_tbDetails;
 	}

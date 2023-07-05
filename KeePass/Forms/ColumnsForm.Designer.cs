@@ -32,7 +32,7 @@
 			this.m_btnCancel = new System.Windows.Forms.Button();
 			this.m_lblChoose = new System.Windows.Forms.Label();
 			this.m_lblReorderHint = new System.Windows.Forms.Label();
-			this.m_lvColumns = new KeePass.UI.CustomListViewEx();
+			this.m_lvColumns = new System.Windows.Forms.ListView();
 			this.m_bannerImage = new System.Windows.Forms.PictureBox();
 			this.m_lblSortHint = new System.Windows.Forms.Label();
 			this.m_grpColumn = new System.Windows.Forms.GroupBox();
@@ -172,7 +172,7 @@
 		private System.Windows.Forms.Button m_btnOK;
 		private System.Windows.Forms.Button m_btnCancel;
 		private System.Windows.Forms.Label m_lblChoose;
-		private KeePass.UI.CustomListViewEx m_lvColumns;
+		private System.Windows.Forms.ListView m_lvColumns;
 		private System.Windows.Forms.Label m_lblReorderHint;
 		private System.Windows.Forms.PictureBox m_bannerImage;
 		private System.Windows.Forms.Label m_lblSortHint;

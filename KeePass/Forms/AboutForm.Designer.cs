@@ -38,7 +38,7 @@
 			this.m_linkAcknowledgements = new System.Windows.Forms.LinkLabel();
 			this.m_linkDonate = new System.Windows.Forms.LinkLabel();
 			this.m_btnOK = new System.Windows.Forms.Button();
-			this.m_lvComponents = new KeePass.UI.CustomListViewEx();
+			this.m_lvComponents = new System.Windows.Forms.ListView();
 			((System.ComponentModel.ISupportInitialize)(this.m_bannerImage)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -201,6 +201,6 @@
 		private System.Windows.Forms.LinkLabel m_linkAcknowledgements;
 		private System.Windows.Forms.LinkLabel m_linkDonate;
 		private System.Windows.Forms.Button m_btnOK;
-		private KeePass.UI.CustomListViewEx m_lvComponents;
+		private System.Windows.Forms.ListView m_lvComponents;
 	}
 }

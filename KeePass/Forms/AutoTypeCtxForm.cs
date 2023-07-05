@@ -41,7 +41,7 @@ namespace KeePass.Forms
 		private int m_nBannerWidth = -1;
 		private bool m_bCanShowPasswords = true;
 
-		private CustomContextMenuStripEx m_ctxTools = null;
+		private ContextMenuStrip m_ctxTools = null;
 		private ToolStripMenuItem m_tsmiColumns = null;
 
 		private AutoTypeCtx m_atcSel = null;
@@ -202,7 +202,7 @@ namespace KeePass.Forms
 		{
 			DestroyToolsContextMenu();
 
-			m_ctxTools = new CustomContextMenuStripEx();
+			m_ctxTools = new ContextMenuStrip();
 			m_tsmiColumns = new ToolStripMenuItem(KPRes.Columns);
 			m_ctxTools.Items.Add(m_tsmiColumns);
 
@@ -272,7 +272,6 @@ namespace KeePass.Forms
 		private void OnBtnTools(object sender, EventArgs e)
 		{
 			RecreateToolsContextMenu();
-			m_ctxTools.ShowEx(m_btnTools);
 		}
 	}
 }

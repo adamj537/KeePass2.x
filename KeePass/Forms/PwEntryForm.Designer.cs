@@ -54,12 +54,12 @@
 			this.m_tabMain = new System.Windows.Forms.TabControl();
 			this.m_tabEntry = new System.Windows.Forms.TabPage();
 			this.m_cbQualityCheck = new System.Windows.Forms.CheckBox();
-			this.m_rtNotes = new KeePass.UI.CustomRichTextBoxEx();
+			this.m_rtNotes = new System.Windows.Forms.RichTextBox();
 			this.m_pbQuality = new KeePass.UI.QualityProgressBar();
 			this.m_tbRepeatPassword = new KeePass.UI.SecureTextBoxEx();
 			this.m_tbPassword = new KeePass.UI.SecureTextBoxEx();
 			this.m_btnStandardExpires = new System.Windows.Forms.Button();
-			this.m_ctxDefaultTimes = new KeePass.UI.CustomContextMenuStripEx(this.components);
+			this.m_ctxDefaultTimes = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.m_menuExpireNow = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_menuExpireSep0 = new System.Windows.Forms.ToolStripSeparator();
 			this.m_menuExpire1Week = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,14 +76,14 @@
 			this.m_btnBinSave = new System.Windows.Forms.Button();
 			this.m_btnBinDelete = new System.Windows.Forms.Button();
 			this.m_btnBinAdd = new System.Windows.Forms.Button();
-			this.m_lvBinaries = new KeePass.UI.CustomListViewEx();
+			this.m_lvBinaries = new System.Windows.Forms.ListView();
 			this.m_grpStringFields = new System.Windows.Forms.GroupBox();
 			this.m_btnStrMore = new System.Windows.Forms.Button();
 			this.m_btnStrAdd = new System.Windows.Forms.Button();
 			this.m_btnStrEdit = new System.Windows.Forms.Button();
 			this.m_btnStrDelete = new System.Windows.Forms.Button();
-			this.m_lvStrings = new KeePass.UI.CustomListViewEx();
-			this.m_ctxStr = new KeePass.UI.CustomContextMenuStripEx(this.components);
+			this.m_lvStrings = new System.Windows.Forms.ListView();
+			this.m_ctxStr = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.m_ctxStrCopyName = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_ctxStrCopyValue = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_ctxStrSep0 = new System.Windows.Forms.ToolStripSeparator();
@@ -105,16 +105,12 @@
 			this.m_linkTagsInh = new System.Windows.Forms.LinkLabel();
 			this.m_lblCustomData = new System.Windows.Forms.Label();
 			this.m_btnCDDel = new System.Windows.Forms.Button();
-			this.m_lvCustomData = new KeePass.UI.CustomListViewEx();
+			this.m_lvCustomData = new System.Windows.Forms.ListView();
 			this.m_tbTags = new System.Windows.Forms.TextBox();
 			this.m_lblTags = new System.Windows.Forms.Label();
-			this.m_btnPickFgColor = new KeePass.UI.ColorButtonEx();
-			this.m_cbCustomForegroundColor = new System.Windows.Forms.CheckBox();
 			this.m_tbUuid = new System.Windows.Forms.TextBox();
 			this.m_lblUuid = new System.Windows.Forms.Label();
 			this.m_lblOverrideUrl = new System.Windows.Forms.Label();
-			this.m_cbCustomBackgroundColor = new System.Windows.Forms.CheckBox();
-			this.m_btnPickBgColor = new KeePass.UI.ColorButtonEx();
 			this.m_cmbOverrideUrl = new KeePass.UI.ImageComboBoxEx();
 			this.m_tabAutoType = new System.Windows.Forms.TabPage();
 			this.m_btnAutoTypeMore = new System.Windows.Forms.Button();
@@ -131,8 +127,8 @@
 			this.m_btnAutoTypeEdit = new System.Windows.Forms.Button();
 			this.m_btnAutoTypeAdd = new System.Windows.Forms.Button();
 			this.m_btnAutoTypeDelete = new System.Windows.Forms.Button();
-			this.m_lvAutoType = new KeePass.UI.CustomListViewEx();
-			this.m_ctxAutoType = new KeePass.UI.CustomContextMenuStripEx(this.components);
+			this.m_lvAutoType = new System.Windows.Forms.ListView();
+			this.m_ctxAutoType = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.m_ctxAutoTypeCopyWnd = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_ctxAutoTypeCopySeq = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_ctxAutoTypeSep0 = new System.Windows.Forms.ToolStripSeparator();
@@ -150,10 +146,10 @@
 			this.m_btnHistoryDelete = new System.Windows.Forms.Button();
 			this.m_btnHistoryView = new System.Windows.Forms.Button();
 			this.m_btnHistoryRestore = new System.Windows.Forms.Button();
-			this.m_lvHistory = new KeePass.UI.CustomListViewEx();
+			this.m_lvHistory = new System.Windows.Forms.ListView();
 			this.m_btnTools = new System.Windows.Forms.Button();
 			this.m_bannerImage = new System.Windows.Forms.PictureBox();
-			this.m_ctxTools = new KeePass.UI.CustomContextMenuStripEx(this.components);
+			this.m_ctxTools = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.m_ctxToolsHelp = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_ctxToolsSep0 = new System.Windows.Forms.ToolStripSeparator();
 			this.m_ctxToolsUrlHelp = new System.Windows.Forms.ToolStripMenuItem();
@@ -168,7 +164,7 @@
 			this.m_ctxToolsFieldRefsInNotes = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_ctxToolsSep2 = new System.Windows.Forms.ToolStripSeparator();
 			this.m_ctxToolsOtpGen = new System.Windows.Forms.ToolStripMenuItem();
-			this.m_ctxBinAttach = new KeePass.UI.CustomContextMenuStripEx(this.components);
+			this.m_ctxBinAttach = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.m_ctxBinImportFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_ctxBinSep0 = new System.Windows.Forms.ToolStripSeparator();
 			this.m_ctxBinNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -847,13 +843,9 @@
 			this.m_tabProperties.Controls.Add(this.m_lvCustomData);
 			this.m_tabProperties.Controls.Add(this.m_tbTags);
 			this.m_tabProperties.Controls.Add(this.m_lblTags);
-			this.m_tabProperties.Controls.Add(this.m_btnPickFgColor);
-			this.m_tabProperties.Controls.Add(this.m_cbCustomForegroundColor);
 			this.m_tabProperties.Controls.Add(this.m_tbUuid);
 			this.m_tabProperties.Controls.Add(this.m_lblUuid);
 			this.m_tabProperties.Controls.Add(this.m_lblOverrideUrl);
-			this.m_tabProperties.Controls.Add(this.m_cbCustomBackgroundColor);
-			this.m_tabProperties.Controls.Add(this.m_btnPickBgColor);
 			this.m_tabProperties.Controls.Add(this.m_cmbOverrideUrl);
 			this.m_tabProperties.Location = new System.Drawing.Point(4, 22);
 			this.m_tabProperties.Name = "m_tabProperties";
@@ -929,25 +921,6 @@
 			this.m_lblTags.TabIndex = 5;
 			this.m_lblTags.Text = "&Tags:";
 			// 
-			// m_btnPickFgColor
-			// 
-			this.m_btnPickFgColor.Location = new System.Drawing.Point(165, 9);
-			this.m_btnPickFgColor.Name = "m_btnPickFgColor";
-			this.m_btnPickFgColor.Size = new System.Drawing.Size(48, 23);
-			this.m_btnPickFgColor.TabIndex = 1;
-			this.m_btnPickFgColor.UseVisualStyleBackColor = true;
-			// 
-			// m_cbCustomForegroundColor
-			// 
-			this.m_cbCustomForegroundColor.AutoSize = true;
-			this.m_cbCustomForegroundColor.Location = new System.Drawing.Point(9, 13);
-			this.m_cbCustomForegroundColor.Name = "m_cbCustomForegroundColor";
-			this.m_cbCustomForegroundColor.Size = new System.Drawing.Size(144, 17);
-			this.m_cbCustomForegroundColor.TabIndex = 0;
-			this.m_cbCustomForegroundColor.Text = "Custom &foreground color:";
-			this.m_cbCustomForegroundColor.UseVisualStyleBackColor = true;
-			this.m_cbCustomForegroundColor.CheckedChanged += new System.EventHandler(this.OnCustomForegroundColorCheckedChanged);
-			// 
 			// m_tbUuid
 			// 
 			this.m_tbUuid.Location = new System.Drawing.Point(49, 309);
@@ -973,25 +946,6 @@
 			this.m_lblOverrideUrl.Size = new System.Drawing.Size(222, 13);
 			this.m_lblOverrideUrl.TabIndex = 8;
 			this.m_lblOverrideUrl.Text = "O&verride URL (e.g. to use a specific browser):";
-			// 
-			// m_cbCustomBackgroundColor
-			// 
-			this.m_cbCustomBackgroundColor.AutoSize = true;
-			this.m_cbCustomBackgroundColor.Location = new System.Drawing.Point(9, 42);
-			this.m_cbCustomBackgroundColor.Name = "m_cbCustomBackgroundColor";
-			this.m_cbCustomBackgroundColor.Size = new System.Drawing.Size(150, 17);
-			this.m_cbCustomBackgroundColor.TabIndex = 2;
-			this.m_cbCustomBackgroundColor.Text = "Custom &background color:";
-			this.m_cbCustomBackgroundColor.UseVisualStyleBackColor = true;
-			this.m_cbCustomBackgroundColor.CheckedChanged += new System.EventHandler(this.OnCustomBackgroundColorCheckedChanged);
-			// 
-			// m_btnPickBgColor
-			// 
-			this.m_btnPickBgColor.Location = new System.Drawing.Point(165, 38);
-			this.m_btnPickBgColor.Name = "m_btnPickBgColor";
-			this.m_btnPickBgColor.Size = new System.Drawing.Size(48, 23);
-			this.m_btnPickBgColor.TabIndex = 3;
-			this.m_btnPickBgColor.UseVisualStyleBackColor = true;
 			// 
 			// m_cmbOverrideUrl
 			// 
@@ -1595,7 +1549,7 @@
 		private KeePass.UI.SecureTextBoxEx m_tbRepeatPassword;
 		private KeePass.UI.QualityProgressBar m_pbQuality;
 		private System.Windows.Forms.TextBox m_tbUrl;
-		private KeePass.UI.CustomRichTextBoxEx m_rtNotes;
+		private System.Windows.Forms.RichTextBox m_rtNotes;
 		private System.Windows.Forms.CheckBox m_cbExpires;
 		private System.Windows.Forms.DateTimePicker m_dtExpireDateTime;
 		private System.Windows.Forms.Button m_btnStandardExpires;
@@ -1617,22 +1571,22 @@
 		private System.Windows.Forms.Button m_btnBinSave;
 		private System.Windows.Forms.Button m_btnBinDelete;
 		private System.Windows.Forms.Button m_btnBinAdd;
-		private KeePass.UI.CustomListViewEx m_lvBinaries;
+		private System.Windows.Forms.ListView m_lvBinaries;
 		private System.Windows.Forms.GroupBox m_grpStringFields;
 		private System.Windows.Forms.Button m_btnStrEdit;
 		private System.Windows.Forms.Button m_btnStrDelete;
 		private System.Windows.Forms.Button m_btnStrAdd;
-		private KeePass.UI.CustomListViewEx m_lvStrings;
+		private System.Windows.Forms.ListView m_lvStrings;
 		private System.Windows.Forms.Button m_btnTools;
 		private System.Windows.Forms.Button m_btnAutoTypeEdit;
 		private System.Windows.Forms.Button m_btnAutoTypeAdd;
 		private System.Windows.Forms.Button m_btnAutoTypeDelete;
-		private KeePass.UI.CustomListViewEx m_lvAutoType;
+		private System.Windows.Forms.ListView m_lvAutoType;
 		private System.Windows.Forms.Button m_btnHistoryRestore;
 		private System.Windows.Forms.Button m_btnHistoryView;
-		private KeePass.UI.CustomListViewEx m_lvHistory;
+		private System.Windows.Forms.ListView m_lvHistory;
 		private System.Windows.Forms.Button m_btnHistoryDelete;
-		private KeePass.UI.CustomContextMenuStripEx m_ctxDefaultTimes;
+		private System.Windows.Forms.ContextMenuStrip m_ctxDefaultTimes;
 		private System.Windows.Forms.ToolStripMenuItem m_menuExpireNow;
 		private System.Windows.Forms.ToolStripSeparator m_menuExpireSep0;
 		private System.Windows.Forms.ToolStripMenuItem m_menuExpire1Week;
@@ -1643,7 +1597,7 @@
 		private System.Windows.Forms.ToolStripMenuItem m_menuExpire6Months;
 		private System.Windows.Forms.ToolStripSeparator m_menuExpireSep2;
 		private System.Windows.Forms.ToolStripMenuItem m_menuExpire1Year;
-		private KeePass.UI.CustomContextMenuStripEx m_ctxAutoType;
+		private System.Windows.Forms.ContextMenuStrip m_ctxAutoType;
 		private System.Windows.Forms.ToolStripMenuItem m_ctxAutoTypeCopySeq;
 		private System.Windows.Forms.TextBox m_tbDefaultAutoTypeSeq;
 		private System.Windows.Forms.CheckBox m_cbAutoTypeEnabled;
@@ -1653,15 +1607,13 @@
 		private System.Windows.Forms.Button m_btnAutoTypeEditDefault;
 		private System.Windows.Forms.Button m_btnStrMore;
 		private System.Windows.Forms.TabPage m_tabProperties;
-		private KeePass.UI.ColorButtonEx m_btnPickBgColor;
-		private System.Windows.Forms.CheckBox m_cbCustomBackgroundColor;
 		private System.Windows.Forms.Label m_lblOverrideUrl;
 		private System.Windows.Forms.LinkLabel m_linkAutoTypeObfuscation;
 		private System.Windows.Forms.CheckBox m_cbAutoTypeObfuscation;
 		private KeePass.UI.SplitButtonEx m_btnBinOpen;
 		private System.Windows.Forms.TextBox m_tbUuid;
 		private System.Windows.Forms.Label m_lblUuid;
-		private KeePass.UI.CustomContextMenuStripEx m_ctxTools;
+		private System.Windows.Forms.ContextMenuStrip m_ctxTools;
 		private System.Windows.Forms.ToolStripMenuItem m_ctxToolsHelp;
 		private System.Windows.Forms.ToolStripSeparator m_ctxToolsSep0;
 		private System.Windows.Forms.ToolStripMenuItem m_ctxToolsUrlHelp;
@@ -1674,11 +1626,9 @@
 		private System.Windows.Forms.ToolStripMenuItem m_ctxToolsFieldRefsInPassword;
 		private System.Windows.Forms.ToolStripMenuItem m_ctxToolsFieldRefsInUrl;
 		private System.Windows.Forms.ToolStripMenuItem m_ctxToolsFieldRefsInNotes;
-		private KeePass.UI.ColorButtonEx m_btnPickFgColor;
-		private System.Windows.Forms.CheckBox m_cbCustomForegroundColor;
 		private System.Windows.Forms.TextBox m_tbTags;
 		private System.Windows.Forms.Label m_lblTags;
-		private KeePass.UI.CustomContextMenuStripEx m_ctxBinAttach;
+		private System.Windows.Forms.ContextMenuStrip m_ctxBinAttach;
 		private System.Windows.Forms.ToolStripMenuItem m_ctxBinImportFile;
 		private System.Windows.Forms.ToolStripSeparator m_ctxBinSep0;
 		private System.Windows.Forms.ToolStripMenuItem m_ctxBinNew;
@@ -1687,7 +1637,7 @@
 		private System.Windows.Forms.Button m_btnAutoTypeUp;
 		private System.Windows.Forms.Label m_lblCustomData;
 		private System.Windows.Forms.Button m_btnCDDel;
-		private KeePass.UI.CustomListViewEx m_lvCustomData;
+		private System.Windows.Forms.ListView m_lvCustomData;
 		private System.Windows.Forms.Label m_lblModifiedData;
 		private System.Windows.Forms.Label m_lblModified;
 		private System.Windows.Forms.Label m_lblCreatedData;
@@ -1696,7 +1646,7 @@
 		private System.Windows.Forms.LinkLabel m_linkTagsInh;
 		private System.Windows.Forms.Button m_btnTags;
 		private System.Windows.Forms.CheckBox m_cbQualityCheck;
-		private KeePass.UI.CustomContextMenuStripEx m_ctxStr;
+		private System.Windows.Forms.ContextMenuStrip m_ctxStr;
 		private System.Windows.Forms.ToolStripSeparator m_ctxStrSep0;
 		private System.Windows.Forms.ToolStripMenuItem m_ctxStrMoveTo;
 		private System.Windows.Forms.ToolStripMenuItem m_ctxStrMoveToTitle;

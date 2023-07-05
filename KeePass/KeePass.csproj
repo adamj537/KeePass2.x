@@ -840,36 +840,9 @@
     <Compile Include="UI\BackgroundForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\ColorButtonEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UI\ColorMenuItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="UI\ColumnProvider.cs" />
     <Compile Include="UI\ColumnProviderPool.cs" />
-    <Compile Include="UI\CustomContextMenuEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UI\CustomContextMenuStripEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UI\CustomListViewEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UI\CustomMenuStripEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="UI\CustomMessageFilterEx.cs" />
-    <Compile Include="UI\CustomRichTextBoxEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UI\CustomToolStripEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UI\CustomTreeViewEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="UI\DocumentManagerEx.cs" />
     <Compile Include="UI\DpiUtil.cs" />
     <Compile Include="UI\DwmUtil.cs" />
@@ -880,6 +853,9 @@
     <Compile Include="UI\FontControlGroup.cs" />
     <Compile Include="UI\FontUtil.cs" />
     <Compile Include="UI\GlobalWindowManager.cs" />
+    <Compile Include="UI\HotKeyControlEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\IconColorizer.cs" />
     <Compile Include="UI\IGwmWindow.cs" />
     <Compile Include="UI\ImageComboBoxEx.cs">
@@ -932,13 +908,7 @@
     <Compile Include="Util\CancellableOperationEventArgs.cs" />
     <Compile Include="Plugins\PluginInfo.cs" />
     <Compile Include="UI\CheckedLVItemDXList.cs" />
-    <Compile Include="UI\CustomSplitContainerEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="UI\DynamicMenu.cs" />
-    <Compile Include="UI\HotKeyControlEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="UI\ListSorter.cs" />
     <Compile Include="UI\QualityProgressBar.cs">
       <SubType>Component</SubType>

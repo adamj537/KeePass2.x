@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.m_lvMain = new KeePass.UI.CustomListViewEx();
+			this.m_lvMain = new System.Windows.Forms.ListView();
 			this.m_bannerImage = new System.Windows.Forms.PictureBox();
 			this.m_lblInfo = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.m_bannerImage)).BeginInit();
@@ -95,7 +95,7 @@
 
 		#endregion
 
-		private KeePass.UI.CustomListViewEx m_lvMain;
+		private System.Windows.Forms.ListView m_lvMain;
 		private System.Windows.Forms.PictureBox m_bannerImage;
 		private System.Windows.Forms.Label m_lblInfo;
 	}

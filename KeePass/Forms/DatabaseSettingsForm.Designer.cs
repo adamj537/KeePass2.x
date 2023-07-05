@@ -55,8 +55,6 @@
 			this.m_lblCmpIntro = new System.Windows.Forms.Label();
 			this.m_tabMain = new System.Windows.Forms.TabControl();
 			this.m_tabGeneral = new System.Windows.Forms.TabPage();
-			this.m_cbColor = new System.Windows.Forms.CheckBox();
-			this.m_btnColor = new KeePass.UI.ColorButtonEx();
 			this.m_tbDefaultUser = new System.Windows.Forms.TextBox();
 			this.m_lblDefaultUser = new System.Windows.Forms.Label();
 			this.m_tbDbDesc = new KeePass.UI.PromptedTextBox();
@@ -358,8 +356,6 @@
 			// 
 			// m_tabGeneral
 			// 
-			this.m_tabGeneral.Controls.Add(this.m_cbColor);
-			this.m_tabGeneral.Controls.Add(this.m_btnColor);
 			this.m_tabGeneral.Controls.Add(this.m_tbDefaultUser);
 			this.m_tabGeneral.Controls.Add(this.m_lblDefaultUser);
 			this.m_tabGeneral.Controls.Add(this.m_tbDbDesc);
@@ -373,25 +369,6 @@
 			this.m_tabGeneral.TabIndex = 0;
 			this.m_tabGeneral.Text = "General";
 			this.m_tabGeneral.UseVisualStyleBackColor = true;
-			// 
-			// m_cbColor
-			// 
-			this.m_cbColor.AutoSize = true;
-			this.m_cbColor.Location = new System.Drawing.Point(6, 295);
-			this.m_cbColor.Name = "m_cbColor";
-			this.m_cbColor.Size = new System.Drawing.Size(137, 17);
-			this.m_cbColor.TabIndex = 6;
-			this.m_cbColor.Text = "Cu&stom database color:";
-			this.m_cbColor.UseVisualStyleBackColor = true;
-			this.m_cbColor.CheckedChanged += new System.EventHandler(this.OnColorCheckedChanged);
-			// 
-			// m_btnColor
-			// 
-			this.m_btnColor.Location = new System.Drawing.Point(176, 291);
-			this.m_btnColor.Name = "m_btnColor";
-			this.m_btnColor.Size = new System.Drawing.Size(48, 23);
-			this.m_btnColor.TabIndex = 7;
-			this.m_btnColor.UseVisualStyleBackColor = true;
 			// 
 			// m_tbDefaultUser
 			// 
@@ -851,8 +828,6 @@
 		private System.Windows.Forms.NumericUpDown m_numHistoryMaxSize;
 		private System.Windows.Forms.NumericUpDown m_numHistoryMaxItems;
 		private System.Windows.Forms.CheckBox m_cbHistoryMaxSize;
-		private KeePass.UI.ColorButtonEx m_btnColor;
-		private System.Windows.Forms.CheckBox m_cbColor;
 		private System.Windows.Forms.ComboBox m_cmbKdf;
 		private System.Windows.Forms.Label m_lblKdf;
 		private System.Windows.Forms.Button m_btnKdf1Sec;

@@ -79,7 +79,7 @@ namespace KeePass.Forms
 		private Image m_imgStdExpire = null;
 		private List<Image> m_lOverrideUrlIcons = new List<Image>();
 
-		private CustomContextMenuStripEx m_ctxBinOpen = null;
+		private ContextMenuStrip m_ctxBinOpen = null;
 		private DynamicMenu m_dynBinOpen = null;
 
 		private const PwIcon m_pwObjectProtected = PwIcon.PaperLocked;
@@ -445,14 +445,6 @@ namespace KeePass.Forms
 
 		private void InitPropertiesTab()
 		{
-			m_btnPickFgColor.SelectedColor = m_pwEntry.ForegroundColor;
-			m_btnPickBgColor.SelectedColor = m_pwEntry.BackgroundColor;
-
-			UIUtil.SetChecked(m_cbCustomForegroundColor, !UIUtil.ColorsEqual(
-				m_pwEntry.ForegroundColor, Color.Empty));
-			UIUtil.SetChecked(m_cbCustomBackgroundColor, !UIUtil.ColorsEqual(
-				m_pwEntry.BackgroundColor, Color.Empty));
-
 			TagUtil.MakeInheritedTagsLink(m_linkTagsInh, m_pwEntry.ParentGroup, this);
 			m_tbTags.Text = StrUtil.TagsToString(m_pwEntry.Tags, true);
 			TagUtil.MakeTagsButton(m_btnTags, m_tbTags, m_ttRect, m_pwEntry.ParentGroup,
@@ -490,8 +482,6 @@ namespace KeePass.Forms
 
 			if (m_pwEditMode == PwEditMode.ViewReadOnlyEntry)
 			{
-				m_cbCustomForegroundColor.Enabled = false;
-				m_cbCustomBackgroundColor.Enabled = false;
 				m_tbTags.ReadOnly = true;
 				m_btnTags.Enabled = false;
 				m_cmbOverrideUrl.Enabled = false;
@@ -718,7 +708,7 @@ namespace KeePass.Forms
 
 			m_ctxNotes.Attach(m_rtNotes, this);
 
-			m_ctxBinOpen = new CustomContextMenuStripEx();
+			m_ctxBinOpen = new ContextMenuStrip();
 			m_ctxBinOpen.Opening += OnCtxBinOpenOpening;
 			m_dynBinOpen = new DynamicMenu(m_ctxBinOpen.Items);
 			m_dynBinOpen.MenuClick += OnDynBinOpen;
@@ -812,10 +802,6 @@ namespace KeePass.Forms
 
 				UIUtil.SetEnabledFast(false, m_grpAttachments, m_lvBinaries);
 
-				if (m_mvec.MultiFgColor)
-					MultipleValuesEx.ConfigureState(m_cbCustomForegroundColor, true);
-				if (m_mvec.MultiBgColor)
-					MultipleValuesEx.ConfigureState(m_cbCustomBackgroundColor, true);
 				MultipleValuesEx.ConfigureText(m_tbTags, true);
 				MultipleValuesEx.ConfigureText(m_cmbOverrideUrl, true);
 				m_tbUuid.Text = MultipleValuesEx.CueString;
@@ -919,11 +905,6 @@ namespace KeePass.Forms
 			m_btnBinOpen.Enabled = (nBinSel == 1);
 			m_btnBinSave.Enabled = (nBinSel >= 1);
 
-			m_btnPickFgColor.Enabled = (bEdit &&
-				(m_cbCustomForegroundColor.CheckState == CheckState.Checked));
-			m_btnPickBgColor.Enabled = (bEdit &&
-				(m_cbCustomBackgroundColor.CheckState == CheckState.Checked));
-
 			bool bUrlEmpty = (m_tbUrl.TextLength == 0);
 			bool bUrlOverrideEmpty = (m_cmbOverrideUrl.Text.Length == 0);
 			bool bWarn = (bUrlEmpty && !bUrlOverrideEmpty);
@@ -997,11 +978,6 @@ namespace KeePass.Forms
 
 			peTarget.Binaries = m_vBinaries;
 
-			peTarget.ForegroundColor = (m_cbCustomForegroundColor.Checked ?
-				m_btnPickFgColor.SelectedColor : Color.Empty);
-			peTarget.BackgroundColor = (m_cbCustomBackgroundColor.Checked ?
-				m_btnPickBgColor.SelectedColor : Color.Empty);
-
 			peTarget.Tags = StrUtil.StringToTags(m_tbTags.Text);
 			peTarget.OverrideUrl = m_cmbOverrideUrl.Text;
 			peTarget.CustomData = m_sdCustomData;
@@ -1039,8 +1015,6 @@ namespace KeePass.Forms
 			if (m_mvec != null)
 			{
 				m_mvec.MultiExpiry = (m_cbExpires.CheckState == CheckState.Indeterminate);
-				m_mvec.MultiFgColor = (m_cbCustomForegroundColor.CheckState == CheckState.Indeterminate);
-				m_mvec.MultiBgColor = (m_cbCustomBackgroundColor.CheckState == CheckState.Indeterminate);
 				m_mvec.MultiAutoTypeEnabled = (m_cbAutoTypeEnabled.CheckState == CheckState.Indeterminate);
 				m_mvec.MultiAutoTypeObf = (m_cbAutoTypeObfuscation.CheckState == CheckState.Indeterminate);
 			}
@@ -1177,7 +1151,7 @@ namespace KeePass.Forms
 
 		private void OnBtnBinAdd(object sender, EventArgs e)
 		{
-			m_ctxBinAttach.ShowEx(m_btnBinAdd);
+			m_ctxBinAttach.Show();
 		}
 
 		private void OnBtnBinDelete(object sender, EventArgs e)
@@ -1423,7 +1397,7 @@ namespace KeePass.Forms
 
 		private void OnBtnStandardExpiresClick(object sender, EventArgs e)
 		{
-			m_ctxDefaultTimes.ShowEx(m_btnStandardExpires);
+			m_ctxDefaultTimes.Show();
 		}
 
 		private const string ClipFmtStrings = "EntryStrings";
@@ -1738,7 +1712,7 @@ namespace KeePass.Forms
 
 		private void OnBtnStrMore(object sender, EventArgs e)
 		{
-			m_ctxStr.ShowEx(m_btnStrMore);
+			m_ctxStr.Show();
 		}
 
 		private void OnAutoTypeSelectedIndexChanged(object sender, EventArgs e)
@@ -1754,16 +1728,6 @@ namespace KeePass.Forms
 		private void OnStringsItemActivate(object sender, EventArgs e)
 		{
 			OnBtnStrEdit(sender, e);
-		}
-
-		private void OnCustomForegroundColorCheckedChanged(object sender, EventArgs e)
-		{
-			EnableControlsEx();
-		}
-
-		private void OnCustomBackgroundColorCheckedChanged(object sender, EventArgs e)
-		{
-			EnableControlsEx();
 		}
 
 		private void OnAutoTypeObfuscationLink(object sender, LinkLabelLinkClickedEventArgs e)
@@ -1853,7 +1817,7 @@ namespace KeePass.Forms
 
 		private void OnBtnTools(object sender, EventArgs e)
 		{
-			m_ctxTools.ShowEx(m_btnTools);
+			m_ctxTools.Show();
 		}
 
 		private void OnCtxToolsHelp(object sender, EventArgs e)
@@ -2432,7 +2396,7 @@ namespace KeePass.Forms
 
 		private void OnBtnAutoTypeMore(object sender, EventArgs e)
 		{
-			m_ctxAutoType.ShowEx(m_btnAutoTypeMore);
+			m_ctxAutoType.Show();
 		}
 
 		private void OnCtxStrSelectAll(object sender, EventArgs e)

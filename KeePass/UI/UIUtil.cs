@@ -623,28 +623,6 @@ namespace KeePass.UI
 			bool bSimpleTextOnly, bool bCtrlEnterAccepts)
 		{
 			if (rtb == null) { Debug.Assert(false); return; }
-
-			// See CustomRichTextBoxEx.CreateParams
-			// try
-			// {
-			//	int nStyle = NativeMethods.GetWindowStyle(rtb.Handle);
-			//	if((nStyle & NativeMethods.ES_WANTRETURN) == 0)
-			//	{
-			//		NativeMethods.SetWindowLong(rtb.Handle, NativeMethods.GWL_STYLE,
-			//			nStyle | NativeMethods.ES_WANTRETURN);
-			//		Debug.Assert((NativeMethods.GetWindowStyle(rtb.Handle) &
-			//			NativeMethods.ES_WANTRETURN) != 0);
-			//	}
-			// }
-			// catch(Exception) { }
-
-			CustomRichTextBoxEx crtb = (rtb as CustomRichTextBoxEx);
-			if (crtb != null)
-			{
-				crtb.SimpleTextOnly = bSimpleTextOnly;
-				crtb.CtrlEnterAccepts = bCtrlEnterAccepts;
-			}
-			else { Debug.Assert(!bSimpleTextOnly && !bCtrlEnterAccepts); }
 		}
 
 		public static void SetMultilineText(TextBox tb, string str)
@@ -734,11 +712,6 @@ namespace KeePass.UI
 
 				for (int iCol = 1; iCol < vColumns.Count; ++iCol)
 					lvi.SubItems.Add(AppDefs.GetEntryField(pe, vColumns[iCol].Key));
-
-				if (!ColorsEqual(pe.ForegroundColor, Color.Empty))
-					lvi.ForeColor = pe.ForegroundColor;
-				if (!ColorsEqual(pe.BackgroundColor, Color.Empty))
-					lvi.BackColor = pe.BackgroundColor;
 
 				lvi.Tag = pe;
 
@@ -887,11 +860,6 @@ namespace KeePass.UI
 				if ((f & AceAutoTypeCtxFlags.ColSequence) != AceAutoTypeCtxFlags.None)
 					lvi.SubItems.Add(ctx.Sequence);
 				Debug.Assert(lvi.SubItems.Count == lv.Columns.Count);
-
-				if (!ColorsEqual(pe.ForegroundColor, Color.Empty))
-					lvi.ForeColor = pe.ForegroundColor;
-				if (!ColorsEqual(pe.BackgroundColor, Color.Empty))
-					lvi.BackColor = pe.BackgroundColor;
 
 				lvi.Tag = ctx;
 
@@ -3308,9 +3276,10 @@ namespace KeePass.UI
 				tsi = tsiOwner;
 			}
 
+			// TODO:  Is this code block necessary now that custom control extensions are removed?
 			ToolStrip ts = tsi.Owner;
-			Debug.Assert((ts is CustomMenuStripEx) || (ts is CustomToolStripEx) ||
-				(ts is CustomContextMenuStripEx));
+			Debug.Assert((ts is MenuStrip) || (ts is ToolStrip) ||
+				(ts is ContextMenuStrip));
 			return ts;
 		}
 

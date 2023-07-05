@@ -30,7 +30,7 @@
 		{
 			this.m_btnClose = new System.Windows.Forms.Button();
 			this.m_bannerImage = new System.Windows.Forms.PictureBox();
-			this.m_lvInfo = new KeePass.UI.CustomListViewEx();
+			this.m_lvInfo = new System.Windows.Forms.ListView();
 			this.m_linkWeb = new System.Windows.Forms.LinkLabel();
 			this.m_linkPlugins = new System.Windows.Forms.LinkLabel();
 			((System.ComponentModel.ISupportInitialize)(this.m_bannerImage)).BeginInit();
@@ -122,7 +122,7 @@
 
 		private System.Windows.Forms.Button m_btnClose;
 		private System.Windows.Forms.PictureBox m_bannerImage;
-		private KeePass.UI.CustomListViewEx m_lvInfo;
+		private System.Windows.Forms.ListView m_lvInfo;
 		private System.Windows.Forms.LinkLabel m_linkWeb;
 		private System.Windows.Forms.LinkLabel m_linkPlugins;
 	}

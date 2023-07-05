@@ -32,8 +32,8 @@
 			this.m_btnCancel = new System.Windows.Forms.Button();
 			this.m_lblSeparator = new System.Windows.Forms.Label();
 			this.m_lblHint = new System.Windows.Forms.Label();
-			this.m_tvFolders = new KeePass.UI.CustomTreeViewEx();
-			this.m_lvFiles = new KeePass.UI.CustomListViewEx();
+			this.m_tvFolders = new System.Windows.Forms.TreeView();
+			this.m_lvFiles = new System.Windows.Forms.ListView();
 			this.SuspendLayout();
 			// 
 			// m_btnOK
@@ -134,7 +134,7 @@
 		private System.Windows.Forms.Button m_btnCancel;
 		private System.Windows.Forms.Label m_lblSeparator;
 		private System.Windows.Forms.Label m_lblHint;
-		private KeePass.UI.CustomTreeViewEx m_tvFolders;
-		private KeePass.UI.CustomListViewEx m_lvFiles;
+		private System.Windows.Forms.TreeView m_tvFolders;
+		private System.Windows.Forms.ListView m_lvFiles;
 	}
 }

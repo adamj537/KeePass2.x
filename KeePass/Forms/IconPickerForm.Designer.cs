@@ -38,8 +38,8 @@
 			this.m_btnCancel = new System.Windows.Forms.Button();
 			this.m_lblFind = new System.Windows.Forms.Label();
 			this.m_tbFind = new System.Windows.Forms.TextBox();
-			this.m_lvCustomIcons = new KeePass.UI.CustomListViewEx();
-			this.m_lvIcons = new KeePass.UI.CustomListViewEx();
+			this.m_lvCustomIcons = new System.Windows.Forms.ListView();
+			this.m_lvIcons = new System.Windows.Forms.ListView();
 			this.SuspendLayout();
 			// 
 			// m_btnOK
@@ -205,9 +205,9 @@
 
 		#endregion
 
-		private KeePass.UI.CustomListViewEx m_lvIcons;
+		private System.Windows.Forms.ListView m_lvIcons;
 		private System.Windows.Forms.Button m_btnOK;
-		private KeePass.UI.CustomListViewEx m_lvCustomIcons;
+		private System.Windows.Forms.ListView m_lvCustomIcons;
 		private System.Windows.Forms.RadioButton m_radioStandard;
 		private System.Windows.Forms.RadioButton m_radioCustom;
 		private System.Windows.Forms.Label m_lblSeparator;

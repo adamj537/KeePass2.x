@@ -199,7 +199,7 @@ namespace KeePass.Forms
 
 		private void OnBtnTools(object sender, EventArgs e)
 		{
-			m_ctxTools.ShowEx(m_btnTools);
+			m_ctxTools.Show();
 		}
 
 		private void OnCtxToolsHelp(object sender, EventArgs e)

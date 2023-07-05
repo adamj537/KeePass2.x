@@ -28,13 +28,13 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.m_menuMain = new KeePass.UI.CustomMenuStripEx();
+			this.m_menuMain = new System.Windows.Forms.MenuStrip();
 			this.m_menuFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_menuFileExit = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_statusMain = new System.Windows.Forms.StatusStrip();
 			this.m_lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
 			this.m_webBrowser = new System.Windows.Forms.WebBrowser();
-			this.m_toolNav = new KeePass.UI.CustomToolStripEx();
+			this.m_toolNav = new System.Windows.Forms.ToolStrip();
 			this.m_btnBack = new System.Windows.Forms.ToolStripButton();
 			this.m_btnForward = new System.Windows.Forms.ToolStripButton();
 			this.m_btnReload = new System.Windows.Forms.ToolStripButton();
@@ -167,6 +167,7 @@
 			// 
 			// m_tbUrl
 			// 
+			this.m_tbUrl.Font = new System.Drawing.Font("Segoe UI", 9F);
 			this.m_tbUrl.Name = "m_tbUrl";
 			this.m_tbUrl.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
 			this.m_tbUrl.Size = new System.Drawing.Size(200, 25);
@@ -197,9 +198,9 @@
 			this.Name = "InternalBrowserForm";
 			this.ShowInTaskbar = false;
 			this.Text = "<DYN>";
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OnFormClosed);
 			this.Load += new System.EventHandler(this.OnFormLoad);
 			this.SizeChanged += new System.EventHandler(this.OnFormSizeChanged);
-			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OnFormClosed);
 			this.m_menuMain.ResumeLayout(false);
 			this.m_menuMain.PerformLayout();
 			this.m_statusMain.ResumeLayout(false);
@@ -213,13 +214,13 @@
 
 		#endregion
 
-		private KeePass.UI.CustomMenuStripEx m_menuMain;
+		private System.Windows.Forms.MenuStrip m_menuMain;
 		private System.Windows.Forms.ToolStripMenuItem m_menuFile;
 		private System.Windows.Forms.ToolStripMenuItem m_menuFileExit;
 		private System.Windows.Forms.StatusStrip m_statusMain;
 		private System.Windows.Forms.ToolStripStatusLabel m_lblStatus;
 		private System.Windows.Forms.WebBrowser m_webBrowser;
-		private KeePass.UI.CustomToolStripEx m_toolNav;
+		private System.Windows.Forms.ToolStrip m_toolNav;
 		private System.Windows.Forms.ToolStripTextBox m_tbUrl;
 		private System.Windows.Forms.ToolStripButton m_btnBack;
 		private System.Windows.Forms.ToolStripButton m_btnForward;

@@ -440,16 +440,6 @@ namespace KeePass.Forms
 				Program.Config.MainWindow.Width = Size.Width;
 				Program.Config.MainWindow.Height = Size.Height;
 			}
-
-			if ((ws == FormWindowState.Normal) || (ws == FormWindowState.Maximized))
-			{
-				Program.Config.MainWindow.SplitterHorizontalFrac =
-					m_splitHorizontal.SplitterDistanceFrac;
-				Program.Config.MainWindow.SplitterVerticalFrac =
-					m_splitVertical.SplitterDistanceFrac;
-			}
-
-			// Program.Config.MainWindow.Maximized = (ws == FormWindowState.Maximized);
 		}
 
 		/// <summary>
@@ -916,10 +906,7 @@ namespace KeePass.Forms
 			UIUtil.SetEnabledFast(s.DatabaseOpened, m_menuEntryAdd);
 			UIUtil.SetEnabledFast(bEntrySel, m_menuEntryEdit,
 				m_menuEntryEditQuick, m_menuEntryIcon,
-				m_menuEntryColor, m_menuEntryColorStandard,
-				m_menuEntryColorLightRed, m_menuEntryColorLightGreen,
-				m_menuEntryColorLightBlue, m_menuEntryColorLightYellow,
-				m_menuEntryColorCustom, m_menuEntryTagAdd, m_menuEntryTagRemove,
+				m_menuEntryTagAdd, m_menuEntryTagRemove,
 				m_menuEntryTagNew, m_menuEntryExpiresNow, m_menuEntryExpiresNever,
 				m_menuEntryDuplicate, m_menuEntryDelete);
 			UIUtil.SetEnabledFast(bEntrySel1, m_menuEntryOtpGenSettings);
@@ -1258,24 +1245,12 @@ namespace KeePass.Forms
 				}
 			}
 
-			if (!UIUtil.ColorsEqual(pe.ForegroundColor, Color.Empty))
-				lvi.ForeColor = pe.ForegroundColor;
-			else if (lviTarget != null) lvi.ForeColor = m_lvEntries.ForeColor;
-			else { Debug.Assert(UIUtil.ColorsEqual(lvi.ForeColor, m_lvEntries.ForeColor)); }
-
-			if (!UIUtil.ColorsEqual(pe.BackgroundColor, Color.Empty))
-				lvi.BackColor = pe.BackgroundColor;
-			else if (lviTarget != null) lvi.BackColor = m_lvEntries.BackColor;
-			else { Debug.Assert(UIUtil.ColorsEqual(lvi.BackColor, m_lvEntries.BackColor)); }
-
 			bool bAsync;
 
-			// m_bOnlyTans &= PwDefs.IsTanEntry(pe);
 			if (m_bShowTanIndices && m_bOnlyTans)
 			{
 				string strIndex = pe.Strings.ReadSafe(PwDefs.TanIndexField);
 
-				// KPF 1151
 				if (Program.Config.MainWindow.EntryListShowDerefData &&
 					SprEngine.MightDeref(strIndex))
 					strIndex = AsyncPwListUpdate.SprCompileFn(strIndex, pli);
@@ -1339,7 +1314,7 @@ namespace KeePass.Forms
 			m_bEntryGrouping = m_lvEntries.ShowGroups;
 
 			ListViewStateEx lvseCachedState = new ListViewStateEx(m_lvEntries);
-			m_lvEntries.BeginUpdateEx();
+			m_lvEntries.BeginUpdate();
 
 			foreach (PwEntry pe in lEntries)
 			{
@@ -1364,7 +1339,7 @@ namespace KeePass.Forms
 				SetListEntry(pe, null);
 			}
 
-			m_lvEntries.EndUpdateEx();
+			m_lvEntries.EndUpdate();
 			Debug.Assert(lvseCachedState.CompareTo(m_lvEntries));
 		}
 
@@ -1503,7 +1478,7 @@ namespace KeePass.Forms
 			m_asyncListUpdate.CancelPendingUpdatesAsync();
 
 			++m_uBlockEntrySelectionEvent; // KPB 1698
-			m_lvEntries.BeginUpdateEx();
+			m_lvEntries.BeginUpdate();
 
 			lock (m_asyncListUpdate.ListEditSyncObject)
 			{
@@ -1569,7 +1544,7 @@ namespace KeePass.Forms
 				lviTop = null; // Prevent normal scrolling below
 			}
 
-			m_lvEntries.EndUpdateEx(lviTop);
+			m_lvEntries.EndUpdate();
 			--m_uBlockEntrySelectionEvent;
 
 			// Switch the view *after* EndUpdate, otherwise drawing bug;
@@ -1595,7 +1570,7 @@ namespace KeePass.Forms
 		{
 			UpdateImageLists(false); // Important
 
-			m_lvEntries.BeginUpdateEx();
+			m_lvEntries.BeginUpdate();
 			m_dtCachedNow = DateTime.UtcNow;
 
 			foreach (ListViewItem lvi in m_lvEntries.Items)
@@ -1603,7 +1578,7 @@ namespace KeePass.Forms
 				SetListEntry(((PwListItem)lvi.Tag).Entry, lvi);
 			}
 
-			m_lvEntries.EndUpdateEx();
+			m_lvEntries.EndUpdate();
 		}
 
 		private PwEntry GetTopEntry()
@@ -3199,32 +3174,6 @@ namespace KeePass.Forms
 			m_fontItalicTree = FontUtil.CreateFont(fList, fList.Style | FontStyle.Italic);
 		}
 
-		private void SetSelectedEntryColor(Color clrBack)
-		{
-			PwDatabase pd = m_docMgr.ActiveDatabase;
-			if ((pd == null) || !pd.IsOpen) { Debug.Assert(false); return; }
-
-			PwEntry[] vSelected = GetSelectedEntries();
-			if ((vSelected == null) || (vSelected.Length == 0)) return;
-
-			bool bMod = false;
-			foreach (PwEntry pe in vSelected)
-			{
-				if (UIUtil.ColorsEqual(pe.BackgroundColor, clrBack)) continue;
-
-				pe.CreateBackup(pd);
-				pe.BackgroundColor = clrBack;
-				pe.Touch(true, false);
-
-				bMod = true;
-			}
-
-			SelectEntries(new PwObjectList<PwEntry>(), true, false, false,
-				false); // Ensure color visible
-			RefreshEntriesList();
-			UpdateUIState(bMod);
-		}
-
 		private void OnEntryStringClick(object sender, DynamicMenuEventArgs e)
 		{
 			try
@@ -3412,7 +3361,6 @@ namespace KeePass.Forms
 
 			ToolStripItemCollection tsicECQuick = m_ctxEntryEditQuick.DropDownItems;
 			tsicECQuick.Insert(0, new ToolStripSeparator());
-			m_milMain.CreateCopy(tsicECQuick, null, false, m_menuEntryColor);
 			m_milMain.CreateCopy(tsicECQuick, null, false, m_menuEntryIcon);
 
 			m_milMain.CreateLink(m_ctxEntryTagAdd, m_menuEntryTagAdd, false);
@@ -4075,19 +4023,6 @@ namespace KeePass.Forms
 				tb.Text = strName;
 				tb.ToolTipText = strTip;
 
-				if (bImgs && (ds.Database != null) && ds.Database.IsOpen &&
-					!UIUtil.ColorsEqual(ds.Database.Color, Color.Empty))
-				{
-					Image img = UIUtil.CreateTabColorImage(AppIcons.RoundColor(
-						ds.Database.Color), m_tabMain);
-					if (img != null)
-					{
-						m_lTabImages.Add(img);
-						tb.ImageIndex = m_lTabImages.Count - 1;
-					}
-					else { Debug.Assert(false); }
-				}
-
 				lPages.Add(tb);
 			}
 
@@ -4485,7 +4420,7 @@ namespace KeePass.Forms
 				UIUtil.SetFocusedItem(m_lvEntries, m_lvEntries.Items[0], false);
 
 			++m_uBlockEntrySelectionEvent;
-			m_lvEntries.BeginUpdateEx();
+			m_lvEntries.BeginUpdate();
 
 			lock (m_asyncListUpdate.ListEditSyncObject)
 			{
@@ -4499,7 +4434,7 @@ namespace KeePass.Forms
 				}
 			}
 
-			m_lvEntries.EndUpdateEx();
+			m_lvEntries.EndUpdate();
 			--m_uBlockEntrySelectionEvent;
 		}
 
@@ -5957,14 +5892,9 @@ namespace KeePass.Forms
 
 		private Icon CreateColorizedIcon(AppIconType t, bool bSmall)
 		{
-			PwDatabase pd = m_docMgr.ActiveDatabase;
-
-			Color clr = Color.Empty;
-			if ((pd != null) && pd.IsOpen) clr = pd.Color;
-
 			Size sz = (bSmall ? UIUtil.GetSmallIconSize() : UIUtil.GetIconSize());
 
-			return AppIcons.Get(t, sz, clr);
+			return AppIcons.Get(t, sz, Color.Empty);
 		}
 
 		private void SetObjectsDeletedStatus(uint uDeleted, bool bDbMntnc)

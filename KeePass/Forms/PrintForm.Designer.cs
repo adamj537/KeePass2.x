@@ -41,15 +41,6 @@
 			this.m_cmbSortEntries = new System.Windows.Forms.ComboBox();
 			this.m_lblSortEntries = new System.Windows.Forms.Label();
 			this.m_grpStyle = new System.Windows.Forms.GroupBox();
-			this.m_lblColorPO = new System.Windows.Forms.Label();
-			this.m_lblColorPD = new System.Windows.Forms.Label();
-			this.m_lblColorPL = new System.Windows.Forms.Label();
-			this.m_lblColorPU = new System.Windows.Forms.Label();
-			this.m_btnColorPO = new KeePass.UI.ColorButtonEx();
-			this.m_btnColorPD = new KeePass.UI.ColorButtonEx();
-			this.m_btnColorPL = new KeePass.UI.ColorButtonEx();
-			this.m_btnColorPU = new KeePass.UI.ColorButtonEx();
-			this.m_cbColorP = new System.Windows.Forms.CheckBox();
 			this.m_btnPasswordFont = new System.Windows.Forms.Button();
 			this.m_btnMainFont = new System.Windows.Forms.Button();
 			this.m_cbPasswordFont = new System.Windows.Forms.CheckBox();
@@ -223,15 +214,6 @@
 			// 
 			// m_grpStyle
 			// 
-			this.m_grpStyle.Controls.Add(this.m_lblColorPO);
-			this.m_grpStyle.Controls.Add(this.m_lblColorPD);
-			this.m_grpStyle.Controls.Add(this.m_lblColorPL);
-			this.m_grpStyle.Controls.Add(this.m_lblColorPU);
-			this.m_grpStyle.Controls.Add(this.m_btnColorPO);
-			this.m_grpStyle.Controls.Add(this.m_btnColorPD);
-			this.m_grpStyle.Controls.Add(this.m_btnColorPL);
-			this.m_grpStyle.Controls.Add(this.m_btnColorPU);
-			this.m_grpStyle.Controls.Add(this.m_cbColorP);
 			this.m_grpStyle.Controls.Add(this.m_btnPasswordFont);
 			this.m_grpStyle.Controls.Add(this.m_btnMainFont);
 			this.m_grpStyle.Controls.Add(this.m_cbPasswordFont);
@@ -242,85 +224,6 @@
 			this.m_grpStyle.TabIndex = 2;
 			this.m_grpStyle.TabStop = false;
 			this.m_grpStyle.Text = "Style";
-			// 
-			// m_lblColorPO
-			// 
-			this.m_lblColorPO.AutoSize = true;
-			this.m_lblColorPO.Location = new System.Drawing.Point(215, 38);
-			this.m_lblColorPO.Name = "m_lblColorPO";
-			this.m_lblColorPO.Size = new System.Drawing.Size(19, 13);
-			this.m_lblColorPO.TabIndex = 7;
-			this.m_lblColorPO.Text = "<>";
-			// 
-			// m_lblColorPD
-			// 
-			this.m_lblColorPD.AutoSize = true;
-			this.m_lblColorPD.Location = new System.Drawing.Point(152, 38);
-			this.m_lblColorPD.Name = "m_lblColorPD";
-			this.m_lblColorPD.Size = new System.Drawing.Size(19, 13);
-			this.m_lblColorPD.TabIndex = 5;
-			this.m_lblColorPD.Text = "<>";
-			// 
-			// m_lblColorPL
-			// 
-			this.m_lblColorPL.AutoSize = true;
-			this.m_lblColorPL.Location = new System.Drawing.Point(89, 38);
-			this.m_lblColorPL.Name = "m_lblColorPL";
-			this.m_lblColorPL.Size = new System.Drawing.Size(19, 13);
-			this.m_lblColorPL.TabIndex = 3;
-			this.m_lblColorPL.Text = "<>";
-			// 
-			// m_lblColorPU
-			// 
-			this.m_lblColorPU.AutoSize = true;
-			this.m_lblColorPU.Location = new System.Drawing.Point(26, 38);
-			this.m_lblColorPU.Name = "m_lblColorPU";
-			this.m_lblColorPU.Size = new System.Drawing.Size(19, 13);
-			this.m_lblColorPU.TabIndex = 1;
-			this.m_lblColorPU.Text = "<>";
-			// 
-			// m_btnColorPO
-			// 
-			this.m_btnColorPO.Location = new System.Drawing.Point(218, 56);
-			this.m_btnColorPO.Name = "m_btnColorPO";
-			this.m_btnColorPO.Size = new System.Drawing.Size(56, 23);
-			this.m_btnColorPO.TabIndex = 8;
-			this.m_btnColorPO.UseVisualStyleBackColor = true;
-			// 
-			// m_btnColorPD
-			// 
-			this.m_btnColorPD.Location = new System.Drawing.Point(155, 56);
-			this.m_btnColorPD.Name = "m_btnColorPD";
-			this.m_btnColorPD.Size = new System.Drawing.Size(57, 23);
-			this.m_btnColorPD.TabIndex = 6;
-			this.m_btnColorPD.UseVisualStyleBackColor = true;
-			// 
-			// m_btnColorPL
-			// 
-			this.m_btnColorPL.Location = new System.Drawing.Point(92, 56);
-			this.m_btnColorPL.Name = "m_btnColorPL";
-			this.m_btnColorPL.Size = new System.Drawing.Size(57, 23);
-			this.m_btnColorPL.TabIndex = 4;
-			this.m_btnColorPL.UseVisualStyleBackColor = true;
-			// 
-			// m_btnColorPU
-			// 
-			this.m_btnColorPU.Location = new System.Drawing.Point(29, 56);
-			this.m_btnColorPU.Name = "m_btnColorPU";
-			this.m_btnColorPU.Size = new System.Drawing.Size(57, 23);
-			this.m_btnColorPU.TabIndex = 2;
-			this.m_btnColorPU.UseVisualStyleBackColor = true;
-			// 
-			// m_cbColorP
-			// 
-			this.m_cbColorP.AutoSize = true;
-			this.m_cbColorP.Location = new System.Drawing.Point(10, 20);
-			this.m_cbColorP.Name = "m_cbColorP";
-			this.m_cbColorP.Size = new System.Drawing.Size(167, 17);
-			this.m_cbColorP.TabIndex = 0;
-			this.m_cbColorP.Text = "Colori&ze password characters:";
-			this.m_cbColorP.UseVisualStyleBackColor = true;
-			this.m_cbColorP.CheckedChanged += new System.EventHandler(this.OnColorPCheckedChanged);
 			// 
 			// m_btnPasswordFont
 			// 
@@ -751,14 +654,5 @@
 		private System.Windows.Forms.CheckBox m_cbPasswordFont;
 		private System.Windows.Forms.Button m_btnPasswordFont;
 		private System.Windows.Forms.Button m_btnMainFont;
-		private System.Windows.Forms.CheckBox m_cbColorP;
-		private KeePass.UI.ColorButtonEx m_btnColorPU;
-		private KeePass.UI.ColorButtonEx m_btnColorPO;
-		private KeePass.UI.ColorButtonEx m_btnColorPD;
-		private KeePass.UI.ColorButtonEx m_btnColorPL;
-		private System.Windows.Forms.Label m_lblColorPU;
-		private System.Windows.Forms.Label m_lblColorPO;
-		private System.Windows.Forms.Label m_lblColorPD;
-		private System.Windows.Forms.Label m_lblColorPL;
 	}
 }

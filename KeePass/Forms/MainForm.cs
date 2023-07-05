@@ -109,9 +109,6 @@ namespace KeePass.Forms
 
 			m_asyncListUpdate = new AsyncPwListUpdate(m_lvEntries);
 
-			m_splitHorizontal.InitEx(Controls, m_menuMain);
-			m_splitVertical.InitEx(Controls, m_menuMain);
-
 			if (!Program.DesignMode)
 			{
 				if (MonoWorkarounds.IsRequired(891029)) m_tabMain.Height += 5;
@@ -316,13 +313,13 @@ namespace KeePass.Forms
 			UIUtil.SetChecked(m_menuViewShowEntriesOfSubGroups,
 				Program.Config.MainWindow.ShowEntriesOfSubGroups);
 
-			CustomContextMenuStripEx ctxHeader = new CustomContextMenuStripEx();
+			ContextMenuStrip ctxHeader = new ContextMenuStrip();
 			ToolStripMenuItem tsmiCfgCol = new ToolStripMenuItem(m_menuViewConfigColumns.Text,
 				m_menuViewConfigColumns.Image, new EventHandler(OnViewConfigColumns));
 			ctxHeader.Items.Add(tsmiCfgCol);
-			m_lvEntries.HeaderContextMenuStrip = ctxHeader;
+			//m_lvEntries.HeaderContextMenuStrip = ctxHeader;
 
-			m_lvEntries.UseAlternatingItemStyles = true;
+			//m_lvEntries.UseAlternatingItemStyles = true;
 
 			m_pListSorter = Program.Config.MainWindow.ListSorting;
 			if ((m_pListSorter.Column >= 0) && (m_pListSorter.Order != SortOrder.None))
@@ -348,42 +345,13 @@ namespace KeePass.Forms
 
 			SetListFont(Program.Config.UI.StandardFont);
 
-			int w = DpiUtil.ScaleIntX(16), h = DpiUtil.ScaleIntY(16);
-			Image imgC = UIUtil.CreateColorBitmap24(w, h, AppDefs.NamedEntryColor.LightRed);
-			m_milMain.SetImage(m_menuEntryColorLightRed, imgC);
-			imgC = UIUtil.CreateColorBitmap24(w, h, AppDefs.NamedEntryColor.LightGreen);
-			m_milMain.SetImage(m_menuEntryColorLightGreen, imgC);
-			imgC = UIUtil.CreateColorBitmap24(w, h, AppDefs.NamedEntryColor.LightBlue);
-			m_milMain.SetImage(m_menuEntryColorLightBlue, imgC);
-			imgC = UIUtil.CreateColorBitmap24(w, h, AppDefs.NamedEntryColor.LightYellow);
-			m_milMain.SetImage(m_menuEntryColorLightYellow, imgC);
-
 			Debug.Assert(!m_tvGroups.ShowRootLines); // See designer
-													 // m_lvEntries.GridLines = mw.ShowGridLines;
+
 			if (UIUtil.VistaStyleListsSupported)
 			{
-				// m_tvGroups.ItemHeight += 1;
-				// m_tvGroups.ShowLines = false; // Option-dep., see CustomTreeViewEx
-
 				UIUtil.SetExplorerTheme(m_tvGroups.Handle);
 				UIUtil.SetExplorerTheme(m_lvEntries.Handle);
 			}
-
-			// m_tvGroups.QueryToolTip = UIUtil.GetPwGroupToolTipTN;
-
-			try
-			{
-				double dSplitPos = mw.SplitterHorizontalFrac;
-				if (dSplitPos == double.Epsilon) dSplitPos = 0.8333;
-				if (MonoWorkarounds.IsRequired(686017))
-					m_splitHorizontal.Panel1MinSize = 35;
-				m_splitHorizontal.SplitterDistanceFrac = dSplitPos;
-
-				dSplitPos = mw.SplitterVerticalFrac;
-				if (dSplitPos == double.Epsilon) dSplitPos = 0.25;
-				m_splitVertical.SplitterDistanceFrac = dSplitPos;
-			}
-			catch (Exception) { Debug.Assert(false); }
 
 			string strSearchTr = ((WinUtil.IsAtLeastWindowsVista ?
 				string.Empty : " ") + KPRes.Search);
@@ -423,11 +391,11 @@ namespace KeePass.Forms
 			int[] vStdSbWidths = new int[] { 140, 150, 100 };
 			DpiUtil.ScaleToolStripItems(vSbItems, vStdSbWidths);
 
-			// Workaround for .NET ToolStrip height bug;
+			// TODO:  Workaround for .NET ToolStrip height bug was here.
 			// https://sourceforge.net/p/keepass/discussion/329220/thread/19e7c256/
 			Debug.Assert((m_toolMain.Height == 25) || DpiUtil.ScalingRequired ||
 				MonoWorkarounds.IsRequired(100001));
-			m_toolMain.LockHeight(true);
+			// m_toolMain.LockHeight(true);
 
 			UpdateFindProfilesMenu(m_menuFindProfiles, true);
 			UpdateFindProfilesMenu(m_ctxGroupFindProfiles, true);
@@ -1231,9 +1199,6 @@ namespace KeePass.Forms
 				m_nLockTimerMax = (int)Program.Config.Security.WorkspaceLocking.LockAfterTime;
 				m_nClipClearMax = Program.Config.Security.ClipboardClearAfterSeconds;
 
-				m_tvGroups.ApplyOptions();
-				// m_lvEntries.GridLines = Program.Config.MainWindow.ShowGridLines;
-
 				m_mruList.MaxItemCount = Program.Config.Application.MostRecentlyUsed.MaxItemCount;
 				SetListFont(Program.Config.UI.StandardFont);
 
@@ -1966,40 +1931,6 @@ namespace KeePass.Forms
 			bool b = ((l != null) && (l.UCount != 0));
 			UpdateUI(false, null, false, null, b, null, b);
 			if (b) SelectEntries(l, true, true, true, true);
-		}
-
-		private void OnEntryColorStandard(object sender, EventArgs e)
-		{
-			SetSelectedEntryColor(Color.Empty);
-		}
-
-		private void OnEntryColorLightRed(object sender, EventArgs e)
-		{
-			SetSelectedEntryColor(AppDefs.NamedEntryColor.LightRed);
-		}
-
-		private void OnEntryColorLightGreen(object sender, EventArgs e)
-		{
-			SetSelectedEntryColor(AppDefs.NamedEntryColor.LightGreen);
-		}
-
-		private void OnEntryColorLightBlue(object sender, EventArgs e)
-		{
-			SetSelectedEntryColor(AppDefs.NamedEntryColor.LightBlue);
-		}
-
-		private void OnEntryColorLightYellow(object sender, EventArgs e)
-		{
-			SetSelectedEntryColor(AppDefs.NamedEntryColor.LightYellow);
-		}
-
-		private void OnEntryColorCustom(object sender, EventArgs e)
-		{
-			PwEntry pe = GetSelectedEntry(false);
-			Color clrCur = ((pe != null) ? pe.BackgroundColor : Color.Empty);
-
-			Color? oclr = UIUtil.ShowColorDialog(clrCur);
-			if (oclr.HasValue) SetSelectedEntryColor(oclr.Value);
 		}
 
 		private void OnPwListMouseDown(object sender, MouseEventArgs e)
