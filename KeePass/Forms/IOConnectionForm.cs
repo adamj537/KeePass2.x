@@ -63,7 +63,6 @@ namespace KeePass.Forms
 		{
 			InitializeComponent();
 
-			SecureTextBoxEx.InitEx(ref m_tbPassword);
 			GlobalWindowManager.InitializeForm(this);
 		}
 
@@ -144,7 +143,7 @@ namespace KeePass.Forms
 
 			m_ioc.Path = strUrl;
 			m_ioc.UserName = m_tbUserName.Text;
-			m_ioc.Password = m_tbPassword.TextEx.ReadString();
+			m_ioc.Password = m_tbPassword.Text;
 
 			if (m_cmbCredSaveMode.SelectedIndex == 1)
 				m_ioc.CredSaveMode = IOCredSaveMode.UserNameOnly;

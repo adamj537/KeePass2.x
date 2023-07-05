@@ -37,8 +37,8 @@ namespace KeePass.Forms
 {
 	public partial class CharPickerForm : Form
 	{
-		private ProtectedString m_psWord = null;
-		private ProtectedString m_psSelected = ProtectedString.Empty;
+		private String m_psWord = null;
+		private String m_psSelected = String.Empty;
 
 		private List<Button> m_lButtons = new List<Button>();
 		private List<Label> m_lLabels = new List<Label>();
@@ -52,7 +52,7 @@ namespace KeePass.Forms
 
 		private Font m_fontChars = null;
 
-		public ProtectedString SelectedCharacters
+		public String SelectedCharacters
 		{
 			get { return m_psSelected; }
 		}
@@ -69,9 +69,12 @@ namespace KeePass.Forms
 
 			DialogResult dr = dlg.ShowDialog();
 
-			ProtectedString ps = dlg.SelectedCharacters;
+			String ps = dlg.SelectedCharacters;
 			string strRet = null;
-			if ((dr == DialogResult.OK) && (ps != null)) strRet = ps.ReadString();
+			if ((dr == DialogResult.OK) && (ps != null))
+			{
+				strRet = ps;
+			}
 
 			UIUtil.DestroyForm(dlg);
 
@@ -89,7 +92,6 @@ namespace KeePass.Forms
 		{
 			InitializeComponent();
 
-			SecureTextBoxEx.InitEx(ref m_tbSelected);
 			GlobalWindowManager.InitializeForm(this);
 		}
 
@@ -106,7 +108,7 @@ namespace KeePass.Forms
 		public void InitEx(ProtectedString psWord, bool bCenterScreen,
 			bool bSetForeground, uint uCharCount, bool? obInitHide)
 		{
-			m_psWord = psWord;
+			m_psWord = psWord.ReadString();
 
 			if (bCenterScreen) StartPosition = FormStartPosition.CenterScreen;
 
@@ -187,7 +189,7 @@ namespace KeePass.Forms
 
 		private void OnBtnOK(object sender, EventArgs e)
 		{
-			m_psSelected = m_tbSelected.TextEx;
+			m_psSelected = m_tbSelected.Text;
 		}
 
 		private void OnBtnCancel(object sender, EventArgs e)
@@ -233,7 +235,7 @@ namespace KeePass.Forms
 
 			bool bRtl = (RightToLeft == RightToLeft.Yes);
 
-			char[] vWord = ((m_psWord != null) ? m_psWord.ReadChars() : new char[0]);
+			char[] vWord = (m_psWord != null) ? m_psWord.ToCharArray() : new char[0];
 			if (vWord.Length >= 1)
 			{
 				int x = 0;
@@ -280,9 +282,8 @@ namespace KeePass.Forms
 				return;
 			}
 
-			m_tbSelected.EnableProtection(bHide);
-
-			string strHiddenChar = new string(SecureTextBoxEx.PasswordCharEx, 1);
+			string strHiddenChar = new string(((Environment.OSVersion.Platform ==
+						PlatformID.Win32Windows) ? '\u00D7' : '\u25CF'), 1);
 
 			bool bHideBtns = bHide;
 			bHideBtns |= !Program.Config.UI.Hiding.UnhideButtonAlsoUnhidesSource;

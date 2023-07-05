@@ -84,7 +84,6 @@ namespace KeePass.Forms
 		{
 			InitializeComponent();
 
-			SecureTextBoxEx.InitEx(ref m_tbPassword);
 			GlobalWindowManager.InitializeForm(this);
 		}
 
@@ -219,7 +218,7 @@ namespace KeePass.Forms
 					if (ps != null)
 					{
 						m_cbPassword.Checked = true;
-						m_tbPassword.TextEx = ps;
+						m_tbPassword.Text = ps.ToString();
 					}
 				}
 
@@ -389,8 +388,6 @@ namespace KeePass.Forms
 				UIUtil.SetChecked(m_cbHidePassword, true);
 				return;
 			}
-
-			m_tbPassword.EnableProtection(bHide);
 
 			if (bAuto) UIUtil.SetFocus(m_tbPassword, this);
 		}

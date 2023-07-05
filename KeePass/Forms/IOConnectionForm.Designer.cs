@@ -44,7 +44,7 @@
 			this.m_lblUrlHints = new System.Windows.Forms.Label();
 			this.m_tabMain = new System.Windows.Forms.TabControl();
 			this.m_tabConn = new System.Windows.Forms.TabPage();
-			this.m_tbPassword = new KeePass.UI.SecureTextBoxEx();
+			this.m_tbPassword = new System.Windows.Forms.TextBox();
 			this.m_tabAdv = new System.Windows.Forms.TabPage();
 			this.m_pnlAdv = new System.Windows.Forms.Panel();
 			((System.ComponentModel.ISupportInitialize)(this.m_bannerImage)).BeginInit();
@@ -281,7 +281,7 @@
 		private System.Windows.Forms.Label m_lblUserName;
 		private System.Windows.Forms.TextBox m_tbUserName;
 		private System.Windows.Forms.Label m_lblPassword;
-		private KeePass.UI.SecureTextBoxEx m_tbPassword;
+		private System.Windows.Forms.TextBox m_tbPassword;
 		private System.Windows.Forms.Label m_lblCredNote;
 		private System.Windows.Forms.Button m_btnHelp;
 		private System.Windows.Forms.ComboBox m_cmbCredSaveMode;

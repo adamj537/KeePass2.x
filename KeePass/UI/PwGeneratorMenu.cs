@@ -92,19 +92,19 @@ namespace KeePass.UI
 			else { Debug.Assert(false); }
 		}
 
-		private bool IsMultipleValues(ProtectedString ps)
+		private bool IsMultipleValues(string ps)
 		{
 			if (!m_bMultipleValues) return false;
 
 			if (ps == null) { Debug.Assert(false); return false; }
-			return ps.Equals(MultipleValuesEx.CueProtectedString, false);
+			return ps.Equals(MultipleValuesEx.CueProtectedString);
 		}
 
 		private List<ToolStripItem> ConstructMenuItems()
 		{
 			List<ToolStripItem> l = new List<ToolStripItem>();
 			List<char> lAvailKeys = new List<char>(PwCharSet.MenuAccels);
-			ProtectedString ps = GetPassword();
+			string ps = GetPassword();
 
 			GFunc<string, Image, EventHandler, object, ToolStripMenuItem> fAdd =
 				delegate (string strText, Image img, EventHandler ehClick,
@@ -183,19 +183,19 @@ namespace KeePass.UI
 			ConstructContextMenu();
 		}
 
-		private ProtectedString GetPassword()
+		private string GetPassword()
 		{
 			PwInputControlGroup icg = (m_oTarget as PwInputControlGroup);
-			if (icg != null) return icg.GetPasswordEx();
+			if (icg != null) return icg.GetPassword();
 
 			TextBoxBase tb = (m_oTarget as TextBoxBase);
-			if (tb != null) return new ProtectedString(false, tb.Text);
+			if (tb != null) return tb.Text;
 
 			Debug.Assert(false); // Unknown target type
 			return null;
 		}
 
-		private void SetPassword(ProtectedString ps)
+		private void SetPassword(string ps)
 		{
 			if (ps == null) { Debug.Assert(false); return; }
 
@@ -209,7 +209,7 @@ namespace KeePass.UI
 			TextBoxBase tb = (m_oTarget as TextBoxBase);
 			if (tb != null)
 			{
-				tb.Text = ps.ReadString();
+				tb.Text = ps;
 				return;
 			}
 
@@ -224,15 +224,13 @@ namespace KeePass.UI
 			PwEntry pe = ((m_fGetContextEntry != null) ? m_fGetContextEntry() : null);
 
 			SetPassword(PwGeneratorUtil.GenerateAcceptable(prf,
-				pbEntropy, pe, m_pdContext, true));
+				pbEntropy, pe, m_pdContext, true).ReadString());
 		}
 
 		private void OnGenOpen(object sender, EventArgs e)
 		{
 			PwProfile prf = null;
-			ProtectedString ps = (GetPassword() ?? ProtectedString.Empty);
-			if (!ps.IsEmpty && !IsMultipleValues(ps))
-				prf = PwProfile.DeriveFromPassword(ps);
+			string ps = (GetPassword() ?? String.Empty);
 
 			PwGeneratorForm pgf = new PwGeneratorForm();
 			pgf.InitEx(prf, true, false);
@@ -245,10 +243,10 @@ namespace KeePass.UI
 
 		private void OnGenDeriveFromPrevious(object sender, EventArgs e)
 		{
-			ProtectedString ps = GetPassword();
+			string ps = GetPassword();
 			if (ps == null) { Debug.Assert(false); return; }
 
-			GenerateAndSetPassword(PwProfile.DeriveFromPassword(ps));
+			GenerateAndSetPassword(PwProfile.DeriveFromPassword(new ProtectedString(false, ps)));
 		}
 
 		private void OnGenAuto(object sender, EventArgs e)

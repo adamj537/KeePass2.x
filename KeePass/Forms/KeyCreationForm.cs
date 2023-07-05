@@ -73,9 +73,6 @@ namespace KeePass.Forms
 		{
 			InitializeComponent();
 
-			SecureTextBoxEx.InitEx(ref m_tbPassword);
-			SecureTextBoxEx.InitEx(ref m_tbRepeatPassword);
-
 			GlobalWindowManager.InitializeForm(this);
 		}
 

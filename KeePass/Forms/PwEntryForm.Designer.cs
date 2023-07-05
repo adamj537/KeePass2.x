@@ -56,8 +56,8 @@
 			this.m_cbQualityCheck = new System.Windows.Forms.CheckBox();
 			this.m_rtNotes = new System.Windows.Forms.RichTextBox();
 			this.m_pbQuality = new KeePass.UI.QualityProgressBar();
-			this.m_tbRepeatPassword = new KeePass.UI.SecureTextBoxEx();
-			this.m_tbPassword = new KeePass.UI.SecureTextBoxEx();
+			this.m_tbRepeatPassword = new System.Windows.Forms.TextBox();
+			this.m_tbPassword = new System.Windows.Forms.TextBox();
 			this.m_btnStandardExpires = new System.Windows.Forms.Button();
 			this.m_ctxDefaultTimes = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.m_menuExpireNow = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,7 +72,7 @@
 			this.m_menuExpire1Year = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_tabAdvanced = new System.Windows.Forms.TabPage();
 			this.m_grpAttachments = new System.Windows.Forms.GroupBox();
-			this.m_btnBinOpen = new KeePass.UI.SplitButtonEx();
+			this.m_btnBinOpen = new System.Windows.Forms.Button();
 			this.m_btnBinSave = new System.Windows.Forms.Button();
 			this.m_btnBinDelete = new System.Windows.Forms.Button();
 			this.m_btnBinAdd = new System.Windows.Forms.Button();
@@ -1545,8 +1545,8 @@
 		private System.Windows.Forms.Button m_btnIcon;
 		private System.Windows.Forms.Label m_lblIcon;
 		private System.Windows.Forms.TextBox m_tbUserName;
-		private KeePass.UI.SecureTextBoxEx m_tbPassword;
-		private KeePass.UI.SecureTextBoxEx m_tbRepeatPassword;
+		private System.Windows.Forms.TextBox m_tbPassword;
+		private System.Windows.Forms.TextBox m_tbRepeatPassword;
 		private KeePass.UI.QualityProgressBar m_pbQuality;
 		private System.Windows.Forms.TextBox m_tbUrl;
 		private System.Windows.Forms.RichTextBox m_rtNotes;
@@ -1610,7 +1610,7 @@
 		private System.Windows.Forms.Label m_lblOverrideUrl;
 		private System.Windows.Forms.LinkLabel m_linkAutoTypeObfuscation;
 		private System.Windows.Forms.CheckBox m_cbAutoTypeObfuscation;
-		private KeePass.UI.SplitButtonEx m_btnBinOpen;
+		private System.Windows.Forms.Button m_btnBinOpen;
 		private System.Windows.Forms.TextBox m_tbUuid;
 		private System.Windows.Forms.Label m_lblUuid;
 		private System.Windows.Forms.ContextMenuStrip m_ctxTools;

@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using System.Windows.Forms;
 
 using KeePass.App;
@@ -101,7 +102,7 @@ namespace KeePass.Util
 		}
 
 		internal static CompositeKey KeyFromUI(CheckBox cbPassword,
-			PwInputControlGroup icgPassword, SecureTextBoxEx stbPassword,
+			PwInputControlGroup icgPassword, TextBox stbPassword,
 			CheckBox cbKeyFile, ComboBox cmbKeyFile, CheckBox cbUserAccount,
 			IOConnectionInfo ioc, bool bSecureDesktop)
 		{
@@ -118,7 +119,7 @@ namespace KeePass.Util
 			{
 				if (cbPassword.Checked)
 				{
-					pbPasswordUtf8 = stbPassword.TextEx.ReadUtf8();
+					pbPasswordUtf8 = Encoding.ASCII.GetBytes(stbPassword.Text);
 
 					if (bNewKey)
 					{

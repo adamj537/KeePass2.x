@@ -35,7 +35,6 @@ namespace KeePass.Forms
 		{
 			InitializeComponent();
 
-			SecureTextBoxEx.InitEx(ref m_tbPassword);
 			GlobalWindowManager.InitializeForm(this);
 		}
 
@@ -95,7 +94,7 @@ namespace KeePass.Forms
 			ace.ProxyPort = m_tbPort.Text;
 			ace.ProxyAuthType = pat;
 			ace.ProxyUserName = m_tbUser.Text;
-			ace.ProxyPassword = m_tbPassword.TextEx.ReadString();
+			ace.ProxyPassword = m_tbPassword.Text;
 
 			Program.Config.Apply(AceApplyFlags.Proxy);
 		}

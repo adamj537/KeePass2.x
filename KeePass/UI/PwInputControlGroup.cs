@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -40,10 +41,10 @@ namespace KeePass.UI
 {
 	public sealed class PwInputControlGroup
 	{
-		private SecureTextBoxEx m_tbPassword = null;
+		private TextBox m_tbPassword = null;
 		private CheckBox m_cbHide = null;
 		private Label m_lblRepeat = null;
-		private SecureTextBoxEx m_tbRepeat = null;
+		private TextBox m_tbRepeat = null;
 		private Label m_lblQualityPrompt = null;
 		private QualityProgressBar m_pbQuality = null;
 		private Label m_lblQualityInfo = null;
@@ -127,8 +128,8 @@ namespace KeePass.UI
 		}
 #endif
 
-		public void Attach(SecureTextBoxEx tbPassword, CheckBox cbHide, Label lblRepeat,
-			SecureTextBoxEx tbRepeat, Label lblQualityPrompt, QualityProgressBar pbQuality,
+		public void Attach(TextBox tbPassword, CheckBox cbHide, Label lblRepeat,
+			TextBox tbRepeat, Label lblQualityPrompt, QualityProgressBar pbQuality,
 			Label lblQualityInfo, ToolTip ttHint, Form fParent, bool bInitialHide,
 			bool bSecureDesktopMode)
 		{
@@ -156,10 +157,8 @@ namespace KeePass.UI
 			m_fParent = fParent;
 
 			m_tbPassword.TextChanged += OnPasswordTextChanged;
-			m_tbPassword.EnableProtection(bInitialHide);
 
 			m_tbRepeat.TextChanged += OnRepeatTextChanged;
-			m_tbRepeat.EnableProtection(bInitialHide);
 
 			ConfigureHideButton(m_cbHide, m_ttHint);
 
@@ -204,7 +203,7 @@ namespace KeePass.UI
 			if (m_fParent is KeyCreationForm)
 				uFlags = Program.Config.UI.KeyCreationFlags;
 
-			byte[] pbUtf8 = m_tbPassword.TextEx.ReadUtf8();
+			byte[] pbUtf8 = Encoding.ASCII.GetBytes(m_tbPassword.Text);
 			char[] v = StrUtil.Utf8.GetChars(pbUtf8);
 
 #if DEBUG
@@ -221,7 +220,7 @@ namespace KeePass.UI
 			if (bAutoRepeat && (m_tbRepeat.TextLength > 0))
 				m_tbRepeat.Text = string.Empty;
 
-			byte[] pbRepeat = m_tbRepeat.TextEx.ReadUtf8();
+			byte[] pbRepeat = Encoding.ASCII.GetBytes(m_tbRepeat.Text);
 			string strTip = KPRes.PasswordRepeatHint;
 			if (MemUtil.ArraysEqual(pbUtf8, pbRepeat) || bAutoRepeat)
 				m_tbRepeat.ResetBackColor();
@@ -320,14 +319,11 @@ namespace KeePass.UI
 				}
 			}
 
-			m_tbPassword.EnableProtection(bHide);
-			m_tbRepeat.EnableProtection(bHide);
-
 			bool bWasAutoRepeat = Program.Config.UI.RepeatPasswordOnlyWhenHidden;
 			if (bHide && (m_uPrgmCheck == 0) && bWasAutoRepeat)
 			{
 				++m_uBlockUIUpdate;
-				m_tbRepeat.TextEx = m_tbPassword.TextEx;
+				m_tbRepeat.Text = m_tbPassword.Text;
 				--m_uBlockUIUpdate;
 			}
 
@@ -335,13 +331,13 @@ namespace KeePass.UI
 			if (m_uPrgmCheck == 0) UIUtil.SetFocus(m_tbPassword, m_fParent);
 		}
 
-		public void SetPassword(ProtectedString ps, bool bSetRepeatPw)
+		public void SetPassword(string ps, bool bSetRepeatPw)
 		{
 			if (ps == null) { Debug.Assert(false); return; }
 
 			++m_uBlockUIUpdate;
-			m_tbPassword.TextEx = ps;
-			if (bSetRepeatPw && !AutoRepeat) m_tbRepeat.TextEx = ps;
+			m_tbPassword.Text = ps.ToString();
+			if (bSetRepeatPw && !AutoRepeat) m_tbRepeat.Text = ps.ToString();
 			--m_uBlockUIUpdate;
 
 			UpdateUI();
@@ -360,53 +356,42 @@ namespace KeePass.UI
 		{
 			++m_uBlockUIUpdate;
 			if (psPassword != null)
-				m_tbPassword.TextEx = psPassword;
+				m_tbPassword.Text = psPassword.ToString();
 			if ((psRepeat != null) && !AutoRepeat)
-				m_tbRepeat.TextEx = psRepeat;
+				m_tbRepeat.Text = psRepeat.ToString();
 			--m_uBlockUIUpdate;
 
 			UpdateUI();
 		}
 
-		[Obsolete]
 		public string GetPassword()
 		{
-			return m_tbPassword.TextEx.ReadString();
-		}
-
-		public ProtectedString GetPasswordEx()
-		{
-			return m_tbPassword.TextEx;
-		}
-
-		public byte[] GetPasswordUtf8()
-		{
-			return m_tbPassword.TextEx.ReadUtf8();
+			return m_tbPassword.Text;
 		}
 
 		[Obsolete]
+		public byte[] GetPasswordUtf8()
+		{
+			return Encoding.ASCII.GetBytes(m_tbPassword.Text);
+		}
+
 		public string GetRepeat()
 		{
-			if (AutoRepeat) return m_tbPassword.TextEx.ReadString();
-			return m_tbRepeat.TextEx.ReadString();
+			if (AutoRepeat) return m_tbPassword.Text;
+			return m_tbRepeat.Text;
 		}
 
-		public ProtectedString GetRepeatEx()
-		{
-			if (AutoRepeat) return GetPasswordEx();
-			return m_tbRepeat.TextEx;
-		}
-
+		[Obsolete]
 		public byte[] GetRepeatUtf8()
 		{
 			if (AutoRepeat) return GetPasswordUtf8();
-			return m_tbRepeat.TextEx.ReadUtf8();
+			return Encoding.ASCII.GetBytes(m_tbRepeat.Text);
 		}
 
 		public bool ValidateData(bool bUIOnError)
 		{
 			if (AutoRepeat) return true;
-			if (m_tbPassword.TextEx.Equals(m_tbRepeat.TextEx, false)) return true;
+			if (m_tbPassword.Text.Equals(m_tbRepeat.Text)) return true;
 
 			if (bUIOnError)
 			{
@@ -473,7 +458,7 @@ namespace KeePass.UI
 
 				uint uBits = QualityEstimation.EstimatePasswordBits(v);
 
-				SecureTextBoxEx tb = m_tbPassword;
+				TextBox tb = m_tbPassword;
 				if (tb == null) return; // Control disposed in the meanwhile
 
 				// Test whether the password has changed in the meanwhile
@@ -498,7 +483,7 @@ namespace KeePass.UI
 		private delegate char[] UqiGetPasswordDelegate();
 		private char[] UqiGetPassword()
 		{
-			try { return m_tbPassword.TextEx.ReadChars(); }
+			try { return m_tbPassword.Text.ToCharArray(); }
 			catch (Exception) { Debug.Assert(false); }
 
 			return null;

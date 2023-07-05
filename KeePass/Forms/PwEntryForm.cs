@@ -178,9 +178,6 @@ namespace KeePass.Forms
 		{
 			InitializeComponent();
 
-			SecureTextBoxEx.InitEx(ref m_tbPassword);
-			SecureTextBoxEx.InitEx(ref m_tbRepeatPassword);
-
 			GlobalWindowManager.InitializeForm(this);
 			Program.Translation.ApplyTo("KeePass.Forms.PwEntryForm.m_ctxTools", m_ctxTools.Items);
 			Program.Translation.ApplyTo("KeePass.Forms.PwEntryForm.m_ctxDefaultTimes", m_ctxDefaultTimes.Items);
@@ -339,16 +336,11 @@ namespace KeePass.Forms
 		{
 			if (bGuiToInternal)
 			{
-				m_vStrings.Set(PwDefs.TitleField, new ProtectedString(
-					m_pwDatabase.MemoryProtection.ProtectTitle, m_tbTitle.Text));
-				m_vStrings.Set(PwDefs.UserNameField, new ProtectedString(
-					m_pwDatabase.MemoryProtection.ProtectUserName, m_tbUserName.Text));
-				m_vStrings.Set(PwDefs.PasswordField, m_tbPassword.TextEx.WithProtection(
-					m_pwDatabase.MemoryProtection.ProtectPassword));
-				m_vStrings.Set(PwDefs.UrlField, new ProtectedString(
-					m_pwDatabase.MemoryProtection.ProtectUrl, m_tbUrl.Text));
-				m_vStrings.Set(PwDefs.NotesField, new ProtectedString(
-					m_pwDatabase.MemoryProtection.ProtectNotes, m_rtNotes.Text));
+				m_vStrings.Set(PwDefs.TitleField, new ProtectedString(m_pwDatabase.MemoryProtection.ProtectTitle, m_tbTitle.Text));
+				m_vStrings.Set(PwDefs.UserNameField, new ProtectedString(m_pwDatabase.MemoryProtection.ProtectUserName, m_tbUserName.Text));
+				m_vStrings.Set(PwDefs.PasswordField, new ProtectedString(m_pwDatabase.MemoryProtection.ProtectPassword, m_tbPassword.Text));
+				m_vStrings.Set(PwDefs.UrlField, new ProtectedString(m_pwDatabase.MemoryProtection.ProtectUrl, m_tbUrl.Text));
+				m_vStrings.Set(PwDefs.NotesField, new ProtectedString(m_pwDatabase.MemoryProtection.ProtectNotes, m_rtNotes.Text));
 
 				NormalizeStrings(m_vStrings, m_pwDatabase);
 			}
@@ -357,7 +349,7 @@ namespace KeePass.Forms
 				m_tbTitle.Text = m_vStrings.ReadSafe(PwDefs.TitleField);
 				m_tbUserName.Text = m_vStrings.ReadSafe(PwDefs.UserNameField);
 
-				ProtectedString ps = m_vStrings.GetSafe(PwDefs.PasswordField);
+				string ps = m_vStrings.GetSafe(PwDefs.PasswordField).ReadString();
 				m_icgPassword.SetPassword(ps, bSetRepeatPw);
 
 				m_tbUrl.Text = m_vStrings.ReadSafe(PwDefs.UrlField);
@@ -712,7 +704,6 @@ namespace KeePass.Forms
 			m_ctxBinOpen.Opening += OnCtxBinOpenOpening;
 			m_dynBinOpen = new DynamicMenu(m_ctxBinOpen.Items);
 			m_dynBinOpen.MenuClick += OnDynBinOpen;
-			m_btnBinOpen.SplitDropDownMenu = m_ctxBinOpen;
 
 			string strTitle = string.Empty, strDesc = string.Empty;
 			switch (m_pwEditMode)
@@ -1071,7 +1062,6 @@ namespace KeePass.Forms
 			m_ctxNotes.Detach();
 			m_cgExpiry.Release();
 
-			m_btnBinOpen.SplitDropDownMenu = null;
 			m_dynBinOpen.MenuClick -= OnDynBinOpen;
 			m_dynBinOpen.Clear();
 			m_ctxBinOpen.Opening -= OnCtxBinOpenOpening;
@@ -1688,11 +1678,11 @@ namespace KeePass.Forms
 					fAppend(m_tbUserName, strValue, false);
 				else if (strFieldTo == PwDefs.PasswordField)
 				{
-					ProtectedString psP = m_icgPassword.GetPasswordEx();
+					ProtectedString psP = new ProtectedString(true, m_icgPassword.GetPassword());
 					if (!psP.IsEmpty) psP += ", ";
 					psP += strValue;
 
-					ProtectedString psR = m_icgPassword.GetRepeatEx();
+					ProtectedString psR = new ProtectedString(true, m_icgPassword.GetRepeat());
 					if (!psR.IsEmpty) psR += ", ";
 					psR += strValue;
 
@@ -1907,8 +1897,8 @@ namespace KeePass.Forms
 			string strRef = CreateFieldReference(PwDefs.PasswordField);
 			if (string.IsNullOrEmpty(strRef)) return;
 
-			ProtectedString psP = m_icgPassword.GetPasswordEx();
-			ProtectedString psR = m_icgPassword.GetRepeatEx();
+			ProtectedString psP = new ProtectedString(true, m_icgPassword.GetPassword());
+			ProtectedString psR = new ProtectedString(true, m_icgPassword.GetRepeat());
 
 			if ((m_mvec != null) && psP.Equals(MultipleValuesEx.CueProtectedString, false))
 			{

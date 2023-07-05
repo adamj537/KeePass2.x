@@ -42,7 +42,7 @@
 			this.m_lblSeparator = new System.Windows.Forms.Label();
 			this.m_cmbKeyFile = new System.Windows.Forms.ComboBox();
 			this.m_btnExit = new System.Windows.Forms.Button();
-			this.m_tbPassword = new KeePass.UI.SecureTextBoxEx();
+			this.m_tbPassword = new System.Windows.Forms.TextBox();
 			((System.ComponentModel.ISupportInitialize)(this.m_bannerImage)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -224,7 +224,7 @@
 		private System.Windows.Forms.CheckBox m_cbUserAccount;
 		private System.Windows.Forms.Button m_btnOpenKeyFile;
 		private System.Windows.Forms.CheckBox m_cbKeyFile;
-		private KeePass.UI.SecureTextBoxEx m_tbPassword;
+		private System.Windows.Forms.TextBox m_tbPassword;
 		private System.Windows.Forms.CheckBox m_cbPassword;
 		private System.Windows.Forms.Button m_btnOK;
 		private System.Windows.Forms.Button m_btnCancel;

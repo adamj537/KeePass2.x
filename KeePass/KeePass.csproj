@@ -878,12 +878,6 @@
     <Compile Include="UI\PwInputControlGroup.cs" />
     <Compile Include="UI\RichTextBuilder.cs" />
     <Compile Include="UI\RtlAwareResizeScope.cs" />
-    <Compile Include="UI\SecureTextBoxEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UI\SplitButtonEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="UI\StatusUtil.cs" />
     <Compile Include="UI\SuspendLayoutScope.cs" />
     <Compile Include="UI\TabControlEx.cs">
