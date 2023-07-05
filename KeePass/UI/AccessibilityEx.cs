@@ -261,7 +261,7 @@ namespace KeePass.UI
 
 				c.AccessibleName = str; // Null is allowed
 
-				if ((c is PictureBox) || (c is QualityProgressBar))
+				if ((c is PictureBox) || (c is ProgressBar))
 					c.AccessibleRole = AccessibleRole.StaticText;
 			}
 			catch (Exception) { Debug.Assert(false); }

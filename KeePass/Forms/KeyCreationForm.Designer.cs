@@ -58,7 +58,7 @@
 			this.m_lblKeyFileWarning = new System.Windows.Forms.Label();
 			this.m_lnkKeyFile = new System.Windows.Forms.LinkLabel();
 			this.m_lnkUserAccount = new System.Windows.Forms.LinkLabel();
-			this.m_pbPasswordQuality = new KeePass.UI.QualityProgressBar();
+			this.m_pbPasswordQuality = new System.Windows.Forms.ProgressBar();
 			this.m_lblKeyFileInfo = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.m_bannerImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.m_picAccWarning)).BeginInit();
@@ -424,7 +424,7 @@
 		private System.Windows.Forms.ToolTip m_ttRect;
 		private System.Windows.Forms.Button m_btnHelp;
 		private System.Windows.Forms.Label m_lblSeparator;
-		private KeePass.UI.QualityProgressBar m_pbPasswordQuality;
+		private System.Windows.Forms.ProgressBar m_pbPasswordQuality;
 		private System.Windows.Forms.Label m_lblEstimatedQuality;
 		private System.Windows.Forms.Label m_lblQualityInfo;
 		private System.Windows.Forms.ComboBox m_cmbKeyFile;

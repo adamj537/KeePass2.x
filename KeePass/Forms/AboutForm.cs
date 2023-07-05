@@ -46,6 +46,7 @@ namespace KeePass.Forms
 		public AboutForm()
 		{
 			InitializeComponent();
+
 			GlobalWindowManager.InitializeForm(this);
 		}
 
@@ -58,10 +59,6 @@ namespace KeePass.Forms
 			string strTitle = PwDefs.ProductName;
 			string strDesc = KPRes.Version + " " + strVersion;
 
-			Icon icoSc = AppIcons.Get(AppIconType.Main, new Size(
-				DpiUtil.ScaleIntX(48), DpiUtil.ScaleIntY(48)), Color.Empty);
-			BannerFactory.CreateBannerEx(this, m_bannerImage, icoSc.ToBitmap(),
-				strTitle, strDesc);
 			Icon = AppIcons.Default;
 
 			Debug.Assert(!m_lblCopyright.AutoSize); // For RTL support

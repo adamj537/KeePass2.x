@@ -111,8 +111,6 @@ namespace KeePass.Forms
 			}
 			else m_rbCreate.Checked = true;
 
-			m_cbNewEntropy.Checked = true;
-
 			Debug.Assert(!m_cmbNewFormat.Sorted);
 			foreach (KfcfInfo kfi in m_vNewFormat)
 				m_cmbNewFormat.Items.Add(kfi.Name);
@@ -145,8 +143,7 @@ namespace KeePass.Forms
 			bool bRecreate = m_rbRecreate.Checked;
 			KfcfInfo kfiRec = m_vRecFormat[m_cmbRecFormat.SelectedIndex];
 
-			UIUtil.SetEnabledFast(bCreate, m_lblNewFormat, m_cmbNewFormat,
-				m_cbNewEntropy);
+			UIUtil.SetEnabledFast(bCreate, m_lblNewFormat, m_cmbNewFormat);
 
 			UIUtil.SetEnabledFast(bRecreate, m_lblRecFormat, m_cmbRecFormat,
 				m_lblRecKey, m_tbRecKey);
@@ -194,15 +191,6 @@ namespace KeePass.Forms
 		private string CreateKeyFile()
 		{
 			byte[] pbEntropy = null;
-			if (m_cbNewEntropy.Checked)
-			{
-				EntropyForm dlg = new EntropyForm();
-				if (dlg.ShowDialog() == DialogResult.OK)
-					pbEntropy = dlg.GeneratedEntropy;
-				UIUtil.DestroyForm(dlg);
-
-				if (pbEntropy == null) return null;
-			}
 
 			string strFilePath = GetKeyFilePath();
 			if (string.IsNullOrEmpty(strFilePath)) return null;

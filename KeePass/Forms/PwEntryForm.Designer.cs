@@ -55,7 +55,7 @@
 			this.m_tabEntry = new System.Windows.Forms.TabPage();
 			this.m_cbQualityCheck = new System.Windows.Forms.CheckBox();
 			this.m_rtNotes = new System.Windows.Forms.RichTextBox();
-			this.m_pbQuality = new KeePass.UI.QualityProgressBar();
+			this.m_pbQuality = new System.Windows.Forms.ProgressBar();
 			this.m_tbRepeatPassword = new System.Windows.Forms.TextBox();
 			this.m_tbPassword = new System.Windows.Forms.TextBox();
 			this.m_btnStandardExpires = new System.Windows.Forms.Button();
@@ -1547,7 +1547,7 @@
 		private System.Windows.Forms.TextBox m_tbUserName;
 		private System.Windows.Forms.TextBox m_tbPassword;
 		private System.Windows.Forms.TextBox m_tbRepeatPassword;
-		private KeePass.UI.QualityProgressBar m_pbQuality;
+		private System.Windows.Forms.ProgressBar m_pbQuality;
 		private System.Windows.Forms.TextBox m_tbUrl;
 		private System.Windows.Forms.RichTextBox m_rtNotes;
 		private System.Windows.Forms.CheckBox m_cbExpires;

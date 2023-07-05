@@ -560,10 +560,6 @@ namespace KeePass.Forms
 				string.IsNullOrEmpty(prf.CustomAlgorithmUuid))
 				n = 0;
 
-			byte[] pbUserEntropy = null;
-			if (!m_bCanAccept && (n != 0))
-				pbUserEntropy = EntropyForm.CollectEntropyIfEnabled(prf);
-
 			PwEntry peContext = new PwEntry(true, true);
 			MainForm mf = Program.MainForm;
 			PwDatabase pdContext = ((mf != null) ? mf.ActiveDatabase : null);
@@ -577,7 +573,7 @@ namespace KeePass.Forms
 
 				string strError;
 				ProtectedString psNew = PwGeneratorUtil.GenerateAcceptable(
-					prf, pbUserEntropy, peContext, pdContext, false,
+					prf, null, peContext, pdContext, false,
 					ref bAcceptAlways, out strError);
 
 				if (!string.IsNullOrEmpty(strError))

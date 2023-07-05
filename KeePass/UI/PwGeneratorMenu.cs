@@ -220,11 +220,10 @@ namespace KeePass.UI
 		{
 			if (prf == null) { Debug.Assert(false); return; }
 
-			byte[] pbEntropy = EntropyForm.CollectEntropyIfEnabled(prf);
 			PwEntry pe = ((m_fGetContextEntry != null) ? m_fGetContextEntry() : null);
 
 			SetPassword(PwGeneratorUtil.GenerateAcceptable(prf,
-				pbEntropy, pe, m_pdContext, true).ReadString());
+				null, pe, m_pdContext, true).ReadString());
 		}
 
 		private void OnGenOpen(object sender, EventArgs e)

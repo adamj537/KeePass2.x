@@ -612,12 +612,6 @@
     <Compile Include="Forms\EditStringForm.Designer.cs">
       <DependentUpon>EditStringForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\EntropyForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\EntropyForm.Designer.cs">
-      <DependentUpon>EntropyForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\KeyFileCreationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -904,9 +898,6 @@
     <Compile Include="UI\CheckedLVItemDXList.cs" />
     <Compile Include="UI\DynamicMenu.cs" />
     <Compile Include="UI\ListSorter.cs" />
-    <Compile Include="UI\QualityProgressBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="UI\RichTextBoxContextMenu.cs" />
     <Compile Include="Plugins\Plugin.cs" />
     <Compile Include="Plugins\IPluginHost.cs" />
@@ -971,10 +962,6 @@
     <EmbeddedResource Include="Forms\EditStringForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>EditStringForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EntropyForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>EntropyForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\KeyFileCreationForm.resx">
       <DependentUpon>KeyFileCreationForm.cs</DependentUpon>

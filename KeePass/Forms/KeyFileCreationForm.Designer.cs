@@ -34,7 +34,6 @@
 			this.m_rbCreate = new System.Windows.Forms.RadioButton();
 			this.m_lblNewFormat = new System.Windows.Forms.Label();
 			this.m_cmbNewFormat = new System.Windows.Forms.ComboBox();
-			this.m_cbNewEntropy = new System.Windows.Forms.CheckBox();
 			this.m_rbRecreate = new System.Windows.Forms.RadioButton();
 			this.m_lblRecFormat = new System.Windows.Forms.Label();
 			this.m_cmbRecFormat = new System.Windows.Forms.ComboBox();
@@ -104,16 +103,6 @@
 			this.m_cmbNewFormat.Name = "m_cmbNewFormat";
 			this.m_cmbNewFormat.Size = new System.Drawing.Size(411, 21);
 			this.m_cmbNewFormat.TabIndex = 2;
-			// 
-			// m_cbNewEntropy
-			// 
-			this.m_cbNewEntropy.AutoSize = true;
-			this.m_cbNewEntropy.Location = new System.Drawing.Point(32, 144);
-			this.m_cbNewEntropy.Name = "m_cbNewEntropy";
-			this.m_cbNewEntropy.Size = new System.Drawing.Size(296, 17);
-			this.m_cbNewEntropy.TabIndex = 3;
-			this.m_cbNewEntropy.Text = "&Show dialog for collecting user input as additional entropy";
-			this.m_cbNewEntropy.UseVisualStyleBackColor = true;
 			// 
 			// m_rbRecreate
 			// 
@@ -202,7 +191,6 @@
 			this.Controls.Add(this.m_cmbRecFormat);
 			this.Controls.Add(this.m_lblRecFormat);
 			this.Controls.Add(this.m_rbRecreate);
-			this.Controls.Add(this.m_cbNewEntropy);
 			this.Controls.Add(this.m_cmbNewFormat);
 			this.Controls.Add(this.m_lblNewFormat);
 			this.Controls.Add(this.m_rbCreate);
@@ -232,7 +220,6 @@
 		private System.Windows.Forms.RadioButton m_rbCreate;
 		private System.Windows.Forms.Label m_lblNewFormat;
 		private System.Windows.Forms.ComboBox m_cmbNewFormat;
-		private System.Windows.Forms.CheckBox m_cbNewEntropy;
 		private System.Windows.Forms.RadioButton m_rbRecreate;
 		private System.Windows.Forms.Label m_lblRecFormat;
 		private System.Windows.Forms.ComboBox m_cmbRecFormat;

@@ -1806,8 +1806,7 @@ namespace KeePass.Forms
 					PwEntry pe = new PwEntry(true, true);
 					pg.AddEntry(pe, true);
 
-					byte[] pbAdditionalEntropy = EntropyForm.CollectEntropyIfEnabled(
-						pgf.SelectedProfile);
+					byte[] pbAdditionalEntropy = null;
 					bool bAcceptAlways = false;
 					string strError;
 					ProtectedString psNew = PwGeneratorUtil.GenerateAcceptable(
@@ -1980,9 +1979,6 @@ namespace KeePass.Forms
 					if (!uint.TryParse(dlgCount.ResultString, out uCount))
 						uCount = 1;
 
-					byte[] pbAdditionalEntropy = EntropyForm.CollectEntropyIfEnabled(
-						pgf.SelectedProfile);
-
 					PwObjectList<PwEntry> l = new PwObjectList<PwEntry>();
 					bool bAcceptAlways = false;
 					for (uint i = 0; i < uCount; ++i)
@@ -1992,7 +1988,7 @@ namespace KeePass.Forms
 
 						string strError;
 						ProtectedString psNew = PwGeneratorUtil.GenerateAcceptable(
-							pgf.SelectedProfile, pbAdditionalEntropy, pe, pwDb,
+							pgf.SelectedProfile, null, pe, pwDb,
 							true, ref bAcceptAlways, out strError);
 
 						if (!string.IsNullOrEmpty(strError))

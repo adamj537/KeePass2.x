@@ -46,7 +46,7 @@ namespace KeePass.UI
 		private Label m_lblRepeat = null;
 		private TextBox m_tbRepeat = null;
 		private Label m_lblQualityPrompt = null;
-		private QualityProgressBar m_pbQuality = null;
+		private ProgressBar m_pbQuality = null;
 		private Label m_lblQualityInfo = null;
 		private ToolTip m_ttHint = null;
 		private Form m_fParent = null;
@@ -129,7 +129,7 @@ namespace KeePass.UI
 #endif
 
 		public void Attach(TextBox tbPassword, CheckBox cbHide, Label lblRepeat,
-			TextBox tbRepeat, Label lblQualityPrompt, QualityProgressBar pbQuality,
+			TextBox tbRepeat, Label lblQualityPrompt, ProgressBar pbQuality,
 			Label lblQualityInfo, ToolTip ttHint, Form fParent, bool bInitialHide,
 			bool bSecureDesktopMode)
 		{
@@ -495,9 +495,6 @@ namespace KeePass.UI
 			try
 			{
 				bool bUnknown = (m_bSprVar && !m_pbQuality.Enabled);
-
-				m_pbQuality.ProgressText = (bUnknown ? string.Empty :
-					KPRes.BitsEx.Replace(@"{PARAM}", uBits.ToString()));
 
 				int iPct = (int)((100 * uBits) / 128);
 				iPct = Math.Min(Math.Max(iPct, 0), 100);
