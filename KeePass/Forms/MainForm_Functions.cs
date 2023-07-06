@@ -2899,13 +2899,7 @@ namespace KeePass.Forms
 		{
 			if (HotKeyManager.HandleHotKeyIntoSelf(wParam)) return;
 
-			if (wParam == AppDefs.GlobalHotKeyId.AutoType)
-				ExecuteGlobalAutoType();
-			else if (wParam == AppDefs.GlobalHotKeyId.AutoTypePassword)
-				ExecuteGlobalAutoType(@"{PASSWORD}");
-			else if (wParam == AppDefs.GlobalHotKeyId.AutoTypeSelected)
-				ExecuteEntryAutoType();
-			else if (wParam == AppDefs.GlobalHotKeyId.ShowWindow)
+			if (wParam == AppDefs.GlobalHotKeyId.ShowWindow)
 			{
 				bool bWndVisible = ((WindowState != FormWindowState.Minimized) &&
 					!IsTrayed());
@@ -2995,9 +2989,6 @@ namespace KeePass.Forms
 				case (long)Program.AppMessage.IpcByFile:
 					IpcUtilEx.ProcessGlobalMessage((int)lParam.ToInt64(), this, false);
 					break;
-				case (long)Program.AppMessage.AutoType:
-					ExecuteGlobalAutoType();
-					break;
 				case (long)Program.AppMessage.Lock:
 					LockAllDocuments();
 					break;
@@ -3008,14 +2999,8 @@ namespace KeePass.Forms
 						OnFileLock(null, EventArgs.Empty); // Unlock
 					}
 					break;
-				case (long)Program.AppMessage.AutoTypeSelected:
-					ExecuteEntryAutoType();
-					break;
 				case (long)Program.AppMessage.Cancel:
 					OnTrayCancel(null, EventArgs.Empty);
-					break;
-				case (long)Program.AppMessage.AutoTypePassword:
-					ExecuteGlobalAutoType(@"{PASSWORD}");
 					break;
 				case (long)Program.AppMessage.IpcByFile1:
 					IpcUtilEx.ProcessGlobalMessage((int)lParam.ToInt64(), this, true);
@@ -3023,94 +3008,6 @@ namespace KeePass.Forms
 				default:
 					Debug.Assert(false);
 					break;
-			}
-		}
-
-		public void ExecuteGlobalAutoType()
-		{
-			ExecuteGlobalAutoType(null);
-		}
-
-		private void ExecuteGlobalAutoType(string strSeq)
-		{
-			if (m_bIsAutoTyping) return;
-			m_bIsAutoTyping = true;
-
-			if (!IsAtLeastOneFileOpen())
-			{
-				try
-				{
-					IntPtr hPrevWnd = NativeMethods.GetForegroundWindowHandle();
-
-					EnsureVisibleForegroundWindow(false, false);
-
-					if (!IsCommandTypeInvokable(null, AppCommandType.Lock))
-					{
-						m_bIsAutoTyping = false;
-						return;
-					}
-
-					// The window restoration function above maybe
-					// restored the window already, therefore only
-					// try to unlock if it's locked *now*
-					if (IsFileLocked(null))
-					{
-						// https://sourceforge.net/p/keepass/bugs/1163/
-						bool bFirst = true;
-						EventHandler<GwmWindowEventArgs> eh = delegate (object sender,
-							GwmWindowEventArgs e)
-						{
-							if (!bFirst) return;
-							bFirst = false;
-							GlobalWindowManager.ActivateTopWindow();
-						};
-						GlobalWindowManager.WindowAdded += eh;
-
-						OnFileLock(null, EventArgs.Empty);
-
-						GlobalWindowManager.WindowAdded -= eh;
-					}
-
-					NativeMethods.EnsureForegroundWindow(hPrevWnd);
-				}
-				catch (Exception exAT)
-				{
-					MessageService.ShowWarning(exAT);
-				}
-			}
-			if (!IsAtLeastOneFileOpen()) { m_bIsAutoTyping = false; return; }
-
-			try
-			{
-				AutoType.PerformGlobal(m_docMgr.GetOpenDatabases(),
-					m_ilCurrentIcons, strSeq);
-			}
-			catch (Exception exGlobal)
-			{
-				MessageService.ShowWarning(exGlobal);
-			}
-
-			m_bIsAutoTyping = false;
-		}
-
-		private void ExecuteEntryAutoType()
-		{
-			try
-			{
-				IntPtr hFG = NativeMethods.GetForegroundWindowHandle();
-				if (!AutoType.IsValidAutoTypeWindow(hFG, true)) return;
-			}
-			catch (Exception) { Debug.Assert(false); return; }
-
-			PwEntry peSel = GetSelectedEntry(true);
-			if (peSel != null)
-				AutoType.PerformIntoCurrentWindow(peSel,
-					m_docMgr.SafeFindContainerOf(peSel));
-			else
-			{
-				EnsureVisibleForegroundWindow(true, true);
-				MessageService.ShowWarning(KPRes.AutoTypeSelectedNoEntry,
-					KPRes.AutoTypeGlobalHint);
 			}
 		}
 

@@ -32,30 +32,6 @@ namespace KeePass.App.Configuration
 {
 	public sealed class AceIntegration
 	{
-		private long m_hkAutoType = (long)(Keys.Control | Keys.Alt | Keys.A);
-		[DefaultValue((long)(Keys.Control | Keys.Alt | Keys.A))]
-		public long HotKeyGlobalAutoType
-		{
-			get { return m_hkAutoType; }
-			set { m_hkAutoType = value; }
-		}
-
-		private long m_hkAutoTypePw = (long)(Keys.Control | Keys.Alt | Keys.Shift | Keys.A);
-		[DefaultValue((long)(Keys.Control | Keys.Alt | Keys.Shift | Keys.A))]
-		public long HotKeyGlobalAutoTypePassword
-		{
-			get { return m_hkAutoTypePw; }
-			set { m_hkAutoTypePw = value; }
-		}
-
-		private long m_hkAutoTypeSel = (long)Keys.None;
-		[DefaultValue((long)Keys.None)]
-		public long HotKeySelectedAutoType
-		{
-			get { return m_hkAutoTypeSel; }
-			set { m_hkAutoTypeSel = value; }
-		}
-
 		private long m_hkShowWindow = (long)(Keys.Control | Keys.Alt | Keys.K);
 		[DefaultValue((long)(Keys.Control | Keys.Alt | Keys.K))]
 		public long HotKeyShowWindow

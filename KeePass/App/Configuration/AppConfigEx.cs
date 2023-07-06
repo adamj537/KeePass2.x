@@ -326,9 +326,6 @@ namespace KeePass.App.Configuration
 				Security.MasterKeyOnSecureDesktop = false;
 
 				AceIntegration aceInt = Integration;
-				aceInt.HotKeyGlobalAutoType = (long)Keys.None;
-				aceInt.HotKeyGlobalAutoTypePassword = (long)Keys.None;
-				aceInt.HotKeySelectedAutoType = (long)Keys.None;
 				aceInt.HotKeyShowWindow = (long)Keys.None;
 				aceInt.HotKeyEntryMenu = (long)Keys.None;
 			}

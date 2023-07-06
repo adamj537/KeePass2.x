@@ -578,24 +578,6 @@ namespace KeePass.Forms
 
 		private void LoadIntegrationOptions()
 		{
-			Keys kAT = (Keys)Program.Config.Integration.HotKeyGlobalAutoType;
-			m_hkAutoType.HotKey = kAT;
-			m_kPrevAT = m_hkAutoType.HotKey; // Adjusted one
-			if (AppConfigEx.IsOptionEnforced(Program.Config.Integration, "HotKeyGlobalAutoType"))
-				UIUtil.SetEnabledFast(false, m_lblAutoType, m_hkAutoType);
-
-			Keys kATP = (Keys)Program.Config.Integration.HotKeyGlobalAutoTypePassword;
-			m_hkAutoTypePassword.HotKey = kATP;
-			m_kPrevATP = m_hkAutoTypePassword.HotKey; // Adjusted one
-			if (AppConfigEx.IsOptionEnforced(Program.Config.Integration, "HotKeyGlobalAutoTypePassword"))
-				UIUtil.SetEnabledFast(false, m_lblAutoTypePassword, m_hkAutoTypePassword);
-
-			Keys kATS = (Keys)Program.Config.Integration.HotKeySelectedAutoType;
-			m_hkAutoTypeSelected.HotKey = kATS;
-			m_kPrevATS = m_hkAutoTypeSelected.HotKey; // Adjusted one
-			if (AppConfigEx.IsOptionEnforced(Program.Config.Integration, "HotKeySelectedAutoType"))
-				UIUtil.SetEnabledFast(false, m_lblAutoTypeSelected, m_hkAutoTypeSelected);
-
 			Keys kSW = (Keys)Program.Config.Integration.HotKeyShowWindow;
 			m_hkShowWindow.HotKey = kSW;
 			m_kPrevSW = m_hkShowWindow.HotKey; // Adjusted one
@@ -603,10 +585,6 @@ namespace KeePass.Forms
 				UIUtil.SetEnabledFast(false, m_lblShowWindow, m_hkShowWindow);
 
 			m_cbAutoRun.Checked = ShellUtil.GetStartWithWindows(AppDefs.AutoRunName);
-
-			// m_cbSingleClickTrayAction.Checked = Program.Config.UI.TrayIcon.SingleClickDefault;
-			// if(AppConfigEx.IsOptionEnforced(Program.Config.UI.TrayIcon, "SingleClickDefault"))
-			//	m_cbSingleClickTrayAction.Enabled = false;
 		}
 
 		private void LoadAdvancedOptions()
@@ -798,16 +776,7 @@ namespace KeePass.Forms
 			Program.Config.Application.MostRecentlyUsed.MaxItemCount =
 				(uint)m_numMruCount.Value;
 
-			ChangeHotKey(ref m_kPrevAT, m_hkAutoType,
-				AppDefs.GlobalHotKeyId.AutoType);
-			ChangeHotKey(ref m_kPrevATP, m_hkAutoTypePassword,
-				AppDefs.GlobalHotKeyId.AutoTypePassword);
-			ChangeHotKey(ref m_kPrevATS, m_hkAutoTypeSelected,
-				AppDefs.GlobalHotKeyId.AutoTypeSelected);
-			ChangeHotKey(ref m_kPrevSW, m_hkShowWindow,
-				AppDefs.GlobalHotKeyId.ShowWindow);
-
-			// Program.Config.UI.TrayIcon.SingleClickDefault = m_cbSingleClickTrayAction.Checked;
+			ChangeHotKey(ref m_kPrevSW, m_hkShowWindow, AppDefs.GlobalHotKeyId.ShowWindow);
 
 			Program.Config.Integration.UrlSchemeOverrides = m_aceUrlSchemeOverrides;
 			Program.Config.Integration.UrlOverride = m_strUrlOverrideAll;
@@ -846,13 +815,7 @@ namespace KeePass.Forms
 
 			kPrev = kNew;
 
-			if (nHotKeyID == AppDefs.GlobalHotKeyId.AutoType)
-				Program.Config.Integration.HotKeyGlobalAutoType = (long)kNew;
-			else if (nHotKeyID == AppDefs.GlobalHotKeyId.AutoTypePassword)
-				Program.Config.Integration.HotKeyGlobalAutoTypePassword = (long)kNew;
-			else if (nHotKeyID == AppDefs.GlobalHotKeyId.AutoTypeSelected)
-				Program.Config.Integration.HotKeySelectedAutoType = (long)kNew;
-			else if (nHotKeyID == AppDefs.GlobalHotKeyId.ShowWindow)
+			if (nHotKeyID == AppDefs.GlobalHotKeyId.ShowWindow)
 				Program.Config.Integration.HotKeyShowWindow = (long)kNew;
 			else { Debug.Assert(false); }
 

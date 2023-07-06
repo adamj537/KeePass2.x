@@ -871,15 +871,6 @@ namespace KeePass.Util.XmlSerialization
 
 				switch (xr.LocalName)
 				{
-					case "HotKeyGlobalAutoType":
-						o.HotKeyGlobalAutoType = ReadInt64(xr);
-						break;
-					case "HotKeyGlobalAutoTypePassword":
-						o.HotKeyGlobalAutoTypePassword = ReadInt64(xr);
-						break;
-					case "HotKeySelectedAutoType":
-						o.HotKeySelectedAutoType = ReadInt64(xr);
-						break;
 					case "HotKeyShowWindow":
 						o.HotKeyShowWindow = ReadInt64(xr);
 						break;

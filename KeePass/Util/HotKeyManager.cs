@@ -40,24 +40,9 @@ namespace KeePass.Util
 		private static Form m_fRecvWnd = null;
 		private static Dictionary<int, Keys> m_vRegKeys = new Dictionary<int, Keys>();
 
-		// private static NativeMethods.BindKeyHandler m_hOnHotKey =
-		//	new NativeMethods.BindKeyHandler(HotKeyManager.OnHotKey);
-
-		// public static Form ReceiverWindow
-		// {
-		//	get { return m_fRecvWnd; }
-		//	set { m_fRecvWnd = value; }
-		// }
-
 		public static bool Initialize(Form fRecvWnd)
 		{
 			m_fRecvWnd = fRecvWnd;
-
-			// if(NativeLib.IsUnix())
-			// {
-			//	try { NativeMethods.tomboy_keybinder_init(); }
-			//	catch(Exception) { Debug.Assert(false); return false; }
-			// }
 
 			return true;
 		}
@@ -84,13 +69,6 @@ namespace KeePass.Util
 						return true;
 					}
 				}
-				else // Unix
-				{
-					// NativeMethods.tomboy_keybinder_bind(EggAccKeysToString(kKey),
-					//	m_hOnHotKey);
-					// m_vRegKeys[nId] = kKey;
-					// return true;
-				}
 			}
 			catch (Exception) { Debug.Assert(false); }
 
@@ -101,7 +79,6 @@ namespace KeePass.Util
 		{
 			if (m_vRegKeys.ContainsKey(nId))
 			{
-				// Keys k = m_vRegKeys[nId];
 				m_vRegKeys.Remove(nId);
 
 				try
@@ -111,13 +88,9 @@ namespace KeePass.Util
 						bResult = NativeMethods.UnregisterHotKey(m_fRecvWnd.Handle, nId);
 					else // Unix
 					{
-						// NativeMethods.tomboy_keybinder_unbind(EggAccKeysToString(k),
-						//	m_hOnHotKey);
-						// bResult = true;
 						bResult = false;
 					}
 
-					// Debug.Assert(bResult);
 					return bResult;
 				}
 				catch (Exception) { Debug.Assert(false); }
@@ -146,83 +119,12 @@ namespace KeePass.Util
 			return false;
 		}
 
-		/* private static void OnHotKey(string strKey, IntPtr lpUserData)
-		{
-			if(string.IsNullOrEmpty(strKey)) return;
-			if(strKey.IndexOf(@"<Release>", StrUtil.CaseIgnoreCmp) >= 0) return;
-
-			if(m_fRecvWnd != null)
-			{
-				MainForm mf = (m_fRecvWnd as MainForm);
-				if(mf == null) { Debug.Assert(false); return; }
-
-				Keys k = EggAccStringToKeys(strKey);
-				foreach(KeyValuePair<int, Keys> kvp in m_vRegKeys)
-				{
-					if(kvp.Value == k) mf.HandleHotKey(kvp.Key);
-				}
-			}
-			else { Debug.Assert(false); }
-		}
-
-		private static Keys EggAccStringToKeys(string strKey)
-		{
-			if(string.IsNullOrEmpty(strKey)) return Keys.None;
-
-			Keys k = Keys.None;
-
-			if(strKey.IndexOf(@"<Alt>", StrUtil.CaseIgnoreCmp) >= 0)
-				k |= Keys.Alt;
-			if((strKey.IndexOf(@"<Ctl>", StrUtil.CaseIgnoreCmp) >= 0) ||
-				(strKey.IndexOf(@"<Ctrl>", StrUtil.CaseIgnoreCmp) >= 0) ||
-				(strKey.IndexOf(@"<Control>", StrUtil.CaseIgnoreCmp) >= 0))
-				k |= Keys.Control;
-			if((strKey.IndexOf(@"<Shft>", StrUtil.CaseIgnoreCmp) >= 0) ||
-				(strKey.IndexOf(@"<Shift>", StrUtil.CaseIgnoreCmp) >= 0))
-				k |= Keys.Shift;
-
-			string strKeyCode = strKey;
-			while(strKeyCode.IndexOf('<') >= 0)
-			{
-				int nStart = strKeyCode.IndexOf('<');
-				int nEnd = strKeyCode.IndexOf('>');
-				if((nStart < 0) || (nEnd < 0) || (nEnd <= nStart)) { Debug.Assert(false); break; }
-
-				strKeyCode = strKeyCode.Remove(nStart, nEnd - nStart + 1);
-			}
-			strKeyCode = strKeyCode.Trim();
-
-			try { k |= (Keys)Enum.Parse(typeof(Keys), strKeyCode, true); }
-			catch(Exception) { Debug.Assert(false); }
-
-			return k;
-		}
-
-		private static string EggAccKeysToString(Keys k)
-		{
-			StringBuilder sb = new StringBuilder();
-
-			if((k & Keys.Shift) != Keys.None) sb.Append(@"<Shift>");
-			if((k & Keys.Control) != Keys.None) sb.Append(@"<Control>");
-			if((k & Keys.Alt) != Keys.None) sb.Append(@"<Alt>");
-
-			sb.Append((k & Keys.KeyCode).ToString());
-			return sb.ToString();
-		} */
-
 		internal static void CheckCtrlAltA(Form fParent)
 		{
 			try
 			{
 				if (!Program.Config.Integration.CheckHotKeys) return;
 				if (NativeLib.IsUnix()) return;
-
-				// Check for a conflict only in the very specific case of
-				// Ctrl+Alt+A; in all other cases we assume that the user
-				// is aware of a possible conflict and intentionally wants
-				// to override any system key combination
-				if (Program.Config.Integration.HotKeyGlobalAutoType !=
-					(long)(Keys.Control | Keys.Alt | Keys.A)) return;
 
 				// Check for a conflict only on Polish systems; other
 				// languages typically don't use Ctrl+Alt+A frequently

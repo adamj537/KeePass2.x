@@ -522,12 +522,6 @@
       <DependentUpon>OtpGeneratorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\_Accessories.cs" />
-    <Compile Include="Forms\AutoTypeCtxForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\AutoTypeCtxForm.Designer.cs">
-      <DependentUpon>AutoTypeCtxForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\CharPickerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -896,9 +890,6 @@
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AboutForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AutoTypeCtxForm.resx">
-      <DependentUpon>AutoTypeCtxForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CharPickerForm.resx">
       <SubType>Designer</SubType>

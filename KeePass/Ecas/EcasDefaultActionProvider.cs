@@ -219,18 +219,6 @@ namespace KeePass.Ecas
 				ShowMessageBox));
 
 			m_actions.Add(new EcasActionType(new PwUuid(new byte[] {
-				0x40, 0x69, 0xA5, 0x36, 0x57, 0x1B, 0x47, 0x92,
-				0xA9, 0xB3, 0x73, 0x65, 0x30, 0xE0, 0xCF, 0xC3 }),
-				KPRes.PerformGlobalAutoType, PwIcon.Run, null, ExecuteGlobalAutoType));
-
-			m_actions.Add(new EcasActionType(new PwUuid(new byte[] {
-				0x31, 0x70, 0x8F, 0xAD, 0x64, 0x93, 0x43, 0xF5,
-				0x94, 0xEE, 0xC8, 0x1A, 0x23, 0x6E, 0x32, 0x4D }),
-				KPRes.PerformSelectedAutoType, PwIcon.Run, new EcasParameter[] {
-					new EcasParameter(KPRes.Sequence, EcasValueType.String, null) },
-				ExecuteSelectedAutoType));
-
-			m_actions.Add(new EcasActionType(new PwUuid(new byte[] {
 				0x42, 0xE8, 0x37, 0x81, 0x73, 0xD3, 0x4E, 0xEC,
 				0x81, 0x48, 0x9E, 0x3B, 0x36, 0xAC, 0x83, 0x84 }),
 				KPRes.ShowEntriesByTag, PwIcon.List, new EcasParameter[] {
@@ -575,35 +563,6 @@ namespace KeePass.Ecas
 
 			if ((uTimeSpan != 0) && (uTimeSpan <= (uint)int.MaxValue))
 				Thread.Sleep((int)uTimeSpan);
-		}
-
-		private static void ExecuteGlobalAutoType(EcasAction a, EcasContext ctx)
-		{
-			Program.MainForm.ExecuteGlobalAutoType();
-		}
-
-		private static void ExecuteSelectedAutoType(EcasAction a, EcasContext ctx)
-		{
-			try
-			{
-				// Do not Spr-compile the sequence here; it'll be compiled by
-				// the auto-type engine (and this expects an auto-type sequence
-				// as input, not a data string; compiling it here would e.g.
-				// result in broken '%' characters in passwords)
-				string strSeq = EcasUtil.GetParamString(a.Parameters, 0, false);
-				if (string.IsNullOrEmpty(strSeq)) strSeq = null;
-
-				PwEntry pe = Program.MainForm.GetSelectedEntry(true);
-				if (pe == null) return;
-				PwDatabase pd = Program.MainForm.DocumentManager.SafeFindContainerOf(pe);
-
-				IntPtr hFg = NativeMethods.GetForegroundWindowHandle();
-				if (GlobalWindowManager.HasWindowMW(hFg))
-					AutoType.PerformIntoPreviousWindow(Program.MainForm, pe,
-						pd, strSeq);
-				else AutoType.PerformIntoCurrentWindow(pe, pd, strSeq);
-			}
-			catch (Exception) { Debug.Assert(false); }
 		}
 
 		private static void ShowEntriesByTag(EcasAction a, EcasContext ctx)

@@ -68,9 +68,6 @@ namespace KeePass.App
 		/// </summary>
 		public static class GlobalHotKeyId
 		{
-			public static readonly int AutoType = 195;
-			public static readonly int AutoTypePassword = 197;
-			public static readonly int AutoTypeSelected = 196;
 			public static readonly int ShowWindow = 226;
 			public static readonly int EntryMenu = 227;
 
@@ -172,9 +169,6 @@ namespace KeePass.App
 
 			public static readonly string ExitAll = "exit-all";
 			public static readonly string Minimize = "minimize";
-			public static readonly string AutoType = "auto-type";
-			public static readonly string AutoTypePassword = "auto-type-password";
-			public static readonly string AutoTypeSelected = "auto-type-selected";
 			public static readonly string OpenEntryUrl = "entry-url-open";
 			public static readonly string LockAll = "lock-all";
 			public static readonly string UnlockAll = "unlock-all";

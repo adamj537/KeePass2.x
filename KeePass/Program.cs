@@ -98,12 +98,9 @@ namespace KeePass
 			RestoreWindow = 1,
 			Exit = 2,
 			IpcByFile = 3, // Handled by all other instances
-			AutoType = 4,
 			Lock = 5,
 			Unlock = 6,
-			AutoTypeSelected = 7,
 			Cancel = 8,
-			AutoTypePassword = 9,
 			IpcByFile1 = 10 // Handled by 1 other instance
 		}
 
@@ -481,21 +478,6 @@ namespace KeePass
 			if (m_cmdLineArgs[AppDefs.CommandLineOptions.ExitAll] != null)
 			{
 				BroadcastAppMessageAndCleanUp(AppMessage.Exit);
-				return;
-			}
-			if (m_cmdLineArgs[AppDefs.CommandLineOptions.AutoType] != null)
-			{
-				BroadcastAppMessageAndCleanUp(AppMessage.AutoType);
-				return;
-			}
-			if (m_cmdLineArgs[AppDefs.CommandLineOptions.AutoTypePassword] != null)
-			{
-				BroadcastAppMessageAndCleanUp(AppMessage.AutoTypePassword);
-				return;
-			}
-			if (m_cmdLineArgs[AppDefs.CommandLineOptions.AutoTypeSelected] != null)
-			{
-				BroadcastAppMessageAndCleanUp(AppMessage.AutoTypeSelected);
 				return;
 			}
 			if (m_cmdLineArgs[AppDefs.CommandLineOptions.OpenEntryUrl] != null)

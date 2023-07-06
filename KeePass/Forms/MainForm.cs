@@ -369,16 +369,8 @@ namespace KeePass.Forms
 			IpcBroadcast.StartServer();
 
 			HotKeyManager.Initialize(this);
-			HotKeyManager.RegisterHotKey(AppDefs.GlobalHotKeyId.AutoType,
-				(Keys)Program.Config.Integration.HotKeyGlobalAutoType);
-			HotKeyManager.RegisterHotKey(AppDefs.GlobalHotKeyId.AutoTypePassword,
-				(Keys)Program.Config.Integration.HotKeyGlobalAutoTypePassword);
-			HotKeyManager.RegisterHotKey(AppDefs.GlobalHotKeyId.AutoTypeSelected,
-				(Keys)Program.Config.Integration.HotKeySelectedAutoType);
-			HotKeyManager.RegisterHotKey(AppDefs.GlobalHotKeyId.ShowWindow,
-				(Keys)Program.Config.Integration.HotKeyShowWindow);
-			HotKeyManager.RegisterHotKey(AppDefs.GlobalHotKeyId.EntryMenu,
-				(Keys)Program.Config.Integration.HotKeyEntryMenu);
+			HotKeyManager.RegisterHotKey(AppDefs.GlobalHotKeyId.ShowWindow, (Keys)Program.Config.Integration.HotKeyShowWindow);
+			HotKeyManager.RegisterHotKey(AppDefs.GlobalHotKeyId.EntryMenu, (Keys)Program.Config.Integration.HotKeyEntryMenu);
 
 			m_statusMain.ShowItemToolTips = true;
 			m_statusPartInfo.AutoToolTip = true;
