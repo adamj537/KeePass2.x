@@ -57,12 +57,6 @@ namespace KeePass.Forms
 			set { m_gftInit = value; }
 		}
 
-		[Obsolete]
-		public void InitEx(PwGroup pg, ImageList ilClientIcons, PwDatabase pwDatabase)
-		{
-			InitEx(pg, false, ilClientIcons, pwDatabase);
-		}
-
 		public void InitEx(PwGroup pg, bool bCreatingNew, ImageList ilClientIcons,
 			PwDatabase pwDatabase)
 		{
@@ -94,9 +88,6 @@ namespace KeePass.Forms
 
 			UIUtil.ConfigureToolTip(m_ttRect);
 			UIUtil.SetToolTip(m_ttRect, m_btnIcon, KPRes.SelectIcon, true);
-			UIUtil.SetToolTip(m_ttRect, m_btnAutoTypeEdit, KPRes.ConfigureKeystrokeSeq, true);
-
-			AccessibilityEx.SetContext(m_tbDefaultAutoTypeSeq, m_rbAutoTypeOverride);
 
 			m_tbName.Text = m_pwGroup.Name;
 
@@ -140,38 +131,11 @@ namespace KeePass.Forms
 			UIUtil.MakeInheritableBoolComboBox(m_cmbEnableSearching,
 				m_pwGroup.EnableSearching, bParentSearching);
 
-			bool bParentAutoType = ((pgParent != null) ?
-				pgParent.GetAutoTypeEnabledInherited() :
-				PwGroup.DefaultAutoTypeEnabled);
-			UIUtil.MakeInheritableBoolComboBox(m_cmbEnableAutoType,
-				m_pwGroup.EnableAutoType, bParentAutoType);
-
-			m_tbDefaultAutoTypeSeq.Text = m_pwGroup.GetAutoTypeSequenceInherited();
-
-			if (m_pwGroup.DefaultAutoTypeSequence.Length == 0)
-				m_rbAutoTypeInherit.Checked = true;
-			else m_rbAutoTypeOverride.Checked = true;
-
-			UIUtil.SetButtonImage(m_btnAutoTypeEdit,
-				Properties.Resources.B16x16_Wizard, true);
-
 			m_sdCustomData = m_pwGroup.CustomData.CloneDeep();
 			UIUtil.StrDictListInit(m_lvCustomData);
 			UIUtil.StrDictListUpdate(m_lvCustomData, m_sdCustomData, false);
 
 			EnableControlsEx();
-
-			ThreadPool.QueueUserWorkItem(delegate (object state)
-			{
-				try
-				{
-					string[] vSeq = m_pwDatabase.RootGroup.GetAutoTypeSequences(true);
-					// Do not append, because long suggestions hide the start
-					UIUtil.EnableAutoCompletion(m_tbDefaultAutoTypeSeq,
-						false, vSeq); // Invokes
-				}
-				catch (Exception) { Debug.Assert(false); }
-			});
 
 			UIUtil.SetFocus(m_tbName, this);
 
@@ -179,8 +143,6 @@ namespace KeePass.Forms
 			{
 				case GroupFormTab.Properties:
 					m_tabMain.SelectedTab = m_tabProperties; break;
-				case GroupFormTab.AutoType:
-					m_tabMain.SelectedTab = m_tabAutoType; break;
 				case GroupFormTab.CustomData:
 					m_tabMain.SelectedTab = m_tabCustomData; break;
 				default: break;
@@ -196,9 +158,6 @@ namespace KeePass.Forms
 
 		private void EnableControlsEx()
 		{
-			m_tbDefaultAutoTypeSeq.Enabled = m_btnAutoTypeEdit.Enabled =
-				!m_rbAutoTypeInherit.Checked;
-
 			m_btnCDDel.Enabled = (m_lvCustomData.SelectedIndices.Count > 0);
 		}
 
@@ -217,11 +176,6 @@ namespace KeePass.Forms
 			m_pwGroup.Tags = StrUtil.StringToTags(m_tbTags.Text);
 
 			m_pwGroup.EnableSearching = UIUtil.GetInheritableBoolComboBoxValue(m_cmbEnableSearching);
-			m_pwGroup.EnableAutoType = UIUtil.GetInheritableBoolComboBoxValue(m_cmbEnableAutoType);
-
-			if (m_rbAutoTypeInherit.Checked)
-				m_pwGroup.DefaultAutoTypeSequence = string.Empty;
-			else m_pwGroup.DefaultAutoTypeSequence = m_tbDefaultAutoTypeSeq.Text;
 
 			m_pwGroup.CustomData = m_sdCustomData;
 		}
@@ -250,16 +204,6 @@ namespace KeePass.Forms
 			}
 
 			UIUtil.DestroyForm(ipf);
-		}
-
-		private void OnAutoTypeInheritCheckedChanged(object sender, EventArgs e)
-		{
-			EnableControlsEx();
-		}
-
-		private void OnBtnAutoTypeEdit(object sender, EventArgs e)
-		{
-
 		}
 
 		private void OnCustomDataSelectedIndexChanged(object sender, EventArgs e)

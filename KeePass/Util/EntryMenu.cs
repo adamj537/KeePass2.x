@@ -128,13 +128,6 @@ namespace KeePass.Util
 
 			ToolStripMenuItem tsmi;
 
-			tsmi = new ToolStripMenuItem(KPRes.AutoType);
-			tsmi.ImageIndex = (int)PwIcon.Run;
-			tsmi.Tag = pe;
-			tsmi.Click += OnAutoType;
-			tsmi.Enabled = pe.GetAutoTypeEnabled();
-			tsmiEntry.DropDownItems.Add(tsmi);
-
 			tsmiEntry.DropDownItems.Add(new ToolStripSeparator());
 
 			tsmi = new ToolStripMenuItem(KPRes.Copy + " " + KPRes.UserName);
@@ -165,24 +158,6 @@ namespace KeePass.Util
 
 			foreach (PwEntry pe in pgSource.Entries)
 				MenuAddEntry(ds, tsmiContainer, pe);
-		}
-
-		private static void OnAutoType(object sender, EventArgs e)
-		{
-			ToolStripMenuItem tsmi = (sender as ToolStripMenuItem);
-			if (tsmi == null) { Debug.Assert(false); return; }
-			PwEntry pe = (tsmi.Tag as PwEntry);
-			if (pe == null) { Debug.Assert(false); return; }
-
-			try
-			{
-				AutoType.PerformIntoCurrentWindow(pe,
-					Program.MainForm.DocumentManager.SafeFindContainerOf(pe));
-			}
-			catch (Exception ex)
-			{
-				MessageService.ShowWarning(ex);
-			}
 		}
 
 		private static void OnCopyField(object sender, string strField)

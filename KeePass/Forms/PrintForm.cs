@@ -264,11 +264,9 @@ namespace KeePass.Forms
 			UIUtil.SetEnabled(m_cbTitle, !bIcon);
 			if (bIcon) UIUtil.SetChecked(m_cbTitle, true);
 
-			UIUtil.SetEnabled(m_cbAutoType, bLayBlocks);
 			UIUtil.SetEnabled(m_cbCustomStrings, bLayBlocks);
 			if (!bLayBlocks)
 			{
-				UIUtil.SetChecked(m_cbAutoType, false);
 				UIUtil.SetChecked(m_cbCustomStrings, false);
 			}
 
@@ -360,9 +358,7 @@ namespace KeePass.Forms
 			bool bPassword = m_cbPassword.Checked, bUrl = m_cbUrl.Checked;
 			bool bNotes = m_cbNotes.Checked;
 			bool bCreation = m_cbCreation.Checked, bLastMod = m_cbLastMod.Checked;
-			// bool bLastAcc = m_cbLastAccess.Checked;
 			bool bExpire = m_cbExpire.Checked;
-			bool bAutoType = m_cbAutoType.Checked;
 			bool bTags = m_cbTags.Checked;
 			bool bCustomStrings = m_cbCustomStrings.Checked;
 			bool bUuid = m_cbUuid.Checked;
@@ -688,13 +684,6 @@ namespace KeePass.Forms
 						pe.LastModificationTime), p);
 					if (bExpire) WriteBlockLine(sb, KPRes.ExpiryTime, (pe.Expires ? TimeUtil.ToDisplayString(
 						pe.ExpiryTime) : KPRes.NeverExpires), p);
-
-					if (bAutoType)
-					{
-						foreach (AutoTypeAssociation a in pe.AutoType.Associations)
-							WriteBlockLine(sb, KPRes.AutoType, a.WindowName +
-								": " + a.Sequence, p);
-					}
 
 					if (bTags) WriteBlockLine(sb, KPRes.Tags, StrUtil.TagsToString(
 						pe.Tags, true), p);
@@ -1075,8 +1064,8 @@ namespace KeePass.Forms
 		{
 			return new CheckBox[] {
 				m_cbTitle, m_cbUser, m_cbPassword, m_cbUrl, m_cbNotes,
-				m_cbCreation, m_cbLastMod, m_cbExpire, // m_cbLastAccess
-				m_cbAutoType, m_cbTags,
+				m_cbCreation, m_cbLastMod, m_cbExpire,
+				m_cbTags,
 				m_cbIcon, m_cbCustomStrings, m_cbGroups, m_cbUuid
 			};
 		}

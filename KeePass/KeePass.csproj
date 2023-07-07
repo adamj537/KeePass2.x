@@ -521,6 +521,12 @@
     <Compile Include="Forms\OtpGeneratorForm.Designer.cs">
       <DependentUpon>OtpGeneratorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\PluginsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PluginsForm.Designer.cs">
+      <DependentUpon>PluginsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\_Accessories.cs" />
     <Compile Include="Forms\CharPickerForm.cs">
       <SubType>Form</SubType>
@@ -702,12 +708,6 @@
     <Compile Include="Forms\OptionsForm.Designer.cs">
       <DependentUpon>OptionsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\PluginsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\PluginsForm.Designer.cs">
-      <DependentUpon>PluginsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\PrintForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -845,7 +845,6 @@
     <Compile Include="UI\ListViewGroupingMenu.cs" />
     <Compile Include="UI\ListViewSortMenu.cs" />
     <Compile Include="UI\ListViewStateEx.cs" />
-    <Compile Include="UI\MenuItemLinks.cs" />
     <Compile Include="UI\NotifyIconEx.cs" />
     <Compile Include="UI\OnDemandStatusDialog.cs" />
     <Compile Include="UI\OpenWithMenu.cs" />
@@ -1002,7 +1001,6 @@
       <DependentUpon>OtpGeneratorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PluginsForm.resx">
-      <SubType>Designer</SubType>
       <DependentUpon>PluginsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PrintForm.resx">
@@ -1078,7 +1076,6 @@
     <Compile Include="UI\StatusBarLogger.cs" />
     <Compile Include="UI\UIUtil.cs" />
     <Compile Include="Util\AppLocator.cs" />
-    <Compile Include="Util\AutoType.cs" />
     <Compile Include="Util\ChildProcessesSnapshot.cs" />
     <Compile Include="Util\ClipboardContents.cs" />
     <Compile Include="Util\ClipboardEventChainBlocker.cs" />

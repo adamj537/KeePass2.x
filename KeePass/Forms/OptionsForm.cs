@@ -245,13 +245,9 @@ namespace KeePass.Forms
 			}
 			else // Unix
 			{
-				m_hkAutoType.TextNone = KPRes.External;
-				m_hkAutoTypePassword.TextNone = KPRes.External;
-				m_hkAutoTypeSelected.TextNone = KPRes.External;
 				m_hkShowWindow.TextNone = KPRes.External;
 
-				m_hkAutoType.Enabled = m_hkAutoTypePassword.Enabled =
-					m_hkAutoTypeSelected.Enabled = m_hkShowWindow.Enabled = false;
+				m_hkShowWindow.Enabled = false;
 				m_btnFileExtCreate.Enabled = m_btnFileExtRemove.Enabled = false;
 				m_cbAutoRun.Enabled = false;
 			}
@@ -418,8 +414,6 @@ namespace KeePass.Forms
 			LoadPolicyOption("PrintNoKey", AppPolicyId.PrintNoKey);
 			LoadPolicyOption("NewFile", AppPolicyId.NewFile);
 			LoadPolicyOption("SaveFile", AppPolicyId.SaveFile);
-			LoadPolicyOption("AutoType", AppPolicyId.AutoType);
-			LoadPolicyOption("AutoTypeWithoutContext", AppPolicyId.AutoTypeWithoutContext);
 			LoadPolicyOption("CopyToClipboard", AppPolicyId.CopyToClipboard);
 			LoadPolicyOption("CopyWholeEntries", AppPolicyId.CopyWholeEntries);
 			LoadPolicyOption("DragDrop", AppPolicyId.DragDrop);
@@ -618,38 +612,6 @@ namespace KeePass.Forms
 			m_cdxAdvanced.CreateItem(Program.Config.Application.FileOpening, "ShowSoonToExpireEntries",
 				lvg, KPRes.AutoShowSoonToExpireEntries);
 
-			lvg = new ListViewGroup(KPRes.AutoType);
-			m_lvAdvanced.Groups.Add(lvg);
-			m_cdxAdvanced.CreateItem(Program.Config.Integration, "AutoTypeMatchByTitle",
-				lvg, KPRes.AutoTypeMatchByTitle);
-			m_cdxAdvanced.CreateItem(Program.Config.Integration, "AutoTypeMatchByUrlInTitle",
-				lvg, KPRes.AutoTypeMatchByUrlInTitle);
-			m_cdxAdvanced.CreateItem(Program.Config.Integration, "AutoTypeMatchByUrlHostInTitle",
-				lvg, KPRes.AutoTypeMatchByUrlHostInTitle);
-			m_cdxAdvanced.CreateItem(Program.Config.Integration, "AutoTypeMatchByTagInTitle",
-				lvg, KPRes.AutoTypeMatchByTagInTitle);
-			m_cdxAdvanced.CreateItem(Program.Config.Integration, "AutoTypeMatchNormDashes",
-				lvg, KPRes.ConsiderDashesEq + " (-, \u2010, \u2011, \u2012, \u2013, \u2014, \u2015, \u2212)");
-			m_cdxAdvanced.CreateItem(Program.Config.Integration, "AutoTypeExpiredCanMatch",
-				lvg, KPRes.ExpiredEntriesCanMatch);
-			m_cdxAdvanced.CreateItem(Program.Config.Integration, "AutoTypeAlwaysShowSelDialog",
-				lvg, KPRes.AutoTypeAlwaysShowSelDialog);
-
-			lvg = new ListViewGroup(KPRes.AutoType + " - " + KPRes.SendingNoun);
-			m_lvAdvanced.Groups.Add(lvg);
-			m_cdxAdvanced.CreateItem(Program.Config.Integration, "AutoTypePrependInitSequenceForIE",
-				lvg, KPRes.AutoTypePrependInitSeqForIE);
-			m_cdxAdvanced.CreateItem(Program.Config.Integration, "AutoTypeReleaseAltWithKeyPress",
-				lvg, KPRes.AutoTypeReleaseAltWithKeyPress);
-			m_cdxAdvanced.CreateItem(Program.Config.Integration, "AutoTypeAdjustKeyboardLayout",
-				lvg, KPRes.SameKeybLayout);
-			m_cdxAdvanced.CreateItem(Program.Config.Integration, "AutoTypeAllowInterleaved",
-				lvg, KPRes.InterleavedKeySending);
-			m_cdxAdvanced.CreateItem(Program.Config.Integration, "AutoTypeCancelOnWindowChange",
-				lvg, KPRes.AutoTypeCancelOnWindowChange);
-			m_cdxAdvanced.CreateItem(Program.Config.Integration, "AutoTypeCancelOnTitleChange",
-				lvg, KPRes.AutoTypeCancelOnTitleChange);
-
 			lvg = new ListViewGroup(KPRes.IOConnectionLong);
 			m_lvAdvanced.Groups.Add(lvg);
 			m_cdxAdvanced.CreateItem(Program.Config.Application, "VerifyWrittenFileAfterSaving",
@@ -716,8 +678,7 @@ namespace KeePass.Forms
 				return ((m == Keys.Alt) || (m == (Keys.Alt | Keys.Shift)));
 			};
 
-			if (fAltMod(m_hkAutoType) || fAltMod(m_hkAutoTypePassword) ||
-				fAltMod(m_hkAutoTypeSelected) || fAltMod(m_hkShowWindow))
+			if (fAltMod(m_hkShowWindow))
 			{
 				if (!MessageService.AskYesNo(KPRes.HotKeyAltOnly + MessageService.NewParagraph +
 					KPRes.HotKeyAltOnlyHint + MessageService.NewParagraph +

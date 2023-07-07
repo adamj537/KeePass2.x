@@ -165,7 +165,7 @@ namespace KeePass.Util
 		{
 			CharStream cs = new CharStream(strSequence);
 			List<SiEvent> l = new List<SiEvent>();
-			string strError = KPRes.AutoTypeSequenceInvalid;
+			string strError = string.Empty;
 
 			Keys kCurKbMods = Keys.None;
 
@@ -405,8 +405,7 @@ namespace KeePass.Util
 			}
 			else
 			{
-				throw new FormatException(KPRes.AutoTypeUnknownPlaceholder +
-					MessageService.NewLine + @"{" + strName + @"}");
+				throw new FormatException(MessageService.NewLine + @"{" + strName + @"}");
 			}
 
 			uint uRepeat = ouParam.GetValueOrDefault(1);

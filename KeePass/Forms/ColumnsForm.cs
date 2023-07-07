@@ -174,9 +174,6 @@ namespace KeePass.Forms
 			AddStdAceColumn(l, AceColumnType.OverrideUrl);
 			AddStdAceColumn(l, AceColumnType.Uuid);
 
-			AddStdAceColumn(l, AceColumnType.AutoTypeEnabled);
-			AddStdAceColumn(l, AceColumnType.AutoTypeSequences);
-
 			AddStdAceColumn(l, AceColumnType.CreationTime);
 			AddStdAceColumn(l, AceColumnType.LastModificationTime);
 			if ((Program.Config.UI.UIFlags & (ulong)AceUIFlags.ShowLastAccessTime) != 0)

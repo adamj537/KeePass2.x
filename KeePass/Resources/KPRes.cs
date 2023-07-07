@@ -28,20 +28,6 @@ namespace KeePass.Resources
 {
 	public static partial class KPRes
 	{
-		// Obsoletes: for backward compatibility with plugins
-
-		[Obsolete]
-		public static string ChangeMasterKeyIntroShort
-		{
-			get { return string.Empty; }
-		}
-
-		[Obsolete]
-		public static string CreateNewDatabase
-		{
-			get { return CreateNewDatabase2; }
-		}
-
 		public static string DeleteEntriesTitle
 		{
 			get { return StrUtil.CommandToText(DeleteEntriesCmd); }
@@ -52,12 +38,6 @@ namespace KeePass.Resources
 			get { return StrUtil.CommandToText(DeleteEntryCmd); }
 		}
 
-		[Obsolete]
-		public static string EditCmd
-		{
-			get { return @"&Edit"; }
-		}
-
 		public static string EditEntries
 		{
 			get { return StrUtil.CommandToText(EditEntriesCmd); }
@@ -66,42 +46,6 @@ namespace KeePass.Resources
 		public static string EditEntry
 		{
 			get { return StrUtil.CommandToText(EditEntryCmd); }
-		}
-
-		[Obsolete]
-		public static string GeneratedPasswordSamples
-		{
-			get { return GeneratedPasswords; }
-		}
-
-		[Obsolete]
-		public static string NewDatabaseFileName
-		{
-			get { return (Database + "." + AppDefs.FileExtension.FileExt); }
-		}
-
-		[Obsolete]
-		public static string ToolBarNew
-		{
-			get { return NewDatabase; }
-		}
-
-		[Obsolete]
-		public static string ToolBarOpen
-		{
-			get { return OpenDatabase; }
-		}
-
-		[Obsolete]
-		public static string ToolBarSaveAll
-		{
-			get { return SaveAllDatabases; }
-		}
-
-		[Obsolete]
-		public static string UnknownError
-		{
-			get { return KLRes.UnknownError; }
 		}
 	}
 }

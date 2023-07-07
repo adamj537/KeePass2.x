@@ -41,8 +41,6 @@ namespace KeePass.Forms
 
 		private ImageList m_ilIcons = null;
 
-		private const string XmlTriggerRootName = "TriggerCollection";
-
 		public ContextMenuStrip ToolsContextMenu
 		{
 			get { return m_ctxTools; }

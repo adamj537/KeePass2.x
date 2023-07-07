@@ -165,22 +165,6 @@ namespace KeePass.Util.SendInputExt
 						Cancelled = true;
 						return false;
 					}
-
-					if (bChkTitleFx)
-					{
-						string strT = AutoType.NormalizeWindowText(strTitle);
-
-						foreach (string strF in lAbortWindows)
-						{
-							if (AutoType.IsMatchWindow(strT, strF))
-							{
-								Cancelled = true;
-								throw new SecurityException(KPRes.AutoTypeAbortedOnWindow +
-									MessageService.NewParagraph + KPRes.TargetWindow +
-									@": '" + strTitle + @"'.");
-							}
-						}
-					}
 				}
 			}
 

@@ -75,8 +75,7 @@ namespace KeePass.Forms
 		{
 			try
 			{
-				m_nTaskbarButtonMessage = NativeMethods.RegisterWindowMessage(
-					"TaskbarButtonCreated");
+				m_nTaskbarButtonMessage = NativeMethods.RegisterWindowMessage("TaskbarButtonCreated");
 				m_bTaskbarButtonMessage = (m_nTaskbarButtonMessage != 0);
 			}
 			catch (Exception)
@@ -113,14 +112,10 @@ namespace KeePass.Forms
 			{
 				if (MonoWorkarounds.IsRequired(891029)) m_tabMain.Height += 5;
 
-				SuspendLayoutScope sls = new SuspendLayoutScope(false,
-					m_menuMain, m_ctxGroupList, m_ctxPwList, m_ctxTray);
+				SuspendLayoutScope sls = new SuspendLayoutScope(false, m_menuMain);
 
 				GlobalWindowManager.InitializeForm(this);
 				Program.Translation.ApplyTo("KeePass.Forms.MainForm.m_menuMain", m_menuMain.Items);
-				Program.Translation.ApplyTo("KeePass.Forms.MainForm.m_ctxGroupList", m_ctxGroupList.Items);
-				Program.Translation.ApplyTo("KeePass.Forms.MainForm.m_ctxPwList", m_ctxPwList.Items);
-				Program.Translation.ApplyTo("KeePass.Forms.MainForm.m_ctxTray", m_ctxTray.Items);
 
 				AssignMenuShortcuts();
 				// Do not construct context menus here, otherwise TrlUtil sees them
@@ -141,7 +136,7 @@ namespace KeePass.Forms
 			bool bMaximize = Program.Config.MainWindow.Maximized;
 
 			SuspendLayoutScope sls = new SuspendLayoutScope(true,
-				this, m_menuMain, m_ctxGroupList, m_ctxPwList, m_ctxTray,
+				this, m_menuMain,
 				m_toolMain, m_statusMain,
 				m_splitHorizontal, m_splitHorizontal.Panel1, m_splitHorizontal.Panel2,
 				m_splitVertical, m_splitVertical.Panel1, m_splitVertical.Panel2);
@@ -159,18 +154,12 @@ namespace KeePass.Forms
 #if DEBUG
 			ConstructDebugMenu();
 #endif
-			ConstructContextMenus();
-
-			// m_ilCurrentIcons = m_ilClientIcons;
 			UpdateImageLists(true);
 
 			m_ntfTray = new NotifyIconEx(components);
-			m_ntfTray.ContextMenuStrip = m_ctxTray;
 			m_ntfTray.Visible = true;
 			m_ntfTray.SetHandlers(OnSystemTrayClick, OnSystemTrayDoubleClick,
 				OnSystemTrayMouseDown);
-
-			m_ctxTrayTray.Font = FontUtil.CreateFont(m_ctxTrayTray.Font, FontStyle.Bold);
 
 			m_nLockTimerMax = (int)Program.Config.Security.WorkspaceLocking.LockAfterTime;
 			m_nClipClearMax = Program.Config.Security.ClipboardClearAfterSeconds;
@@ -181,13 +170,9 @@ namespace KeePass.Forms
 
 			m_dynStringsMenu = new DynamicMenu(m_menuEntryOtherData.DropDownItems);
 			m_dynStringsMenu.MenuClick += OnEntryStringClick;
-			m_dynStringsCtx = new DynamicMenu(m_ctxEntryOtherData.DropDownItems);
-			m_dynStringsCtx.MenuClick += OnEntryStringClick;
 
 			m_dynBinariesMenu = new DynamicMenu(m_menuEntryAttachments.DropDownItems);
 			m_dynBinariesMenu.MenuClick += OnEntryBinaryClick;
-			m_dynBinariesCtx = new DynamicMenu(m_ctxEntryAttachments.DropDownItems);
-			m_dynBinariesCtx.MenuClick += OnEntryBinaryClick;
 
 			m_dynFindTagsMenu = new DynamicMenu(m_menuFindTag.DropDownItems);
 			m_dynFindTagsMenu.MenuClick += OnShowEntriesByTag;
@@ -196,41 +181,14 @@ namespace KeePass.Forms
 
 			m_dynTagAddMenu = new DynamicMenu(m_menuEntryTagAdd.DropDownItems);
 			m_dynTagAddMenu.MenuClick += OnAddEntryTag;
-			m_dynTagAddCtx = new DynamicMenu(m_ctxEntryTagAdd.DropDownItems);
-			m_dynTagAddCtx.MenuClick += OnAddEntryTag;
 
 			m_dynTagRemoveMenu = new DynamicMenu(m_menuEntryTagRemove.DropDownItems);
 			m_dynTagRemoveMenu.MenuClick += OnRemoveEntryTag;
-			m_dynTagRemoveCtx = new DynamicMenu(m_ctxEntryTagRemove.DropDownItems);
-			m_dynTagRemoveCtx.MenuClick += OnRemoveEntryTag;
 
 			m_dynMoveToGroupMenu = new DynamicMenu(m_menuEntryMoveToGroup.DropDownItems);
 			m_dynMoveToGroupMenu.MenuClick += OnEntryMoveToGroup;
-			m_dynMoveToGroupCtx = new DynamicMenu(m_ctxEntryMoveToGroup.DropDownItems);
-			m_dynMoveToGroupCtx.MenuClick += OnEntryMoveToGroup;
-
-			m_dynAutoTypeAdvMenu = new DynamicMenu(m_menuEntryAutoTypeAdv.DropDownItems);
-			m_dynAutoTypeAdvMenu.MenuClick += OnEntryPerformAutoTypeAdv;
-			m_dynAutoTypeAdvCtx = new DynamicMenu(m_ctxEntryAutoTypeAdv.DropDownItems);
-			m_dynAutoTypeAdvCtx.MenuClick += OnEntryPerformAutoTypeAdv;
-
-			string[] vAdvSeq = new string[] {
-				@"{USERNAME}", @"{USERNAME}{ENTER}",
-				@"{PASSWORD}", @"{PASSWORD}{ENTER}",
-				@"{USERNAME}{TAB}{PASSWORD}",
-				@"{USERNAME}{TAB}{PASSWORD}{ENTER}",
-				@"{USERNAME}{TAB}{TAB}{PASSWORD}",
-				@"{USERNAME}{TAB}{TAB}{PASSWORD}{ENTER}"
-			};
-			Bitmap bmpAutoType = Properties.Resources.B16x16_KTouch;
-			foreach (string strAdvSeq in vAdvSeq)
-			{
-				m_dynAutoTypeAdvMenu.AddItem(strAdvSeq, bmpAutoType);
-				m_dynAutoTypeAdvCtx.AddItem(strAdvSeq, bmpAutoType);
-			}
 
 			m_dynOpenUrlMenu = new OpenWithMenu(m_menuEntryUrl);
-			m_dynOpenUrlCtx = new OpenWithMenu(m_ctxEntryUrl);
 			m_dynOpenUrlToolBar = new OpenWithMenu(m_tbOpenUrl);
 
 			EntryTemplates.Init(m_tbAddEntry);
@@ -244,7 +202,6 @@ namespace KeePass.Forms
 			UIUtil.ConfigureTbButton(m_tbCopyPassword, KPRes.CopyPasswordMenu, null, m_menuEntryCopyPassword);
 			UIUtil.ConfigureTbButton(m_tbOpenUrl, KPRes.OpenUrl, null, m_menuEntryOpenUrl);
 			UIUtil.ConfigureTbButton(m_tbCopyUrl, KPRes.CopyUrls, null, m_menuEntryCopyUrl);
-			UIUtil.ConfigureTbButton(m_tbAutoType, KPRes.PerformAutoType, null, m_menuEntryPerformAutoType);
 			UIUtil.ConfigureTbButton(m_tbFind, KPRes.Find, null, m_menuFindInDatabase);
 			UIUtil.ConfigureTbButton(m_tbEntryViewsDropDown, KPRes.FindEntries, null, null);
 			UIUtil.ConfigureTbButton(m_tbLockWorkspace, KPRes.LockMenuLock, null, m_menuFileLock);
@@ -390,17 +347,14 @@ namespace KeePass.Forms
 			// m_toolMain.LockHeight(true);
 
 			UpdateFindProfilesMenu(m_menuFindProfiles, true);
-			UpdateFindProfilesMenu(m_ctxGroupFindProfiles, true);
 			UpdateTagsMenu(m_dynFindTagsMenu, false, false, TagsMenuMode.EnsurePopupOnly);
 			UpdateTagsMenu(m_dynTagRemoveMenu, false, false, TagsMenuMode.EnsurePopupOnly);
-			UpdateTagsMenu(m_dynTagRemoveCtx, false, false, TagsMenuMode.EnsurePopupOnly);
 			UpdateEntryMoveMenu(m_dynMoveToGroupMenu, true);
-			UpdateEntryMoveMenu(m_dynMoveToGroupCtx, true);
 
 			ApplyUICustomizations();
 			MonoWorkarounds.ApplyTo(this);
 			UpdateTrayIcon(false);
-			UpdateUIState(false);
+			UpdateUIState(false, null);
 
 			LoadPlugins();
 
@@ -713,7 +667,7 @@ namespace KeePass.Forms
 			// Immediately after the UIBlockInteraction call the form might
 			// be closed and UpdateUIState might crash, if the order of the
 			// two methods is swapped; so first update state, then unblock
-			UpdateUIState(false);
+			UpdateUIState(false, null);
 			UIBlockInteraction(false);
 
 			if (FileSaved != null)
@@ -791,7 +745,7 @@ namespace KeePass.Forms
 				}
 			}
 
-			if (Visible) UpdateUIState(false);
+			if (Visible) UpdateUIState(false, null);
 		}
 
 		private void OnFileExit(object sender, EventArgs e)
@@ -851,7 +805,7 @@ namespace KeePass.Forms
 			if (EntryUtil.ExpireTanEntryIfOption(pe, m_docMgr.ActiveDatabase))
 			{
 				RefreshEntriesList();
-				UpdateUIState(false); // Modified flag set by expiry method
+				UpdateUIState(false, null); // Modified flag set by expiry method
 			}
 
 			if (ClipboardUtil.CopyAndMinimize(pe.Strings.GetSafe(PwDefs.PasswordField),
@@ -876,11 +830,6 @@ namespace KeePass.Forms
 				EntryUtil.SaveEntryAttachments(vSelected, fbd.SelectedPath);
 			GlobalWindowManager.RemoveDialog(fbd);
 			fbd.Dispose();
-		}
-
-		private void OnEntryPerformAutoType(object sender, EventArgs e)
-		{
-			PerformAutoType(null);
 		}
 
 		private void OnEntryAdd(object sender, EventArgs e)
@@ -940,7 +889,7 @@ namespace KeePass.Forms
 			--m_uBlockEntrySelectionEvent;
 
 			ResetDefaultFocus(m_lvEntries);
-			UpdateUIState(false);
+			UpdateUIState(false, null);
 		}
 
 		private void OnFormClosing(object sender, FormClosingEventArgs e)
@@ -1074,7 +1023,7 @@ namespace KeePass.Forms
 			}
 			else
 			{
-				UpdateUIState(false);
+				UpdateUIState(false, null);
 
 				// Update time (not to nCurTicks, as UpdateUIState might take
 				// longer than 100 ms, which would prevent any deferral)
@@ -1258,7 +1207,7 @@ namespace KeePass.Forms
 			m_bDraggingEntries = false;
 
 			pe.Touch(false);
-			UpdateUIState(false); // SprEngine.Compile might have modified the database
+			UpdateUIState(false, null); // SprEngine.Compile might have modified the database
 		}
 
 		private void OnGroupsItemDrag(object sender, ItemDragEventArgs e)
@@ -1552,11 +1501,11 @@ namespace KeePass.Forms
 				UpdateClipboardStatus();
 
 				ClipboardUtil.ClearIfOwner();
-				UpdateUIState(false);
+				UpdateUIState(false, null);
 			}
 
 			if (m_bUpdateUIStateOnce)
-				UpdateUIState(false); // Resets m_bUpdateUIStateOnce
+				UpdateUIState(false, null); // Resets m_bUpdateUIStateOnce
 
 			DateTime utcNow = DateTime.UtcNow; // Fast; DateTime internally uses UTC
 
@@ -1708,7 +1657,6 @@ namespace KeePass.Forms
 						break;
 					case Keys.V:
 						if (e.Shift) OnEntryClipPaste(sender, e);
-						else OnEntryPerformAutoType(sender, e);
 						break;
 					default: bHandled = false; break;
 				}
@@ -1769,7 +1717,7 @@ namespace KeePass.Forms
 			UIUtil.SetChecked(m_menuViewTanSimpleList, m_bSimpleTanView);
 
 			UpdateEntryList(null, true);
-			UpdateUIState(false);
+			UpdateUIState(false, null);
 		}
 
 		private void OnViewTanIndicesClick(object sender, EventArgs e)
@@ -1941,11 +1889,6 @@ namespace KeePass.Forms
 			bool bMod = form.HasModifiedDatabase;
 			UpdateUI(false, null, bMod, null, bMod, null, bMod);
 			UIUtil.DestroyForm(form);
-		}
-
-		private void OnCtxPwListOpening(object sender, CancelEventArgs e)
-		{
-			UpdateUIEntryCtxState();
 		}
 
 		private void OnToolsGeneratePasswordList(object sender, EventArgs e)
@@ -2294,11 +2237,6 @@ namespace KeePass.Forms
 			OnAddEntryTag(sender, new DynamicMenuEventArgs(string.Empty, string.Empty));
 		}
 
-		private void OnCtxGroupListOpening(object sender, CancelEventArgs e)
-		{
-			UpdateUIGroupCtxState();
-		}
-
 		private void OnGroupSort(object sender, EventArgs e)
 		{
 			SortSubGroups(false);
@@ -2313,7 +2251,7 @@ namespace KeePass.Forms
 		{
 			// The following ensures a faster update when multiple items
 			// are automatically deselected when clicking on another item
-			UpdateUIState(false);
+			UpdateUIState(false, null);
 		}
 
 		private void OnGroupEmptyRB(object sender, EventArgs e)
@@ -2580,37 +2518,25 @@ namespace KeePass.Forms
 		private void OnEntryTagAddOpening(object sender, EventArgs e)
 		{
 			ToolStripMenuItem tsmi = (sender as ToolStripMenuItem);
-			Debug.Assert((tsmi == m_menuEntryTagAdd) || (tsmi == m_ctxEntryTagAdd));
+			Debug.Assert(tsmi == m_menuEntryTagAdd);
 
-			// If tsmi is invalid, both menus will be updated
-			if (tsmi != m_ctxEntryTagAdd)
-				UpdateTagsMenu(m_dynTagAddMenu, true, false, TagsMenuMode.Add);
-			if (tsmi != m_menuEntryTagAdd)
-				UpdateTagsMenu(m_dynTagAddCtx, true, false, TagsMenuMode.Add);
+			UpdateTagsMenu(m_dynTagAddMenu, true, false, TagsMenuMode.Add);
 		}
 
 		private void OnEntryTagRemoveOpening(object sender, EventArgs e)
 		{
 			ToolStripMenuItem tsmi = (sender as ToolStripMenuItem);
-			Debug.Assert((tsmi == m_menuEntryTagRemove) || (tsmi == m_ctxEntryTagRemove));
+			Debug.Assert(tsmi == m_menuEntryTagRemove);
 
-			// If tsmi is invalid, both menus will be updated
-			if (tsmi != m_ctxEntryTagRemove)
-				UpdateTagsMenu(m_dynTagRemoveMenu, false, false, TagsMenuMode.Remove);
-			if (tsmi != m_menuEntryTagRemove)
-				UpdateTagsMenu(m_dynTagRemoveCtx, false, false, TagsMenuMode.Remove);
+			UpdateTagsMenu(m_dynTagRemoveMenu, false, false, TagsMenuMode.Remove);
 		}
 
 		private void OnEntryMoveToGroupOpening(object sender, EventArgs e)
 		{
 			ToolStripMenuItem tsmi = (sender as ToolStripMenuItem);
-			Debug.Assert((tsmi == m_menuEntryMoveToGroup) || (tsmi == m_ctxEntryMoveToGroup));
+			Debug.Assert(tsmi == m_menuEntryMoveToGroup);
 
-			// If tsmi is invalid, both menus will be updated
-			if (tsmi != m_ctxEntryMoveToGroup)
-				UpdateEntryMoveMenu(m_dynMoveToGroupMenu, false);
-			if (tsmi != m_menuEntryMoveToGroup)
-				UpdateEntryMoveMenu(m_dynMoveToGroupCtx, false);
+			UpdateEntryMoveMenu(m_dynMoveToGroupMenu, false);
 		}
 
 		private void OnGroupDXOpening(object sender, EventArgs e)
@@ -2690,11 +2616,6 @@ namespace KeePass.Forms
 			UpdateFindProfilesMenu(m_menuFindProfiles, false);
 		}
 
-		private void OnCtxGroupFindProfilesOpening(object sender, EventArgs e)
-		{
-			UpdateFindProfilesMenu(m_ctxGroupFindProfiles, false);
-		}
-
 		private void OnGroupClipCopy(object sender, EventArgs e)
 		{
 			CopySelectedObjects(typeof(PwGroup), true);
@@ -2769,8 +2690,8 @@ namespace KeePass.Forms
 				pe.Touch(true, false);
 
 				RefreshEntriesList();
-				UpdateUIState(true);
+				UpdateUIState(true, null);
 			}
 		}
-	}
-}
+		}
+		}

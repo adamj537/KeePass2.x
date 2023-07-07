@@ -83,15 +83,9 @@
 			this.m_btnFileExtCreate = new System.Windows.Forms.Button();
 			this.m_lblFileExtHint = new System.Windows.Forms.Label();
 			this.m_grpHotKeys = new System.Windows.Forms.GroupBox();
-			this.m_lblAutoTypePassword = new System.Windows.Forms.Label();
-			this.m_hkAutoTypePassword = new KeePass.UI.HotKeyControlEx();
 			this.m_linkHotKeyHelp = new System.Windows.Forms.LinkLabel();
-			this.m_lblAutoTypeSelected = new System.Windows.Forms.Label();
-			this.m_hkAutoTypeSelected = new KeePass.UI.HotKeyControlEx();
 			this.m_hkShowWindow = new KeePass.UI.HotKeyControlEx();
-			this.m_lblAutoType = new System.Windows.Forms.Label();
 			this.m_lblShowWindow = new System.Windows.Forms.Label();
-			this.m_hkAutoType = new KeePass.UI.HotKeyControlEx();
 			this.m_tabAdvanced = new System.Windows.Forms.TabPage();
 			this.m_btnProxy = new System.Windows.Forms.Button();
 			this.m_lvAdvanced = new System.Windows.Forms.ListView();
@@ -242,6 +236,7 @@
 			this.m_lvSecurityOptions.CheckBoxes = true;
 			this.m_lvSecurityOptions.FullRowSelect = true;
 			this.m_lvSecurityOptions.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+			this.m_lvSecurityOptions.HideSelection = false;
 			this.m_lvSecurityOptions.Location = new System.Drawing.Point(6, 115);
 			this.m_lvSecurityOptions.Name = "m_lvSecurityOptions";
 			this.m_lvSecurityOptions.ShowItemToolTips = true;
@@ -338,6 +333,7 @@
 			this.m_lvPolicy.CheckBoxes = true;
 			this.m_lvPolicy.FullRowSelect = true;
 			this.m_lvPolicy.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+			this.m_lvPolicy.HideSelection = false;
 			this.m_lvPolicy.Location = new System.Drawing.Point(6, 46);
 			this.m_lvPolicy.Name = "m_lvPolicy";
 			this.m_lvPolicy.ShowItemToolTips = true;
@@ -382,7 +378,7 @@
 			this.m_lblPolicyIntro.Size = new System.Drawing.Size(548, 14);
 			this.m_lblPolicyIntro.TabIndex = 0;
 			this.m_lblPolicyIntro.Text = "The application policy defines which security-critical operations are allowed and" +
-				" which are not.";
+    " which are not.";
 			// 
 			// m_tabGui1
 			// 
@@ -399,6 +395,7 @@
 			this.m_lvGuiOptions.CheckBoxes = true;
 			this.m_lvGuiOptions.FullRowSelect = true;
 			this.m_lvGuiOptions.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+			this.m_lvGuiOptions.HideSelection = false;
 			this.m_lvGuiOptions.Location = new System.Drawing.Point(6, 12);
 			this.m_lvGuiOptions.Name = "m_lvGuiOptions";
 			this.m_lvGuiOptions.ShowItemToolTips = true;
@@ -704,41 +701,19 @@
 			this.m_lblFileExtHint.Size = new System.Drawing.Size(525, 28);
 			this.m_lblFileExtHint.TabIndex = 0;
 			this.m_lblFileExtHint.Text = "KDBX files can be associated with KeePass. When you double-click a KDBX file in W" +
-				"indows Explorer, they will automatically be opened by KeePass.";
+    "indows Explorer, they will automatically be opened by KeePass.";
 			// 
 			// m_grpHotKeys
 			// 
-			this.m_grpHotKeys.Controls.Add(this.m_lblAutoTypePassword);
-			this.m_grpHotKeys.Controls.Add(this.m_hkAutoTypePassword);
 			this.m_grpHotKeys.Controls.Add(this.m_linkHotKeyHelp);
-			this.m_grpHotKeys.Controls.Add(this.m_lblAutoTypeSelected);
-			this.m_grpHotKeys.Controls.Add(this.m_hkAutoTypeSelected);
 			this.m_grpHotKeys.Controls.Add(this.m_hkShowWindow);
-			this.m_grpHotKeys.Controls.Add(this.m_lblAutoType);
 			this.m_grpHotKeys.Controls.Add(this.m_lblShowWindow);
-			this.m_grpHotKeys.Controls.Add(this.m_hkAutoType);
 			this.m_grpHotKeys.Location = new System.Drawing.Point(6, 12);
 			this.m_grpHotKeys.Name = "m_grpHotKeys";
 			this.m_grpHotKeys.Size = new System.Drawing.Size(540, 129);
 			this.m_grpHotKeys.TabIndex = 0;
 			this.m_grpHotKeys.TabStop = false;
 			this.m_grpHotKeys.Text = "System-wide hot keys";
-			// 
-			// m_lblAutoTypePassword
-			// 
-			this.m_lblAutoTypePassword.AutoSize = true;
-			this.m_lblAutoTypePassword.Location = new System.Drawing.Point(6, 47);
-			this.m_lblAutoTypePassword.Name = "m_lblAutoTypePassword";
-			this.m_lblAutoTypePassword.Size = new System.Drawing.Size(163, 13);
-			this.m_lblAutoTypePassword.TabIndex = 3;
-			this.m_lblAutoTypePassword.Text = "Global auto-type - password only:";
-			// 
-			// m_hkAutoTypePassword
-			// 
-			this.m_hkAutoTypePassword.Location = new System.Drawing.Point(175, 44);
-			this.m_hkAutoTypePassword.Name = "m_hkAutoTypePassword";
-			this.m_hkAutoTypePassword.Size = new System.Drawing.Size(180, 20);
-			this.m_hkAutoTypePassword.TabIndex = 4;
 			// 
 			// m_linkHotKeyHelp
 			// 
@@ -751,37 +726,12 @@
 			this.m_linkHotKeyHelp.Text = "Creating system-wide hot keys";
 			this.m_linkHotKeyHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OnHotKeyHelpLinkClicked);
 			// 
-			// m_lblAutoTypeSelected
-			// 
-			this.m_lblAutoTypeSelected.AutoSize = true;
-			this.m_lblAutoTypeSelected.Location = new System.Drawing.Point(6, 73);
-			this.m_lblAutoTypeSelected.Name = "m_lblAutoTypeSelected";
-			this.m_lblAutoTypeSelected.Size = new System.Drawing.Size(124, 13);
-			this.m_lblAutoTypeSelected.TabIndex = 5;
-			this.m_lblAutoTypeSelected.Text = "Auto-type selected entry:";
-			// 
-			// m_hkAutoTypeSelected
-			// 
-			this.m_hkAutoTypeSelected.Location = new System.Drawing.Point(175, 70);
-			this.m_hkAutoTypeSelected.Name = "m_hkAutoTypeSelected";
-			this.m_hkAutoTypeSelected.Size = new System.Drawing.Size(180, 20);
-			this.m_hkAutoTypeSelected.TabIndex = 6;
-			// 
 			// m_hkShowWindow
 			// 
 			this.m_hkShowWindow.Location = new System.Drawing.Point(175, 96);
 			this.m_hkShowWindow.Name = "m_hkShowWindow";
 			this.m_hkShowWindow.Size = new System.Drawing.Size(180, 20);
 			this.m_hkShowWindow.TabIndex = 8;
-			// 
-			// m_lblAutoType
-			// 
-			this.m_lblAutoType.AutoSize = true;
-			this.m_lblAutoType.Location = new System.Drawing.Point(6, 21);
-			this.m_lblAutoType.Name = "m_lblAutoType";
-			this.m_lblAutoType.Size = new System.Drawing.Size(87, 13);
-			this.m_lblAutoType.TabIndex = 0;
-			this.m_lblAutoType.Text = "Global auto-type:";
 			// 
 			// m_lblShowWindow
 			// 
@@ -791,13 +741,6 @@
 			this.m_lblShowWindow.Size = new System.Drawing.Size(121, 13);
 			this.m_lblShowWindow.TabIndex = 7;
 			this.m_lblShowWindow.Text = "Show KeePass window:";
-			// 
-			// m_hkAutoType
-			// 
-			this.m_hkAutoType.Location = new System.Drawing.Point(175, 18);
-			this.m_hkAutoType.Name = "m_hkAutoType";
-			this.m_hkAutoType.Size = new System.Drawing.Size(180, 20);
-			this.m_hkAutoType.TabIndex = 1;
 			// 
 			// m_tabAdvanced
 			// 
@@ -826,6 +769,7 @@
 			this.m_lvAdvanced.CheckBoxes = true;
 			this.m_lvAdvanced.FullRowSelect = true;
 			this.m_lvAdvanced.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+			this.m_lvAdvanced.HideSelection = false;
 			this.m_lvAdvanced.Location = new System.Drawing.Point(6, 12);
 			this.m_lvAdvanced.Name = "m_lvAdvanced";
 			this.m_lvAdvanced.ShowItemToolTips = true;
@@ -852,8 +796,8 @@
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Options";
-			this.Load += new System.EventHandler(this.OnFormLoad);
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OnFormClosed);
+			this.Load += new System.EventHandler(this.OnFormLoad);
 			((System.ComponentModel.ISupportInitialize)(this.m_bannerImage)).EndInit();
 			this.m_tabMain.ResumeLayout(false);
 			this.m_tabSecurity.ResumeLayout(false);
@@ -902,8 +846,6 @@
 		private System.Windows.Forms.ListView m_lvPolicy;
 		private System.Windows.Forms.ListView m_lvGuiOptions;
 		private System.Windows.Forms.TabPage m_tabIntegration;
-		private KeePass.UI.HotKeyControlEx m_hkAutoType;
-		private System.Windows.Forms.Label m_lblAutoType;
 		private System.Windows.Forms.GroupBox m_grpHotKeys;
 		private KeePass.UI.HotKeyControlEx m_hkShowWindow;
 		private System.Windows.Forms.Label m_lblShowWindow;
@@ -919,15 +861,11 @@
 		private System.Windows.Forms.ListView m_lvAdvanced;
 		private System.Windows.Forms.ListView m_lvSecurityOptions;
 		private System.Windows.Forms.Button m_btnSchemeOverrides;
-		private System.Windows.Forms.Label m_lblAutoTypeSelected;
-		private KeePass.UI.HotKeyControlEx m_hkAutoTypeSelected;
 		private System.Windows.Forms.LinkLabel m_linkHotKeyHelp;
 		private System.Windows.Forms.CheckBox m_cbLockAfterGlobalTime;
 		private System.Windows.Forms.NumericUpDown m_numLockAfterGlobalTime;
 		private System.Windows.Forms.Button m_btnProxy;
 		private System.Windows.Forms.ToolTip m_ttRect;
-		private System.Windows.Forms.Label m_lblAutoTypePassword;
-		private KeePass.UI.HotKeyControlEx m_hkAutoTypePassword;
 		private System.Windows.Forms.Button m_btnHelpSource;
 		private System.Windows.Forms.Label m_lblSecOpt;
 		private System.Windows.Forms.LinkLabel m_linkSecOptAdm;

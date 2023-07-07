@@ -74,23 +74,14 @@ namespace KeePass.Forms
 		private Point m_ptLastEntriesMouseClick = new Point(0, 0);
 		private RichTextBoxContextMenu m_ctxEntryPreviewContextMenu = new RichTextBoxContextMenu();
 		private DynamicMenu m_dynStringsMenu;
-		private DynamicMenu m_dynStringsCtx;
 		private DynamicMenu m_dynBinariesMenu;
-		private DynamicMenu m_dynBinariesCtx;
 		private DynamicMenu m_dynFindTagsMenu;
 		private DynamicMenu m_dynFindTagsToolBar;
 		private DynamicMenu m_dynTagAddMenu;
-		private DynamicMenu m_dynTagAddCtx;
 		private DynamicMenu m_dynTagRemoveMenu;
-		private DynamicMenu m_dynTagRemoveCtx;
 		private DynamicMenu m_dynMoveToGroupMenu;
-		private DynamicMenu m_dynMoveToGroupCtx;
-		private DynamicMenu m_dynAutoTypeAdvMenu;
-		private DynamicMenu m_dynAutoTypeAdvCtx;
 		private OpenWithMenu m_dynOpenUrlMenu;
-		private OpenWithMenu m_dynOpenUrlCtx;
 		private OpenWithMenu m_dynOpenUrlToolBar;
-		private MenuItemLinks m_milMain = new MenuItemLinks();
 
 		private readonly AsyncPwListUpdate m_asyncListUpdate;
 
@@ -103,7 +94,6 @@ namespace KeePass.Forms
 
 		private CriticalSectionEx m_csLockTimer = new CriticalSectionEx();
 		private int m_nLockTimerMax = 0;
-		// private volatile int m_nLockTimerCur = 0;
 		private long m_lLockAtTicks = long.MaxValue;
 		private uint m_uLastInputTime = uint.MaxValue;
 		private long m_lLockAtGlobalTicks = long.MaxValue;
@@ -128,22 +118,11 @@ namespace KeePass.Forms
 
 		private Image m_imgFileSaveEnabled = null;
 		private Image m_imgFileSaveDisabled = null;
-		// private Image m_imgFileSaveAllEnabled = null;
-		// private Image m_imgFileSaveAllDisabled = null;
 		private List<Image> m_lStdClientImages = null;
 		private ImageList m_ilCurrentIcons = null;
 
-		// private KeyValuePair<Color, Icon> m_kvpIcoMain =
-		//	new KeyValuePair<Color, Icon>(Color.Empty, null);
-		// private KeyValuePair<Color, Icon> m_kvpIcoTrayNormal =
-		//	new KeyValuePair<Color, Icon>(Color.Empty, null);
-		// private KeyValuePair<Color, Icon> m_kvpIcoTrayLocked =
-		//	new KeyValuePair<Color, Icon>(Color.Empty, null);
-
 		private List<Image> m_lTabImages = new List<Image>();
 		private ImageList m_ilTabImages = null;
-
-		private bool m_bIsAutoTyping = false;
 		private uint m_uTabChangeBlocked = 0;
 		private uint m_uForceSave = 0;
 		private uint m_uUIBlocked = 0;
@@ -193,10 +172,6 @@ namespace KeePass.Forms
 		/// </summary>
 		public ToolStripMenuItem ToolsMenu { get { return m_menuTools; } }
 
-		public ContextMenuStrip EntryContextMenu { get { return m_ctxPwList; } }
-		public ContextMenuStrip GroupContextMenu { get { return m_ctxGroupList; } }
-		public ContextMenuStrip TrayContextMenu { get { return m_ctxTray; } }
-
 		public ToolStripProgressBar MainProgressBar { get { return m_statusPartProgress; } }
 		public NotifyIcon MainNotifyIcon { get { return m_ntfTray.NotifyIcon; } }
 
@@ -217,7 +192,6 @@ namespace KeePass.Forms
 			public bool CanCopyUserName = false;
 			public bool CanCopyPassword = false;
 			public bool CanOpenUrl = false;
-			public bool CanPerformAutoType = false;
 			public bool IsOneTan = false;
 			public string LockUnlock;
 		}
@@ -300,25 +274,11 @@ namespace KeePass.Forms
 				int ciEM = tsicEM.Count;
 				ToolStripItem tsiPrevEM = ((ciEM >= 1) ? tsicEM[ciEM - 1] : null);
 
-				ToolStripItemCollection tsicGC = m_ctxGroupList.Items;
-				int ciGC = tsicGC.Count;
-				ToolStripItem tsiPrevGC = ((ciGC >= 1) ? tsicGC[ciGC - 1] : null);
-
-				ToolStripItemCollection tsicEC = m_ctxPwList.Items;
-				int ciEC = tsicEC.Count;
-				ToolStripItem tsiPrevEC = ((ciEC >= 1) ? tsicEC[ciEC - 1] : null);
-
-				ToolStripItemCollection tsicT = m_ctxTray.Items;
-				ToolStripItem tsiPrevT = m_ctxTrayOptions;
-
 				m_pluginManager.LoadAllPlugins();
 
 				m_pluginManager.AddMenuItems(PluginMenuType.Main, tsicM, tsiPrevM);
 				m_pluginManager.AddMenuItems(PluginMenuType.Group, tsicGM, tsiPrevGM);
 				m_pluginManager.AddMenuItems(PluginMenuType.Entry, tsicEM, tsiPrevEM);
-				m_pluginManager.AddMenuItems(PluginMenuType.Group, tsicGC, tsiPrevGC);
-				m_pluginManager.AddMenuItems(PluginMenuType.Entry, tsicEC, tsiPrevEC);
-				m_pluginManager.AddMenuItems(PluginMenuType.Tray, tsicT, tsiPrevT);
 			}
 
 			if (Program.ColumnProviderPool.Count != cColumnProvs)
@@ -358,21 +318,13 @@ namespace KeePass.Forms
 			EntryTemplates.Release();
 
 			m_dynStringsMenu.MenuClick -= OnEntryStringClick;
-			m_dynStringsCtx.MenuClick -= OnEntryStringClick;
 			m_dynBinariesMenu.MenuClick -= OnEntryBinaryClick;
-			m_dynBinariesCtx.MenuClick -= OnEntryBinaryClick;
 			m_dynFindTagsMenu.MenuClick -= OnShowEntriesByTag;
 			m_dynFindTagsToolBar.MenuClick -= OnShowEntriesByTag;
 			m_dynTagAddMenu.MenuClick -= OnAddEntryTag;
-			m_dynTagAddCtx.MenuClick -= OnAddEntryTag;
 			m_dynTagRemoveMenu.MenuClick -= OnRemoveEntryTag;
-			m_dynTagRemoveCtx.MenuClick -= OnRemoveEntryTag;
 			m_dynMoveToGroupMenu.MenuClick -= OnEntryMoveToGroup;
-			m_dynMoveToGroupCtx.MenuClick -= OnEntryMoveToGroup;
-			m_dynAutoTypeAdvMenu.MenuClick -= OnEntryPerformAutoTypeAdv;
-			m_dynAutoTypeAdvCtx.MenuClick -= OnEntryPerformAutoTypeAdv;
 			m_dynOpenUrlMenu.Destroy();
-			m_dynOpenUrlCtx.Destroy();
 			m_dynOpenUrlToolBar.Destroy();
 
 			m_ctxEntryPreviewContextMenu.Detach();
@@ -452,11 +404,6 @@ namespace KeePass.Forms
 		/// </summary>
 		/// <param name="bSetModified">If this parameter is <c>true</c>, the
 		/// currently open database is marked as modified.</param>
-		private void UpdateUIState(bool bSetModified)
-		{
-			UpdateUIState(bSetModified, null);
-		}
-
 		private void UpdateUIState(bool bSetModified, Control cOptFocus)
 		{
 			// For instance when running "START /MIN KeePass.exe",
@@ -661,11 +608,10 @@ namespace KeePass.Forms
 			m_tbCopyPassword.Enabled = s.CanCopyPassword;
 			UIUtil.SetEnabledFast(s.CanOpenUrl, m_tbOpenUrl,
 				m_tbOpenUrlDefault, m_tbCopyUrl);
-			m_tbAutoType.Enabled = s.CanPerformAutoType;
 
 			m_menuFileLock.Text = s.LockUnlock;
 			string strLockText = StrUtil.RemoveAccelerator(s.LockUnlock);
-			m_tbLockWorkspace.Text = m_ctxTrayLock.Text = strLockText;
+			m_tbLockWorkspace.Text = strLockText;
 			m_tbLockWorkspace.ToolTipText = strLockText + " (" +
 				m_menuFileLock.ShortcutKeyDisplayString + ")";
 
@@ -694,8 +640,7 @@ namespace KeePass.Forms
 			// Program.TriggerSystem.RaiseEvent(EcasEventIDs.UpdatedUIState);
 		}
 
-		private void UpdateUIGroupState(MainAppState sMain, bool bMenuVisible,
-			bool bContextMenu)
+		private void UpdateUIGroupState(MainAppState sMain, bool bMenuVisible)
 		{
 			MainAppState s = (sMain ?? GetMainAppState());
 
@@ -711,8 +656,7 @@ namespace KeePass.Forms
 			uint uSubGroups = 0, uSubEntries = 0;
 			if (pg != null) pg.GetCounts(true, out uSubGroups, out uSubEntries);
 
-			SuspendLayoutScope sls = new SuspendLayoutScope(true, m_menuMain,
-				m_ctxGroupList);
+			SuspendLayoutScope sls = new SuspendLayoutScope(true, m_menuMain);
 
 			UIUtil.SetEnabledFast(s.DatabaseOpened, m_menuGroupAdd, m_menuGroupEdit);
 			UIUtil.SetEnabledFast(bChildOps, m_menuGroupDuplicate, m_menuGroupDelete);
@@ -739,16 +683,11 @@ namespace KeePass.Forms
 				PwGroup pgRB = pd.RootGroup.FindGroup(pd.RecycleBinUuid, true);
 
 				bShowEmpty = (pgRB != null);
-				if (bContextMenu) bShowEmpty &= (pg == pgRB);
 
 				if (bShowEmpty)
 					bEnableEmpty = ((pgRB.Groups.UCount > 0) || (pgRB.Entries.UCount > 0));
 			}
 			m_menuGroupEmptyRB.Enabled = bEnableEmpty;
-			m_milMain.SetCopyAvailable(m_menuGroupEmptyRB, bShowEmpty);
-
-			if (bContextMenu)
-				UIUtil.SetEnabledFast(s.DatabaseOpened, m_ctxGroupFind, m_ctxGroupFindProfiles);
 
 			// 'Paste Group' is updated in the menu opening handler
 			UIUtil.SetEnabledFast(s.DatabaseOpened, m_menuGroupDX, m_menuGroupClipCopy,
@@ -759,12 +698,7 @@ namespace KeePass.Forms
 
 		private void UpdateUIGroupMenuState(MainAppState sMain, bool bMenuVisible)
 		{
-			UpdateUIGroupState(sMain, bMenuVisible, false);
-		}
-
-		private void UpdateUIGroupCtxState()
-		{
-			UpdateUIGroupState(null, true, true);
+			UpdateUIGroupState(sMain, bMenuVisible);
 		}
 
 		private void UpdateUIEntryState(MainAppState sMain, bool bMenuVisible,
@@ -776,11 +710,9 @@ namespace KeePass.Forms
 			bool bEntrySel1 = (s.EntriesSelected == 1);
 			bool bEntrySelM = (s.EntriesSelected >= 2);
 
-			SuspendLayoutScope sls = new SuspendLayoutScope(true, m_menuMain,
-				m_ctxPwList);
+			SuspendLayoutScope sls = new SuspendLayoutScope(true, m_menuMain);
 
 			m_menuEntryCopyUserName.Enabled = s.CanCopyUserName;
-			m_milMain.SetCopyAvailable(m_menuEntryCopyUserName, !s.IsOneTan);
 
 			m_menuEntryCopyPassword.Enabled = s.CanCopyPassword;
 			if (bMenuVisible)
@@ -881,27 +813,11 @@ namespace KeePass.Forms
 				if (uBinItems == 0) dynBinaries.AddItem(m_strNoneP, null).Enabled = false;
 
 				m_menuEntryOtherData.Enabled = bStr;
-				// m_milMain.SetCopyAvailable(m_menuEntryOtherData, bStr);
 				m_menuEntryAttachments.Enabled = (uBinItems != 0);
-				m_milMain.SetCopyAvailable(m_menuEntryAttachments, (uBinItems != 0));
 			}
 
 			bool bAttach = (bEntrySelM || ((pe != null) && (pe.Binaries.UCount != 0)));
 			m_menuEntrySaveAttachedFiles.Enabled = bAttach;
-			m_milMain.SetCopyAvailable(m_menuEntrySaveAttachedFiles, bAttach);
-
-			m_menuEntryPerformAutoType.Enabled = s.CanPerformAutoType;
-
-			m_menuEntryAutoTypeAdv.Enabled = s.CanPerformAutoType;
-			m_menuEntryAutoTypeAdv.Available = Program.Config.UI.ShowAdvAutoTypeCommands;
-			foreach (ToolStripItem tsiAdv in m_menuEntryAutoTypeAdv.DropDownItems)
-			{
-				tsiAdv.Enabled = s.CanPerformAutoType;
-			}
-			foreach (ToolStripItem tsiAdv in m_ctxEntryAutoTypeAdv.DropDownItems)
-			{
-				tsiAdv.Enabled = s.CanPerformAutoType;
-			}
 
 			UIUtil.SetEnabledFast(s.DatabaseOpened, m_menuEntryAdd);
 			UIUtil.SetEnabledFast(bEntrySel, m_menuEntryEdit,
@@ -974,12 +890,6 @@ namespace KeePass.Forms
 				m_dynBinariesMenu);
 		}
 
-		private void UpdateUIEntryCtxState()
-		{
-			UpdateUIEntryState(null, true, true, m_dynStringsCtx,
-				m_dynBinariesCtx);
-		}
-
 		private MainAppState GetMainAppState()
 		{
 			PwDatabase pd = m_docMgr.ActiveDatabase;
@@ -1001,7 +911,6 @@ namespace KeePass.Forms
 				{
 					s.CanCopyUserName = !pe.Strings.GetSafe(PwDefs.UserNameField).IsEmpty;
 					s.CanCopyPassword = !pe.Strings.GetSafe(PwDefs.PasswordField).IsEmpty;
-					s.CanPerformAutoType = pe.GetAutoTypeEnabled();
 					s.IsOneTan = PwDefs.IsTanEntry(pe);
 				}
 
@@ -1975,25 +1884,6 @@ namespace KeePass.Forms
 					bCnt = ClipboardUtil.CopyAndMinimize(TimeUtil.ToDisplayString(
 						EntryUtil.GetLastPasswordModTime(pe)), true, this, pe, null);
 					break;
-				case AceColumnType.AutoTypeEnabled:
-					object oBlocker;
-					AutoType.GetEnabledText(pe, out oBlocker);
-					if ((oBlocker == null) || (oBlocker is PwEntry))
-						EditSelectedEntry(PwEntryFormTab.AutoType);
-					else
-					{
-						PwGroup pg = (oBlocker as PwGroup);
-						if (pg != null)
-						{
-							UpdateUI(false, null, true, pg, true, null, false);
-							EditSelectedGroup(GroupFormTab.AutoType);
-						}
-						else { Debug.Assert(false); }
-					}
-					break;
-				case AceColumnType.AutoTypeSequences:
-					EditSelectedEntry(PwEntryFormTab.AutoType);
-					break;
 				default:
 					Debug.Assert(false);
 					break;
@@ -2085,7 +1975,7 @@ namespace KeePass.Forms
 			{
 				// SprEngine.Compile might have modified the database
 				RefreshEntriesList();
-				UpdateUIState(false);
+				UpdateUIState(false, null);
 			}
 
 			return sb.ToString();
@@ -2202,7 +2092,7 @@ namespace KeePass.Forms
 			ExportUtil.Export(pwInfo, swLogger);
 
 			MessageService.ExternalDecrementMessageCount();
-			UpdateUIState(false);
+			UpdateUIState(false, null);
 		}
 
 		internal static IOConnectionInfo CompleteConnectionInfo(IOConnectionInfo ioc,
@@ -2341,7 +2231,7 @@ namespace KeePass.Forms
 
 			if ((pwOpenedDb == null) || !pwOpenedDb.IsOpen)
 			{
-				UpdateUIState(false); // Reset status bar text
+				UpdateUIState(false, null); // Reset status bar text
 				return;
 			}
 
@@ -2434,7 +2324,7 @@ namespace KeePass.Forms
 			}
 
 			if (FixDuplicateUuids(pwOpenedDb, pwOpenedDb.IOConnectionInfo))
-				UpdateUIState(false); // Already marked as modified
+				UpdateUIState(false, null); // Already marked as modified
 
 			if (FileOpened != null)
 			{
@@ -2873,7 +2763,7 @@ namespace KeePass.Forms
 			EnsureVisibleSelected(iMove > 0); // In all cases
 
 			// m_lvEntries.EndUpdateEx();
-			UpdateUIState(true);
+			UpdateUIState(true, null);
 		}
 
 		public StatusBarLogger CreateStatusBarLogger()
@@ -3103,13 +2993,11 @@ namespace KeePass.Forms
 							MessageService.ShowWarning(edc.ErrorOnSprFailure);
 						else
 						{
-							// if(!VistaTaskDialog.ShowMessageBox(null, str,
-							//	PwDefs.ShortProductName, VtdIcon.Information, this))
 							MessageService.ShowInfo(str);
 						}
 
 						RefreshEntriesList(); // Spr compilation
-						UpdateUIState(false);
+						UpdateUIState(false, null);
 						break;
 
 					default:
@@ -3131,12 +3019,12 @@ namespace KeePass.Forms
 			if (!bSideBySide && (m_splitHorizontal.Orientation != Orientation.Horizontal))
 			{
 				m_splitHorizontal.Orientation = Orientation.Horizontal;
-				UpdateUIState(false);
+				UpdateUIState(false, null);
 			}
 			else if (bSideBySide && (m_splitHorizontal.Orientation != Orientation.Vertical))
 			{
 				m_splitHorizontal.Orientation = Orientation.Vertical;
-				UpdateUIState(false);
+				UpdateUIState(false, null);
 			}
 
 			UIUtil.SetChecked(m_menuViewWindowsStacked, !bSideBySide);
@@ -3181,8 +3069,6 @@ namespace KeePass.Forms
 				null, true);
 			UIUtil.AssignShortcut(m_menuEntryOpenUrl, Keys.Control | Keys.U);
 			UIUtil.AssignShortcut(m_menuEntryCopyUrl, Keys.Control | Keys.Shift | Keys.U);
-			UIUtil.AssignShortcut(m_menuEntryPerformAutoType, Keys.Control | Keys.V,
-				null, true);
 
 			UIUtil.AssignShortcut(m_menuEntryAdd, Keys.Control | Keys.I);
 			UIUtil.AssignShortcut(m_menuEntryEdit, Keys.Return, null, true);
@@ -3207,8 +3093,7 @@ namespace KeePass.Forms
 				null, true);
 
 			UIUtil.AssignShortcut(m_menuFindInDatabase, Keys.Control | Keys.F);
-			UIUtil.AssignShortcut(m_menuFindInGroup, Keys.Control | Keys.Shift | Keys.F,
-				m_ctxGroupFind, false);
+			UIUtil.AssignShortcut(m_menuFindInGroup, Keys.Control | Keys.Shift | Keys.F, null, false);
 
 			UIUtil.AssignShortcut(m_menuFindParentGroup, Keys.Control | Keys.G);
 
@@ -3216,81 +3101,6 @@ namespace KeePass.Forms
 			// UIUtil.AssignShortcut(m_menuViewHideUserNames, Keys.Control | Keys.J);
 
 			UIUtil.AssignShortcut(m_menuHelpContents, Keys.F1);
-		}
-
-		private void ConstructContextMenus()
-		{
-			SuspendLayoutScope sls = new SuspendLayoutScope(true, m_ctxGroupList,
-				m_ctxPwList);
-
-			ToolStripItemCollection tsicGC = m_ctxGroupList.Items;
-			tsicGC.Insert(0, new ToolStripSeparator());
-			m_milMain.CreateCopy(tsicGC, null, false, m_menuGroupRearrange);
-			tsicGC.Insert(0, new ToolStripSeparator());
-			m_milMain.CreateCopy(tsicGC, null, false, m_menuGroupEmptyRB);
-			m_milMain.CreateCopy(tsicGC, null, false, m_menuGroupDelete);
-			m_milMain.CreateCopy(tsicGC, null, false, m_menuGroupDuplicate);
-			m_milMain.CreateCopy(tsicGC, null, false, m_menuGroupEdit);
-			m_milMain.CreateCopy(tsicGC, null, false, m_menuGroupAdd);
-			// tsicGC.Add(new ToolStripSeparator());
-			// m_milMain.CreateCopy(tsicGC, null, true, m_menuGroupPrint);
-			// m_milMain.CreateCopy(tsicGC, null, true, m_menuGroupExport);
-
-			ToolStripItemCollection tsicEC = m_ctxPwList.Items;
-			m_milMain.CreateCopy(tsicEC, null, false, m_menuEntryCopyPassword);
-			m_milMain.CreateCopy(tsicEC, null, false, m_menuEntryCopyUserName);
-			m_milMain.CreateLink(m_ctxEntryUrl, m_menuEntryUrl, false);
-
-			ToolStripItemCollection tsicECUrl = m_ctxEntryUrl.DropDownItems;
-			m_milMain.CreateCopy(tsicECUrl, null, true, m_menuEntryOpenUrl);
-			m_milMain.CreateCopy(tsicECUrl, null, true, m_menuEntryCopyUrl);
-
-			m_milMain.CreateLink(m_ctxEntryOtherData, m_menuEntryOtherData, false);
-			m_milMain.CreateLink(m_ctxEntryAttachments, m_menuEntryAttachments, false);
-			m_milMain.CreateCopy(tsicEC, m_ctxEntryAttachments, true, m_menuEntrySaveAttachedFiles);
-
-			m_milMain.CreateCopy(tsicEC, m_ctxEntryAutoTypeAdv, false, m_menuEntryPerformAutoType);
-			m_milMain.CreateLink(m_ctxEntryAutoTypeAdv, m_menuEntryAutoTypeAdv, false);
-
-			m_milMain.CreateCopy(tsicEC, m_ctxEntryEditQuick, false, m_menuEntryAdd);
-			m_milMain.CreateCopy(tsicEC, m_ctxEntryEditQuick, false, m_menuEntryEdit);
-			m_milMain.CreateLink(m_ctxEntryEditQuick, m_menuEntryEditQuick, false);
-
-			ToolStripItemCollection tsicECQuick = m_ctxEntryEditQuick.DropDownItems;
-			tsicECQuick.Insert(0, new ToolStripSeparator());
-			m_milMain.CreateCopy(tsicECQuick, null, false, m_menuEntryIcon);
-
-			m_milMain.CreateLink(m_ctxEntryTagAdd, m_menuEntryTagAdd, false);
-			m_milMain.CreateLink(m_ctxEntryTagRemove, m_menuEntryTagRemove, false);
-
-			ToolStripItemCollection tsicECTagAdd = m_ctxEntryTagAdd.DropDownItems;
-			m_milMain.CreateCopy(tsicECTagAdd, null, false, m_menuEntryTagNew);
-
-			tsicECQuick.Add(new ToolStripSeparator());
-			m_milMain.CreateCopy(tsicECQuick, null, true, m_menuEntryExpiresNow);
-			m_milMain.CreateCopy(tsicECQuick, null, true, m_menuEntryExpiresNever);
-			tsicECQuick.Add(new ToolStripSeparator());
-			m_milMain.CreateCopy(tsicECQuick, null, true, m_menuEntryOtpGenSettings);
-
-			m_milMain.CreateCopy(tsicEC, m_ctxEntryEditQuick, true, m_menuEntryDelete);
-			m_milMain.CreateCopy(tsicEC, m_ctxEntryEditQuick, true, m_menuEntryDuplicate);
-
-			ToolStripSeparator ts = new ToolStripSeparator();
-			tsicEC.Insert(tsicEC.IndexOf(m_ctxEntryRearrange), ts);
-			m_milMain.CreateCopy(tsicEC, ts, false, m_menuEntrySelectAll);
-
-			m_milMain.CreateLink(m_ctxEntryRearrange, m_menuEntryRearrange, false);
-			m_milMain.CreateLink(m_ctxEntryMoveToGroup, m_menuEntryMoveToGroup, false);
-
-			ToolStripItemCollection tsicECMove = m_ctxEntryRearrange.DropDownItems;
-			tsicECMove.Insert(0, new ToolStripSeparator());
-			m_milMain.CreateCopy(tsicECMove, null, false, m_menuEntryMoveToBottom);
-			m_milMain.CreateCopy(tsicECMove, null, false, m_menuEntryMoveOneDown);
-			m_milMain.CreateCopy(tsicECMove, null, false, m_menuEntryMoveOneUp);
-			m_milMain.CreateCopy(tsicECMove, null, false, m_menuEntryMoveToTop);
-			m_milMain.CreateCopy(tsicECMove, null, true, m_menuEntryMoveToPreviousParent);
-
-			sls.Dispose();
 		}
 
 		private static void CopyMenuItemText(ToolStripMenuItem tsmiTarget,
@@ -3393,7 +3203,7 @@ namespace KeePass.Forms
 				// Immediately after the UIBlockInteraction call the form might
 				// be closed and UpdateUIState might crash, if the order of the
 				// two methods is swapped; so first update state, then unblock
-				UpdateUIState(false);
+				UpdateUIState(false, null);
 				UIBlockInteraction(false);
 
 				if (FileSaved != null)
@@ -3669,7 +3479,7 @@ namespace KeePass.Forms
 				pe.Touch(true, false);
 
 				RefreshEntriesList();
-				UpdateUIState(true);
+				UpdateUIState(true, null);
 			}
 		}
 
@@ -3964,7 +3774,7 @@ namespace KeePass.Forms
 			UpdateUI(false, ds, true, null, true, null, false);
 
 			RestoreWindowState(ds.Database);
-			UpdateUIState(false);
+			UpdateUIState(false, null);
 		}
 
 		private void GetTabText(PwDocument ds, out string strName, out string strTip)
@@ -4050,7 +3860,7 @@ namespace KeePass.Forms
 
 			if (bFocusEntryList) ResetDefaultFocus(m_lvEntries);
 
-			UpdateUIState(false);
+			UpdateUIState(false, null);
 
 			PwGroup pgSkipped = null;
 			if ((sp != null) && sp.RespectEntrySearchingDisabled)
@@ -4242,7 +4052,7 @@ namespace KeePass.Forms
 			finally { --m_uBlockEntrySelectionEvent; }
 
 			if (bEnsureVisible) EnsureVisibleSelected(null);
-			if (bUpdateUIState) UpdateUIState(false);
+			if (bUpdateUIState) UpdateUIState(false, null);
 		}
 
 		private void SelectEntry(PwEntry pe, bool bDeselectOthers, bool bFocus,
@@ -5051,7 +4861,7 @@ namespace KeePass.Forms
 			// pd.MasterKeyChangeForceOnce = false;
 			pd.Modified = true;
 
-			UpdateUIState(false); // Show modified state in the UI
+			UpdateUIState(false, null); // Show modified state in the UI
 
 			string str = KPRes.MasterKeyChanged + MessageService.NewParagraph +
 				KPRes.MasterKeyChangedSave + MessageService.NewParagraph +
@@ -5233,13 +5043,6 @@ namespace KeePass.Forms
 				case AceColumnType.LastPasswordModTime:
 					str = TimeUtil.ToDisplayString(EntryUtil.GetLastPasswordModTime(pe));
 					break;
-				case AceColumnType.AutoTypeEnabled:
-					object oBlocker;
-					str = AutoType.GetEnabledText(pe, out oBlocker);
-					break;
-				case AceColumnType.AutoTypeSequences:
-					str = AutoType.GetSequencesText(pe);
-					break;
 				default: Debug.Assert(false); str = string.Empty; break;
 			}
 
@@ -5295,7 +5098,7 @@ namespace KeePass.Forms
 			}
 
 			RefreshEntriesList();
-			UpdateUIState(false); // Update entry view
+			UpdateUIState(false, null); // Update entry view
 		}
 
 		private void EditSelectedEntry(PwEntryFormTab eftInit)
@@ -5721,7 +5524,7 @@ namespace KeePass.Forms
 			}
 
 			if (bModified) RefreshEntriesList();
-			UpdateUIState(bModified);
+			UpdateUIState(bModified, null);
 		}
 
 		private static bool? m_bCachedSelfTestResult = null;
@@ -5870,20 +5673,13 @@ namespace KeePass.Forms
 
 		private void UpdateTrayState()
 		{
-			UpdateUIState(false); // Update tray lock text
+			UpdateUIState(false, null); // Update tray lock text
 
 			ulong u = Program.Config.UI.UIFlags;
 			bool bOptions = ((u & (ulong)AceUIFlags.DisableOptions) == 0);
 
 			MainAppState s = GetMainAppState();
 			bool bInvkWnd = IsCommandTypeInvokable(s, AppCommandType.Window);
-
-			m_ctxTrayTray.Enabled = bInvkWnd;
-			m_ctxTrayGenPw.Enabled = bInvkWnd;
-			m_ctxTrayOptions.Enabled = (bInvkWnd && bOptions);
-			m_ctxTrayCancel.Enabled = (m_sCancellable.Count != 0);
-			m_ctxTrayLock.Enabled = IsCommandTypeInvokable(s, AppCommandType.Lock);
-			m_ctxTrayFileExit.Enabled = bInvkWnd;
 		}
 
 		internal static SprContext GetEntryListSprContext(PwEntry pe,
@@ -6103,30 +5899,6 @@ namespace KeePass.Forms
 			EnsureVisibleSelected(false);
 		}
 
-		private void PerformAutoType(string strSeq)
-		{
-			PwEntry pe = GetSelectedEntry(false);
-			if (pe != null)
-			{
-				try
-				{
-					AutoType.PerformIntoPreviousWindow(this, pe,
-						m_docMgr.SafeFindContainerOf(pe), strSeq);
-				}
-				catch (Exception ex) { MessageService.ShowWarning(ex); }
-			}
-		}
-
-		private void OnEntryPerformAutoTypeAdv(object sender, DynamicMenuEventArgs e)
-		{
-			if (e == null) { Debug.Assert(false); return; }
-
-			string strSeq = e.ItemName;
-			if (string.IsNullOrEmpty(strSeq)) { Debug.Assert(false); return; }
-
-			PerformAutoType(strSeq);
-		}
-
 		private int CreateAndShowEntryList(EntryReportDelegate f, string strStatus,
 			Image imgIcon, string strTitle, string strSubTitle, string strNote,
 			bool bForceDialog, bool bDisableSorting)
@@ -6179,7 +5951,7 @@ namespace KeePass.Forms
 				if (pe != null) SelectEntry(pe, true, true, true, false);
 				else SelectFirstEntryIfNoneSelected();
 
-				UpdateUIState(false); // For selected entry
+				UpdateUIState(false, null); // For selected entry
 			}
 
 			return l.Count;
@@ -6241,7 +6013,7 @@ namespace KeePass.Forms
 			}
 
 			RefreshEntriesList();
-			UpdateUIState(bMod);
+			UpdateUIState(bMod, null);
 		}
 
 		internal void AddEntryEx(object sender, GFunc<PwEntry> fNewEntry,
@@ -6346,7 +6118,7 @@ namespace KeePass.Forms
 
 				for (char ch = 'A'; ch < 'E'; ++ch) f(ch.ToString());
 
-				UpdateUIState(true);
+				UpdateUIState(true, null);
 			};
 		}
 #endif

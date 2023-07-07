@@ -87,14 +87,9 @@ namespace KeePass.App
 			// public static readonly string DbSettingsProtection = "protection";
 			public static readonly string DbSettingsCompression = "compression";
 
-			public static readonly string AutoType = "base/autotype";
-			public static readonly string AutoTypeObfuscation = "v2/autotype_obfuscation";
-			public static readonly string AutoTypeWindowFilters = "autowindows";
-
 			public static readonly string Entry = "v2/entry";
 			public static readonly string EntryGeneral = "general";
 			public static readonly string EntryStrings = "advanced";
-			public static readonly string EntryAutoType = "autotype";
 			public static readonly string EntryHistory = "history";
 
 			public static readonly string KeySources = "base/keys";

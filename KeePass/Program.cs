@@ -540,8 +540,6 @@ namespace KeePass
 
 			Mutex mGlobalNotify = TryGlobalInstanceNotify(AppDefs.MutexNameGlobal);
 
-			AutoType.InitStatic();
-
 			CustomMessageFilterEx cmfx = new CustomMessageFilterEx();
 			Application.AddMessageFilter(cmfx);
 

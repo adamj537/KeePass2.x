@@ -83,7 +83,6 @@ namespace KeePass.Forms
 		None = 0,
 		General,
 		Properties,
-		AutoType,
 		CustomData
 	}
 

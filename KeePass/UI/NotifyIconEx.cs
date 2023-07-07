@@ -38,6 +38,7 @@ namespace KeePass.UI
 
 		public NotifyIcon NotifyIcon { get { return m_ntf; } }
 
+		// TODO:  Delete?
 		public ContextMenuStrip ContextMenuStrip
 		{
 			get

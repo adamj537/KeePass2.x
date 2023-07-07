@@ -582,8 +582,6 @@ namespace KeePass.App.Configuration
 		HistoryCount,
 		AttachmentCount,
 		LastPasswordModTime,
-		AutoTypeEnabled,
-		AutoTypeSequences,
 
 		Count // Virtual identifier representing the number of types
 	}
@@ -675,10 +673,6 @@ namespace KeePass.App.Configuration
 				case AceColumnType.AttachmentCount:
 					str = KPRes.Attachments + " (" + KPRes.Count + ")"; break;
 				case AceColumnType.LastPasswordModTime: str = KPRes.LastModTimePwHist; break;
-				case AceColumnType.AutoTypeEnabled:
-					str = KPRes.AutoType + " - " + KPRes.Enabled; break;
-				case AceColumnType.AutoTypeSequences:
-					str = KPRes.AutoType + " - " + KPRes.Sequences; break;
 				default: Debug.Assert(false); break;
 			};
 

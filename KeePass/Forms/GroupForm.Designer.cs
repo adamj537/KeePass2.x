@@ -51,14 +51,6 @@
 			this.m_cmbEnableSearching = new System.Windows.Forms.ComboBox();
 			this.m_lblEnableSearching = new System.Windows.Forms.Label();
 			this.m_lblUuid = new System.Windows.Forms.Label();
-			this.m_tabAutoType = new System.Windows.Forms.TabPage();
-			this.m_btnAutoTypeEdit = new System.Windows.Forms.Button();
-			this.m_cmbEnableAutoType = new System.Windows.Forms.ComboBox();
-			this.m_rbAutoTypeOverride = new System.Windows.Forms.RadioButton();
-			this.m_rbAutoTypeInherit = new System.Windows.Forms.RadioButton();
-			this.m_lblAutoTypeDesc = new System.Windows.Forms.Label();
-			this.m_lblEnableAutoType = new System.Windows.Forms.Label();
-			this.m_tbDefaultAutoTypeSeq = new System.Windows.Forms.TextBox();
 			this.m_tabCustomData = new System.Windows.Forms.TabPage();
 			this.m_btnCDDel = new System.Windows.Forms.Button();
 			this.m_lvCustomData = new System.Windows.Forms.ListView();
@@ -67,7 +59,6 @@
 			this.m_tabMain.SuspendLayout();
 			this.m_tabGeneral.SuspendLayout();
 			this.m_tabProperties.SuspendLayout();
-			this.m_tabAutoType.SuspendLayout();
 			this.m_tabCustomData.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -140,7 +131,6 @@
 			// 
 			this.m_tabMain.Controls.Add(this.m_tabGeneral);
 			this.m_tabMain.Controls.Add(this.m_tabProperties);
-			this.m_tabMain.Controls.Add(this.m_tabAutoType);
 			this.m_tabMain.Controls.Add(this.m_tabCustomData);
 			this.m_tabMain.Location = new System.Drawing.Point(13, 67);
 			this.m_tabMain.Name = "m_tabMain";
@@ -288,88 +278,6 @@
 			this.m_lblUuid.TabIndex = 6;
 			this.m_lblUuid.Text = "&UUID:";
 			// 
-			// m_tabAutoType
-			// 
-			this.m_tabAutoType.Controls.Add(this.m_btnAutoTypeEdit);
-			this.m_tabAutoType.Controls.Add(this.m_cmbEnableAutoType);
-			this.m_tabAutoType.Controls.Add(this.m_rbAutoTypeOverride);
-			this.m_tabAutoType.Controls.Add(this.m_rbAutoTypeInherit);
-			this.m_tabAutoType.Controls.Add(this.m_lblAutoTypeDesc);
-			this.m_tabAutoType.Controls.Add(this.m_lblEnableAutoType);
-			this.m_tabAutoType.Controls.Add(this.m_tbDefaultAutoTypeSeq);
-			this.m_tabAutoType.Location = new System.Drawing.Point(4, 22);
-			this.m_tabAutoType.Name = "m_tabAutoType";
-			this.m_tabAutoType.Size = new System.Drawing.Size(356, 172);
-			this.m_tabAutoType.TabIndex = 1;
-			this.m_tabAutoType.Text = "Auto-Type";
-			this.m_tabAutoType.UseVisualStyleBackColor = true;
-			// 
-			// m_btnAutoTypeEdit
-			// 
-			this.m_btnAutoTypeEdit.Location = new System.Drawing.Point(313, 104);
-			this.m_btnAutoTypeEdit.Name = "m_btnAutoTypeEdit";
-			this.m_btnAutoTypeEdit.Size = new System.Drawing.Size(32, 23);
-			this.m_btnAutoTypeEdit.TabIndex = 5;
-			this.m_btnAutoTypeEdit.UseVisualStyleBackColor = true;
-			this.m_btnAutoTypeEdit.Click += new System.EventHandler(this.OnBtnAutoTypeEdit);
-			// 
-			// m_cmbEnableAutoType
-			// 
-			this.m_cmbEnableAutoType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.m_cmbEnableAutoType.FormattingEnabled = true;
-			this.m_cmbEnableAutoType.Location = new System.Drawing.Point(9, 31);
-			this.m_cmbEnableAutoType.Name = "m_cmbEnableAutoType";
-			this.m_cmbEnableAutoType.Size = new System.Drawing.Size(335, 21);
-			this.m_cmbEnableAutoType.TabIndex = 1;
-			// 
-			// m_rbAutoTypeOverride
-			// 
-			this.m_rbAutoTypeOverride.AutoSize = true;
-			this.m_rbAutoTypeOverride.Location = new System.Drawing.Point(9, 85);
-			this.m_rbAutoTypeOverride.Name = "m_rbAutoTypeOverride";
-			this.m_rbAutoTypeOverride.Size = new System.Drawing.Size(153, 17);
-			this.m_rbAutoTypeOverride.TabIndex = 3;
-			this.m_rbAutoTypeOverride.TabStop = true;
-			this.m_rbAutoTypeOverride.Text = "&Override default sequence:";
-			this.m_rbAutoTypeOverride.UseVisualStyleBackColor = true;
-			// 
-			// m_rbAutoTypeInherit
-			// 
-			this.m_rbAutoTypeInherit.AutoSize = true;
-			this.m_rbAutoTypeInherit.Location = new System.Drawing.Point(9, 64);
-			this.m_rbAutoTypeInherit.Name = "m_rbAutoTypeInherit";
-			this.m_rbAutoTypeInherit.Size = new System.Drawing.Size(272, 17);
-			this.m_rbAutoTypeInherit.TabIndex = 2;
-			this.m_rbAutoTypeInherit.TabStop = true;
-			this.m_rbAutoTypeInherit.Text = "&Inherit default auto-type sequence from parent group";
-			this.m_rbAutoTypeInherit.UseVisualStyleBackColor = true;
-			this.m_rbAutoTypeInherit.CheckedChanged += new System.EventHandler(this.OnAutoTypeInheritCheckedChanged);
-			// 
-			// m_lblAutoTypeDesc
-			// 
-			this.m_lblAutoTypeDesc.Location = new System.Drawing.Point(26, 132);
-			this.m_lblAutoTypeDesc.Name = "m_lblAutoTypeDesc";
-			this.m_lblAutoTypeDesc.Size = new System.Drawing.Size(318, 28);
-			this.m_lblAutoTypeDesc.TabIndex = 6;
-			this.m_lblAutoTypeDesc.Text = "All subgroups and entries in the current group that inherit the auto-type sequenc" +
-				"e will use the one above.";
-			// 
-			// m_lblEnableAutoType
-			// 
-			this.m_lblEnableAutoType.AutoSize = true;
-			this.m_lblEnableAutoType.Location = new System.Drawing.Point(6, 13);
-			this.m_lblEnableAutoType.Name = "m_lblEnableAutoType";
-			this.m_lblEnableAutoType.Size = new System.Drawing.Size(168, 13);
-			this.m_lblEnableAutoType.TabIndex = 0;
-			this.m_lblEnableAutoType.Text = "&Auto-Type for entries in this group:";
-			// 
-			// m_tbDefaultAutoTypeSeq
-			// 
-			this.m_tbDefaultAutoTypeSeq.Location = new System.Drawing.Point(29, 106);
-			this.m_tbDefaultAutoTypeSeq.Name = "m_tbDefaultAutoTypeSeq";
-			this.m_tbDefaultAutoTypeSeq.Size = new System.Drawing.Size(278, 20);
-			this.m_tbDefaultAutoTypeSeq.TabIndex = 4;
-			// 
 			// m_tabCustomData
 			// 
 			this.m_tabCustomData.Controls.Add(this.m_btnCDDel);
@@ -423,16 +331,14 @@
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "<DYN>";
-			this.Load += new System.EventHandler(this.OnFormLoad);
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OnFormClosed);
+			this.Load += new System.EventHandler(this.OnFormLoad);
 			((System.ComponentModel.ISupportInitialize)(this.m_bannerImage)).EndInit();
 			this.m_tabMain.ResumeLayout(false);
 			this.m_tabGeneral.ResumeLayout(false);
 			this.m_tabGeneral.PerformLayout();
 			this.m_tabProperties.ResumeLayout(false);
 			this.m_tabProperties.PerformLayout();
-			this.m_tabAutoType.ResumeLayout(false);
-			this.m_tabAutoType.PerformLayout();
 			this.m_tabCustomData.ResumeLayout(false);
 			this.ResumeLayout(false);
 
@@ -449,20 +355,12 @@
 		private System.Windows.Forms.Button m_btnIcon;
 		private System.Windows.Forms.TabControl m_tabMain;
 		private System.Windows.Forms.TabPage m_tabGeneral;
-		private System.Windows.Forms.TabPage m_tabAutoType;
-		private System.Windows.Forms.Label m_lblAutoTypeDesc;
-		private System.Windows.Forms.TextBox m_tbDefaultAutoTypeSeq;
 		private System.Windows.Forms.CheckBox m_cbExpires;
 		private System.Windows.Forms.DateTimePicker m_dtExpires;
-		private System.Windows.Forms.RadioButton m_rbAutoTypeInherit;
-		private System.Windows.Forms.RadioButton m_rbAutoTypeOverride;
-		private System.Windows.Forms.Button m_btnAutoTypeEdit;
 		private System.Windows.Forms.TextBox m_tbNotes;
 		private System.Windows.Forms.TabPage m_tabProperties;
 		private System.Windows.Forms.Label m_lblEnableSearching;
-		private System.Windows.Forms.Label m_lblEnableAutoType;
 		private System.Windows.Forms.ComboBox m_cmbEnableSearching;
-		private System.Windows.Forms.ComboBox m_cmbEnableAutoType;
 		private System.Windows.Forms.TabPage m_tabCustomData;
 		private System.Windows.Forms.Button m_btnCDDel;
 		private System.Windows.Forms.ListView m_lvCustomData;

@@ -53,7 +53,6 @@
 			this.m_cbGroups = new System.Windows.Forms.CheckBox();
 			this.m_linkDeselectAllFields = new System.Windows.Forms.LinkLabel();
 			this.m_linkSelectAllFields = new System.Windows.Forms.LinkLabel();
-			this.m_cbAutoType = new System.Windows.Forms.CheckBox();
 			this.m_cbLastMod = new System.Windows.Forms.CheckBox();
 			this.m_cbCreation = new System.Windows.Forms.CheckBox();
 			this.m_cbExpire = new System.Windows.Forms.CheckBox();
@@ -128,7 +127,7 @@
 			this.m_lblPreviewHint.Size = new System.Drawing.Size(587, 19);
 			this.m_lblPreviewHint.TabIndex = 0;
 			this.m_lblPreviewHint.Text = "Note that this preview is a layout preview only. To see a preview of the printed " +
-				"document, click the \'Print Preview\' button.";
+    "document, click the \'Print Preview\' button.";
 			// 
 			// m_tabDataLayout
 			// 
@@ -192,7 +191,7 @@
 			this.m_lblEntrySortHint.Size = new System.Drawing.Size(266, 28);
 			this.m_lblEntrySortHint.TabIndex = 2;
 			this.m_lblEntrySortHint.Text = "Entries are sorted within their groups, i.e. the group structure is not broken up" +
-				".";
+    ".";
 			// 
 			// m_cmbSortEntries
 			// 
@@ -272,7 +271,6 @@
 			this.m_grpFields.Controls.Add(this.m_cbGroups);
 			this.m_grpFields.Controls.Add(this.m_linkDeselectAllFields);
 			this.m_grpFields.Controls.Add(this.m_linkSelectAllFields);
-			this.m_grpFields.Controls.Add(this.m_cbAutoType);
 			this.m_grpFields.Controls.Add(this.m_cbLastMod);
 			this.m_grpFields.Controls.Add(this.m_cbCreation);
 			this.m_grpFields.Controls.Add(this.m_cbExpire);
@@ -360,16 +358,6 @@
 			this.m_linkSelectAllFields.TabStop = true;
 			this.m_linkSelectAllFields.Text = "Select All";
 			this.m_linkSelectAllFields.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OnLinkSelectAllFields);
-			// 
-			// m_cbAutoType
-			// 
-			this.m_cbAutoType.AutoSize = true;
-			this.m_cbAutoType.Location = new System.Drawing.Point(360, 43);
-			this.m_cbAutoType.Name = "m_cbAutoType";
-			this.m_cbAutoType.Size = new System.Drawing.Size(75, 17);
-			this.m_cbAutoType.TabIndex = 8;
-			this.m_cbAutoType.Text = "Auto-Typ&e";
-			this.m_cbAutoType.UseVisualStyleBackColor = true;
 			// 
 			// m_cbLastMod
 			// 
@@ -582,14 +570,14 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.MinimumSize = new System.Drawing.Size(64, 32);
+			this.MinimumSize = new System.Drawing.Size(64, 39);
 			this.Name = "PrintForm";
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Print";
-			this.Load += new System.EventHandler(this.OnFormLoad);
-			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OnFormClosed);
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OnFormClosed);
+			this.Load += new System.EventHandler(this.OnFormLoad);
 			this.m_tabMain.ResumeLayout(false);
 			this.m_tabPreview.ResumeLayout(false);
 			this.m_tabDataLayout.ResumeLayout(false);
@@ -633,7 +621,6 @@
 		private System.Windows.Forms.Label m_lblPreviewHint;
 		private System.Windows.Forms.GroupBox m_grpStyle;
 		private System.Windows.Forms.CheckBox m_cbExpire;
-		private System.Windows.Forms.CheckBox m_cbAutoType;
 		private System.Windows.Forms.CheckBox m_cbLastMod;
 		private System.Windows.Forms.CheckBox m_cbCreation;
 		private System.Windows.Forms.LinkLabel m_linkDeselectAllFields;

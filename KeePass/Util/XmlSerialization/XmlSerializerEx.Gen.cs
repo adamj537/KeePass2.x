@@ -566,7 +566,6 @@ namespace KeePass.Util.XmlSerialization
 						o.KeyPromptFlags = ReadUInt64(xr);
 						break;
 					case "ShowAdvAutoTypeCommands":
-						o.ShowAdvAutoTypeCommands = ReadBoolean(xr);
 						break;
 					case "SecureDesktopPlaySound":
 						o.SecureDesktopPlaySound = ReadBoolean(xr);
@@ -896,10 +895,8 @@ namespace KeePass.Util.XmlSerialization
 						o.LimitToSingleInstance = ReadBoolean(xr);
 						break;
 					case "AutoTypeMatchByTitle":
-						o.AutoTypeMatchByTitle = ReadBoolean(xr);
 						break;
 					case "AutoTypeMatchByUrlInTitle":
-						o.AutoTypeMatchByUrlInTitle = ReadBoolean(xr);
 						break;
 					case "AutoTypeMatchByUrlHostInTitle":
 						o.AutoTypeMatchByUrlHostInTitle = ReadBoolean(xr);
@@ -1926,10 +1923,8 @@ namespace KeePass.Util.XmlSerialization
 						o.SaveFile = ReadBoolean(xr);
 						break;
 					case "AutoType":
-						o.AutoType = ReadBoolean(xr);
 						break;
 					case "AutoTypeWithoutContext":
-						o.AutoTypeWithoutContext = ReadBoolean(xr);
 						break;
 					case "CopyToClipboard":
 						o.CopyToClipboard = ReadBoolean(xr);
@@ -2996,8 +2991,6 @@ namespace KeePass.Util.XmlSerialization
 				m_dictAceColumnType["HistoryCount"] = App.Configuration.AceColumnType.HistoryCount;
 				m_dictAceColumnType["AttachmentCount"] = App.Configuration.AceColumnType.AttachmentCount;
 				m_dictAceColumnType["LastPasswordModTime"] = App.Configuration.AceColumnType.LastPasswordModTime;
-				m_dictAceColumnType["AutoTypeEnabled"] = App.Configuration.AceColumnType.AutoTypeEnabled;
-				m_dictAceColumnType["AutoTypeSequences"] = App.Configuration.AceColumnType.AutoTypeSequences;
 				m_dictAceColumnType["Count"] = App.Configuration.AceColumnType.Count;
 			}
 

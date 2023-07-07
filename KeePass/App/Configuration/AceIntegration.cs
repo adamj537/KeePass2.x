@@ -103,22 +103,6 @@ namespace KeePass.App.Configuration
 			set { m_bSingleInstance = value; }
 		}
 
-		private bool m_bMatchByTitle = true;
-		[DefaultValue(true)]
-		public bool AutoTypeMatchByTitle
-		{
-			get { return m_bMatchByTitle; }
-			set { m_bMatchByTitle = value; }
-		}
-
-		private bool m_bMatchByUrlInTitle = false;
-		[DefaultValue(false)]
-		public bool AutoTypeMatchByUrlInTitle
-		{
-			get { return m_bMatchByUrlInTitle; }
-			set { m_bMatchByUrlInTitle = value; }
-		}
-
 		private bool m_bMatchByUrlHostInTitle = false;
 		[DefaultValue(false)]
 		public bool AutoTypeMatchByUrlHostInTitle

@@ -70,7 +70,6 @@ namespace KeePass.App.Configuration
 		HideBuiltInPwGenPrfInEntryDlg = 0x10000,
 		ShowLastAccessTime = 0x20000,
 		HideNewDbInfoDialogs = 0x40000,
-		HideAutoTypeObfInfo = 0x80000,
 		NoQuickSearchClear = 0x100000,
 		SecureDesktopIme = 0x200000
 	}
@@ -346,21 +345,6 @@ namespace KeePass.App.Configuration
 		{
 			get { return m_uKeyPromptFlags; }
 			set { m_uKeyPromptFlags = value; }
-		}
-
-		// private bool m_bEditCancelConfirmation = true;
-		// public bool EntryEditCancelConfirmation
-		// {
-		//	get { return m_bEditCancelConfirmation; }
-		//	set { m_bEditCancelConfirmation = value; }
-		// }
-
-		private bool m_bAdvATCmds = false;
-		[DefaultValue(false)]
-		public bool ShowAdvAutoTypeCommands
-		{
-			get { return m_bAdvATCmds; }
-			set { m_bAdvATCmds = value; }
 		}
 
 		private bool m_bSecDeskSound = true;

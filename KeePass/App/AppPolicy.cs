@@ -41,8 +41,6 @@ namespace KeePass.App
 		PrintNoKey, // Don't require the current key to be repeated
 		NewFile,
 		SaveFile,
-		AutoType,
-		AutoTypeWithoutContext,
 		CopyToClipboard,
 		CopyWholeEntries,
 		DragDrop,
@@ -119,22 +117,6 @@ namespace KeePass.App
 		{
 			get { return m_bSave; }
 			set { m_bSave = value; }
-		}
-
-		private bool m_bAutoType = true;
-		[DefaultValue(true)]
-		public bool AutoType
-		{
-			get { return m_bAutoType; }
-			set { m_bAutoType = value; }
-		}
-
-		private bool m_bAutoTypeWithoutContext = true;
-		[DefaultValue(true)]
-		public bool AutoTypeWithoutContext
-		{
-			get { return m_bAutoTypeWithoutContext; }
-			set { m_bAutoTypeWithoutContext = value; }
 		}
 
 		private bool m_bClipboard = true;
@@ -257,12 +239,6 @@ namespace KeePass.App
 				case AppPolicyId.SaveFile:
 					str = KPRes.SaveDatabase;
 					break;
-				case AppPolicyId.AutoType:
-					str = KPRes.AutoType;
-					break;
-				case AppPolicyId.AutoTypeWithoutContext:
-					str = KPRes.AutoType + " - " + KPRes.WithoutContext;
-					break;
 				case AppPolicyId.CopyToClipboard:
 					str = KPRes.Copy;
 					break;
@@ -323,12 +299,6 @@ namespace KeePass.App
 				case AppPolicyId.SaveFile:
 					str = KPRes.PolicySaveDatabaseDesc;
 					break;
-				case AppPolicyId.AutoType:
-					str = KPRes.PolicyAutoTypeDesc;
-					break;
-				case AppPolicyId.AutoTypeWithoutContext:
-					str = KPRes.PolicyAutoTypeWithoutContextDesc;
-					break;
 				case AppPolicyId.CopyToClipboard:
 					str = KPRes.PolicyClipboardDesc;
 					break;
@@ -380,8 +350,6 @@ namespace KeePass.App
 				case AppPolicyId.PrintNoKey: b = m_apfCurrent.PrintNoKey; break;
 				case AppPolicyId.NewFile: b = m_apfCurrent.NewFile; break;
 				case AppPolicyId.SaveFile: b = m_apfCurrent.SaveFile; break;
-				case AppPolicyId.AutoType: b = m_apfCurrent.AutoType; break;
-				case AppPolicyId.AutoTypeWithoutContext: b = m_apfCurrent.AutoTypeWithoutContext; break;
 				case AppPolicyId.CopyToClipboard: b = m_apfCurrent.CopyToClipboard; break;
 				case AppPolicyId.CopyWholeEntries: b = m_apfCurrent.CopyWholeEntries; break;
 				case AppPolicyId.DragDrop: b = m_apfCurrent.DragDrop; break;
